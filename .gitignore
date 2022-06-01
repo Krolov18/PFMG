@@ -1,0 +1,17 @@
+# jupyter notebook
+.ipynb_checkpoints/
+
+# pytest
+.pytest_cache/
+
+# export de latex
+out/
+
+# mypy pour le typage
+.mypy_cache/
+
+# lexique/Documentation
+
+# fichier cache quelconques
+__pycache__/
+.idea/
