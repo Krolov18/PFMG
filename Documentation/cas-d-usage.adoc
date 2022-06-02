@@ -1,0 +1,27 @@
+// Un cas d'usage doit faire appel uniquement aux fichiers d'entrée
+// C'est la composition de la grammaire qui "réalise" un cas d'usage
+
+= Cas d'usage
+
+== Les contractions
+Le fichier `Morphosyntax.yaml` comporte un champ `contractions`.
+Il permet à l'utilisateur de déclarer les tokens du français qu'il faut "découper" avant de le traduire.
+
+== Les valeurs par défaut
+Si en français un mot comme "Nicole" n'est pas précédé d'un déterminant, on peut vouloir, dans une langue donnée, obliger l'apparition d'un déterminant avant un nom. Pour cela, on déclare dans `MorphoSyntax.yaml` un champ `defaut` qui contiendra les
+
+[source,yaml]
+----
+defaut:
+  DET:
+----
+
+== La gestion syntaxique
+
+== La restriction par filtre
+
+== Kalaba -> Français
+=== Ajout
+=== Disparition
+=== Inversion
+=== Duplication

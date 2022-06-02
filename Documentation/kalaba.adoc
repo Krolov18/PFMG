@@ -1,0 +1,13 @@
+= {bookname} Grammar Documentation
+:doctype: book
+:toc:
+:experimental:
+:bookname: Kalaba
+
+[discrete,#a-propos-kalaba]
+== À propos du {bookname}
+
+Le {bookname} ou kalabatiste est un générateur de langage inventé à base de syntaxe,
+morphologie et phonologie.
+
+include::introduction.adoc[]

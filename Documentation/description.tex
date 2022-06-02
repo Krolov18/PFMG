@@ -1,0 +1,83 @@
+%! Author = Korantin
+%! Date = 21/03/2022
+
+% Preamble
+\documentclass[12pt,a4paper,twoside]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+
+\pagestyle{fancy}
+
+
+
+\title{\vspace{-3\baselineskip}Construction du Kalabatiste}\label{toto}
+\author{Korantin Lévêque}
+\date{\today}
+
+% Document
+\begin{document}
+
+\chead{\ref{Kalabatiste}}
+\cfoot{Kalabatiste}
+
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+L'objectif de ce document est renseigner au lecteur le cheminement quant à la réécriture de ce projet.
+Le code du kalaba étant devenu complexe, l'instigateur a voulu ajouté une nouvelle fonctionnalité et n'a pu le faire.
+Ma proposition consiste à appliquer plusieurs "design patterns" comme l'abstract factory.
+C'est quoi le kalaba ?
+Le kalaba est une grammaire lexicale permettant de reconnaitre, générer et traduire une langue source
+vers une langue cible. Il faut peser tous les termes employés ici. La langue source est une langue inventée,
+la langue cible, du français.
+A quoi ça sert ?
+A qui ça sert ?
+\section{Code GB}
+\subsection{Architecture}
+Le Kalaba est un cas d'uage à l'implémentation de Paradigm Function Morphology de Stump.
+\subsection{Usage des classes}
+\subsection{Non usage des tests unitaires}
+
+
+\section{Architecture et tests unitaires}
+Il a fallu refondre l'architecture pour clarifier les structures de données qu'on allait manipuler.
+En élaborant cette nouvelle architecture, les tests unitaires sont venus de pair.
+\subsection{Vision fonctionnelle}
+L'usage des classes ne e semblait pas nécessaire. J'ai ainsi choisi de surchargé des fonctions quand cela était nécessaire
+plutôt que de sortir l'artillerie lourde avec les classes. Chaque module (fichier) contient une fonction
+avec ses déclarations (fichiers .pyi) et ses implémentations (fichier .py).
+\subsection{Le lexique}
+On entend par lexique ici, une structure regroupant les lexème et les réalisations de ces lexèmes, soit, les formes.
+Lexique est composé de deux piliers principaux : La glose du langage et les blocs de ce langage.
+
+La glose répertorie tous les couples attributs/valeurs dont le langage aura besoin pour son bon fonctionnement.
+Il est répertorié par catégorie.
+
+Les blocs, aussi répertoriés par catégorie déclarent les règles de réalisations des lexèmes.
+Un bloc relie un sigma (ensemble de traits/valeurs licite par la catégorie qui le recouvre) et une règle.
+La règle est une règle de construction lexicale. Elle va ainsi permettre d'accumuler les différentes réalisations
+décrites par le sigma.
+
+\subsection{La syntaxe}
+La syntaxe s'effectue à l'aide d'une Feature Contextual-Free Grammar (FCFG). Les catégories syntaxiques servants
+de non-terminaux et les sigmas des features.
+Le concepteur du langage aura donc uniquement à déclarer les règles non-lexicales. Un formalisme est mis
+à sa disposition pour éviter le maximum de redondance.
+\subsection{La traduction}
+La traduction est l'étape la plus complexe car elle s'étale sur le lexique et sur la syntaxe.
+\subsection{Vers du \LaTeX}
+
+
+\section{HPSG via NLTK}
+\subsection{PLY: Interface TDL avec FeatStruct}
+\subsection{Du typé non-typé}
+\subsection{Parsing et HPSG}
+
+\end{document}

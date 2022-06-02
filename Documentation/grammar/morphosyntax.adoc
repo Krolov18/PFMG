@@ -1,0 +1,74 @@
+= MorphoSyntax.yaml
+:icons: font
+:experimental:
+
+
+.Champ contractions
+[,yaml]
+----
+include::../../test/data_for_test/avec_traduction/MorphoSyntax.yaml[tag=contractions]
+----
+<1> Clé indiquant le bloc de contractions
+<2> La clé est un token de la chaîne d'entre et la valeur est la décomposition du token en entrées reconnues par la grammaire.
+
+
+
+.Champ syntagmes
+[,yaml]
+----
+include::../../test/data_for_test/avec_traduction/MorphoSyntax.yaml[tag=syntagmes]
+----
+<1> Clé indiquant le bloc de syntagmes
+<2> Clé indiquant le bloc de NPs valides
+<3> Liste des constituants d'un NP
+
+[TIP]
+.Syntaxe du champ syntagmes
+====
+* `DET/?` signifie que DET est optionnel. Il peut appairtre au plus 1 fois.
+====
+
+WARNING: Le nombre de constituants, ici 6, devra correspondre dans le champ accords.
+
+.Champ accords
+[,yaml]
+----
+include::../../test/data_for_test/avec_traduction/MorphoSyntax.yaml[tag=accords]
+----
+<1> Clé indiquant le bloc de accords
+<2> Clé indiquant le bloc de la catégorie
+<3> Règle d'accords entre constituants
+
+[TIP]
+.Syntaxe du champs accords
+====
+* `+{ }+` signifie qu'aucun accord n'est nécessaire
+* `+{ Genre: "*" }+` Signifie que `*` sera remplacé par une variable "?genre"
+====
+
+
+.Champ percolations
+[,yaml]
+----
+include::../../test/data_for_test/avec_traduction/MorphoSyntax.yaml[tag=percolations]
+----
+<1> Clé indiquant le bloc de percolations
+<2> Clé indiquant le bloc de la catégorie
+<3> Set des attributs-valeurs à faire apparaitre sur le noeud syntaxique
+
+
+.Champ traductions
+[,yaml]
+----
+include::../../test/data_for_test/avec_traduction/MorphoSyntax.yaml[tag=traductions]
+----
+<1> Clé indiquant le bloc de traduction
+<2> Clé indiquant le bloc de la catégorie
+<3> Liste indiquant l'ordre des constituants dans la traduction
+
+.Deux méfiances à avoir
+[WARNING]
+====
+* L'indicage commence à 0 donc s'il y a 3 constituants, il ne peut y avoir que 0, 1, ou 2 dans la liste.
+* Cette liste est totalement libre dans l'ordre, mais aussi dans la présence, l'absence ou la multiplicité. Si je reprends l'exemple de 3 constituants : `2, 0, 1`, `2, 0`, `2, 0, 2, 1`, alors ces trois expressions sont valides.
+====

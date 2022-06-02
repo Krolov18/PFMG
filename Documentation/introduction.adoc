@@ -1,0 +1,28 @@
+[#introduction]
+= Introduction
+:toc:
+:toc-title: Table des matières
+:sectanchors:
+:idprefix: id_
+:experimental:
+:icons: font
+
+[discrete,#structure-kalaba]
+== Structure du {bookname}
+
+Une grammaire {bookname} se compose de 6 fichiers au format yaml.
+
+Blocks.yaml :: Description des règles morphologiques.
+Gloses.yaml :: Description des couples Attributs/valeurs utilisés dans la grammaire.
+MorphoSyntax.yaml :: Description des règles syntaxiques, de traduction et les contractions.
+Phonology.yaml :: Description des règles de transformations phonologiques.
+
+
+
+
+
+[discrete,#concepts-cles]
+== Concepts clés
+
+[discrete,#preprocessing-grammaire]
+== Processing d'une grammaire
