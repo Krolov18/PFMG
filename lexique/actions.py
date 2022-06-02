@@ -32,7 +32,7 @@ def action(id_action: str, namespace: argparse.Namespace) -> None:
     :param namespace : namespace généré par ArgumentParser.parse_args()
     :return:
     """
-    return factory_function(
+    factory_function(
         concrete_product=f"{id_action}_action",
         package=__name__,
         namespace=namespace
