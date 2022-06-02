@@ -1,0 +1,33 @@
+N:
+  1:
+    Genre=m: X1
+    Genre=f: X2?X2:X1
+  2:
+    Nombre=Pl: X+s
+V:
+  1:
+    Mode=Indicatif,Temps=Imparfait: X1
+#    Mode=Indicatif,Temps=Présent,Nombre=Sg,Personne=1: X1
+#    Mode=Indicatif,Temps=Présent,Nombre=Pl,Personne=2: X1
+    Mode=Indicatif,Temps=Présent,Personne=3, Nombre=Pl: X2
+    Mode=Indicatif,Temps=Présent,Personne=3, Nombre=Sg: X3
+    Mode=inf: X4
+  2:
+    Mode=inf: X+r
+#    Mode=Indicatif,Temps=Futur: X+r
+#    Mode=Conditionnel,Temps=Présent: X+r
+  3:
+    Mode=Indicatif,Temps=Présent,Personne=3, Nombre=Pl: X+ent
+    Mode=Indicatif,Temps=Imparfait,Personne=3, Nombre=Sg: X+ait
+    Mode=Indicatif,Temps=Imparfait,Personne=3, Nombre=Pl: X+aient
+ADJ:
+  1:
+    Genre=m: X1
+    Genre=f: X2?X2:X1
+  2:
+    Nombre=Pl: X+s
+DET:
+  1:
+    DEF=DEF,
+    DEF=INDEF,
+    DEF=DEM,

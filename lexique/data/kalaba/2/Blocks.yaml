@@ -1,0 +1,86 @@
+kalaba:
+  N:
+    1: # accord du nombre:
+      Nombre=Sg: 1a4A2V3e
+      Genre=A,Nombre=Du: 1A8V2i6
+      Genre=B,Nombre=Du: 1A8V2i6i
+      Genre=C,Nombre=Du: 1A8V2i6a
+      Genre=D,Nombre=Du: 1A8V2i6u
+      Genre=A,Nombre=Pl: 4U2A9u3i
+      Genre=B,Nombre=Pl: 4U2A9u3a
+      Genre=C,Nombre=Pl: 4U2A9u3u
+      Genre=D,Nombre=Pl: 4U2A9u3u
+    2: # accord du cas:
+      Cas=Erg: re+X
+      Cas=Abs: bo+X
+      Cas=Obl: ko+X
+      Cas=Dat: li+X
+
+  V:
+    1: # temps
+      Temps=PRS, Genre=A:     A1i2a5V3u
+      Temps=PRS, Genre=B:     A1a2a5V3u
+      Temps=PRS, Genre=C:     A1o2a5V3u
+      Temps=PRS, Genre=D:     A1e2a5V3u
+      Temps=PST, Genre=A:     i4A1o2a3V
+      Temps=PST, Genre=B:     a4A1o2u3V
+      Temps=PST, Genre=C:     o4A1o2o3V
+      Temps=PST, Genre=D:     e4A1o2o3V
+    2: # accord en nombre
+      Nombre=Sg: p+X
+      Nombre=Du: s+X
+      Nombre=Pl: d+X
+
+  ADJ:
+    1:
+      CF=1,Nombre=Sg: X+i
+      CF=2,Nombre=Sg: X+o
+      Nombre=Du: X+a
+      CF=1,Nombre=Pl: X+o
+      CF=2,Nombre=Pl: X+i
+    2:
+      CF=1,Genre=A: X+v
+      CF=1,Genre=B: X+f
+      CF=1,Genre=C: X+d
+      CF=1,Genre=D: X+k
+      CF=2,Genre=A: X+m
+      CF=2,Genre=B: X+v
+      CF=2,Genre=C: X+t
+      CF=2,Genre=D: X+g
+  DET:
+    1:
+      Nombre=Sg: X+o
+      Nombre=Du: X+a
+      Nombre=Pl: X+i
+    2:
+      Cas=Obl: X+g
+      Cas=Erg: X+m
+      Cas=Abs: X+k
+      Cas=Dat: X+t
+translation:
+  N:
+    1: # Sélection
+      þCF=þ1: X1
+      þCF=þ2: X1
+      þCF=þ3: X1
+    2: # marquage du pluriel
+      þCF=þ2,Nombre=Du: X+s
+      þCF=þ2,Nombre=Pl: X+s
+  V:
+    1: # Sélection des stems
+      þTemps=þPRS,Nombre=Sg: X2
+      þTemps=þPRS,Nombre=Pl: X3
+      þTemps=þPST,Nombre=Sg: X4
+      þTemps=þPST,Nombre=Pl: X5
+  ADJ:
+    1: # Sélection des stems
+      þCF=þ1,þGenre=þM: X1
+      þCF=þ1,þGenre=þF: 'X2?X2:X1'
+      þCF=þ2:  X1
+    2: # Marquage du pluriel
+      CF=1,Nombre=Pl: X+s
+  DET:
+    1: # Sélection des stems
+      þGenre=þM,Nombre=Sg: X1
+      þGenre=þF,Nombre=Sg: X2
+      Nombre=Pl: X3

@@ -1,0 +1,14 @@
+phrases.txt se compose de 5 colonnes ["SUJET", "VERBE", "COD", "COI", "CIRCON"]
+
+
+traduction français > kalaba
+
+lire_constituant(tokens: List[str], rules: ) ->
+
+for chaque token:
+    search = token
+    si le token n'est pas dans le lexique:
+        search = gerer_non_lexical(token)
+
+    if search:
+        output.append(traduire(search))  # par ex: paucal -> l'élément disparait

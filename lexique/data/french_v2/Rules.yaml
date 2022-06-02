@@ -1,0 +1,27 @@
+start: S
+
+S:
+  accord:
+    pos: [ NP, VP ]
+    features: [ nombre, personne ]
+  structure: [ NP, VP ]
+
+NP:
+  accord:
+    pos: [ DET, A, N ]
+    features: [ genre, nombre ]
+  structure: [ DET, A*, N, A* ]
+
+VP:
+  accord:
+    pos: [ ]
+    features: [ ]
+  structure: [ V, NP ]
+
+PP:
+-
+  accord:
+    pos: [ ]
+    features: [ ]
+  structure: [ ]
+

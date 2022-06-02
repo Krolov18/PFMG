@@ -1,0 +1,34 @@
+N:
+  1: # accord du nombre:
+    nombre=pl: X+s
+
+
+V:
+  1: # temps
+    temps=passe,nombre=sg: X+e
+    temps=passe,nombre=pl,personne=1: X+j
+    temps=passe,nombre=pl,personne=2: X+j
+    temps=passe,nombre=sg,personne=3: X+e
+    temps=futur: X+r
+  2: # personnne et nombre
+    nombre=pl,personne=1: X+ô
+    nombre=pl,personne=2: X+e
+    temps=futur,nombre=sg,personne=1: X+e
+    temps=futur,nombre=sg,personne=2: X+a
+    temps=futur,nombre=sg,personne=3: X+a
+    temps=futur,nombre=pl,personne=3: X+ô
+#
+ADJ:
+  1: # genre
+    genre=f: X+e
+  2:
+    nombre=pl: X+s
+
+#DET:
+#  1: # genre un + e; le -e + a la
+#    genre=m: X+e
+#    #    genre=f : X{e$:-e+a?+e}
+#    genre=f: X+a
+#  2: # nombre
+#    def_=indef,nombre=pl: des
+#    nombre=pl: X+s
