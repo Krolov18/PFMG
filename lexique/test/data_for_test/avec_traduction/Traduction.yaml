@@ -1,0 +1,15 @@
+N:
+  Nombre: Pl>Pl
+#  Nombre: Du>Pl
+V:
+  #  Nombre: Du>Pl
+  Nombre: Pl>Pl
+  Temps: PRS>PRS
+DET:
+  #  Nombre: Du>Pl
+  Nombre: Pl>Pl
+ADJ:
+  Nombre: Pl>Pl
+#  Nombre: Du>Pl
+PREP: { }
+PRE: { }

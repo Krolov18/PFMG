@@ -1,0 +1,98 @@
+# Description de la grammaire du français
+# avec les optionnalité "/?" et les spécificités du français "a" et "deux"
+# tag::contractions[]
+contractions: # <1>
+  au: [ "à", "le" ] # <2>
+  aux: [ "à", "les" ]
+  du: [ "de", "le" ]
+  Des: [ "de", "les" ]
+# end::contractions[]
+# tag::contractions[]
+start: "VP"
+# end::contractions[]
+# tag::syntagmes[]
+syntagmes: # <1>
+  NP: # <2>
+    - [ "DET/?", "ADJ/?", "ADJ/?", "N", "ADJ/?", "POP/?" ] # <3>
+    # end::syntagmes[]
+    - [ "DET/?", "deux", "ADJ/?", "N", "ADJ/?", "POP/?" ]
+    - [ "DET", "N" ]
+    - [ "à", "NP" ]
+  PP:
+    - [ "PREP", "NP" ]
+  POP:
+    - [ "PRE", "NP" ]
+  VP:
+    - [ "NP", "V", "PP/?" ]
+    - [ "NP", "V", "NP", "PP/?", "PP/?" ]
+    - [ "NP", "V", "NP", "NP/?", "PP/?", "PP/?" ]
+# tag::accords[]
+# NP -> DET[Genre=?genre,Nombre=?nombre] N[Genre=?genre,Nombre=?nombre]
+accords: # <1>
+  NP: # <2>
+    - [ { Genre: "*", Nombre: "*", Cas: "*" },
+        { Genre: "*", Nombre: "*" },
+        { Genre: "*", Nombre: "*" },
+        { Genre: "*", Nombre: "*", Cas: "*" },
+        { Genre: "*", Nombre: "*" },
+        { } ] # <3>
+    # end::accords[]
+    - [ { Genre: "*", Nombre: "Du", Cas: "*" },
+        { },
+        { Genre: "*", Nombre: "Du" },
+        { Genre: "*", Nombre: "Du", Cas: "*" },
+        { Genre: "*", Nombre: "Du" },
+        { } ]
+    - [ { Genre: "*", Nombre: "*", Cas: "*" },
+        { Genre: "*", Nombre: "*", Cas: "*", CF: "1" } ]
+    - [ { },
+        { Cas: "Dat" } ]
+  PP:
+    - [ { },
+        { Cas: "Obl" } ]
+  POP:
+    - [ { },
+        { Cas: "Obl" } ]
+  VP:
+    # verbes intransitifs
+    - [ { Cas: "Abs", Genre: "*", Nombre: "*" },
+        { Type: "VI", Genre: "*", Nombre: "*" },
+        { } ]
+    # verbes transitifs
+    - [ { Cas: "Erg" },
+        { Type: "VT", Genre: "*", Nombre: "*" },
+        { Cas: "Abs", Genre: "*", Nombre: "*" },
+        { },
+        { }
+    ]
+    # verbes ditransitifs
+    - [ { Cas: "Erg" },
+        { Type: "VD", Genre: "*", Nombre: "*" },
+        { Cas: "Abs", Genre: "*", Nombre: "*" },
+        { Cas: "Dat" },
+        { },
+        { } ]
+# tag::percolations[]
+percolations: # <1>
+  NP: # <2>
+    - { Genre: "*", Nombre: "*", Cas: "*" } # <3>
+    # end::percolations[]
+    - { Genre: "*", Nombre: "Du", Cas: "*" }
+    - { Genre: "*", Nombre: "*", Cas: "*", CF: "1" }
+    - { Cas: "Dat" }
+# tag::traductions[]
+traductions: # <1>
+  NP: # <2>
+    - [ 0, 5, 1, 2, 4, 3 ] # <3>
+    # end::traductions[]
+    - [ 0, 5, 2, 4, 3 ]
+    - [ 0, 1 ]
+    - [ 1 ]
+  PP:
+    - [ 1, 0 ]
+  VP:
+    - [ 2, 0, 1 ]
+    - [ 3, 4, 0, 2, 1 ]
+    - [ 4, 5, 0, 3, 2, 1 ]
+  POP:
+    - [ 1, 0 ]
