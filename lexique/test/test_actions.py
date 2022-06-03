@@ -47,8 +47,8 @@ def test_validate_action_valid_scenarii(data_path) -> None:
     namespace = Namespace(name="validate",
                           datapath=Path(data_path),
                           sentences=None,
-                          words=None,
+                          words="les chasseurs mange un coyote",
                           start_nt=None,
-                          print_lexicon=True,
+                          print_lexicon=False,
                           verbose=0)
     validate_action(namespace)
