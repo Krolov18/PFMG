@@ -52,11 +52,11 @@ def ruler_circumfix(rule: str, sigma: frozendict, voyelles: frozenset) -> Circum
     )
 
 
-# @static_vars(REG=re.compile(r"^([1-9a-zA-Z]){4,9}$"))
-@static_vars(REG=re.compile(r"^([AUV1-9]){4,9}$"))
 def ruler_gabarit(rule: str, sigma: frozendict, voyelles: frozenset) -> Gabarit:
     _voyelles = "".join(voyelles)
-    static_vars(REG=re.compile(fr"^([{_voyelles}AUV1-9]){{4,9}}$"))(ruler_gabarit)
+
+    if not hasattr(ruler_gabarit, "REG"):
+        setattr(ruler_gabarit, "REG", re.compile(fr"^([{_voyelles}AUV1-9]){{4,9}}$"))
 
     reg_match = ruler_gabarit.REG.fullmatch(rule)
 

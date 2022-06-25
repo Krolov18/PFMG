@@ -24,7 +24,7 @@ def phonology() -> Phonology:
     ("e+X", frozendict(genre="m", nombre="sg"), "eRADICAL"),
 ])
 def test_ruler_prefix(rule, sigma, expected) -> None:
-    actual = ruler(id_ruler="prefix", rule=rule, sigma=sigma)
+    actual = ruler(id_ruler="prefix", rule=rule, sigma=sigma, voyelles=frozenset("aeiou"))
     assert realize(actual, "RADICAL") == expected
 
 
@@ -32,7 +32,7 @@ def test_ruler_prefix(rule, sigma, expected) -> None:
     ("X+e", frozendict(genre="m", nombre="sg"), "RADICALe"),
 ])
 def test_ruler_suffix(rule, sigma, expected) -> None:
-    actual = ruler(id_ruler="suffix", rule=rule, sigma=sigma)
+    actual = ruler(id_ruler="suffix", rule=rule, sigma=sigma, voyelles=frozenset("aeiou"))
     assert realize(actual, "RADICAL") == expected
 
 
@@ -40,7 +40,7 @@ def test_ruler_suffix(rule, sigma, expected) -> None:
     ("e+X+e", frozendict(genre="m", nombre="sg"), "eRADICALe"),
 ])
 def test_ruler_circumfix(rule, sigma, expected) -> None:
-    actual = ruler(id_ruler="circumfix", rule=rule, sigma=sigma)
+    actual = ruler(id_ruler="circumfix", rule=rule, sigma=sigma, voyelles=frozenset("aeiou"))
     assert realize(actual, "RADICAL") == expected
 
 
@@ -48,7 +48,7 @@ def test_ruler_circumfix(rule, sigma, expected) -> None:
     ("i4A1o2a3V", frozendict(genre="m", nombre="sg"), "iwarobani"),
 ])
 def test_ruler_gabarit(phonology, rule, sigma, expected) -> None:
-    actual = ruler(id_ruler="gabarit", rule=rule, sigma=sigma)
+    actual = ruler(id_ruler="gabarit", rule=rule, sigma=sigma, voyelles=frozenset("aeiou"))
     assert realize(actual, "rbin", phonology) == expected
 
 
@@ -57,7 +57,7 @@ def test_ruler_gabarit(phonology, rule, sigma, expected) -> None:
     (("blanc", "blanche"), "X2", frozendict(genre="m", nombre="sg"), "blanche"),
 ])
 def test_ruler_selection(accumulator, rule, sigma, expected) -> None:
-    actual = ruler(id_ruler="selection", rule=rule, sigma=sigma)
+    actual = ruler(id_ruler="selection", rule=rule, sigma=sigma, voyelles=frozenset("aeiou"))
     assert realize(actual, accumulator) == expected
 
 
@@ -66,7 +66,7 @@ def test_ruler_selection(accumulator, rule, sigma, expected) -> None:
     (("chat", "chatte"), "X2?X2:X1", frozendict(genre="m", nombre="sg"), "chatte"),
 ])
 def test_ruler_ternary(accumulator, rule, sigma, expected) -> None:
-    actual = ruler(id_ruler="ternary", rule=rule, sigma=sigma)
+    actual = ruler(id_ruler="ternary", rule=rule, sigma=sigma, voyelles=frozenset("aeiou"))
     assert realize(actual, accumulator) == expected
 
 
@@ -76,7 +76,8 @@ def test_ruler_ternary(accumulator, rule, sigma, expected) -> None:
     "X2?X1?X2",
 ])
 def test_ruler_all_errors(rule) -> None:
-    with pytest.raises(EOFError):
+    with pytest.raises(ValueError):
         _ = ruler(id_ruler="all",
                   rule=rule,
-                  sigma=frozendict())
+                  sigma=frozendict(),
+                  voyelles=frozenset("aeiou"))
