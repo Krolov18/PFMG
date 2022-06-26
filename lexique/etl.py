@@ -170,8 +170,21 @@ def _value2attribute(glose: List[Dict[str, List[str]]]) -> frozendict:
     return frozendict(output)
 
 
-def _format_dict(struct: Dict[str, str]) -> str:
-    return ",".join(f"{x}={y if y != '*' else f'?{x.lower()}'}" for x, y in struct.items())
+def _format_dict(struct: Dict[str, str], id_var: str) -> str:
+    return ",".join(f"{x}={y if y != '*' else f'?{id_var}{x.lower()}'}" for x, y in struct.items())
+
+
+def _format_dict2(struct: Dict[str, str]) -> Tuple[Dict[str, str], Dict[str, str]]:
+    source: Dict[str, str] = {}
+    destination: Dict[str, str] = {}
+
+    for key, value in struct.items():
+        if key.startswith("s"):
+            source[key[1:]] = value
+        elif key.startswith("d"):
+            destination[key[1:]] = value
+
+    return source, destination
 
 
 @static_vars(REG=re.compile(r",?Traduction=\??\w+"))
@@ -487,11 +500,10 @@ def read_rules(morphosyntax: MorphoSyntax) -> Tuple[List[str], List[str]]:
     G1, G2 = [f"% start {morphosyntax.start}"], [f"% start {morphosyntax.start}"]
 
     for lhs, rhs in morphosyntax.syntagmes.items():
-        # Accord : gestion de la partie droite
         for i_idx, i_rhs in enumerate(rhs):
             for j_rhs in develop(i_rhs):
-                count = {k: (x for x in range(0, v))  # type: ignore
-                         for k, v in collections.Counter(j_rhs).items()}
+                j_rhs_copy = j_rhs.copy()
+                count = {k: (x for x in range(0, v)) for k, v in collections.Counter(j_rhs).items()}
 
                 __traduction = [""] * len(j_rhs)
                 __trad_perco = [""] * len(j_rhs)
@@ -502,31 +514,31 @@ def read_rules(morphosyntax: MorphoSyntax) -> Tuple[List[str], List[str]]:
                     if i_cat.startswith("'"):
                         continue
                     try:
-                        accord = _format_dict(morphosyntax.accords[lhs][i_idx][i_pos])
+                        source, destination = _format_dict2(morphosyntax.accords[lhs][i_idx][i_pos])
+                        _source = _format_dict(source, "s")
+                        _destination = _format_dict(destination, "d")
                     except KeyError:
-                        accord = ""
+                        _source = ""
+                        _destination = ""
 
                     next_id = next(count[i_cat])
                     traduction = f"{i_cat.lower()}{str(next_id) if next_id > 0 else ''}"
                     __trad_perco[i_pos] = traduction
-                    j_rhs[i_pos] = f"{i_cat}[{accord + ',' if accord else accord}Traduction=?{traduction}]"
 
-                __traduction = [_retire_traduction(j_rhs[k_idx]) for k_idx in morphosyntax.traductions[lhs][i_idx] if
-                                j_rhs[k_idx]]
+                    j_rhs[i_pos] = f"{i_cat}[Source=[{_source},Traduction=?{traduction}],Destination=[{_destination}]]"
+                    j_rhs_copy[i_pos] = f"{i_cat}[{_destination}]"
+
+                __traduction = [j_rhs_copy[k_idx] for k_idx in morphosyntax.traductions[lhs][i_idx] if j_rhs_copy[k_idx]]
                 __trad_perco = [__trad_perco[k_idx] for k_idx in morphosyntax.traductions[lhs][i_idx] if j_rhs[k_idx]]
 
                 # Percolation : gestion de la partie gauche
-                try:
-                    accord = ",".join([f"{x}={y if y != '*' else f'?{x.lower()}'}" for x, y in
-                                       morphosyntax.percolations[lhs][i_idx].items()])
-                except KeyError:
-                    accord = ""
-
+                source, destination = _format_dict2(morphosyntax.percolations[lhs][i_idx])
+                _source = _format_dict(source, "s")
+                _destination = _format_dict(destination, "d")
                 _traduction = "+".join([f"?{x}" for x in __trad_perco if x])
-                traduction = ("," if accord else "") + (
-                    f"Traduction=({_traduction})" if "+" in _traduction else f"Traduction={_traduction}")
-                G1.append(f"{lhs}[{accord}{traduction}] -> {' '.join(x for x in j_rhs if x)}")
-                G2.append(f"{lhs}[{accord}] -> {' '.join(x for x in __traduction if x)}")
+
+                G1.append(f"{lhs}[Source=[{_source},Traduction=({_traduction})],Destination=[{_destination}]] -> {' '.join(x for x in j_rhs if x)}")
+                G2.append(f"{lhs}[{_destination}] -> {' '.join(x for x in __traduction if x)}")
     return G1, G2
 
 

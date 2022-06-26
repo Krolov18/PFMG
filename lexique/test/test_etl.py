@@ -387,85 +387,115 @@ def test_read_phonology(data, expected) -> None:
     (MorphoSyntax(contractions=frozendict(),
                   start="NP",
                   syntagmes={"NP": [["DET", "N"]]},
-                  accords={"NP": [[{"Genre": "*", "Nombre": "*", "Cas": "*"},
-                                   {"Genre": "*", "Nombre": "*", "Cas": "*"}]]},
-                  percolations={"NP": [{"Genre": "*", "Nombre": "*", "Cas": "*"}]},
+                  accords={"NP": [[{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"}]]},
+                  percolations={"NP": [{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"}]},
                   traductions={"NP": [[1, 0]]}),
      (["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=(?n+?det)] -> DET[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?det] N[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?n]"],
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?n+?det)],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]] ->"
+       " DET[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?det],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"
+       " N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"],
       ["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas] -> N[Genre=?genre,Nombre=?nombre,Cas=?cas] DET[Genre=?genre,Nombre=?nombre,Cas=?cas]"])),
+       "NP[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas] ->"
+       " N[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]"
+       " DET[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]"])),
 
     (MorphoSyntax(contractions=frozendict(),
                   syntagmes={"NP": [["deux", "N"]]},
                   start="NP",
-                  accords={"NP": [[{}, {"Genre": "*", "Nombre": "Du", "Cas": "*"}]]},
-                  percolations={"NP": [{"Genre": "*", "Nombre": "Du", "Cas": "*"}]},
+                  accords={"NP": [[{}, {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"}]]},
+                  percolations={"NP": [{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"}]},
                   traductions={"NP": [[1]]}),
      (["% start NP",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?n] -> 'deux' N[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?n]"],
-      ["% start NP", "NP[Genre=?genre,Nombre=Du,Cas=?cas] -> N[Genre=?genre,Nombre=Du,Cas=?cas]"])),
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?n)],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]] ->"
+       " 'deux'"
+       " N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]]"],
+      ["% start NP",
+       "NP[Genre=?dgenre,Nombre=Du,Cas=?dcas] -> N[Genre=?dgenre,Nombre=Du,Cas=?dcas]"])),
 
     (MorphoSyntax(contractions=frozendict(),
                   syntagmes={"NP": [["DET", "deux", "ADJ/?", "N"]]},
                   start="NP",
-                  accords={"NP": [[{"Genre": "*", "Nombre": "Du", "Cas": "*"}, {}, {"Genre": "*", "Nombre": "Du"},
-                                   {"Genre": "*", "Nombre": "Du", "Cas": "*"}]]},
-                  percolations={"NP": [{"Genre": "*", "Nombre": "Du", "Cas": "*"}]},
+                  accords={"NP": [[{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"},
+                                   {},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"}]]},
+                  percolations={"NP": [{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"}]},
                   traductions={"NP": [[0, 2, 3]]}),
      (["% start NP",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=(?det+?n)] -> DET[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?det] 'deux' N[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?n]",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=(?det+?adj+?n)] -> DET[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?det] 'deux' ADJ[Genre=?genre,Nombre=Du,Traduction=?adj] N[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?n]"],
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?det+?n)],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]] -> DET[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?det],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]] 'deux' N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]]",
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?det+?adj+?n)],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]] -> DET[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?det],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]] 'deux' ADJ[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?adj],Destination=[Genre=?dgenre,Nombre=Du]] N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]]"
+       ],
       ["% start NP",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas] -> DET[Genre=?genre,Nombre=Du,Cas=?cas] N[Genre=?genre,Nombre=Du,Cas=?cas]",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas] -> DET[Genre=?genre,Nombre=Du,Cas=?cas] ADJ[Genre=?genre,Nombre=Du] N[Genre=?genre,Nombre=Du,Cas=?cas]"])),
+       "NP[Genre=?dgenre,Nombre=Du,Cas=?dcas] -> DET[Genre=?dgenre,Nombre=Du,Cas=?dcas] N[Genre=?dgenre,Nombre=Du,Cas=?dcas]",
+       "NP[Genre=?dgenre,Nombre=Du,Cas=?dcas] -> DET[Genre=?dgenre,Nombre=Du,Cas=?dcas] ADJ[Genre=?dgenre,Nombre=Du] N[Genre=?dgenre,Nombre=Du,Cas=?dcas]",
+       ])),
 
     (MorphoSyntax(contractions=frozendict(),
                   syntagmes={"NP": [["DET", "N"],
                                     ["deux", "N"]]},
                   start="NP",
                   accords={
-                      "NP": [[{"Genre": "*", "Nombre": "*", "Cas": "*"}, {"Genre": "*", "Nombre": "*", "Cas": "*"}],
-                             [{}, {"Genre": "*", "Nombre": "Du", "Cas": "*"}]]},
-                  percolations={"NP": [{"Genre": "*", "Nombre": "*", "Cas": "*"},
-                                       {"Genre": "*", "Nombre": "Du", "Cas": "*"}]},
+                      "NP": [[{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                              {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"}],
+                             [{},
+                              {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"}]]},
+                  percolations={"NP": [{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                                       {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "Du", "dCas": "*"}]},
                   traductions={"NP": [[0, 1],
                                       [1]]}),
      (["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=(?det+?n)] -> DET[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?det] N[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?n]",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?n] -> 'deux' N[Genre=?genre,Nombre=Du,Cas=?cas,Traduction=?n]"],
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?det+?n)],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]] ->"
+       " DET[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?det],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"
+       " N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]",
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?n)],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]] ->"
+       " 'deux'"
+       " N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=Du,Cas=?dcas]]"],
       ["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas] -> DET[Genre=?genre,Nombre=?nombre,Cas=?cas] N[Genre=?genre,Nombre=?nombre,Cas=?cas]",
-       "NP[Genre=?genre,Nombre=Du,Cas=?cas] -> N[Genre=?genre,Nombre=Du,Cas=?cas]"]
+       "NP[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas] -> DET[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas] N[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]",
+       "NP[Genre=?dgenre,Nombre=Du,Cas=?dcas] -> N[Genre=?dgenre,Nombre=Du,Cas=?dcas]"]
       )),
 
     (MorphoSyntax(contractions=frozendict(),
                   syntagmes={"NP": [["DET", "N", "ADJ"]]},
                   start="NP",
-                  accords={"NP": [[{"Genre": "*", "Nombre": "*", "Cas": "*"}, {"Genre": "*", "Nombre": "*", "Cas": "*"},
-                                   {"Genre": "*", "Nombre": "*"}]]},
-                  percolations={"NP": [{"Genre": "*", "Nombre": "*", "Cas": "*"}]},
+                  accords={"NP": [[{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*"}]]},
+                  percolations={"NP": [{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"}]},
                   traductions={"NP": [[0, 2, 1]]}),
      (["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=(?det+?adj+?n)] -> DET[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?det] N[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?n] ADJ[Genre=?genre,Nombre=?nombre,Traduction=?adj]"],
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?det+?adj+?n)],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]] ->"
+       " DET[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?det],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"
+       " N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"
+       " ADJ[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?adj],Destination=[Genre=?dgenre,Nombre=?dnombre]]",
+       ],
       ["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas] -> DET[Genre=?genre,Nombre=?nombre,Cas=?cas] ADJ[Genre=?genre,Nombre=?nombre] N[Genre=?genre,Nombre=?nombre,Cas=?cas]"]
+       "NP[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas] -> DET[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas] ADJ[Genre=?dgenre,Nombre=?dnombre] N[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]"]
       )),
 
     (MorphoSyntax(contractions=frozendict(),
                   syntagmes={"NP": [["DET", "ADJ", "N", "ADJ"]]},
                   start="NP",
-                  accords={"NP": [[{"Genre": "*", "Nombre": "*", "Cas": "*"}, {"Genre": "*", "Nombre": "*"},
-                                   {"Genre": "*", "Nombre": "*", "Cas": "*"}, {"Genre": "*", "Nombre": "*"}]]},
-                  percolations={"NP": [{"Genre": "*", "Nombre": "*", "Cas": "*"}]},
+                  accords={"NP": [[{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"},
+                                   {"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*"}]]},
+                  percolations={"NP": [{"sGenre": "*", "sNombre": "*", "dGenre": "*", "dNombre": "*", "dCas": "*"}]},
                   traductions={"NP": [[0, 1, 3, 2]]}),
      (["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=(?det+?adj+?adj1+?n)] -> "
-       "DET[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?det] ADJ[Genre=?genre,Nombre=?nombre,Traduction=?adj] "
-       "N[Genre=?genre,Nombre=?nombre,Cas=?cas,Traduction=?n] ADJ[Genre=?genre,Nombre=?nombre,Traduction=?adj1]"],
+       "NP[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=(?det+?adj+?adj1+?n)],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]] ->"
+       " DET[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?det],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"
+       " ADJ[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?adj],Destination=[Genre=?dgenre,Nombre=?dnombre]]"
+       " N[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?n],Destination=[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]]"
+       " ADJ[Source=[Genre=?sgenre,Nombre=?snombre,Traduction=?adj1],Destination=[Genre=?dgenre,Nombre=?dnombre]]",
+       ],
       ["% start NP",
-       "NP[Genre=?genre,Nombre=?nombre,Cas=?cas] -> DET[Genre=?genre,Nombre=?nombre,Cas=?cas] "
-       "ADJ[Genre=?genre,Nombre=?nombre] ADJ[Genre=?genre,Nombre=?nombre] N[Genre=?genre,Nombre=?nombre,Cas=?cas]"]
+       "NP[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas] ->"
+       " DET[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]"
+       " ADJ[Genre=?dgenre,Nombre=?dnombre]"
+       " ADJ[Genre=?dgenre,Nombre=?dnombre]"
+       " N[Genre=?dgenre,Nombre=?dnombre,Cas=?dcas]"]
       )),
 ])
 def test_read_rules(morphosyntax, expected):
