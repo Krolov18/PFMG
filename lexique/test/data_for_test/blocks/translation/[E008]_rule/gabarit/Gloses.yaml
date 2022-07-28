@@ -1,6 +1,10 @@
-N:
-  Genre: [ M, F ]
-  þGenre: [ þM, þF ]
-DET:
-  Genre: [ M, F ]
-  þGenre: [ þM, þF ]
+source:
+  N:
+    Genre: [ M, F ]
+  DET:
+    Genre: [ M, F ]
+destination:
+  N:
+    Genre: [ M, F ]
+  DET:
+    Genre: [ M, F ]

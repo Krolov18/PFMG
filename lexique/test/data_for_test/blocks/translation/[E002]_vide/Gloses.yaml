@@ -1,4 +1,11 @@
-N:
-  Genre: [ M, F ]
-DET:
-  Genre: [ M, F ]
+source:
+  N:
+    Genre: [ M, F ]
+  DET:
+    Genre: [ M, F ]
+destination:
+  source:
+    N:
+      Genre: [ M, F ]
+    DET:
+      Genre: [ M, F ]

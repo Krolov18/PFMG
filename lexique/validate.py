@@ -146,7 +146,7 @@ def validate_sentence(sentence: List[str],
     trees = parser.parse(sentence_unzip)
     _trees = set()
     for tree in trees:
-        _trees.add(" ".join(i_glose for i_glose in tree.label()["Traduction"] if not isinstance(i_glose, Variable)))
+        _trees.add(" ".join(i_glose for i_glose in tree.label()["Source", "Traduction"] if not isinstance(i_glose, Variable)))
     yield from _trees
 
 

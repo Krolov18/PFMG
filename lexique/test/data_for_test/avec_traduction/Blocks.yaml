@@ -1,4 +1,4 @@
-kalaba:
+source:
   N:
     1:
       Nombre=Sg: 1a4A2V3e
@@ -57,55 +57,47 @@ kalaba:
       Cas=Erg: X+m
       Cas=Abs: X+k
       Cas=Dat: X+t
-  PREP:
-    1:
-      DEFAULT=K: X1
-  PRE:
-    1:
-      DEFAULT=K: X1
-translation:
+  PREP: Null
+destination:
   N:
     1:
-      þCF=þ1: X1
-      þCF=þ2,þGenre=þM: X1
-      þCF=þ2,þGenre=þF: "X2?X2:X1"
+      CF=1: X1
+      CF=2,Genre=M: X1
+      CF=2,Genre=F: "X2?X2:X1"
     2:
-      þCF=þ2,Nombre=Du: X+s
-      þCF=þ2,Nombre=Pl: X+s
+#      CF=2,Nombre=Du: X+s
+      CF=2,Nombre=Pl: X+s
   ADJ:
     1:
-      þCF=þ1,þGenre=þM: X1
-      þCF=þ1,þGenre=þF: X2
-      þCF=þ2: X1
-      þCF=þ3: X1
-      þCF=þ4,þGenre=þM: X1
-      þCF=þ4,þGenre=þF: X2
+      CF=1,Genre=M: X1
+      CF=1,Genre=F: X2
+      CF=2: X1
+      CF=3: X1
+      CF=4,Genre=M: X1
+      CF=4,Genre=F: X2
     2:
-      þCF=þ1,þNombre=þPl: X+s
-      þCF=þ2,þNombre=þPl: X+s
-      þCF=þ4,þGenre=þF,þNombre=þPl: X+s
+      CF=1,Nombre=Pl: X+s
+      CF=2,Nombre=Pl: X+s
+      CF=4,Genre=F,Nombre=Pl: X+s
   V:
     1:
-      þNombre=þSg,þTemps=þPRS: X2
-      þNombre=þPl,þTemps=þPRS: X3
-      þNombre=þSg,þTemps=þPST: X4
-      þNombre=þPl,þTemps=þPST: X5
+      Nombre=Sg,Temps=PRS: X2
+      Nombre=Pl,Temps=PRS: X3
+      Nombre=Sg,Temps=PST: X4
+      Nombre=Pl,Temps=PST: X5
   DET:
     1:
-      þDEF=þDEF,þGenre=þM: X1
-      þDEF=þDEF,þGenre=þF: X2
-      þDEF=þDEF,þNombre=þPl: X3
+      DEF=DEF,Genre=M: X1
+      DEF=DEF,Genre=F: X2
+      DEF=DEF,Nombre=Pl: X3
 
-      þDEF=þINDEF,þGenre=þM: X1
-      þDEF=þINDEF,þGenre=þF: X2
-      þDEF=þINDEF,þNombre=þPl: X3
+      DEF=INDEF,Genre=M: X1
+      DEF=INDEF,Genre=F: X2
+      DEF=INDEF,Nombre=Pl: X3
 
-      þDEF=þDEM,þGenre=þM: X1
-      þDEF=þDEM,þGenre=þF: X2
-      þDEF=þDEM,þNombre=þPl: X3
+      DEF=DEM,Genre=M: X1
+      DEF=DEM,Genre=F: X2
+      DEF=DEM,Nombre=Pl: X3
   PREP:
     1:
-      þDEFAULT=þK: X1
-  PRE:
-    1:
-      þDEFAULT=þK: X1
+      DEFAULT=K: X1

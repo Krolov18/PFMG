@@ -9,16 +9,11 @@ syntagmes:
     - [ "DET/?", "ADJ/?", "ADJ/?", "N", "ADJ/?" ]
 accords:
   NP:
-    - [ { sGenre: "*", sNombre: "*",
-          dGenre: "*", dNombre: "*", dCas: "*" },
-        { sGenre: "*", sNombre: "*",
-          dGenre: "*", dNombre: "*" },
-        { sGenre: "*", sNombre: "*",
-          dGenre: "*", dNombre: "*" },
-        { sGenre: "*", sNombre: "*",
-          dGenre: "*", dNombre: "*", dCas: "*" },
-        { sGenre: "*", sNombre: "*",
-          dGenre: "*", dNombre: "*" } ]
+    - [ { sGenre: "*", sNombre: "*", dGenre: "*", dNombre: "*", dCas: "*" },
+        { sGenre: "*", sNombre: "*", dGenre: "*", dNombre: "*" },
+        { sGenre: "*", sNombre: "*", dGenre: "*", dNombre: "*" },
+        { sGenre: "*", sNombre: "*", dGenre: "*", dNombre: "*", dCas: "*" },
+        { sGenre: "*", sNombre: "*", dGenre: "*", dNombre: "*" } ]
 percolations:
   NP:
     - { sGenre: "*", sNombre: "*",

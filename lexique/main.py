@@ -1,13 +1,7 @@
 import argparse
 import pathlib
-import sys
 
 from lexique.actions import action
-
-# L'objet de cette ligne est d'effacer le traceback, quand une erreur survient.
-# Le message d'erreur doit suffir à l'utilisateur.
-sys.tracebacklimit = 0
-
 
 if __name__ == '__main__':
     PARSER = argparse.ArgumentParser(
@@ -36,11 +30,15 @@ Commands:
     VALIDATE.add_argument("-l", "--print-lexicon", action="store_true")
     VALIDATE_GROUP.add_argument("-w", "--words", type=str)
     VALIDATE_GROUP.add_argument("-s", "--sentences", type=pathlib.Path)
-    VALIDATE.add_argument("-v", "--verbose", action='count', default=0)
+    VALIDATE.add_argument("-v", "--verbose", action='count', default=1)
 
-    args = PARSER.parse_args()
+    LEXICON = SUB_PARSERS.add_parser(name="lexicon")
+    LEXICON.add_argument("datapath", type=pathlib.Path)
 
-    # print("\n", args, "\n")
+    # args = PARSER.parse_args()
+    args = PARSER.parse_args(["lexicon", "/home/korantin/PycharmProjects/PFMG/lexique/test/data_for_test/avec_traduction"])
+
+    print("\n", args, "\n")
 
     # l'action est automatiquement liée à args.name qui correspond au nom de la commande
     action(id_action=args.name,

@@ -1,20 +1,35 @@
 """
     Fonctions permettant de réaliser les différentes structures définies dans structures.py
 """
-from typing import Callable, Dict, List, Tuple, Union
+from typing import Callable, Dict, List, Tuple, TypeVar, Union
 
-from frozendict import frozendict
-from multimethod import multimethod, DispatchError
+from frozendict import frozendict  # type: ignore
 
 from lexique.applier import format_stem, apply
 from lexique.structures import (Circumfix, Forme, Gabarit,
                                 Lexeme, Prefix, Suffix,
                                 Radical, Phonology,
-                                Condition, Selection)
+                                Condition, Selection, Morpheme, Realisation)
+from utils.abstract_factory import factory_function
+
+Formes = List[Forme]
+TypeRealisation = TypeVar("TypeRealisation", str, Formes)
+Term = TypeVar("Term", Lexeme, Forme, Morpheme, Realisation)
 
 
-@multimethod
-def realize(term: Lexeme, paradigm: Dict[str, Dict[frozendict, Callable]]) -> List[Forme]:
+def realize(term: Term, **kwargs) -> TypeRealisation:
+    concrete_product = f"realize_{type(term).__name__.lower()}"
+    concrete_product += "" if kwargs.get(
+        "accumulator") is None else f"_{type(kwargs.get('accumulator')).__name__.lower()}"
+    return factory_function(
+        concrete_product=concrete_product,
+        package=__name__,
+        term=term,
+        **kwargs
+    )
+
+
+def realize_lexeme(term: Lexeme, paradigm: Dict[str, Dict[frozendict, Callable]], **kwargs) -> List[Forme]:
     """
     Réalise ou construit toutes les formes d'un lexème
     :param term : un Lexeme
@@ -30,173 +45,93 @@ def realize(term: Lexeme, paradigm: Dict[str, Dict[frozendict, Callable]]) -> Li
     return output
 
 
-@multimethod
-def realize(term: Forme, phonology: Phonology) -> str:
+def realize_forme(term: Forme, phonology: Phonology, **kwargs) -> str:
     """
     Concatène la réalisation de chaque morphème
     :param term:
     :param phonology:
     :return:
     """
-    result = ""
+    result: str = ""
     for morpheme in term.morphemes:
-        try:
-            result = realize(morpheme, result)
-        except DispatchError:
-            result = realize(morpheme, result, phonology)
+        result = realize(term=morpheme, accumulator=result, phonology=phonology)
     return result
 
 
-@multimethod
-def realize(term: Suffix, accumulator: str) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
+def realize_suffix_str(term: Suffix, accumulator: str, **kwargs) -> str:
+    assert term is not None
     return f"{accumulator}{term.rule.group(1)}"
 
 
-@multimethod
-def realize(term: Suffix, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
-    return realize(term, accumulator[0])
+def realize_suffix_tuple(term: Suffix, accumulator: Tuple[str, ...], **kwargs) -> str:
+    return realize_suffix_str(term=term, accumulator=accumulator[0])
 
 
-@multimethod
-def realize(term: Prefix, accumulator: str) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
+def realize_prefix_str(term: Prefix, accumulator: str, **kwargs) -> str:
+    assert term is not None
     return f"{term.rule.group(1)}{accumulator}"
 
 
-@multimethod
-def realize(term: Prefix, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
-    return realize(term, accumulator[0])
+def realize_prefix_tuple(term: Prefix, accumulator: Tuple[str, ...], **kwargs) -> str:
+    return realize_prefix_str(term=term, accumulator=accumulator[0])
 
 
-@multimethod
-def realize(term: Circumfix, accumulator: str) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
+def realize_circumfix_str(term: Circumfix, accumulator: str, **kwargs) -> str:
+    assert term is not None
     return f"{term.rule.group(1)}{accumulator}{term.rule.group(2)}"
 
 
-@multimethod
-def realize(term: Circumfix, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
-    return realize(term, accumulator[0])
+def realize_circumfix_str_tuple(term: Circumfix, accumulator: Tuple[str, ...], **kwargs) -> str:
+    return realize_circumfix_str(term=term, accumulator=accumulator[0])
 
 
-@multimethod
-def realize(term: Radical, accumulator: Tuple[str, ...]) -> Tuple[str, ...]:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
-    if term.rule:
-        return accumulator[int(term.rule.group(1)) - 1]
-    return term.stem
-
-
-@multimethod
-def realize(term: Radical, accumulator: str) -> Union[str, Tuple[str, ...]]:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
+def realize_radical_str(term: Radical, accumulator: str, **kwargs) -> str:
+    assert term is not None
     if term.rule:
         return accumulator
     return term.stem
 
 
-@multimethod
-def realize(term: Gabarit, accumulator: str, phonology: Phonology) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :param phonology:
-    :return:
-    """
+def realize_radical_tuple(term: Radical, accumulator: Tuple[str, ...], **kwargs) -> Tuple[str, ...]:
+
+    if term.rule:
+        return accumulator[int(term.rule.group(1)) - 1]
+    return term.stem
+
+
+def realize_gabarit_str(term: Gabarit, accumulator: str, phonology: Phonology, **kwargs) -> str:
     stem_ = format_stem(accumulator, phonology)
     return apply(term.rule.string, stem_, phonology)
 
 
-@multimethod
-def realize(term: Gabarit, accumulator: Tuple[str, ...], phonology: Phonology) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :param phonology:
-    :return:
-    """
-    return realize(term, accumulator[0], phonology)
+def realize_gabarit_tuple(term: Gabarit, accumulator: Tuple[str, ...], phonology: Phonology, **kwargs) -> str:
+    return realize_gabarit_str(term=term, accumulator=accumulator[0], phonology=phonology)
 
 
-@multimethod
-def realize(term: Selection, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
+def realize_selection_tuple(term: Selection, accumulator: Tuple[str, ...], **kwargs) -> str:
+    assert term is not None
     return accumulator[int(term.rule.group(1)) - 1]
 
 
-@multimethod
-def realize(term: Condition, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
+def realize_selection_str(term: Selection, accumulator: str, **kwargs) -> str:
+    return accumulator
+
+
+def realize_condition(term: Condition, accumulator: Tuple[str, ...], **kwargs) -> str:
     try:
-        _ = realize(term.cond, accumulator)
+        _ = realize(term=term.cond, accumulator=accumulator)
     except IndexError:
-        return realize(term.false, accumulator)
-    return realize(term.true, accumulator)
+        return realize(term=term.false, accumulator=accumulator)
+    return realize(term=term.true, accumulator=accumulator)
 
-
-@multimethod
-def realize(term: Selection, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
-    return accumulator[int(term.rule.group(1)) - 1]
-
-
-@multimethod
-def realize(term: Condition, accumulator: Tuple[str, ...]) -> str:
-    """
-    :param term:
-    :param accumulator:
-    :return:
-    """
-    try:
-        _ = realize(term.cond, accumulator)
-    except IndexError:
-        return realize(term.false, accumulator)
-    return realize(term.true, accumulator)
+# def realize_condition(term: Condition, accumulator: Tuple[str, ...]) -> str:
+#     """
+#     :param term:
+#     :param accumulator:
+#     :return:
+#     """
+#     try:
+#         _ = realize(term.cond, accumulator)
+#     except IndexError:
+#         return realize(term.false, accumulator)
+#     return realize(term.true, accumulator)

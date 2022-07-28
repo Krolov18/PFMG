@@ -1,7 +1,7 @@
 import re
 from typing import Match
 
-from frozendict import frozendict
+from frozendict import frozendict  # type: ignore
 
 from lexique.errors import Errors
 from lexique.structures import Prefix, Suffix, Circumfix, Gabarit, Condition, Selection
@@ -54,11 +54,12 @@ def ruler_circumfix(rule: str, sigma: frozendict, voyelles: frozenset) -> Circum
 
 def ruler_gabarit(rule: str, sigma: frozendict, voyelles: frozenset) -> Gabarit:
     _voyelles = "".join(voyelles)
+    assert voyelles
 
     if not hasattr(ruler_gabarit, "REG"):
         setattr(ruler_gabarit, "REG", re.compile(fr"^([{_voyelles}AUV1-9]){{4,9}}$"))
 
-    reg_match = ruler_gabarit.REG.fullmatch(rule)
+    reg_match = ruler_gabarit.REG.fullmatch(rule)  # type: ignore
 
     assert reg_match
 

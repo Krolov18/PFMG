@@ -1,6 +1,6 @@
 from typing import List, Dict, Callable
 
-from frozendict import frozendict
+from frozendict import frozendict  # type: ignore
 from multimethod import multimethod
 
 from lexique.realizer import realize
@@ -25,20 +25,20 @@ def unary(id_unary: str,
           phonology: Phonology) -> List[str]:
     output: List[str] = list()
     for lexeme in term:
-        for form in realize(lexeme, paradigm):
+        for form in realize(term=lexeme, paradigm=paradigm):
             output.append(unary(id_unary, form, phonology))
     return output
 
 
 def fcfg_unary(term: Forme, phonology: Phonology) -> str:
     features = ",".join(f"{feat}='{val}'" for feat, val in term.sigma.items())
-    return f"{term.pos}[{features},Traduction='{realize(term.traduction, phonology)}'] -> '{realize(term, phonology)}'"
+    return f"{term.pos}[{features},Traduction='{realize(term=term.traduction, phonology=phonology)}'] -> '{realize(term=term, phonology=phonology)}'"
 
 
 def tcfg_unary(term: Forme, phonology: Phonology) -> str:
     features = ",".join(f"{feat}='{val}'" for feat, val in term.sigma.items())
-    return f"{term.pos}[{features},Traduction='{realize(term, phonology)}'] -> '{realize(term.traduction, phonology)}'"
+    return f"{term.pos}[{features},Traduction='{realize(term=term, phonology=phonology)}'] -> '{realize(term=term.traduction, phonology=phonology)}'"
 
 
 def cfg_unary(term: Forme, phonology: Phonology) -> str:
-    return f"{term.pos} -> '{realize(term, phonology)}'"
+    return f"{term.pos} -> '{realize(term=term, phonology=phonology)}'"

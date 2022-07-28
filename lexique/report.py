@@ -7,7 +7,7 @@ import tabulate
 from frozendict import frozendict
 from nltk.grammar import Production
 
-from lexique.etl import (read_glose, filter_grid, read_stems,
+from lexique.etl import (read_glose, read_stems,
                          build_paradigm, read_blocks,
                          read_phonology, read_morphosyntax, read_rules)
 from lexique.structures import Lexeme, Forme, Phonology, MorphoSyntax
@@ -69,19 +69,19 @@ def gloses_report_1(gloses: Dict[str, Union[List[Dict[str, List[str]]], Dict[str
     return gloses_, att_vals
 
 
-def translation_report_0(
-        gloses: Dict[str, List[frozendict]],
-        constraints: Dict[str, Dict[str, str]]) -> Dict[str, List[frozendict]]:
-    return filter_grid(grid=gloses, constraints=constraints)
-
-
-def translation_report_1(
-        gloses: Dict[str, List[frozendict]],
-        constraints: Dict[str, Dict[str, str]]) -> Dict[str, List[frozendict]]:
-    print("Application du filtre pour la traduction", file=sys.stderr)
-    output = filter_grid(grid=gloses, constraints=constraints)
-    print("Filtre appliqué", file=sys.stderr)
-    return output
+# def translation_report_0(
+#         gloses: Dict[str, List[frozendict]],
+#         constraints: Dict[str, Dict[str, str]]) -> Dict[str, List[frozendict]]:
+#     return filter_grid(grid=gloses, constraints=constraints)
+#
+#
+# def translation_report_1(
+#         gloses: Dict[str, List[frozendict]],
+#         constraints: Dict[str, Dict[str, str]]) -> Dict[str, List[frozendict]]:
+#     print("Application du filtre pour la traduction", file=sys.stderr)
+#     output = filter_grid(grid=gloses, constraints=constraints)
+#     print("Filtre appliqué", file=sys.stderr)
+#     return output
 
 
 def lexemes_report_0(data: Dict[str, Dict], accumulator: str, att_vals: frozendict) -> List[Lexeme]:

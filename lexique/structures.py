@@ -7,7 +7,7 @@
 """
 
 from dataclasses import dataclass
-from typing import List, Match, Optional, Union, Tuple, Dict, TypedDict, Set
+from typing import List, Match, Optional, Union, Tuple, Dict, TypedDict, Set, Literal
 
 from frozendict import frozendict  # type: ignore
 
@@ -27,7 +27,7 @@ class Morpheme:
 TypeBlock = List[Morpheme]
 TypeBlocks = List[TypeBlock]
 TypeStem = str
-TypeStems = Tuple[TypeStem]
+TypeStems = Tuple[TypeStem, ...]
 TypeSigma = frozendict
 
 
@@ -185,16 +185,7 @@ class MorphoSyntaxConfig(TypedDict):
 TypeSigmaRule = Dict[str, str]
 TypeBlockConfig = Dict[str, TypeSigmaRule]
 TypeCatBlockConfig = Dict[str, TypeBlockConfig]
-
-
-class BlocksConfig(TypedDict):
-    """
-    Structure de données contenant :
-        - les éléments de constructions morphologiques pour le cible (kalaba)
-        - les éléments de constructions morphologiques pour la langue source (français)
-    """
-    kalaba: TypeCatBlockConfig
-    translation: TypeCatBlockConfig
+TypeBlocksConfig = Dict[Literal["source", "destination"], TypeCatBlockConfig]
 
 
 class PhonologyConfig(TypedDict):
@@ -232,7 +223,7 @@ class Phonology:
     voyelles: frozenset
 
 
-__all__ = ["BlocksConfig",
+__all__ = ["TypeBlocksConfig",
            "Circumfix",
            "Condition",
            "Forme",

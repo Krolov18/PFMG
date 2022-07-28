@@ -3,11 +3,10 @@ from typing import Dict, List, Tuple, Callable
 
 import pytest
 import yaml
-from frozendict import frozendict
-from multimethod import DispatchError
+from frozendict import frozendict  # type: ignore
 
 from lexique import get_lexique_path
-from lexique.etl import read_glose, TypeBlocks, build_paradigm, read_blocks
+from lexique import etl
 from lexique.realizer import realize
 from lexique.ruler import ruler
 from lexique.structures import Prefix, Suffix, Circumfix, Radical, Forme, Lexeme, Phonology
@@ -30,18 +29,21 @@ def fx_phonology() -> Phonology:
 def fx_gloses2() -> Tuple[Dict[str, List[frozendict]], frozendict]:
     with open(f"{get_lexique_path()}/test/data_for_test/avec_traduction/Gloses.yaml", mode="r", encoding="utf8") as f:
         load = yaml.load(f, Loader=yaml.Loader)
-        return read_glose(glose=load)
+        return etl.read_glose(glose=load)
 
 
 @pytest.fixture(scope="module")
-def fx_blocks2(fx_gloses2) -> Dict[str, Dict[str, TypeBlocks]]:
+def fx_blocks2(fx_gloses2) -> Dict[str, Dict[str, etl.TypeBlocks]]:
     with open(f"{get_lexique_path()}/test/data_for_test/avec_traduction/Blocks.yaml") as f:
-        return read_blocks(data=yaml.load(f, Loader=yaml.Loader), att_vals=fx_gloses2[1])
+        return etl.read_blocks(data=yaml.load(f, Loader=yaml.Loader),
+                               att_vals=fx_gloses2[1],
+                               voyelles=frozenset())
 
 
 @pytest.fixture()
 def fx_paradigm2(fx_gloses2, fx_blocks2) -> Dict[str, Dict[frozendict, Callable[[Lexeme], Forme]]]:
-    return build_paradigm(fx_gloses2[0], fx_blocks2)
+    return etl.build_paradigm(glose=fx_gloses2[0],
+                              blocks=fx_blocks2)
 
 
 @pytest.mark.parametrize("term, accumulator, expected", [
@@ -69,16 +71,7 @@ def fx_paradigm2(fx_gloses2, fx_blocks2) -> Dict[str, Dict[frozendict, Callable[
      "eaiqqche"),
 ])
 def test_realize_(phonology, term, accumulator, expected) -> None:
-    try:
-        actual = realize(term, accumulator, phonology)
-    except DispatchError:
-        try:
-            actual = realize(term, accumulator)
-        except DispatchError:
-            try:
-                actual = realize(term, phonology)
-            except DispatchError:
-                actual = realize(term)
+    actual = realize(term=term, accumulator=accumulator, phonology=phonology)
     assert actual == expected
 
 
@@ -99,8 +92,8 @@ def test_realize_(phonology, term, accumulator, expected) -> None:
      ['reposowula', 'boposowula', 'koposowula', 'liposowula']),
 ])
 def test_realize_lexeme(fx_paradigm2, phonology, term, expected) -> None:
-    actual = realize(term, fx_paradigm2)
-    assert [realize(forme, phonology) for forme in actual] == expected
+    actual = realize(term=term, paradigm=fx_paradigm2)
+    assert [realize(term=forme, phonology=phonology) for forme in actual] == expected
 
 
 @pytest.mark.parametrize("forme", [Forme(pos='N',
@@ -121,5 +114,5 @@ def test_realize_lexeme(fx_paradigm2, phonology, term, expected) -> None:
                                                                             'þgenre': 'þm', 'þnombre': 'þsg'}),
                                                           traduction=None))])
 def test_realize(forme, fx_phonology) -> None:
-    assert realize(forme, fx_phonology) == "papudaNe"
-    assert realize(forme.traduction, fx_phonology) == ("plaine",)
+    assert realize(term=forme, phonology=fx_phonology) == "papudaNe"
+    assert realize(term=forme.traduction, phonology=fx_phonology) == ("plaine",)

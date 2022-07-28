@@ -2,11 +2,10 @@
 import collections
 import itertools
 import re
-from typing import Dict, List, Optional, Union, Callable, Tuple, NoReturn, Iterator, Set
+from typing import Dict, List, Optional, Union, Callable, Tuple, NoReturn, Iterator, Set, Literal, Any
 from typing_extensions import TypeAlias
 
 from frozendict import frozendict  # type: ignore
-from multimethod import multimethod, DispatchError
 
 from lexique.errors import Errors
 from lexique.ruler import ruler
@@ -15,8 +14,9 @@ from lexique.structures import (Morpheme, Forme,
                                 Phonology, MorphoSyntax,
                                 MorphoSyntaxConfig, PhonologyConfig,
                                 TypeBlock, TypeBlocks,
-                                TypeStems, TypeSigma, BlocksConfig, TypeCatBlockConfig)
+                                TypeStems, TypeSigma, TypeCatBlockConfig, TypeBlocksConfig)
 from lexique.syntax import develop
+from utils.abstract_factory import factory_function
 from utils.functions import static_vars
 
 
@@ -42,8 +42,20 @@ def _str2sigma(str_sigma: str) -> frozendict:
     return result
 
 
-@multimethod
-def _select(block: TypeBlock, sigma: frozendict) -> Morpheme:
+def _select(block, sigma: frozendict) -> Union[Morpheme, List[Morpheme]]:
+    if not block:
+        block_name = type(block).__name__.lower()
+        first = type(block[0]).__name__.lower()
+        return factory_function(
+            concrete_product=f"_select_{block_name}_{first}",
+            package=__name__,
+            block=block,
+            sigma=sigma
+        )
+    return []
+
+
+def _select_list_morpheme(block: TypeBlock, sigma: frozendict) -> Morpheme:
     """
     Sélectionne la règle plus spécifique par rapport aux traits présents dans la glose
     :param block : dictionnaire ordonné de règles de la plus générale à la plus spécifique
@@ -54,6 +66,7 @@ def _select(block: TypeBlock, sigma: frozendict) -> Morpheme:
 
     winner: Optional[Morpheme] = None
     for morpheme in block:
+        assert morpheme.sigma is not None
         if morpheme.sigma.items() <= sigma.items():
             winner = morpheme
 
@@ -61,8 +74,7 @@ def _select(block: TypeBlock, sigma: frozendict) -> Morpheme:
     return winner
 
 
-@multimethod  # type: ignore
-def _select(blocks: TypeBlocks, sigma: frozendict) -> List[Morpheme]:
+def _select_list_list(blocks: TypeBlocks, sigma: frozendict) -> List[Morpheme]:
     """
     Pour qu'une forme existe, il se doit d'appliquer tous les blocks dans le bon ordre
     :param blocks : liste de dictionnaire ordonné de règles du plus général au plus spécifique
@@ -73,14 +85,19 @@ def _select(blocks: TypeBlocks, sigma: frozendict) -> List[Morpheme]:
 
     for block in blocks:
         try:
-            output.append(_select(block, sigma))
+            output.append(_select_list_morpheme(block, sigma))
         except AssertionError:
             continue
     return output
 
 
-@multimethod
-def _sigmas(glose: Dict[str, List[str]]) -> List[frozendict]:
+def _sigmas(glose) -> List[frozendict]:
+    return factory_function(concrete_product=f"_sigmas_{type(glose).__name__.lower()}",
+                            package=__name__,
+                            glose=glose)
+
+
+def _sigmas_dict(glose: Dict[str, List[str]]) -> List[frozendict]:
     """
     :param glose:
     :return:
@@ -97,8 +114,7 @@ def _sigmas(glose: Dict[str, List[str]]) -> List[frozendict]:
     return output
 
 
-@multimethod  # type: ignore
-def _sigmas(glose: List[Dict[str, List[str]]]) -> List[frozendict]:
+def _sigmas_list(glose: List[Dict[str, List[str]]]) -> List[frozendict]:
     """
     :param glose:
     :return:
@@ -106,8 +122,7 @@ def _sigmas(glose: List[Dict[str, List[str]]]) -> List[frozendict]:
     return [*itertools.chain.from_iterable(_sigmas(g) for g in glose)]
 
 
-def _value2attributes(glose: Dict[str, Union[Dict[str, List[str]],
-                                             List[Dict[str, List[str]]]]]) -> frozendict:
+def _value2attributes(glose: Dict[str, Dict[str, List[str]]]) -> frozendict:
     """
     :param glose:
     :return:
@@ -121,7 +136,14 @@ def _value2attributes(glose: Dict[str, Union[Dict[str, List[str]],
     return frozendict(output)
 
 
-def _value2attribute(glose: Dict[str, Dict[str, List[str]]]) -> frozendict:
+def _value2attribute(glose: Dict[str, Any]) -> frozendict:
+    try:
+        return factory_function(concrete_product=f"_value2attribute_k_{type(list(glose.values())[0]).__name__.lower()}", package=__name__, glose=glose)
+    except:
+        return factory_function(concrete_product=f"_value2attribute_{type(glose).__name__.lower()}", package=__name__, glose=glose)
+
+
+def _value2attribute_k_dict(glose: Dict[str, Dict[str, List[str]]]) -> frozendict:
     """
     :param glose:
     :return:
@@ -141,8 +163,7 @@ def _value2attribute(glose: Dict[str, Dict[str, List[str]]]) -> frozendict:
     return frozendict(result)
 
 
-@multimethod  # type: ignore
-def _value2attribute(glose: Dict[str, List[str]]) -> frozendict:
+def _value2attribute_k_list(glose: Dict[str, List[str]]) -> frozendict:
     """
     :param glose:
     :return:
@@ -156,8 +177,7 @@ def _value2attribute(glose: Dict[str, List[str]]) -> frozendict:
     return frozendict(output)
 
 
-@multimethod  # type: ignore
-def _value2attribute(glose: List[Dict[str, List[str]]]) -> frozendict:
+def _value2attribute_list(glose: List[Dict[str, List[str]]]) -> frozendict:
     """
     :param glose:
     :return:
@@ -192,77 +212,48 @@ def _retire_traduction(feature_nonterminal: str) -> str:
     return _retire_traduction.REG.sub("", feature_nonterminal)
 
 
-def filter_grid(grid: Dict, constraints: Dict) -> Dict[str, List[frozendict]]:
+TypeAttribute = str
+TypeValue = str
+TypeCategory = str
+TypeValues = List[str]
+TypeAttVals = Dict[TypeAttribute, TypeValues]
+TypeAttVal = Dict[TypeAttribute, TypeValue]
+TypeAttVals2: TypeAlias = frozendict
+
+TypeGlosesConfig = Dict[Literal["source", "destination"], Dict[TypeCategory, TypeAttVals]]
+TypeGloses = Dict[Literal["source", "destination"], TypeAttVals2]
+TypeSigmaVerification = Dict[Literal["source", "destination"], TypeAttVal]
+
+
+def read_glose(glose: TypeGlosesConfig) -> Tuple[TypeGloses, TypeSigmaVerification]:
     """
-    :param grid:
-    :param constraints:
-    :return:
-    """
-    return {k: _filter_grid(i_glose, constraints[k]) for k, i_glose in grid.items()}
-
-
-@multimethod
-def _filter_grid(grid: List[frozendict], constraints: Dict[str, str]) -> List[frozendict]:
-    """
-    :param grid:
-    :param constraints:
-    :return:
-    """
-    for i in range(len(grid) - 1, -1, -1):
-        for i_key, i_val in constraints.items():
-            k_val, t_val = i_val.split(">")
-            # try:
-            if grid[i][f'þ{i_key}'] != f"þ{grid[i][i_key]}":
-                if (grid[i][i_key] == k_val) and (grid[i][f"þ{i_key}"] == f"þ{t_val}"):
-                    continue
-                del grid[i]
-                break
-            # except KeyError:
-            #     continue
-
-    return grid
-
-
-@multimethod  # type: ignore
-def _filter_grid(grid: List[frozendict], constraints: Set[str]) -> List[frozendict]:
-    """
-    Pivot morphologique
-    si trait dans grille, mais pas de valeurs :
-        on cherche une égalité entre la langue source et la langue cible
-    :param grid : liste de sigma
-    :param constraints : trait > valeur
-    :return : liste de sigma réduit suivant les contraintes
-    """
-    for i in range(len(grid) - 1, -1, -1):
-        for constraint in constraints:
-            if grid[i][f'þ{constraint}'] != f"þ{grid[i][constraint]}":
-                del grid[i]
-                break
-
-    return grid
-
-
-TypeGlosesConfig = Dict[str, Union[List[Dict[str, List[str]]], Dict[str, List[str]]]]
-TypeGloses = Dict[str, List[frozendict]]
-TypeAttVals: TypeAlias = frozendict
-
-
-def read_glose(glose: TypeGlosesConfig) -> Tuple[TypeGloses, TypeAttVals]:
-    """
-    Lit le fichier de gloses et le met au format décrit ci-dessous :
-
-        input : {N: genre: [m, f], nombre: [sg, pl]}
-        output: {N: [{'genre': 'm', 'nombre': 'sg'},
+        input : {source: {N: genre: [m, f], nombre: [sg, pl]},
+                 destination: {N: genre: [m, f], nombre: [sg, pl]}}
+        output: {source: {N: [{'genre': 'm', 'nombre': 'sg'},
                      {'genre': 'm', 'nombre': 'pl'},
                      {'genre': 'f', 'nombre': 'sg'},
-                     {'genre': 'f', 'nombre': 'pl'}]}
+                     {'genre': 'f', 'nombre': 'pl'}]},
+                 destination: {N: [{'genre': 'm', 'nombre': 'sg'},
+                     {'genre': 'm', 'nombre': 'pl'},
+                     {'genre': 'f', 'nombre': 'sg'},
+                     {'genre': 'f', 'nombre': 'pl'}]}}
+                {source: {},
+                 destination: {}}
     :param glose:
     :return: les gloses au format décrit ci-dessus ET un dictionnaire figé valeur → attribut
     """
     if not glose:
         raise ValueError(Errors.E001)
 
-    return {key: _sigmas(value) if value is not None else [] for key, value in glose.items()}, _value2attributes(glose)
+    output_gloses: TypeGloses = {
+        "source": {key: _sigmas(value) if value is not None else frozendict() for key, value in glose["source"].items()},
+        "destination": {key: _sigmas(value) if value is not None else frozendict() for key, value in
+                        glose["destination"].items()}}
+
+    output_sigma_validation: TypeSigmaVerification = {"source": _value2attributes(glose["source"]),
+                                                      "destination": _value2attributes(glose["destination"])}
+
+    return output_gloses, output_sigma_validation
 
 
 def _read_blocks(data: TypeCatBlockConfig, att_vals: TypeAttVals, voyelles: frozenset) -> Dict[str, TypeBlocks]:
@@ -287,6 +278,10 @@ def _read_blocks(data: TypeCatBlockConfig, att_vals: TypeAttVals, voyelles: froz
     for category, _blocks in data.items():
         validate_attribute(category, att_vals)
 
+        if _blocks is None:
+            output[category] = [[ruler(id_ruler="selection", rule="X1", sigma=frozendict(), voyelles=voyelles)]]
+            continue
+
         blocks: TypeBlocks = []
         for sigma_rule in _blocks.values():
             block: TypeBlock = []
@@ -303,25 +298,26 @@ def _read_blocks(data: TypeCatBlockConfig, att_vals: TypeAttVals, voyelles: froz
     return output
 
 
-def read_blocks(data: BlocksConfig, att_vals: TypeAttVals, voyelles: frozenset) -> Dict[str, Dict[str, TypeBlocks]]:
+def read_blocks(data: TypeBlocksConfig, att_vals: TypeAttVals, voyelles: frozenset) -> Dict[str, Dict[str, TypeBlocks]]:
     """
     Lit les informations de configurations concernant les blocs de morphèmes
     aussi bien pour la traduction que pour le kalaba.
 
     Attention, toute information autre que les champs kalaba et translation ne seront pas pris en compte.
+    :param voyelles:
     :param data:
     :param att_vals: Structure validant les attributs/valuers utilisés dans Blocks.yaml
     :return: un dictionnaire à deux clés 'kalaba' et 'translation'
     """
     try:
-        kalaba, translation = data["kalaba"], data["translation"]
+        source, destination = data["source"], data["destination"]
     except TypeError as ex:
         raise ValueError(Errors.E002) from ex
     except KeyError as ex:
         raise ValueError(Errors.E003) from ex
 
-    return {"kalaba": _read_blocks(kalaba, att_vals, voyelles),
-            "translation": _read_blocks(translation, att_vals, frozenset())}
+    return {"source": _read_blocks(source, att_vals["destination"], voyelles=voyelles),
+            "destination": _read_blocks(destination, att_vals["source"], voyelles=voyelles)}
 
 
 def read_traduction(stem: str, att_vals: frozendict) -> Tuple[TypeStems, TypeSigma]:
@@ -332,16 +328,15 @@ def read_traduction(stem: str, att_vals: frozendict) -> Tuple[TypeStems, TypeSig
     """
     assert stem
 
-    try:
+    if "-" in stem:
         stems, values = stem.split("-")
-        sigma = frozendict({att_vals[val]: val for val in [f"þ{x}" for x in values.split(".")]})
-    except ValueError:
-        stems = stem
-        sigma = frozendict()
+        _values = frozendict({att_vals[x]: x for x in values.split(".")})
+        return tuple(stems.split(",")), _values
 
-    _stems = tuple(stems.split(","))
+    if "." in stem:
+        raise ValueError(Errors.E014)
 
-    return _stems, sigma
+    return tuple(stem.split(",")), frozendict()
 
 
 def read_stems(data: Dict[str, Dict], att_vals: frozendict, accumulator: str = "") -> Iterator[Lexeme]:
@@ -361,11 +356,23 @@ def read_stems(data: Dict[str, Dict], att_vals: frozendict, accumulator: str = "
     :param att_vals:
     :return:
     """
+    if ("source" not in att_vals) or ("destination" not in att_vals):
+        raise ValueError(Errors.E003)
+
     if isinstance(data, str):
-        valeurs = eval(f"dict({accumulator})")
+        try:
+            valeurs = eval(f"dict({accumulator})")
+        except SyntaxError:
+            valeurs = ",".join([x.split("=")[1] for x in accumulator.strip(",").split(",")])
+            raise ValueError(Errors.E009.format(valeurs=valeurs)) from None
+
         pos = valeurs.pop("pos")
         k_stems = tuple(valeurs.pop("stem").split(","))
-        t_stems, t_sigma = read_traduction(stem=data, att_vals=att_vals)
+        try:
+            t_stems, t_sigma = read_traduction(stem=data, att_vals=att_vals["destination"])
+        except AssertionError:
+            raise ValueError(Errors.E012)
+
         yield Lexeme(stem=k_stems,
                      pos=pos,
                      sigma=frozendict(valeurs),
@@ -374,11 +381,17 @@ def read_stems(data: Dict[str, Dict], att_vals: frozendict, accumulator: str = "
                                        sigma=t_sigma,
                                        traduction=None))
     else:
+        if not data:
+            raise ValueError(Errors.E013)
+
         for i_key in data:
+            if not i_key:
+                raise ValueError(Errors.E012)
             try:
-                search = att_vals[i_key]
+                search = att_vals["source"][i_key]
             except KeyError:
                 search = "stem"
+
             yield from read_stems(data[i_key], att_vals, accumulator + f"{search}='{i_key}',")
 
 
@@ -463,22 +476,18 @@ def build_paradigm(
 
     output: Dict[str, Dict[frozendict, Callable[[Lexeme], Forme]]] = {}
 
-    for i_category, i_sigmas in glose.items():
+    for i_category, i_sigmas in glose["source"].items():
         assert i_sigmas
 
         for i_sigma in i_sigmas:
             try:
-                k_morphemes = _select(blocks["kalaba"][i_category], i_sigma)
+                k_morphemes = _select(blocks["source"][i_category], i_sigma)
             except KeyError:
                 k_morphemes = []
-            except DispatchError as ex:
-                raise ValueError(Errors.E005) from ex
             try:
-                t_morphemes = _select(blocks["translation"][i_category], i_sigma)
+                t_morphemes = _select(blocks["destination"][i_category], i_sigma)
             except KeyError:
                 t_morphemes = []
-            except DispatchError as ex:
-                raise ValueError(Errors.E005) from ex
             output.setdefault(i_category, {}).setdefault(i_sigma, __(i_sigma, k_morphemes, t_morphemes))
     return output
 
@@ -525,11 +534,14 @@ def read_rules(morphosyntax: MorphoSyntax) -> Tuple[List[str], List[str]]:
                     traduction = f"{i_cat.lower()}{str(next_id) if next_id > 0 else ''}"
                     __trad_perco[i_pos] = traduction
 
-                    j_rhs[i_pos] = f"{i_cat}[Source=[{_source},Traduction=?{traduction}],Destination=[{_destination}]]"
+                    j_rhs[
+                        i_pos] = f"{i_cat}[Source=[{_source},Traduction=?{traduction}],Destination=[{_destination}]]"
                     j_rhs_copy[i_pos] = f"{i_cat}[{_destination}]"
 
-                __traduction = [j_rhs_copy[k_idx] for k_idx in morphosyntax.traductions[lhs][i_idx] if j_rhs_copy[k_idx]]
-                __trad_perco = [__trad_perco[k_idx] for k_idx in morphosyntax.traductions[lhs][i_idx] if j_rhs[k_idx]]
+                __traduction = [j_rhs_copy[k_idx] for k_idx in morphosyntax.traductions[lhs][i_idx] if
+                                j_rhs_copy[k_idx]]
+                __trad_perco = [__trad_perco[k_idx] for k_idx in morphosyntax.traductions[lhs][i_idx] if
+                                j_rhs[k_idx]]
 
                 # Percolation : gestion de la partie gauche
                 source, destination = _format_dict2(morphosyntax.percolations[lhs][i_idx])
@@ -537,33 +549,42 @@ def read_rules(morphosyntax: MorphoSyntax) -> Tuple[List[str], List[str]]:
                 _destination = _format_dict(destination, "d")
                 _traduction = "+".join([f"?{x}" for x in __trad_perco if x])
 
-                G1.append(f"{lhs}[Source=[{_source},Traduction=({_traduction})],Destination=[{_destination}]] -> {' '.join(x for x in j_rhs if x)}")
+                G1.append(
+                    f"{lhs}[Source=[{_source},Traduction=({_traduction})],Destination=[{_destination}]] -> {' '.join(x for x in j_rhs if x)}")
                 G2.append(f"{lhs}[{_destination}] -> {' '.join(x for x in __traduction if x)}")
     return G1, G2
 
 
-@multimethod
-def validate_attribute(values: str, attributes: frozendict) -> NoReturn:
-    """
-    :param values:
-    :param attributes:
-    :return:
-    """
-    if values not in attributes:
-        raise AttributeError(f"'{values}' n'est pas une valeur disponible.")
+def validate_attribute(values, att_vals):
+    return factory_function(concrete_product=f"validate_attribute_{type(values).__name__.lower()}",
+                            package=__name__,
+                            values=values,
+                            att_vals=att_vals)
 
 
-@multimethod  # type: ignore
-def validate_attribute(values: frozendict, att_vals: frozendict) -> NoReturn:
+def validate_attribute_str(values: str, att_vals: frozendict) -> NoReturn:
     """
     :param values:
     :param att_vals:
     :return:
     """
+    assert att_vals
+    if values not in att_vals:
+        raise AttributeError(f"'{values}' n'est pas une valeur disponible.")
+
+
+def validate_attribute_frozendict(values: frozendict, att_vals: frozendict) -> NoReturn:
+    """
+    :param values:
+    :param att_vals:
+    :return:
+    """
+    assert values
     for i_attribute, i_value in values.items():
         try:
             if i_attribute != att_vals[i_value]:
-                raise ValueError(Errors.E006.format(attribute=i_attribute, attributes=sorted(set(att_vals.values()))))
+                raise ValueError(
+                    Errors.E006.format(attribute=i_attribute, attributes=sorted(set(att_vals.values()))))
         except KeyError as ex:
             raise ValueError(Errors.E007.format(value=i_value, values=sorted(set(att_vals.keys())))) from ex
 
@@ -574,7 +595,6 @@ __all__ = ["read_glose",
            "read_traduction",
            "read_rules",
            "read_blocks",
-           "read_morphosyntax",
-           "filter_grid"]
+           "read_morphosyntax"]
 
 # TypeBlocks, TypeGloses, TypeMorphoSyntax, TypePhonology, TypeStems, TypeTraduction
