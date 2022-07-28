@@ -1,9 +1,0 @@
-class Errors:
-    E001: str
-    E002: str
-    E003: str
-    E004: str
-    E005: str
-    E006: str
-    E007: str
-    E008: str
