@@ -1,0 +1,6 @@
+-r requirements.txt
+types-PyYAML==6.0.11
+mypy==0.971
+typing-extensions==4.3.0
+jupyter
+types-frozendict==2.0.9
