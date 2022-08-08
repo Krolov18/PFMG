@@ -4,3 +4,5 @@ mypy==0.971
 typing-extensions==4.3.0
 jupyter
 types-frozendict==2.0.9
+pytest==7.1.2
+pandas-stubs==1.4.3.220724

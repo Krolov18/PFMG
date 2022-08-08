@@ -7,9 +7,7 @@
 argon2-cffi==21.3.0 \
     --hash=sha256:8c976986f2c5c0e5000919e6de187906cfd81fb1c72bf9d88c01177e77da7f80 \
     --hash=sha256:d384164d944190a7dd7ef22c6aa3ff197da12962bd04b17f64d4e93d934dba5b
-    # via
-    #   -r requirements.txt
-    #   notebook
+    # via notebook
 argon2-cffi-bindings==21.2.0 \
     --hash=sha256:20ef543a89dee4db46a1a6e206cd015360e5a75822f76df533845c3cbaf72670 \
     --hash=sha256:2c3e3cc67fdb7d82c4718f19b4e7a87123caf8a93fde7e23cf66ac0337d3cb3f \
@@ -32,39 +30,35 @@ argon2-cffi-bindings==21.2.0 \
     --hash=sha256:ed2937d286e2ad0cc79a7087d3c272832865f779430e0cc2b4f3718d3159b0cb \
     --hash=sha256:f1152ac548bd5b8bcecfb0b0371f082037e47128653df2e8ba6e914d384f3c3e \
     --hash=sha256:f9f8b450ed0547e3d473fdc8612083fd08dd2120d6ac8f73828df9b7d45bb351
-    # via
-    #   -r requirements.txt
-    #   argon2-cffi
+    # via argon2-cffi
 asttokens==2.0.5 \
     --hash=sha256:0844691e88552595a6f4a4281a9f7f79b8dd45ca4ccea82e5e05b4bbdb76705c \
     --hash=sha256:9a54c114f02c7a9480d56550932546a3f1fe71d8a02f1bc7ccd0ee3ee35cf4d5
-    # via
-    #   -r requirements.txt
-    #   stack-data
+    # via stack-data
 attrs==22.1.0 \
     --hash=sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6 \
     --hash=sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c
     # via
-    #   -r requirements.txt
     #   jsonschema
+    #   pytest
 backcall==0.2.0 \
     --hash=sha256:5cbdbf27be5e7cfadb448baf0aa95508f91f2bbc6c6437cd9cd06e2a4c215e1e \
     --hash=sha256:fbbce6a29f263178a1f7915c1940bde0ec2b2a967566fe1c65c1dfb7422bd255
-    # via
-    #   -r requirements.txt
-    #   ipython
+    # via ipython
 beautifulsoup4==4.11.1 \
     --hash=sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30 \
     --hash=sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693
-    # via
-    #   -r requirements.txt
-    #   nbconvert
+    # via nbconvert
 bleach==5.0.1 \
     --hash=sha256:085f7f33c15bd408dd9b17a4ad77c577db66d76203e5984b1bd59baeee948b2a \
     --hash=sha256:0d03255c47eb9bd2f26aa9bb7f2107732e7e8fe195ca2f64709fcf3b0a4a085c
+    # via nbconvert
+build==0.8.0 \
+    --hash=sha256:19b0ed489f92ace6947698c3ca8436cb0556a66e2aa2d34cd70e2a5d27cd0437 \
+    --hash=sha256:887a6d471c901b1a6e6574ebaeeebb45e5269a79d095fe9a8f88d6614ed2e5f0
     # via
     #   -r requirements.txt
-    #   nbconvert
+    #   pip-tools
 cffi==1.15.1 \
     --hash=sha256:00a9ed42e88df81ffae7a8ab6d9356b371399b91dbdf0c3cb1e84c03a13aceb5 \
     --hash=sha256:03425bdae262c76aad70202debd780501fabeaca237cdfddc008987c0e0f59ef \
@@ -130,15 +124,14 @@ cffi==1.15.1 \
     --hash=sha256:ed9cb427ba5504c1dc15ede7d516b84757c3e3d7868ccc85121d9310d27eed0b \
     --hash=sha256:fa6693661a4c91757f4412306191b6dc88c1703f780c8234035eac011922bc01 \
     --hash=sha256:fcd131dd944808b5bdb38e6f5b53013c5aa4f334c5cad0c72742f6eba4b73db0
-    # via
-    #   -r requirements.txt
-    #   argon2-cffi-bindings
+    # via argon2-cffi-bindings
 click==8.1.3 \
     --hash=sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e \
     --hash=sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48
     # via
     #   -r requirements.txt
     #   nltk
+    #   pip-tools
 debugpy==1.6.2 \
     --hash=sha256:0984086a670f46c75b5046b39a55f34e4120bee78928ac4c3c7f1c7b8be1d8be \
     --hash=sha256:0bfdcf261f97a603d7ef7ab6972cdf7136201fde93d19bf3f917d0d2e43a5694 \
@@ -158,40 +151,29 @@ debugpy==1.6.2 \
     --hash=sha256:aaf579de5ecd02634d601d7cf5b6baae5f5bab89a55ef78e0904d766ef477729 \
     --hash=sha256:ac5d9e625d291a041ff3eaf65bdb816eb79a5b204cf9f1ffaf9617c0eadf96fa \
     --hash=sha256:e6047272e97a11aa6898138c1c88c8cf61838deeb2a4f0a74e63bb567f8dafc6
-    # via
-    #   -r requirements.txt
-    #   ipykernel
+    # via ipykernel
 decorator==5.1.1 \
     --hash=sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330 \
     --hash=sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186
-    # via
-    #   -r requirements.txt
-    #   ipython
+    # via ipython
 defusedxml==0.7.1 \
     --hash=sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69 \
     --hash=sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61
-    # via
-    #   -r requirements.txt
-    #   nbconvert
+    # via nbconvert
 entrypoints==0.4 \
     --hash=sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4 \
     --hash=sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f
     # via
-    #   -r requirements.txt
     #   jupyter-client
     #   nbconvert
 executing==0.9.1 \
     --hash=sha256:4ce4d6082d99361c0231fc31ac1a0f56979363cc6819de0b1410784f99e49105 \
     --hash=sha256:ea278e2cf90cbbacd24f1080dd1f0ac25b71b2e21f50ab439b7ba45dd3195587
-    # via
-    #   -r requirements.txt
-    #   stack-data
+    # via stack-data
 fastjsonschema==2.16.1 \
     --hash=sha256:2f7158c4de792555753d6c2277d6a2af2d406dfd97aeca21d17173561ede4fe6 \
     --hash=sha256:d6fa3ffbe719768d70e298b9fb847484e2bdfdb7241ed052b8d57a9294a8c334
-    # via
-    #   -r requirements.txt
-    #   nbformat
+    # via nbformat
 frozendict==2.3.4 \
     --hash=sha256:15b4b18346259392b0d27598f240e9390fafbff882137a9c48a1e0104fb17f78 \
     --hash=sha256:25a6d2e8b7cf6b6e5677a1a4b53b4073e5d9ec640d1db30dc679627668d25e90 \
@@ -211,11 +193,14 @@ frozendict==2.3.4 \
     --hash=sha256:dae686722c144b333c4dbdc16323a5de11406d26b76d2be1cc175f90afacb5ba \
     --hash=sha256:dbbe1339ac2646523e0bb00d1896085d1f70de23780e4927ca82b36ab8a044d3
     # via -r requirements.txt
+iniconfig==1.1.1 \
+    --hash=sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3 \
+    --hash=sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32
+    # via pytest
 ipykernel==6.15.1 \
     --hash=sha256:37acc3254caa8a0dafcddddc8dc863a60ad1b46487b68aee361d9a15bda98112 \
     --hash=sha256:d8969c5b23b0e453a23166da5a669c954db399789293fcb03fec5cb25367e43c
     # via
-    #   -r requirements.txt
     #   ipywidgets
     #   jupyter
     #   jupyter-console
@@ -225,7 +210,6 @@ ipython==8.4.0 \
     --hash=sha256:7ca74052a38fa25fe9bedf52da0be7d3fdd2fb027c3b778ea78dfe8c212937d1 \
     --hash=sha256:f2db3a10254241d9b447232cec8b424847f338d9d36f9a577a6192c332a46abd
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   ipywidgets
     #   jupyter-console
@@ -233,27 +217,21 @@ ipython-genutils==0.2.0 \
     --hash=sha256:72dd37233799e619666c9f639a9da83c34013a73e8bbc79a7a6348d93c61fab8 \
     --hash=sha256:eb2e116e75ecef9d4d228fdc66af54269afa26ab4463042e33785b887c628ba8
     # via
-    #   -r requirements.txt
     #   ipywidgets
     #   notebook
     #   qtconsole
 ipywidgets==7.7.1 \
     --hash=sha256:5f2fa1b7afae1af32c88088c9828ad978de93ddda393d7ed414e553fee93dcab \
     --hash=sha256:aa1076ab7102b2486ae2607c43c243200a07c17d6093676c419d4b6762489a50
-    # via
-    #   -r requirements.txt
-    #   jupyter
+    # via jupyter
 jedi==0.18.1 \
     --hash=sha256:637c9635fcf47945ceb91cd7f320234a7be540ded6f3e99a50cb6febdfd1ba8d \
     --hash=sha256:74137626a64a99c8eb6ae5832d99b3bdd7d29a3850fe2aa80a4126b2a7d949ab
-    # via
-    #   -r requirements.txt
-    #   ipython
+    # via ipython
 jinja2==3.1.2 \
     --hash=sha256:31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852 \
     --hash=sha256:6088930bfe239f0e6710546ab9c19c9ef35e29792895fed6e6e31a023a182a61
     # via
-    #   -r requirements.txt
     #   nbconvert
     #   notebook
 joblib==1.1.0 \
@@ -265,19 +243,16 @@ joblib==1.1.0 \
 jsonschema==4.8.0 \
     --hash=sha256:58bb77251318cef5e1179e33dd6e7a008a3c6c638487ab4d943c2f370cc31a1a \
     --hash=sha256:c1d410e379b210ba903bee6adf3fce6d5204cea4c2b622d63f914d2dbfef0993
-    # via
-    #   -r requirements.txt
-    #   nbformat
+    # via nbformat
 jupyter==1.0.0 \
     --hash=sha256:3e1f86076bbb7c8c207829390305a2b1fe836d471ed54be66a3b8c41e7f46cc7 \
     --hash=sha256:5b290f93b98ffbc21c0c7e749f054b3267782166d72fa5e3ed1ed4eaf34a2b78 \
     --hash=sha256:d9dc4b3318f310e34c82951ea5d6683f67bed7def4b259fafbfe4f1beb1d8e5f
-    # via -r requirements.txt
+    # via -r requirements-dev.in
 jupyter-client==7.3.4 \
     --hash=sha256:17d74b0d0a7b24f1c8c527b24fcf4607c56bee542ffe8e3418e50b21e514b621 \
     --hash=sha256:aa9a6c32054b290374f95f73bb0cae91455c58dfb84f65c8591912b8f65e6d56
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   jupyter-console
     #   nbclient
@@ -286,14 +261,11 @@ jupyter-client==7.3.4 \
 jupyter-console==6.4.4 \
     --hash=sha256:172f5335e31d600df61613a97b7f0352f2c8250bbd1092ef2d658f77249f89fb \
     --hash=sha256:756df7f4f60c986e7bc0172e4493d3830a7e6e75c08750bbe59c0a5403ad6dee
-    # via
-    #   -r requirements.txt
-    #   jupyter
+    # via jupyter
 jupyter-core==4.11.1 \
     --hash=sha256:2e5f244d44894c4154d06aeae3419dd7f1b0ef4494dc5584929b398c61cfd314 \
     --hash=sha256:715e22bb6cc7db3718fddfac1f69f1c7e899ca00e42bdfd4bf3705452b9fd84a
     # via
-    #   -r requirements.txt
     #   jupyter-client
     #   nbconvert
     #   nbformat
@@ -302,15 +274,11 @@ jupyter-core==4.11.1 \
 jupyterlab-pygments==0.2.2 \
     --hash=sha256:2405800db07c9f770863bcf8049a529c3dd4d3e28536638bd7c1c01d2748309f \
     --hash=sha256:7405d7fde60819d905a9fa8ce89e4cd830e318cdad22a0030f7a901da705585d
-    # via
-    #   -r requirements.txt
-    #   nbconvert
+    # via nbconvert
 jupyterlab-widgets==1.1.1 \
     --hash=sha256:67d0ef1e407e0c42c8ab60b9d901cd7a4c68923650763f75bf17fb06c1943b79 \
     --hash=sha256:90ab47d99da03a3697074acb23b2975ead1d6171aa41cb2812041a7f2a08177a
-    # via
-    #   -r requirements.txt
-    #   ipywidgets
+    # via ipywidgets
 markupsafe==2.1.1 \
     --hash=sha256:0212a68688482dc52b2d45013df70d169f542b7394fc744c02a57374a4207003 \
     --hash=sha256:089cf3dbf0cd6c100f02945abeb18484bd1ee57a079aefd52cffd17fba910b88 \
@@ -353,44 +321,69 @@ markupsafe==2.1.1 \
     --hash=sha256:f121a1420d4e173a5d96e47e9a0c0dcff965afdf1626d28de1460815f7c4ee7a \
     --hash=sha256:fc7b548b17d238737688817ab67deebb30e8073c95749d55538ed473130ec0c7
     # via
-    #   -r requirements.txt
     #   jinja2
     #   nbconvert
 matplotlib-inline==0.1.3 \
     --hash=sha256:a04bfba22e0d1395479f866853ec1ee28eea1485c1d69a6faf00dc3e24ff34ee \
     --hash=sha256:aed605ba3b72462d64d475a21a9296f400a19c4f74a31b59103d2a99ffd5aa5c
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   ipython
 mistune==0.8.4 \
     --hash=sha256:59a3429db53c50b5c6bcc8a07f8848cb00d7dc8bdb431a4ab41920d201d4756e \
     --hash=sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4
-    # via
-    #   -r requirements.txt
-    #   nbconvert
+    # via nbconvert
+more-itertools==8.13.0 \
+    --hash=sha256:a42901a0a5b169d925f6f217cd5a190e32ef54360905b9c39ee7db5313bfec0f \
+    --hash=sha256:c5122bffc5f104d37c1626b8615b511f3427aa5389b94d61e5ef8236bfbc3ddb
+    # via -r requirements.txt
 multimethod==1.8 \
     --hash=sha256:10f79f40c35c7cc87c40efa753960900429705e0c08078a084136cb8ce67b840 \
     --hash=sha256:ebff0b254d9373b587a99fdd5c238fc0e76861b802704a56d9a71d78aa7d097f
     # via -r requirements.txt
+mypy==0.971 \
+    --hash=sha256:02ef476f6dcb86e6f502ae39a16b93285fef97e7f1ff22932b657d1ef1f28655 \
+    --hash=sha256:0d054ef16b071149917085f51f89555a576e2618d5d9dd70bd6eea6410af3ac9 \
+    --hash=sha256:19830b7dba7d5356d3e26e2427a2ec91c994cd92d983142cbd025ebe81d69cf3 \
+    --hash=sha256:1f7656b69974a6933e987ee8ffb951d836272d6c0f81d727f1d0e2696074d9e6 \
+    --hash=sha256:23488a14a83bca6e54402c2e6435467a4138785df93ec85aeff64c6170077fb0 \
+    --hash=sha256:23c7ff43fff4b0df93a186581885c8512bc50fc4d4910e0f838e35d6bb6b5e58 \
+    --hash=sha256:25c5750ba5609a0c7550b73a33deb314ecfb559c350bb050b655505e8aed4103 \
+    --hash=sha256:2ad53cf9c3adc43cf3bea0a7d01a2f2e86db9fe7596dfecb4496a5dda63cbb09 \
+    --hash=sha256:3fa7a477b9900be9b7dd4bab30a12759e5abe9586574ceb944bc29cddf8f0417 \
+    --hash=sha256:40b0f21484238269ae6a57200c807d80debc6459d444c0489a102d7c6a75fa56 \
+    --hash=sha256:4b21e5b1a70dfb972490035128f305c39bc4bc253f34e96a4adf9127cf943eb2 \
+    --hash=sha256:5a361d92635ad4ada1b1b2d3630fc2f53f2127d51cf2def9db83cba32e47c856 \
+    --hash=sha256:77a514ea15d3007d33a9e2157b0ba9c267496acf12a7f2b9b9f8446337aac5b0 \
+    --hash=sha256:855048b6feb6dfe09d3353466004490b1872887150c5bb5caad7838b57328cc8 \
+    --hash=sha256:9796a2ba7b4b538649caa5cecd398d873f4022ed2333ffde58eaf604c4d2cb27 \
+    --hash=sha256:98e02d56ebe93981c41211c05adb630d1d26c14195d04d95e49cd97dbc046dc5 \
+    --hash=sha256:b793b899f7cf563b1e7044a5c97361196b938e92f0a4343a5d27966a53d2ec71 \
+    --hash=sha256:d1ea5d12c8e2d266b5fb8c7a5d2e9c0219fedfeb493b7ed60cd350322384ac27 \
+    --hash=sha256:d2022bfadb7a5c2ef410d6a7c9763188afdb7f3533f22a0a32be10d571ee4bbe \
+    --hash=sha256:d3348e7eb2eea2472db611486846742d5d52d1290576de99d59edeb7cd4a42ca \
+    --hash=sha256:d744f72eb39f69312bc6c2abf8ff6656973120e2eb3f3ec4f758ed47e414a4bf \
+    --hash=sha256:ef943c72a786b0f8d90fd76e9b39ce81fb7171172daf84bf43eaf937e9f220a9 \
+    --hash=sha256:f2899a3cbd394da157194f913a931edfd4be5f274a88041c9dc2d9cdcb1c315c
+    # via -r requirements-dev.in
+mypy-extensions==0.4.3 \
+    --hash=sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d \
+    --hash=sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8
+    # via mypy
 nbclient==0.6.6 \
     --hash=sha256:09bae4ea2df79fa6bc50aeb8278d8b79d2036792824337fa6eee834afae17312 \
     --hash=sha256:0df76a7961d99a681b4796c74a1f2553b9f998851acc01896dce064ad19a9027
-    # via
-    #   -r requirements.txt
-    #   nbconvert
+    # via nbconvert
 nbconvert==6.5.0 \
     --hash=sha256:223e46e27abe8596b8aed54301fadbba433b7ffea8196a68fd7b1ff509eee99d \
     --hash=sha256:c56dd0b8978a1811a5654f74c727ff16ca87dd5a43abd435a1c49b840fcd8360
     # via
-    #   -r requirements.txt
     #   jupyter
     #   notebook
 nbformat==5.4.0 \
     --hash=sha256:0d6072aaec95dddc39735c144ee8bbc6589c383fb462e4058abc855348152dad \
     --hash=sha256:44ba5ca6acb80c5d5a500f1e5b83ede8cbe364d5a495c4c8cf60aaf1ba656501
     # via
-    #   -r requirements.txt
     #   nbclient
     #   nbconvert
     #   notebook
@@ -398,7 +391,6 @@ nest-asyncio==1.5.5 \
     --hash=sha256:b98e3ec1b246135e4642eceffa5a6c23a3ab12c82ff816a92c612d68205813b2 \
     --hash=sha256:e442291cd942698be619823a17a86a5759eabe1f8613084790de189fe9e16d65
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   jupyter-client
     #   nbclient
@@ -411,7 +403,6 @@ notebook==6.4.12 \
     --hash=sha256:6268c9ec9048cff7a45405c990c29ac9ca40b0bc3ec29263d218c5e01f2b4e86 \
     --hash=sha256:8c07a3bb7640e371f8a609bdbb2366a1976c6a2589da8ef917f761a61e3ad8b1
     # via
-    #   -r requirements.txt
     #   jupyter
     #   widgetsnbextension
 numpy==1.23.1 \
@@ -445,8 +436,10 @@ packaging==21.3 \
     --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522
     # via
     #   -r requirements.txt
+    #   build
     #   ipykernel
     #   nbconvert
+    #   pytest
     #   qtpy
 pandas==1.4.3 \
     --hash=sha256:07238a58d7cbc8a004855ade7b75bbd22c0db4b0ffccc721556bab8a095515f6 \
@@ -471,41 +464,48 @@ pandas==1.4.3 \
     --hash=sha256:d6c0106415ff1a10c326c49bc5dd9ea8b9897a6ca0c8688eb9c30ddec49535ef \
     --hash=sha256:e48fbb64165cda451c06a0f9e4c7a16b534fcabd32546d531b3c240ce2844112
     # via -r requirements.txt
+pandas-stubs==1.4.3.220724 \
+    --hash=sha256:5332d239d4b8d9d37927e3da207d637d1bde6aed490a0ef80de0efbd6af8e023 \
+    --hash=sha256:8e6bda51bfa8b3d90ef9ae8d9504e7fbe59e884ccdd9810e6e59a83ef4b35b03
+    # via -r requirements-dev.in
 pandocfilters==1.5.0 \
     --hash=sha256:0b679503337d233b4339a817bfc8c50064e2eff681314376a47cb582305a7a38 \
     --hash=sha256:33aae3f25fd1a026079f5d27bdd52496f0e0803b3469282162bafdcbdf6ef14f
-    # via
-    #   -r requirements.txt
-    #   nbconvert
+    # via nbconvert
 parso==0.8.3 \
     --hash=sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0 \
     --hash=sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75
+    # via jedi
+pep517==0.13.0 \
+    --hash=sha256:4ba4446d80aed5b5eac6509ade100bff3e7943a8489de249654a5ae9b33ee35b \
+    --hash=sha256:ae69927c5c172be1add9203726d4b84cf3ebad1edcd5f71fcdc746e66e829f59
     # via
     #   -r requirements.txt
-    #   jedi
+    #   build
 pexpect==4.8.0 \
     --hash=sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937 \
     --hash=sha256:fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c
-    # via
-    #   -r requirements.txt
-    #   ipython
+    # via ipython
 pickleshare==0.7.5 \
     --hash=sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca \
     --hash=sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56
-    # via
-    #   -r requirements.txt
-    #   ipython
+    # via ipython
+pip-tools==6.8.0 \
+    --hash=sha256:39e8aee465446e02278d80dbebd4325d1dd8633248f43213c73a25f58e7d8a55 \
+    --hash=sha256:3e5cd4acbf383d19bdfdeab04738b6313ebf4ad22ce49bf529c729061eabfab8
+    # via -r requirements.txt
+pluggy==1.0.0 \
+    --hash=sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159 \
+    --hash=sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3
+    # via pytest
 prometheus-client==0.14.1 \
     --hash=sha256:522fded625282822a89e2773452f42df14b5a8e84a86433e3f8a189c1d54dc01 \
     --hash=sha256:5459c427624961076277fdc6dc50540e2bacb98eebde99886e59ec55ed92093a
-    # via
-    #   -r requirements.txt
-    #   notebook
+    # via notebook
 prompt-toolkit==3.0.30 \
     --hash=sha256:859b283c50bde45f5f97829f77a4674d1c1fcd88539364f1b28a37805cfd89c0 \
     --hash=sha256:d8916d3f62a7b67ab353a952ce4ced6a1d2587dfe9ef8ebc30dd7c386751f289
     # via
-    #   -r requirements.txt
     #   ipython
     #   jupyter-console
 psutil==5.9.1 \
@@ -541,33 +541,29 @@ psutil==5.9.1 \
     --hash=sha256:e7e10454cb1ab62cc6ce776e1c135a64045a11ec4c6d254d3f7689c16eb3efd2 \
     --hash=sha256:f65f9a46d984b8cd9b3750c2bdb419b2996895b005aefa6cbaba9a143b1ce2c5 \
     --hash=sha256:fea896b54f3a4ae6f790ac1d017101252c93f6fe075d0e7571543510f11d2676
-    # via
-    #   -r requirements.txt
-    #   ipykernel
+    # via ipykernel
 ptyprocess==0.7.0 \
     --hash=sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35 \
     --hash=sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220
     # via
-    #   -r requirements.txt
     #   pexpect
     #   terminado
 pure-eval==0.2.2 \
     --hash=sha256:01eaab343580944bc56080ebe0a674b39ec44a945e6d09ba7db3cb8cec289350 \
     --hash=sha256:2b45320af6dfaa1750f543d714b6d1c520a1688dec6fd24d339063ce0aaa9ac3
-    # via
-    #   -r requirements.txt
-    #   stack-data
+    # via stack-data
+py==1.11.0 \
+    --hash=sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719 \
+    --hash=sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378
+    # via pytest
 pycparser==2.21 \
     --hash=sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9 \
     --hash=sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206
-    # via
-    #   -r requirements.txt
-    #   cffi
+    # via cffi
 pygments==2.12.0 \
     --hash=sha256:5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb \
     --hash=sha256:dc9c10fb40944260f6ed4c688ece0cd2048414940f1cea51b8b226318411c519
     # via
-    #   -r requirements.txt
     #   ipython
     #   jupyter-console
     #   nbconvert
@@ -600,9 +596,11 @@ pyrsistent==0.18.1 \
     --hash=sha256:e92a52c166426efbe0d1ec1332ee9119b6d32fc1f0bbfd55d5c1088070e7fc1b \
     --hash=sha256:f87cc2863ef33c709e237d4b5f4502a62a00fab450c9e020892e8e2ede5847f5 \
     --hash=sha256:fd8da6d0124efa2f67d86fa70c851022f87c98e205f0594e1fae044e7119a5a6
-    # via
-    #   -r requirements.txt
-    #   jsonschema
+    # via jsonschema
+pytest==7.1.2 \
+    --hash=sha256:13d0e3ccfc2b6e26be000cb6568c832ba67ba32e719443bfe725814d3c42433c \
+    --hash=sha256:a06a0425453864a270bc45e71f783330a7428defb4230fb5e6a731fde06ecd45
+    # via -r requirements-dev.in
 python-dateutil==2.8.2 \
     --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \
     --hash=sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9
@@ -710,7 +708,6 @@ pyzmq==23.2.0 \
     --hash=sha256:f685003d836ad0e5d4f08d1e024ee3ac7816eb2f873b2266306eef858f058133 \
     --hash=sha256:fee86542dc4ee8229e023003e3939b4d58cc2453922cf127778b69505fc9064b
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   jupyter-client
     #   notebook
@@ -718,15 +715,11 @@ pyzmq==23.2.0 \
 qtconsole==5.3.1 \
     --hash=sha256:b73723fac43938b684dcb237a88510dc7721c43a726cea8ade179a2927c0a2f3 \
     --hash=sha256:d364592d7ede3257f1e17fcdbfd339c26e2cc638ca4fa4ee56a724e26ea13c81
-    # via
-    #   -r requirements.txt
-    #   jupyter
+    # via jupyter
 qtpy==2.1.0 \
     --hash=sha256:aee0586081f943029312becece9f63977b0a9e3788f77a6ac8cc74802bb173d6 \
     --hash=sha256:ca8cd4217175186344299ee4c0f7e7adcf362c70852ba35b255a534077025c06
-    # via
-    #   -r requirements.txt
-    #   qtconsole
+    # via qtconsole
 regex==2022.7.25 \
     --hash=sha256:03cdd06061426378a83e8a5bdec9cc71b964c35e329f68fb7058d08791780c83 \
     --hash=sha256:03d7ff80e3a276ef460baaa745d425162c19d8ea093d60ecf47f52ffee37aea5 \
@@ -808,9 +801,7 @@ regex==2022.7.25 \
 send2trash==1.8.0 \
     --hash=sha256:d2c24762fd3759860a0aff155e45871447ea58d2be6bdd39b5c8f966a0c99c2d \
     --hash=sha256:f20eaadfdb517eaca5ce077640cb261c7d2698385a6a0f072a4a5447fd49fa08
-    # via
-    #   -r requirements.txt
-    #   notebook
+    # via notebook
 six==1.16.0 \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
     --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254
@@ -822,15 +813,11 @@ six==1.16.0 \
 soupsieve==2.3.2.post1 \
     --hash=sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759 \
     --hash=sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d
-    # via
-    #   -r requirements.txt
-    #   beautifulsoup4
+    # via beautifulsoup4
 stack-data==0.3.0 \
     --hash=sha256:77bec1402dcd0987e9022326473fdbcc767304892a533ed8c29888dacb7dddbc \
     --hash=sha256:aa1d52d14d09c7a9a12bb740e6bdfffe0f5e8f4f9218d85e7c73a8c37f7ae38d
-    # via
-    #   -r requirements.txt
-    #   ipython
+    # via ipython
 tabulate==0.8.10 \
     --hash=sha256:0ba055423dbaa164b9e456abe7920c5e8ed33fcc16f6d1b2f2d152c8e1e8b4fc \
     --hash=sha256:6c57f3f3dd7ac2782770155f3adb2db0b1a269637e42f27599925e64b114f519
@@ -838,15 +825,20 @@ tabulate==0.8.10 \
 terminado==0.15.0 \
     --hash=sha256:0d5f126fbfdb5887b25ae7d9d07b0d716b1cc0ccaacc71c1f3c14d228e065197 \
     --hash=sha256:ab4eeedccfcc1e6134bfee86106af90852c69d602884ea3a1e8ca6d4486e9bfe
-    # via
-    #   -r requirements.txt
-    #   notebook
+    # via notebook
 tinycss2==1.1.1 \
     --hash=sha256:b2e44dd8883c360c35dd0d1b5aad0b610e5156c2cb3b33434634e539ead9d8bf \
     --hash=sha256:fe794ceaadfe3cf3e686b22155d0da5780dd0e273471a51846d0a02bc204fec8
+    # via nbconvert
+tomli==2.0.1 \
+    --hash=sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc \
+    --hash=sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f
     # via
     #   -r requirements.txt
-    #   nbconvert
+    #   build
+    #   mypy
+    #   pep517
+    #   pytest
 tornado==6.2 \
     --hash=sha256:1d54d13ab8414ed44de07efecb97d4ef7c39f7438cf5e976ccd356bebb1b5fca \
     --hash=sha256:20f638fd8cc85f3cbae3c732326e96addff0a15e22d80f049e00121651e82e72 \
@@ -860,7 +852,6 @@ tornado==6.2 \
     --hash=sha256:d3a2f5999215a3a06a4fc218026cd84c61b8b2b40ac5296a6db1f1451ef04c1e \
     --hash=sha256:e5f923aa6a47e133d1cf87d60700889d7eae68988704e20c75fb2d65677a8e4b
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   jupyter-client
     #   notebook
@@ -875,7 +866,6 @@ traitlets==5.3.0 \
     --hash=sha256:0bb9f1f9f017aa8ec187d8b1b2a7a6626a2a1d877116baba52a129bfa124f8e2 \
     --hash=sha256:65fa18961659635933100db8ca120ef6220555286949774b9cfc106f941d1c7a
     # via
-    #   -r requirements.txt
     #   ipykernel
     #   ipython
     #   ipywidgets
@@ -890,7 +880,11 @@ traitlets==5.3.0 \
 types-frozendict==2.0.9 \
     --hash=sha256:446b5f33125566c9885c31363e065d6416f8da6c81252af1e459a4e67a15487b \
     --hash=sha256:d4292ef14f87ddec575ab1d968102dcba2c8f1e490acc67945eee1fc7de24d08
-    # via -r requirements.txt
+    # via -r requirements-dev.in
+types-pytz==2022.1.2 \
+    --hash=sha256:1a8b25c225c5e6bd8468aa9eb45ddd3b337f6716d4072ad0aa4ef1e41478eebc \
+    --hash=sha256:8aa9fd2af9dee5f5bd7221c6804c9addeafa7ebc0008f544d4ace02b066818a4
+    # via pandas-stubs
 types-pyyaml==6.0.11 \
     --hash=sha256:7f7da2fd11e9bc1e5e9eb3ea1be84f4849747017a59fc2eee0ea34ed1147c2e0 \
     --hash=sha256:8f890028123607379c63550179ddaec4517dc751f4c527a52bb61934bf495989
@@ -898,27 +892,31 @@ types-pyyaml==6.0.11 \
 typing-extensions==4.3.0 \
     --hash=sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02 \
     --hash=sha256:e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6
-    # via -r requirements.txt
+    # via
+    #   -r requirements-dev.in
+    #   mypy
 wcwidth==0.2.5 \
     --hash=sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784 \
     --hash=sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83
-    # via
-    #   -r requirements.txt
-    #   prompt-toolkit
+    # via prompt-toolkit
 webencodings==0.5.1 \
     --hash=sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78 \
     --hash=sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923
     # via
-    #   -r requirements.txt
     #   bleach
     #   tinycss2
+wheel==0.37.1 \
+    --hash=sha256:4bdcd7d840138086126cd09254dc6195fb4fc6f01c050a1d7236f2630db1d22a \
+    --hash=sha256:e9a504e793efbca1b8e0e9cb979a249cf4a0a7b5b8c9e8b65a5e39d49529c1c4
+    # via
+    #   -r requirements.txt
+    #   pip-tools
 widgetsnbextension==3.6.1 \
     --hash=sha256:954e0faefdd414e4e013f17dbc7fd86f24cf1d243a3ac85d5f0fc2c2d2b50c66 \
     --hash=sha256:9c84ae64c2893c7cbe2eaafc7505221a795c27d68938454034ac487319a75b10
-    # via
-    #   -r requirements.txt
-    #   ipywidgets
+    # via ipywidgets
 
 # WARNING: The following packages were not pinned, but pip requires them to be
 # pinned when the requirements file includes hashes. Consider using the --allow-unsafe flag.
+# pip
 # setuptools
