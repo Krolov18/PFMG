@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/morphosyntax.json",
   "title": "MorphoSyntax",
   "description": "Structure décrivant les objets syntaxiques permettant de générer une grammaire FCFG",
   "type": "object",
@@ -9,7 +10,7 @@
       "description": "définit les contractions à décontracter du langage."
     },
     "start": {
-      "$ref": "atomes.json#/$def/noeud"
+      "$ref": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json#/$def/noeud"
     },
     "source": {
       "$ref": "#/$defs/structure",
@@ -54,7 +55,7 @@
               "type": "array",
               "minItems": 1,
               "items": {
-                "$ref": "atomes.json#/$def/syntagmeOptionnel",
+                "$ref": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json#/$def/syntagmeOptionnel",
                 "minLength": 1
               }
             }

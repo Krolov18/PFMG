@@ -1,7 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/gloses.json",
   "title": "Gloses",
-  "description": "Structure décrivant les attributs et la valeurs disponibles.",
+  "description": "Structure décrivant les attributs et la valeurs disponibles par catégorie syntaxique",
   "type": "object",
   "properties": {
     "source": {
@@ -14,22 +15,22 @@
   "$defs": {
     "structure": {
       "type": "object",
+      "title": "",
       "description": "étiquettes morphosyntaxiques disponibles",
       "propertyNames": {
-        "pattern": "^[A-Z]+$"
+        "$ref": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json#/$def/categorie"
       },
       "additionalProperties": {
         "type": ["object", "null"],
-        "description": "Attributs morphosyntaxiques valides pour une étiquette morphosyntaxique",
+        "description": "Attributs morphosyntaxiques valides pour une catégorie syntaxique",
         "propertyNames": {
-          "pattern": "^[A-Z][a-z]+$"
+          "$ref": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json#/$def/attribut"
         },
         "additionalProperties": {
           "type": "array",
           "description": "valeurs d'un attribut morphosyntaxique",
           "items": {
-            "type": "string",
-            "pattern": "^[A-Za-z0-9]+$"
+            "$ref": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json#/$def/valeur"
           },
           "minItems": 1,
           "uniqueItems": true

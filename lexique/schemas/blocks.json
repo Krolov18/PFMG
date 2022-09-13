@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "lexique/schemas/blocks.json",
+  "$id": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/blocks.json",
   "title": "Blocks",
   "description": "Structure décrivant les blocks morphémiques du langage décrit",
   "type": "object",
@@ -18,7 +18,7 @@
       "type": "object",
       "description": "étiquettes morphosyntaxiques",
       "propertyNames": {
-        "pattern": "^[A-Z]+$"
+        "$ref": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json#/$def/categorie"
       },
       "additionalProperties": {
         "type": "array",
@@ -26,13 +26,44 @@
         "items": {
           "type": "object",
           "propertyNames": {
-            "pattern": "^[A-Za-z0-9]+=[A-Za-z0-9]+(?:,[A-Za-z0-9]+=[A-Za-z0-9]+)*$"
+            "pattern": "^[A-Za-z0-9]+=[A-Za-z0-9]+(,[A-Za-z0-9]+=[A-Za-z0-9]+)*$"
           },
           "additionalProperties": {
             "type": "string",
             "title": "règles morphémiques",
             "description": "Suffixation, préfixation, circonfixation, gabarit, condition, sélection",
-            "pattern": "^(?:[1-9AUVaeiou]{4,9}|X[0-9]\\?X[0-9]:X[0-9]|X\\+[a-z]+|[a-z]+\\+X|X[0-9])$"
+            "oneOf": [
+              {
+                "title": "Préfixation",
+                "description": "Règle valide d'une préfixation",
+                "pattern": "^[a-z]+\\+X$"
+              },
+              {
+                "title": "Suffixation",
+                "description": "Règle valide d'une préfixation",
+                "pattern": "^X\\+[a-z]+$"
+              },
+              {
+                "title": "Circonfixation",
+                "description": "Règle valide d'une préfixation",
+                "pattern": "^[a-z]+\\+X\\+[a-z]+$"
+              },
+              {
+                "title": "Gabarit",
+                "description": "Règle valide d'une préfixation",
+                "pattern": "^[1-9AUVaeiou]{4,9}$"
+              },
+              {
+                "title": "Condition",
+                "description": "Règle valide d'une condition (uniquement sur les sélection pour le moment)",
+                "pattern": "^X[0-9]\\?X[0-9]:X[0-9]$"
+              },
+              {
+                "title": "Sélection",
+                "description": "Règle valide d'une préfixation",
+                "pattern": "^X[1-9][0-9]*$"
+              }
+            ]
           }
         },
         "minItems": 1,

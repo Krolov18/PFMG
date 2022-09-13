@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json",
   "title": "Atomes",
   "description": "Description des attributs, catégories et valeurs d'une syntaxe",
   "$def": {
@@ -21,7 +22,7 @@
       "description": "Intitulé d'un ensemble de valeurs décrivant un critère descriptif",
       "pattern": "^[A-Z][A-Za-z]+$"
     },
-    "catégorie": {
+    "categorie": {
       "type": "string",
       "title": "Catégorie",
       "description": "Catégorie syntaxique",
@@ -31,13 +32,13 @@
       "type": "string",
       "title": "Valeur",
       "description": "Critère descriptif faisant partie d'un attribut",
-      "anyOf": [
+      "oneOf": [
         {
           "description": "Wildcard servant à dire que la valeur qui sera là devra être la même partout où '*' sera présent dans la production",
           "pattern": "^\\*$"
         },
         {
-          "pattern": "^[a-z]+$"
+          "pattern": "^[a-zA-Z0-9]+$"
         }
       ]
     },
