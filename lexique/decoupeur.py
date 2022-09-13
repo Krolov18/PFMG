@@ -1,37 +1,26 @@
-from multimethod import multimethod
-
-from lexique.structures import Circumfix, Forme, Gabarit, Prefix, Radical, Suffix
+from lexique.structures import Morpheme, Circumfix, Forme, Gabarit, Prefix, Radical, Suffix
 
 
-@multimethod
-def decoupe(term: Prefix, accumulator: str) -> str:
-    return f"{term.rule.group(1)}-{accumulator}"
-
-
-@multimethod
-def decoupe(term: Suffix, accumulator: str) -> str:
-    return f"{accumulator}-{term.rule.group(1)}"
-
-
-@multimethod
-def decoupe(term: Circumfix, accumulator: str) -> str:
-    return f"{term.rule.group(1)}+{accumulator}+{term.rule.group(2)}"
-
-
-@multimethod
-def decoupe(term: Gabarit, accumulator: str) -> str:
-    # TODO : quelle stratégie appliquons nous pour les gabarits ?
-    pass
-
-
-@multimethod
-def decoupe(term: Radical, accumulator: str) -> str:
-    return term.stem
-
-
-@multimethod
-def decoupe(term: Forme) -> str:
-    result = ""
-    for morpheme in term.morphemes:
-        result = decoupe(morpheme, result)
-    return result
+def decoupe(term: Morpheme | Forme, accumulator: str) -> str:
+    match term:
+        case Forme():
+            result = ""
+            for morpheme in term.morphemes:
+                result = decoupe(morpheme, result)
+            return result
+        case Prefix():
+            assert term.rule is not None
+            return f"{term.rule.group(1)}-{accumulator}"
+        case Circumfix():
+            assert term.rule is not None
+            return f"{term.rule.group(1)}+{accumulator}+{term.rule.group(2)}"
+        case Suffix():
+            assert term.rule is not None
+            return f"{accumulator}-{term.rule.group(1)}"
+        case Gabarit():
+            # TODO : quelle stratégie appliquons nous pour les gabarits ?
+            pass
+        case Radical():
+            return term.stem
+        case _:
+            pass

@@ -1,8 +1,6 @@
 """
     Fonctions gérant les gabarits
 """
-from multimethod import overload
-
 from frozendict import frozendict
 
 from lexique.structures import Phonology
@@ -32,46 +30,23 @@ def is_v(char: str) -> bool:
     return char == "V"
 
 
-@overload
 def verify(char: str, stem: frozendict, phonology: Phonology) -> str:
     assert char
-    return char
-
-
-@overload
-def verify(char: is_u, stem: frozendict, phonology: Phonology) -> str:
-    assert char
-    return phonology.apophonies[phonology.apophonies[stem['V']]]
-
-
-@overload
-def verify(char: is_a, stem: frozendict, phonology: Phonology) -> str:
-    assert char
-    return phonology.apophonies[stem[phonology.derives[char]]]
-
-
-@overload
-def verify(char: is_v, stem: frozendict, phonology: Phonology) -> str:
-    assert char
-    return stem[char]
-
-
-@overload
-def verify(char: is_789, stem: frozendict, phonology: Phonology) -> str:
-    assert char
-    return phonology.mutations[phonology.mutations[stem[str(int(char) - 6)]]]
-
-
-@overload
-def verify(char: is_456, stem: frozendict, phonology: Phonology) -> str:
-    assert char
-    return phonology.mutations[stem[str(int(char) - 3)]]
-
-
-@overload
-def verify(char: is_123, stem: frozendict, phonology: Phonology) -> str:
-    assert char
-    return stem[char]
+    match char:
+        case c if is_u(c):
+            return phonology.apophonies[phonology.apophonies[stem['V']]]
+        case c if is_a(c):
+            return phonology.apophonies[stem[phonology.derives[c]]]
+        case c if is_v(c):
+            return stem[c]
+        case c if is_123(c):
+            return stem[c]
+        case c if is_456(c):
+            return phonology.mutations[stem[str(int(c) - 3)]]
+        case c if is_789(c):
+            return phonology.mutations[phonology.mutations[stem[str(int(c) - 6)]]]
+        case c:
+            return c
 
 
 def apply(rule: str, stem: frozendict, phonology: Phonology) -> str:
@@ -106,16 +81,15 @@ def format_stem(stem: str, phonology: Phonology) -> frozendict:
         "2": "",
         "V": "",
         "3": ""
-    }
+        }
 
     for lettre in stem:
-
-        if lettre in phonology.consonnes:
-            result[str(c)] = lettre
-            c += 1
-
-        elif lettre in phonology.voyelles:
-            if not result["V"]:
-                result['V'] = lettre
+        match lettre:
+            case l if l in phonology.consonnes:
+                result[str(c)] = lettre
+                c += 1
+            case l if l in phonology.voyelles:
+                if not result["V"]:
+                    result['V'] = lettre
 
     return frozendict(result)

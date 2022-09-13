@@ -7,28 +7,33 @@
 """
 
 from dataclasses import dataclass
-from typing import List, Match, Optional, Union, Tuple, Dict, TypedDict, Set, Literal
+from typing import Literal, Match, TypedDict, Any
 
 from frozendict import frozendict  # type: ignore
 
 
 @dataclass
-class Morpheme:
+class Term:
+    pass
+
+
+@dataclass
+class Morpheme(Term):
     """
     Base DatClass pour représenter un morphème.
 
     :param rule : Résultat d'une regex (un Match)
     :param sigma : Informations morphosyntaxiques d'un morphème
     """
-    rule: Optional[Match]
-    sigma: Optional[frozendict]
+    rule: Match | None
+    sigma: frozendict
 
 
-TypeBlock = List[Morpheme]
-TypeBlocks = List[TypeBlock]
-TypeStem = str
-TypeStems = Tuple[TypeStem, ...]
-TypeSigma = frozendict
+# TypeBlock = list[Morpheme]
+# TypeBlocks = list[TypeBlock]
+# TypeStem = str
+# TypeStems = tuple[TypeStem, ...]
+# TypeSigma = frozendict
 
 
 @dataclass
@@ -59,7 +64,8 @@ class Radical(Morpheme):
 
     :param stem : Radicaux dont le lexème aura besoin pour être réalisé.
     """
-    stem: Tuple[str, ...]
+    rule = None
+    stem: str | tuple[str, ...]
 
 
 @dataclass
@@ -68,58 +74,6 @@ class Gabarit(Morpheme):
     Le gabarit encode une règle affixale qui touche la structure du Radical.
     Dans la règle gabaritique, les consonnes comme les voyelles peuvent subir des modifications phonologiques.
     """
-
-
-@dataclass
-class Realisation:
-    """
-    Base DataClass pour les Formes.
-
-    :param pos : Catégorie syntaxique
-    :param morphemes : Liste des morphèmes dont la forme est composée
-    :param sigma : Informations morphosyntaxiques de la forme
-    """
-    pos: str
-    morphemes: List[Morpheme]
-    sigma: frozendict
-
-
-@dataclass
-class Forme(Realisation):
-    """
-    La forme est la réalisation d'un lexème.
-
-    :param traduction : Réalisation du lexème de la traduction
-    """
-    traduction: Optional[Realisation] = None
-
-
-@dataclass
-class LexSign:
-    """
-    Base DataClass pour les Lexèmes.
-
-    :param stem : radicaux disponibles
-    :param pos : catégorie syntaxique
-    :param sigma : Informations morphosyntaxiques inhérentes au lexème
-    """
-    stem: Union[str, Tuple[str, ...]]
-    pos: str
-    sigma: frozendict
-
-
-@dataclass
-class Lexeme(LexSign):
-    """
-    Représentation abstraite d'une Forme.
-
-    :param traduction : Lexeme
-    """
-    traduction: Optional[LexSign] = None
-
-
-TypeCategories = List[str]
-TypeCategoriesPositions = List[int]
 
 
 @dataclass
@@ -144,65 +98,114 @@ class Condition(Morpheme):
 
 
 @dataclass
-class MorphoSyntax:
+class Realisation(Term):
     """
-    DataClass encodant les éléments syntaxiques.
+    Base DataClass pour les Formes.
 
-    :param contractions : mots du français qui doivent être délié lors du parsing.
-    :param syntagmes : Règles syntaxiques de la grammaire.
-                       Uniquement les parties gauche et droite des règles.
-    :param start : Non-terminal considéré comme étant la tête de la grammaire.
-    :param accords : Contexte des éléments de la partie droite.
-                     Encodage des règles d'accord au sin de la partie droite de la règle.
-    :param percolations : Contexte de la partie gauche de la règle.
-    :param traduction : Structure identique à celle de syntagmes.
-                        Elle permet de réordonner les éléments pour la traduction.
-                        La traduction sera encodée dans la partie gauche des règles.
+    :param pos : Catégorie syntaxique
+    :param morphemes : Liste des morphèmes dont la forme est composée
+    :param sigma : Informations morphosyntaxiques de la forme
     """
+    pos: str
+    morphemes: list[Morpheme]
+    sigma: frozendict
+
+
+@dataclass
+class Forme(Realisation):
+    """
+    La forme est la réalisation d'un lexème.
+
+    :param traduction : Réalisation du lexème de la traduction
+    """
+    traduction: Realisation | None = None
+
+
+@dataclass
+class LexSign(Term):
+    """
+    Base DataClass pour les Lexèmes.
+
+    :param stem : radicaux disponibles
+    :param pos : catégorie syntaxique
+    :param sigma : Informations morphosyntaxiques inhérentes au lexème
+    """
+    stem: str | tuple[str, ...]
+    pos: str
+    sigma: frozendict
+
+
+@dataclass
+class Lexeme(LexSign):
+    """
+    Représentation abstraite d'une Forme.
+
+    :param traduction : Lexeme
+    """
+    traduction: LexSign | None = None
+
+
+##########################################################################
+
+
+@dataclass
+class SDConfig:
+    pass
+
+
+@dataclass
+class CategoryAnyConfig(SDConfig):
+    pass
+
+
+@dataclass
+class CategoryFeaturesConfig(CategoryAnyConfig):
+    pass
+
+
+@dataclass
+class CategoryBlocksConfig(CategoryAnyConfig):
+    pass
+
+
+@dataclass
+class MorphoSyntaxParametersConfig(SDConfig):
+    syntagmes: list[list[str]]
+    accords: list[list[str]]
+    percolations: list
+    translations: list[list[int]]
+
+
+@dataclass
+class Config:
+    source: Any
+    destination: Any
+
+
+@dataclass
+class GlosesConfig(Config):
+    source: dict[str, dict[str, str]]
+    destination: dict[str, dict[str, str]]
+
+
+class FeaturesConfig(Config):
+    source: dict[str, str]
+    destination: dict[str, str]
+
+
+Numbers = Literal["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+
+@dataclass
+class BlocksConfig(Config):
+    source: dict[str, dict[Numbers, dict[str, str]]]
+
+
+@dataclass
+class MorphoSyntaxConfig(Config):
+    source: MorphoSyntaxParametersConfig
+    destination: MorphoSyntaxParametersConfig
     contractions: frozendict
-    start: str
-    syntagmes: Dict[str, List[TypeCategories]]
-    accords: Dict[str, List[List[Dict[str, str]]]]
-    percolations: Dict[str, List[Dict[str, str]]]
-    traductions: Dict[str, List[TypeCategoriesPositions]]
-
-
-class MorphoSyntaxConfig(TypedDict):
-    """
-    Structure de données contenant :
-        - les contractions
-        - la description des syntagmes avec clé le noeaud syntaxique et en valeur la liste de ses constituants
-        - le "point de départ" : Le noeud
-    """
-    contractions: Dict[str, str]
-    syntagmes: Dict[str, List[TypeCategories]]
-    start: str
-    accords: Dict[str, List[Dict[str, Dict[str, str]]]]
-    percolations: Dict[str, List[Dict[str, str]]]
-    traductions: Dict[str, List[TypeCategoriesPositions]]
-
-
-TypeSigmaRule = Dict[str, str]
-TypeBlockConfig = Dict[str, TypeSigmaRule]
-TypeCatBlockConfig = Dict[str, TypeBlockConfig]
-TypeBlocksConfig = Dict[Literal["source", "destination"], TypeCatBlockConfig]
-
-
-class PhonologyConfig(TypedDict):
-    """
-    Structure de données contenant :
-        - Les consonnes et les voyelles
-        - Les règles de transformation apophoniques
-        - Les règles des dérivés
-        - Les règles des mutations
-        - Les règles syllabiques
-    """
-    apophonies: Dict[str, str]
-    derives: Dict[str, str]
-    mutations: Dict[str, str]
-    consonnes: Set[str]
-    voyelles: Set[str]
-    syllabes: Dict[str, str]
 
 
 @dataclass
@@ -219,31 +222,21 @@ class Phonology:
     apophonies: frozendict
     derives: frozendict
     mutations: frozendict
-    consonnes: frozenset
-    voyelles: frozenset
+    consonnes: frozenset[str]
+    voyelles: frozenset[str]
 
 
-__all__ = ["TypeBlocksConfig",
-           "Circumfix",
+__all__ = ["Circumfix",
            "Condition",
            "Forme",
            "Gabarit",
            "Lexeme",
            "LexSign",
            "Morpheme",
-           "MorphoSyntax",
            "MorphoSyntaxConfig",
            "Phonology",
-           "PhonologyConfig",
            "Prefix",
            "Radical",
            "Realisation",
            "Selection",
-           "Suffix",
-           "TypeBlock",
-           "TypeBlocks",
-           "TypeCategories",
-           "TypeCategoriesPositions",
-           "TypeSigma",
-           "TypeStem",
-           "TypeStems"]
+           "Suffix"]

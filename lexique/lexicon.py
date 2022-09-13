@@ -11,7 +11,7 @@ from lexique.unary import unary
 def build_df(
         term: List[Lexeme],
         paradigm: Dict[str, Dict[frozendict, Callable]],
-        att_vals: frozendict,
+        att_vals,
         phonology: Phonology
 ) -> pd.DataFrame:
     """
@@ -32,21 +32,31 @@ def build_df(
     :param phonology :
     :return :
     """
-    columns: List[str] = list(att_vals.values())
-    data: Dict[str, List[str]] = {"forme": [], "unary": [], "traduction": [], "lemme": [], **{x: [] for x in columns}}
+    columns: List[str] = [f"s{x}" for x in sorted(set(att_vals["source"].values()) - {"pos"})] +\
+                         [f"d{x}" for x in sorted(set(att_vals["destination"].values()) - {"pos"})]
+    data: Dict[str, List[str]] = {"forme": [], "unary": [], "traduction": [],
+                                  "lemme": [], "pos": [], **{x: [] for x in columns}}
     for lexeme in term:
         for forme in realize(term=lexeme, paradigm=paradigm):
-            assert forme is None
+            assert forme is not None
 
             data["pos"].append(forme.pos)
-            for i_feat, i_val in forme.sigma.items():
-                data[i_feat].append(i_val)
-            for k in att_vals.values() - forme.sigma.keys() - {"pos"}:
-                data[k].append("")
+            # for k in att_vals["source"].values() - forme.sigma.keys() - {"pos"}:
+            #     data[k].append("")
             data["forme"].append(realize(term=forme, phonology=phonology))
             data["unary"].append(unary("tcfg", forme, phonology))
             data["traduction"].append(realize(term=forme.traduction, phonology=phonology))
-            data["lemme"].append(",".join(lexeme.stem))
+            data["lemme"].append(",".join(lexeme.stem) if not isinstance(lexeme.stem, str) else lexeme.stem)
+
+            for i_feat, i_val in forme.sigma.items():
+                data[f"s{i_feat}"].append(i_val)
+            for k in att_vals["source"].values() - forme.sigma.keys() - {"pos"}:
+                data[f"s{k}"].append("")
+
+            for i_feat, i_val in forme.traduction.sigma.items():
+                data[f"d{i_feat}"].append(i_val)
+            for k in att_vals["destination"].values() - forme.traduction.sigma.keys() - {"pos"}:
+                data[f"d{k}"].append("")
 
     return pd.DataFrame(data)
 
@@ -54,7 +64,7 @@ def build_df(
 def trad_lexrule(lexemes: List[Lexeme],
                  paradigm: Dict[str, Dict[frozendict, Callable]],
                  phonology: Phonology) -> List[Tuple[str, str]]:
-    output: List[Tuple[str, str]] = list()
+    output: List[Tuple[str, str]] = []
 
     for lexeme in lexemes:
         realisations: List[Forme] = realize(term=lexeme, paradigm=paradigm)

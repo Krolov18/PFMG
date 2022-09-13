@@ -4,14 +4,21 @@ import pathlib
 
 from tabulate import tabulate
 import yaml
+from jsonschema import validate
 from nltk import parse
 from nltk.grammar import FeatureGrammar
 
-from lexique.etl import read_morphosyntax, split, read_glose, read_stems, read_phonology, build_paradigm
+from lexique.etl import (split,
+                         read_blocks,
+                         read_gloses,
+                         read_morphosyntax,
+                         read_phonology,
+                         read_rules,
+                         read_stems,
+                         build_paradigm)
 from lexique.lexicon import trad_lexrule, build_df
-from lexique.report import report
 
-from lexique.validate import validate_tree, validate_sentence
+# from lexique.validate import validate_tree, validate_sentence
 from utils.abstract_factory import factory_function
 from utils.compose import compose
 
@@ -33,7 +40,7 @@ def action(id_action: str, namespace: argparse.Namespace) -> None:
         concrete_product=f"{id_action}_action",
         package=__name__,
         namespace=namespace
-    )
+        )
 
 
 def validate_action(namespace: argparse.Namespace) -> None:
@@ -44,33 +51,23 @@ def validate_action(namespace: argparse.Namespace) -> None:
     """
     grammar_path: pathlib.Path = namespace.datapath
 
-    gloses, att_vals = report(id_report="gloses",
-                              gloses=preprocess(grammar_path / "Gloses.yaml"),
-                              verbose=namespace.verbose)
+    gloses, att_vals = read_gloses(gloses=preprocess(grammar_path / "Gloses.yaml"))
 
-    morphosyntax = report(id_report="morphosyntax",
-                          morphosyntax=preprocess(grammar_path / "MorphoSyntax.yaml"),
-                          verbose=namespace.verbose)
+    lexemes = list(read_stems(data=preprocess(grammar_path / "Stems.yaml"),
+                              accumulator="",
+                              att_vals=att_vals))
+    phonology = read_phonology(data=preprocess(grammar_path / "Phonology.yaml"))
 
-    lexemes = report(id_report="lexemes",
-                     data=preprocess(grammar_path / "Stems.yaml"),
-                     accumulator="", att_vals=att_vals,
-                     verbose=namespace.verbose)
+    blocks = read_blocks(data=preprocess(grammar_path / "Blocks.yaml"),
+                         att_vals=att_vals,
+                         voyelles=phonology.voyelles)
 
-    phonology = report(id_report="phonology",
-                       data=preprocess(grammar_path / "Phonology.yaml"),
-                       verbose=namespace.verbose)
+    paradigm = build_paradigm(glose=gloses,
+                              blocks=blocks)
 
-    paradigm = report(id_report="paradigm",
-                      gloses=gloses,
-                      blocks=preprocess(grammar_path / "Blocks.yaml"),
-                      att_vals=att_vals,
-                      voyelles=phonology.voyelles,
-                      verbose=namespace.verbose)
+    morphosyntax = read_morphosyntax(data=preprocess(grammar_path / "MorphoSyntax.yaml"))
 
-    francais2kalaba, _ = report(id_report="rules",
-                                morphosyntax=morphosyntax,
-                                verbose=namespace.verbose)
+    francais2kalaba, _ = read_rules(morphosyntax=morphosyntax)
 
     nt_rules = "\n".join(francais2kalaba)
 
@@ -84,14 +81,14 @@ def validate_action(namespace: argparse.Namespace) -> None:
         print(tabulate(data_frame[data_frame.columns[~data_frame.columns.isin(["unary"])]], headers="keys"))
 
     if namespace.words:
-        print(nt_rules)
+        print(nt_rules.replace("\n", "\n\n"))
         print("", namespace.words, *validate_sentence(
             sentence=split(namespace.words),
             rules=nt_rules,
             lexicon=lexicon,
             morpho=morphosyntax,
             start_nt=namespace.start_nt or morphosyntax.start
-        ), sep="\n")
+            ), sep="\n")
 
         return
 
@@ -121,13 +118,23 @@ def test_action(namespace: argparse.Namespace) -> None:
 
 def lexicon_action(namespace: argparse.Namespace) -> None:
     grammar_path: pathlib.Path = namespace.datapath
-
-    gloses, att_vals = read_glose(glose=preprocess(grammar_path / "Gloses.yaml"))
-
-    lexemes = list(read_stems(data=preprocess(grammar_path / "Stems.yaml"), accumulator="", att_vals=att_vals))
-
+    gloses, att_vals = read_gloses(gloses=preprocess(grammar_path / "Gloses.yaml"))
+    lexemes = list(read_stems(data=preprocess(grammar_path / "Stems.yaml"),
+                              accumulator="",
+                              att_vals=att_vals))
     phonology = read_phonology(data=preprocess(grammar_path / "Phonology.yaml"))
+    blocks = read_blocks(data=preprocess(grammar_path / "Blocks.yaml"),
+                         att_vals=att_vals,
+                         voyelles=phonology.voyelles)
+    paradigm = build_paradigm(glose=gloses,
+                              blocks=blocks)
 
-    paradigm = build_paradigm(glose=gloses, blocks=preprocess(grammar_path / "Blocks.yaml"))
+    df = build_df(lexemes, paradigm, att_vals, phonology)
 
-    lexicon = trad_lexrule(lexemes=lexemes, paradigm=paradigm, phonology=phonology)
+    if namespace.exclude is not None:
+        print(df.loc[:, ~df.columns.isin(namespace.exclude)].to_markdown(index=None))
+    else:
+        print(df.to_markdown(index=None))
+    # lexicon = trad_lexrule(lexemes=lexemes,
+    #                        paradigm=paradigm,
+    #                        phonology=phonology)

@@ -4,8 +4,7 @@ source:
   DET:
     Genre: [ M, F ]
 destination:
-  source:
-    N:
-      Genre: [ M, F ]
-    DET:
-      Genre: [ M, F ]
+  N:
+    Genre: [ M, F ]
+  DET:
+    Genre: [ M, F ]
