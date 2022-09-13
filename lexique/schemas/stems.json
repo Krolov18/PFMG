@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stems",
+  "description": "Structure décrivant les atomes de la grammaire, les unités minimales lexicales",
+  "type": "object"
+}

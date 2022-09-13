@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gloses",
+  "description": "Structure décrivant les attributs et la valeurs disponibles.",
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "#/$defs/structure"
+    },
+    "destination": {
+      "$ref": "#/$defs/structure"
+    }
+  },
+  "$defs": {
+    "structure": {
+      "type": "object",
+      "description": "étiquettes morphosyntaxiques disponibles",
+      "propertyNames": {
+        "pattern": "^[A-Z]+$"
+      },
+      "additionalProperties": {
+        "type": ["object", "null"],
+        "description": "Attributs morphosyntaxiques valides pour une étiquette morphosyntaxique",
+        "propertyNames": {
+          "pattern": "^[A-Z][a-z]+$"
+        },
+        "additionalProperties": {
+          "type": "array",
+          "description": "valeurs d'un attribut morphosyntaxique",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9]+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

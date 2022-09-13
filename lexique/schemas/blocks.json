@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lexique/schemas/blocks.json",
+  "title": "Blocks",
+  "description": "Structure décrivant les blocks morphémiques du langage décrit",
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "#/$defs/structure"
+    },
+    "destination": {
+      "$ref": "#/$defs/structure"
+    }
+  },
+  "required": ["source", "destination"],
+  "$defs": {
+    "structure": {
+      "type": "object",
+      "description": "étiquettes morphosyntaxiques",
+      "propertyNames": {
+        "pattern": "^[A-Z]+$"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "description": "liste des candidats morphémique à la position i",
+        "items": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9]+=[A-Za-z0-9]+(?:,[A-Za-z0-9]+=[A-Za-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "title": "règles morphémiques",
+            "description": "Suffixation, préfixation, circonfixation, gabarit, condition, sélection",
+            "pattern": "^(?:[1-9AUVaeiou]{4,9}|X[0-9]\\?X[0-9]:X[0-9]|X\\+[a-z]+|[a-z]+\\+X|X[0-9])$"
+          }
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    }
+  }
+}
