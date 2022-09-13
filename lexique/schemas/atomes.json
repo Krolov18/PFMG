@@ -1,9 +1,9 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/atomes.json",
   "title": "Atomes",
   "description": "Description des attributs, catégories et valeurs d'une syntaxe",
-  "$def": {
+  "definitions": {
     "nonterminal": {
       "type": "string",
       "title": "Nonterminal",
@@ -54,7 +54,7 @@
       "description": "Syntagme qui peut ne pas apparaître",
       "anyOf": [
         {
-          "$ref": "#/$def/terminal"
+          "$ref": "#/definitions/terminal"
         },
         {
           "type": "string",
