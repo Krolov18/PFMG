@@ -1,6 +1,9 @@
 [#reflexions-sur-la-construction-du-kalabatiste]
 = Reflexions sur la construction du Kalabatiste
 :toc: left
+:toc-title: Table des matières
+:toc-class: toto
+:toc-max-pagenum-digits: 3
 :toclevels: 3
 
 [#Comment-reecrire-un-code-pour-le-rendre-plus-malleable]
