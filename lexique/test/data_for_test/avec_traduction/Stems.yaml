@@ -1,9 +1,9 @@
 NNP:
-  A:
+  a:
     katiSa: Katisha-1.F
-  B:
+  b:
     nikol: Nicole-1.F
-  D:
+  d:
     nabil: Nabil-1.M
 #N:
 #  A:
@@ -79,12 +79,12 @@ NNP:
 ### DETERMINANTS
 ###
 ######################
-DET:
-  b: le,la,les,le-DEF
-  k: un,une,des-INDEF
-  l: ce,cette,ces,cet-DEM
-DET2:
-  k: -INDEF
+#DET:
+#  b: le,la,les,le-DEF
+#  k: un,une,des-INDEF
+#  l: ce,cette,ces,cet-DEM
+#DET2:
+#  k: -INDEF
 #####################
 ###
 ### PREPOSITIONS

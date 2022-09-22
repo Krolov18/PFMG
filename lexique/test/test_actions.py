@@ -3,6 +3,7 @@ import re
 from os.path import dirname
 from pathlib import Path
 from argparse import Namespace
+import jsonschema
 
 import pytest
 
@@ -10,60 +11,29 @@ from lexique.actions import validate_action, lexicon_action
 from lexique.errors import Errors
 
 
-@pytest.mark.parametrize("data_path,message", [
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E002]_vide",
-     Errors.E002),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E003]_bloc_kalaba_manquant",
-     Errors.E003),
-
-    ((f"{dirname(__file__)}/data_for_test/blocks/translation/"
-      "[E003]_bloc_translation_manquant"),
-     Errors.E003),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E004]_blocs_vides",
-     Errors.E004),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E004]_kalaba_vide",
-     Errors.E004),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E004]_translation_vide",
-     Errors.E004),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E005]_categorie_vide",
-     Errors.E005),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E005]_bloc_vide",
-     Errors.E005),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E006]_attribut_inconnu",
-     Errors.E006.format(attribute="Inconnu", attributes=["Genre", "pos"])),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E007]_valeur_inconnue",
-     Errors.E007.format(value="Inconnu", values=["DET", "F", "M", "N"])),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/circumfix",
-     Errors.E008.format(rule="a+X1a")),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/ternary",
-     Errors.E008.format(rule="X2X2:X1")),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/gabarit",
-     Errors.E008.format(rule="4U2AX9u3u")),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/prefix",
-     Errors.E008.format(rule="eX")),
-
-    (f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/suffix",
-     Errors.E008.format(rule="Xe")),
-
-
+@pytest.mark.parametrize("data_path, message", [
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E005]_categorie_vide",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E005]_bloc_vide",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E006]_attribut_inconnu",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E007]_valeur_inconnue",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/circumfix",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/ternary",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/gabarit",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/prefix",
+    # f"{dirname(__file__)}/data_for_test/blocks/translation/[E008]_rule/suffix",
+    (f"{dirname(__file__)}/data_for_test/gloses/vide/", "None is not of type 'object'"),
+    (f"{dirname(__file__)}/data_for_test/gloses/bloc_source_manquant/", "'source' is a required property"),
+    (f"{dirname(__file__)}/data_for_test/gloses/bloc_destination_manquant/", "'destination' is a required property"),
+    (f"{dirname(__file__)}/data_for_test/gloses/blocs_source_et_destination_vides", "{} does not have enough properties"),
+    (f"{dirname(__file__)}/data_for_test/gloses/bloc_source_vide", "{} does not have enough properties"),
+    (f"{dirname(__file__)}/data_for_test/gloses/bloc_destination_vide", "{} does not have enough properties"),
+    (f"{dirname(__file__)}/data_for_test/gloses/categorie_vide", "{} does not have enough properties"),
 ])
 def test_validate_action_scenarii_with_errors(data_path, message) -> None:
     namespace = Namespace(name="validate",
                           datapath=Path(data_path),
                           sentences=None, words=None, start_nt=None, verbose=0)
-    with pytest.raises(ValueError, match=re.escape(message)):
+    with pytest.raises(jsonschema.exceptions.ValidationError, match=message):
         validate_action(namespace)
 
 

@@ -1,6 +1,10 @@
 import argparse
 import functools
+import json
+import os
 import pathlib
+import pathlib as pl
+from typing import Callable, Literal
 
 from tabulate import tabulate
 import yaml
@@ -25,6 +29,16 @@ from utils.compose import compose
 preprocess = compose(functools.partial(yaml.load, Loader=yaml.Loader), argparse.FileType("r"))
 
 
+def validate_yaml(id_schema: Literal['gloses', 'stems', 'morphosyntax', 'blocks'], yaml_abspath: str | pl.Path) -> None:
+    with open(yaml_abspath, mode="r", encoding="utf8") as fh:
+        instance = yaml.load(fh, Loader=yaml.Loader)
+
+    with open(os.path.join(os.path.dirname(__file__), "schemas", f"{id_schema}.json"), mode="r", encoding="utf8") as fh:
+        schema = json.load(fh)
+
+    validate(instance=instance, schema=schema)
+
+
 def action(id_action: str, namespace: argparse.Namespace) -> None:
     """
     Factory permettant de construire les actions du "main".
@@ -40,7 +54,39 @@ def action(id_action: str, namespace: argparse.Namespace) -> None:
         concrete_product=f"{id_action}_action",
         package=__name__,
         namespace=namespace
-        )
+    )
+
+
+def validate_grammar_config_files(args: argparse.Namespace) -> None:
+    # validate_yaml(id_schema="gloses", yaml_abspath=args.datapath / "grammar" / "Gloses.yaml")
+    validate_yaml(id_schema="blocks", yaml_abspath=args.datapath / "grammar" / "Blocks.yaml")
+    # validate_yaml(id_schema="stems", yaml_abspath=args.datapath / "grammar" / "Stems.yaml")
+    # validate_yaml(id_schema="morphosyntax", yaml_abspath=args.datapath / "grammar" / "MorphoSyntax.yaml")
+
+
+def startproject_action(namespace: argparse.Namespace) -> None:
+    """
+    Initialisation d'un projet.
+    On crée une archive Kalaba contenant
+    <nom_de_projet>/
+        grammar/
+            Gloses.yaml
+            Blocks.yaml
+            Stems.yaml
+            MorphoSyntax.yaml
+
+    namespace.project_path détermine où le projet doit être créé
+
+    :param namespace:
+    :return:
+    """
+    assert not (namespace.project_path / namespace.project_name).exists()
+    text = "# Fichier généré par la commande startproject\n"
+
+    grammar_dir: pathlib.Path = (namespace.project_path / namespace.project_name / "grammar")
+    grammar_dir.mkdir(parents=True)
+    for file in ("Gloses", "Blocks", "Stems", "MorphoSyntax"):
+        (grammar_dir / f"{file}.yaml").write_text(text)
 
 
 def validate_action(namespace: argparse.Namespace) -> None:
@@ -49,23 +95,25 @@ def validate_action(namespace: argparse.Namespace) -> None:
 
     :param namespace : namespace généré par ArgumentParser.parse_args():
     """
-    grammar_path: pathlib.Path = namespace.datapath
+    validate_grammar_config_files(namespace)
 
-    gloses, att_vals = read_gloses(gloses=preprocess(grammar_path / "Gloses.yaml"))
+    grammar_path: pl.Path = namespace.datapath
 
-    lexemes = list(read_stems(data=preprocess(grammar_path / "Stems.yaml"),
+    gloses, att_vals = read_gloses(gloses=preprocess(grammar_path / "grammar" / "Gloses.yaml"))
+
+    lexemes = list(read_stems(data=preprocess(grammar_path / "grammar" / "Stems.yaml"),
                               accumulator="",
                               att_vals=att_vals))
-    phonology = read_phonology(data=preprocess(grammar_path / "Phonology.yaml"))
+    phonology = read_phonology(data=preprocess(grammar_path / "grammar" / "Phonology.yaml"))
 
-    blocks = read_blocks(data=preprocess(grammar_path / "Blocks.yaml"),
+    blocks = read_blocks(data=preprocess(grammar_path / "grammar" / "Blocks.yaml"),
                          att_vals=att_vals,
                          voyelles=phonology.voyelles)
 
     paradigm = build_paradigm(glose=gloses,
                               blocks=blocks)
 
-    morphosyntax = read_morphosyntax(data=preprocess(grammar_path / "MorphoSyntax.yaml"))
+    morphosyntax = read_morphosyntax(data=preprocess(grammar_path / "grammar" / "MorphoSyntax.yaml"))
 
     francais2kalaba, _ = read_rules(morphosyntax=morphosyntax)
 
@@ -88,7 +136,7 @@ def validate_action(namespace: argparse.Namespace) -> None:
             lexicon=lexicon,
             morpho=morphosyntax,
             start_nt=namespace.start_nt or morphosyntax.start
-            ), sep="\n")
+        ), sep="\n")
 
         return
 
@@ -118,12 +166,12 @@ def test_action(namespace: argparse.Namespace) -> None:
 
 def lexicon_action(namespace: argparse.Namespace) -> None:
     grammar_path: pathlib.Path = namespace.datapath
-    gloses, att_vals = read_gloses(gloses=preprocess(grammar_path / "Gloses.yaml"))
-    lexemes = list(read_stems(data=preprocess(grammar_path / "Stems.yaml"),
+    gloses, att_vals = read_gloses(gloses=preprocess(grammar_path / "grammar" / "Gloses.yaml"))
+    lexemes = list(read_stems(data=preprocess(grammar_path / "grammar" / "Stems.yaml"),
                               accumulator="",
                               att_vals=att_vals))
-    phonology = read_phonology(data=preprocess(grammar_path / "Phonology.yaml"))
-    blocks = read_blocks(data=preprocess(grammar_path / "Blocks.yaml"),
+    phonology = read_phonology(data=preprocess(grammar_path / "grammar" / "Phonology.yaml"))
+    blocks = read_blocks(data=preprocess(grammar_path / "grammar" / "Blocks.yaml"),
                          att_vals=att_vals,
                          voyelles=phonology.voyelles)
     paradigm = build_paradigm(glose=gloses,

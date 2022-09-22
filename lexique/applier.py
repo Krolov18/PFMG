@@ -6,47 +6,23 @@ from frozendict import frozendict
 from lexique.structures import Phonology
 
 
-def is_123(char: str) -> bool:
-    return char in "123"
-
-
-def is_456(char: str) -> bool:
-    return char in "456"
-
-
-def is_789(char: str) -> bool:
-    return char in "789"
-
-
-def is_a(char: str) -> bool:
-    return char == "A"
-
-
-def is_u(char: str) -> bool:
-    return char == "U"
-
-
-def is_v(char: str) -> bool:
-    return char == "V"
-
-
 def verify(char: str, stem: frozendict, phonology: Phonology) -> str:
     assert char
     match char:
-        case c if is_u(c):
+        case "U":
             return phonology.apophonies[phonology.apophonies[stem['V']]]
-        case c if is_a(c):
-            return phonology.apophonies[stem[phonology.derives[c]]]
-        case c if is_v(c):
-            return stem[c]
-        case c if is_123(c):
-            return stem[c]
-        case c if is_456(c):
-            return phonology.mutations[stem[str(int(c) - 3)]]
-        case c if is_789(c):
-            return phonology.mutations[phonology.mutations[stem[str(int(c) - 6)]]]
-        case c:
-            return c
+        case "A":
+            return phonology.apophonies[stem[phonology.derives[char]]]
+        case "V":
+            return stem[char]
+        case "1" | "2" | "3":
+            return stem[char]
+        case "4" | "5" | "6":
+            return phonology.mutations[stem[str(int(char) - 3)]]
+        case "7" | "8" | "9":
+            return phonology.mutations[phonology.mutations[stem[str(int(char) - 6)]]]
+        case _:
+            return char
 
 
 def apply(rule: str, stem: frozendict, phonology: Phonology) -> str:

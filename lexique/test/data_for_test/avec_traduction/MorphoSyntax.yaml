@@ -43,15 +43,15 @@ source:
       - [ "DET/?", "ADJ/?", "N", "ADJ/?" ]
       - [ "DET/?", "'deux'", "N/?" ]
   accords:
-    RTT: [[ { toto: "z" }]]
+    RTT: [[ { Toto: "z" }]]
     NP: # Genre, Nombre
       - [ { Genre: "*", Nombre: "*" },
           { Genre: "*", Nombre: "*" },
           { Genre: "*", Nombre: "*" },
           { Genre: "*", Nombre: "*" } ]
-      - [ { Genre: "*", Nombre: "Pl" },
-          { Genre: "*", Nombre: "Pl" },
-          { Genre: "*", Nombre: "Pl" } ]
+      - [ { Genre: "*", Nombre: "pl" },
+          { Genre: "*", Nombre: "pl" },
+          { Genre: "*", Nombre: "pl" } ]
   percolations: # Genre, Nombre
     NP: [ { Genre: "*", Nombre: "*" } ]
   traductions: [ [ 0 ] ]
@@ -65,7 +65,7 @@ destination:
           { Genre: "*", Nombre: "*" },
           { Genre: "*", Nombre: "*" },
           { Genre: "*", Nombre: "*", Cas: "*" } ]
-      - [ { Genre: "*", Nombre: "Du", Cas: "*" },
-          { Genre: "*", Nombre: "Du", Cas: "*" } ]
+      - [ { Genre: "*", Nombre: "du", Cas: "*" },
+          { Genre: "*", Nombre: "du", Cas: "*" } ]
   percolations: # Genre, Nombre, Cas
     NP: [ { Genre: "*", Nombre: "*", Cas: "*" } ]

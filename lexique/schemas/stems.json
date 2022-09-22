@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/Krolov18/Kalaba/blob/main/lexique/schemas/stems.json",
-  "title": "Stems",
-  "description": "Structure décrivant les atomes de la grammaire, les unités minimales lexicales",
-  "type": "object"
-}

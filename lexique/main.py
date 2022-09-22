@@ -11,6 +11,13 @@ if __name__ == '__main__':
     # Ce champ sera utilisé pour lier une commande à une action
     SUB_PARSERS = PARSER.add_subparsers(dest="name")
 
+    STARTPROJECT = SUB_PARSERS.add_parser(
+        name="startproject",
+        description="Initialise un projet Kalaba"
+    )
+    STARTPROJECT.add_argument("-p", "--project-path", type=pathlib.Path)
+    STARTPROJECT.add_argument("-n", "--project-name", type=str)
+
     VALIDATE = SUB_PARSERS.add_parser(
         name="validate",
         description="\n  Vérifie les arguments de la grammaire."
@@ -28,8 +35,7 @@ if __name__ == '__main__':
     LEXICON.add_argument("-e", "--exclude", nargs="*", type=str)
 
     # args = PARSER.parse_args(["lexicon", "/home/korantin/Documents/Kalaba/lexique/test/data_for_test/avec_traduction"])
-    args = PARSER.parse_args(["validate", "/home/korantin/Documents/Kalaba/lexique/test/data_for_test/avec_traduction",
-                              "--start-nt", "NP", "--words", "Katisha"])
+    args = PARSER.parse_args()
 
     print("\n", args, "\n")
 

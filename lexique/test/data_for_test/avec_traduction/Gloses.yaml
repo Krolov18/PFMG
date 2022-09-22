@@ -1,52 +1,48 @@
 source:
   N:
-    Genre: [ A, B, C, D ]
-    Nombre: [ Sg, Du, Pl ]
-    Cas: [ Erg, Abs, Obl, Dat ]
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+    Cas: [ erg, abs, obl, dat ]
   V:
-    Genre: [ A, B, C, D ]
-    Nombre: [ Sg, Du, Pl ]
-    Temps: [ PRS, PST ]
-    Type: [ VI, VT, VD ]
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+    Temps: [ prs, pst ]
+    Type: [ vi, vt, vd ]
   DET:
-    Nombre: [ Sg, Du, Pl ]
-    Cas: [ Erg, Abs, Obl, Dat ]
+    Nombre: [ sg, du, pl ]
+    Cas: [ erg, abs, obl, dat ]
   ADJ:
     Clfx: [ '1', '2' ]
-    Genre: [ A, B, C, D ]
-    Nombre: [ Sg, Du, Pl ]
-  PREP: Null
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+  #  PREP: Null
   NNP:
-    Genre: [ A, B, C, D ]
-    Nombre: [ Sg, Du, Pl ]
-    Cas: [ Erg, Abs, Obl, Dat ]
-#  DET2:
-#    Nombre: [ Sg, Du, Pl ]
-#    Cas: [ Erg, Abs, Obl, Dat ]
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+    Cas: [ erg, abs, obl, dat ]
 destination:
   N:
-    Genre: [ M, F ]
-    Nombre: [ Sg, Pl ]
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
     Clfx: [ '1', '2' ]
   V:
-    Genre: [ M, F ]
-    Nombre: [ Sg, Pl ]
-    Temps: [ PRS, PST ]
-    Type: [ VI, VT, VD ]
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+    Temps: [ prs, pst ]
+    Type: [ vi, vt, vd ]
   DET:
-    Genre: [ M, F ]
-    Nombre: [ Sg, Pl ]
-    Def: [ DEF, INDEF, DEM ]
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+    Def: [ def, indef, dem ]
   ADJ:
     Clfx: [ '1', '2', '3', '4' ]
-    Genre: [ M, F ]
-    Nombre: [ Sg, Pl ]
-  PREP: Null
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  #  PREP: Null
   NNP:
-    Genre: [ M, F ]
-    Nombre: [ Sg, Pl ]
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
     Clfx: [ '1', '2' ]
-#  DET2:
-#    Genre: [ M, F ]
-#    Nombre: [ Sg, Pl ]
-#    Def: [ DEF, INDEF, DEM ]
+  TP:
+    - Mode: [ tutu ]
+      Genre: [ m, f ]
