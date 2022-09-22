@@ -33,15 +33,15 @@ frozendict==2.3.4 \
     --hash=sha256:dae686722c144b333c4dbdc16323a5de11406d26b76d2be1cc175f90afacb5ba \
     --hash=sha256:dbbe1339ac2646523e0bb00d1896085d1f70de23780e4927ca82b36ab8a044d3
     # via -r requirements.in
-joblib==1.1.0 \
+joblib==1.2.0 \
     --hash=sha256:4158fcecd13733f8be669be0683b96ebdbbd38d23559f54dca7205aea1bf1e35 \
     --hash=sha256:f21f109b3c7ff9d95f8387f752d0d9c34a02aa2f7060c2135f465da0e5160ff6
     # via nltk
-more-itertools==8.13.0 \
+more-itertools==8.14.0 \
     --hash=sha256:a42901a0a5b169d925f6f217cd5a190e32ef54360905b9c39ee7db5313bfec0f \
     --hash=sha256:c5122bffc5f104d37c1626b8615b511f3427aa5389b94d61e5ef8236bfbc3ddb
     # via -r requirements.in
-multimethod==1.8 \
+multimethod==1.9 \
     --hash=sha256:10f79f40c35c7cc87c40efa753960900429705e0c08078a084136cb8ce67b840 \
     --hash=sha256:ebff0b254d9373b587a99fdd5c238fc0e76861b802704a56d9a71d78aa7d097f
     # via -r requirements.in
@@ -49,7 +49,7 @@ nltk==3.7 \
     --hash=sha256:ba3de02490308b248f9b94c8bc1ac0683e9aa2ec49ee78536d8667afb5e3eec8 \
     --hash=sha256:d6507d6460cec76d70afea4242a226a7542f85c669177b9c7f562b7cf1b05502
     # via -r requirements.in
-numpy==1.23.1 \
+numpy==1.23.3 \
     --hash=sha256:1408c3527a74a0209c781ac82bde2182b0f0bf54dea6e6a363fe0cc4488a7ce7 \
     --hash=sha256:173f28921b15d341afadf6c3898a34f20a0569e4ad5435297ba262ee8941e77b \
     --hash=sha256:1865fdf51446839ca3fffaab172461f2b781163f6f395f1aed256b1ddc253622 \
@@ -72,12 +72,14 @@ numpy==1.23.1 \
     --hash=sha256:c2f91f88230042a130ceb1b496932aa717dcbd665350beb821534c5c7e15881c \
     --hash=sha256:d748ef349bfef2e1194b59da37ed5a29c19ea8d7e6342019921ba2ba4fd8b624 \
     --hash=sha256:e0d7447679ae9a7124385ccf0ea990bb85bb869cef217e2ea6c844b6a6855073
-    # via pandas
+    # via
+    #   -r requirements.in
+    #   pandas
 packaging==21.3 \
     --hash=sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb \
     --hash=sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522
     # via build
-pandas==1.4.3 \
+pandas==1.5.0 \
     --hash=sha256:07238a58d7cbc8a004855ade7b75bbd22c0db4b0ffccc721556bab8a095515f6 \
     --hash=sha256:0daf876dba6c622154b2e6741f29e87161f844e64f84801554f879d27ba63c0d \
     --hash=sha256:16ad23db55efcc93fa878f7837267973b61ea85d244fc5ff0ccbcfa5638706c5 \
@@ -116,7 +118,7 @@ python-dateutil==2.8.2 \
     --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \
     --hash=sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9
     # via pandas
-pytz==2022.1 \
+pytz==2022.2.1 \
     --hash=sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7 \
     --hash=sha256:e68985985296d9a66a881eb3193b0906246245294a881e7c8afe623866ac6a5c
     # via pandas
@@ -155,7 +157,7 @@ pyyaml==6.0 \
     --hash=sha256:e61ceaab6f49fb8bdfaa0f92c4b57bcfbea54c09277b1b4f7ac376bfb7a7c174 \
     --hash=sha256:f84fbc98b019fef2ee9a1cb3ce93e3187a6df0b2538a651bfb890254ba9f90b5
     # via -r requirements.in
-regex==2022.7.25 \
+regex==2022.9.13 \
     --hash=sha256:03cdd06061426378a83e8a5bdec9cc71b964c35e329f68fb7058d08791780c83 \
     --hash=sha256:03d7ff80e3a276ef460baaa745d425162c19d8ea093d60ecf47f52ffee37aea5 \
     --hash=sha256:0798f6b97c3f8139c95af7b128a60909f5305b2e431a012083063298b2481e5d \
@@ -245,7 +247,7 @@ tomli==2.0.1 \
     # via
     #   build
     #   pep517
-tqdm==4.64.0 \
+tqdm==4.64.1 \
     --hash=sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d \
     --hash=sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6
     # via nltk
