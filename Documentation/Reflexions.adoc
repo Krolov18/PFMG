@@ -1,4 +1,3 @@
-[#reflexions-sur-la-construction-du-kalabatiste]
 = Reflexions sur la construction du Kalabatiste
 :toc: left
 :toc-title: Table des matières
@@ -153,8 +152,6 @@ texte
 
 texte
 
-
-
 [#Reecriture-en-se-focalisant-sur-les-fichiers-d-entree]
 == Réécriture en se focalisant sur les fichiers d'entrée
 
@@ -205,8 +202,8 @@ texte
 
 
 
-[#dejsonschema-a-cue]
-== de JsonSchema à CUE
+[#de-jsonschema-a-cue]
+== De JsonSchema à CUE
 
 texte
 
