@@ -1,0 +1,30 @@
+[#reflexions-sur-la-construction-du-kalabatiste]
+= Reflexions sur la construction du Kalabatiste
+:toc:
+
+[#Comment-reecrire-un-code-pour-le-rendre-plus-malleable]
+== Comment réécrire un code pour le rendre plus malléable
+
+[#oreinte-objet]
+=== Orienté Objet
+
+[#fonctionnel]
+=== Fonctionnel
+
+[#ni-l-un-ni-l-autre]
+=== Ni l'un ni l'autre ?
+
+[#decouverte-du-code-de-gb]
+== Découverte du code GB
+
+[#retro-engineering-vers-un-code-fonctionnel]
+== Retro engineering vers un code fonctionnel
+
+[#Reecriture-en-se-focalisant-sur-les-fichiers-d-entree]
+== Réécriture en se focalisant sur les fichiers d'entrée
+
+[#decouverte-des-schemas-json]
+== Découverte des schema JSON
+
+[#dejsonschema-a-cue]
+== de JsonSchema à CUE
