@@ -1,6 +1,7 @@
 [#reflexions-sur-la-construction-du-kalabatiste]
 = Reflexions sur la construction du Kalabatiste
-:toc:
+:toc: left
+:toclevels: 3
 
 [#Comment-reecrire-un-code-pour-le-rendre-plus-malleable]
 == Comment réécrire un code pour le rendre plus malléable
