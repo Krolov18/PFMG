@@ -1,7 +1,7 @@
 from frozendict import frozendict
 import pytest
 
-from lexique.applier import verify, apply, format_stem, is_v, is_a, is_u, is_123, is_456, is_789
+from lexique.applier import verify, apply, format_stem
 
 
 @pytest.mark.parametrize("t, stem, expected", [
@@ -28,60 +28,6 @@ from lexique.applier import verify, apply, format_stem, is_v, is_a, is_u, is_123
 def test_verify(phonology, t, stem, expected) -> None:
     actual = verify(t, stem, phonology)
     assert actual == expected
-
-
-@pytest.mark.parametrize("t, expected", [
-    ("1", True),
-    ("2", True),
-    ("3", True),
-    ("kjefrglkijdsqnhf", False),
-])
-def test_is_123(t, expected) -> None:
-    assert is_123(t) == expected
-
-
-@pytest.mark.parametrize("t, expected", [
-    ("4", True),
-    ("5", True),
-    ("6", True),
-    ("sodojusd", False),
-])
-def test_is_456(t, expected) -> None:
-    assert is_456(t) == expected
-
-
-@pytest.mark.parametrize("t, expected", [
-    ("7", True),
-    ("8", True),
-    ("9", True),
-    ("olqefoujehbouier", False),
-])
-def test_is_789(t, expected) -> None:
-    assert is_789(t) == expected
-
-
-@pytest.mark.parametrize("t, expected", [
-    ("A", True),
-    ("sdhzhtr", False),
-])
-def test_is_a(t, expected) -> None:
-    assert is_a(t) == expected
-
-
-@pytest.mark.parametrize("t, expected", [
-    ("U", True),
-    ("likshdfoihsz", False),
-])
-def test_is_u(t, expected) -> None:
-    assert is_u(t) == expected
-
-
-@pytest.mark.parametrize("t, expected", [
-    ("V", True),
-    ("ljurgb", False)
-])
-def test_is_v(t, expected) -> None:
-    assert is_v(t) == expected
 
 
 @pytest.mark.parametrize("stem, expected", [
