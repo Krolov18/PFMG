@@ -113,7 +113,7 @@ def ruler_gabarit(rule: str, sigma: type_Sigma) -> Gabarit:
     return Gabarit(rule=i_rule, sigma=sigma)
 
 
-def ruler_any(rule: str, sigma: type_Sigma) -> type_Morpheme:
+def any_ruler(rule: str, sigma: type_Sigma) -> type_Morpheme:
     """
     Parcourt chaucune des règles disponibles puis renvoie la première qui matche.
     :param rule: Une règle parmi toutes celles possibles

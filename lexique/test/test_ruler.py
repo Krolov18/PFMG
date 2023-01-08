@@ -2,7 +2,7 @@ import pytest
 from frozendict import frozendict
 
 from lexique.ruler import (ruler_prefix, ruler_suffix, ruler_circumfix, ruler_condition,
-                           ruler_selection, ruler_gabarit, ruler_any)
+                           ruler_selection, ruler_gabarit, any_ruler)
 from lexique.structures import Condition, Selection, Prefix, Suffix, Circumfix, Gabarit
 
 
@@ -87,7 +87,7 @@ def test_ruler_condition(rule, sigma) -> None:
     ("X2?X2:X1", Condition)
 ])
 def test_rule_any(rule, expected) -> None:
-    actual = ruler_any(rule=rule, sigma=frozendict(genre="m", nombre="sg"))
+    actual = any_ruler(rule=rule, sigma=frozendict(genre="m", nombre="sg"))
     assert isinstance(actual, expected)
 
 
@@ -101,4 +101,4 @@ def test_rule_any(rule, expected) -> None:
 ])
 def test_rule_any_errors(rule, expected) -> None:
     with pytest.raises(ValueError):
-        _ = ruler_any(rule=rule, sigma=frozendict(genre="m", nombre="sg"))
+        _ = any_ruler(rule=rule, sigma=frozendict(genre="m", nombre="sg"))
