@@ -3,7 +3,7 @@ from enum import Enum
 
 from frozendict import frozendict  # type: ignore
 
-from lexique.structures import Prefix, Suffix, Circumfix, Gabarit, Condition, Selection
+from lexique.structures import Prefix, Suffix, Circumfix, Gabarit, Condition, Selection, Radical
 from lexique.types_for_kalaba import type_Sigma
 from utils.abstract_factory import factory_function
 from utils.functions import static_vars
@@ -111,6 +111,12 @@ def ruler_gabarit(rule: str, sigma: type_Sigma) -> Gabarit:
     """
     assert (i_rule := getattr(ruler_gabarit, "REG").fullmatch(rule)) is not None
     return Gabarit(rule=i_rule, sigma=sigma)
+
+
+@static_vars(REG=re.compile(r""))
+def ruler_radical(rule: str, sigma: type_Sigma, stems: str | tuple[str, ...]) -> Radical:
+    assert (i_rule := getattr(ruler_radical, "REG").fullmatch(rule)) is not None
+    return Radical(rule=i_rule, sigma=sigma, stem=stems)
 
 
 def any_ruler(rule: str, sigma: type_Sigma) -> type_Morpheme:
