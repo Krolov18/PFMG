@@ -1,4 +1,5 @@
 -r requirements.txt
+coverage==7.1.0
 jupyter==1.0.0
 mypy==0.991
 pandas-stubs==1.5.2.230105
