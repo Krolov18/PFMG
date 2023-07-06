@@ -1,9 +1,9 @@
 -r requirements.txt
-coverage==7.1.0
+coverage==7.2.7
 jupyter==1.0.0
-mypy==0.991
-pandas-stubs==1.5.2.230105
-pytest==7.2.1
+mypy==1.4.1
+pandas-stubs==2.0.2.230605
+pytest==7.4.0
 types-frozendict==2.0.9
 types-PyYAML==6.0.12.3
-typing-extensions==4.4.0
+typing-extensions==4.7.1
