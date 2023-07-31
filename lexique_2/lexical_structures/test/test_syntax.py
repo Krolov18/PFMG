@@ -1,4 +1,6 @@
 # pylint: disable=missing-module-docstring,line-too-long,missing-function-docstring
+from pathlib import Path
+
 import pytest
 import yaml
 from nltk import FeatStruct, Variable, Production
@@ -581,10 +583,9 @@ def test_concatenate_rule_features(p1, p2, expected) -> None:
     assert actual == expected
 
 
-@pytest.mark.skip(reason="en cours de construction")
+# @pytest.mark.skip(reason="en cours de construction")
 def test_parse_config() -> None:
-    yaml_filename = ("/home/korantin/projects/PycharmProjects/PFMG/lexique_2/"
-                     "lexical_structures/syntaxe/test/data_for_test/morpho.yaml")
+    yaml_filename = Path(__file__).parent / "data_for_test" / "MorphoSyntax.yaml"
     with open(yaml_filename) as fh:
         config = yaml.safe_load(fh)
     result = syn.parse_config(config)
