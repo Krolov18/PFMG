@@ -3,7 +3,6 @@ from pathlib import Path
 
 import yaml
 
-from lexique.types_for_kalaba import type_apophonies, type_derives, type_mutations, type_consonnes, type_voyelles
 from lexique_2.lexical_structures.interfaces.Reader import Reader
 
 
@@ -17,11 +16,11 @@ class Phonology(Reader):
     :param consonnes : Ensemble des consonnes.
     :param voyelles : Ensemble des voyelles.
     """
-    apophonies: type_apophonies
-    derives: type_derives
-    mutations: type_mutations
-    consonnes: type_consonnes
-    voyelles: type_voyelles
+    apophonies: dict[str, str]
+    derives: dict[str, str]
+    mutations: dict[str, str]
+    consonnes: set[str]
+    voyelles: set[str]
 
     @classmethod
     def from_disk(cls, path: Path) -> 'Phonology':
