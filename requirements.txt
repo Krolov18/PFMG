@@ -129,9 +129,9 @@ pandas==2.0.3 \
     --hash=sha256:f167beed68918d62bffb6ec64f2e1d8a7d297a038f86d4aed056b9493fca407f \
     --hash=sha256:f3421a7afb1a43f7e38e82e844e2bca9a6d793d66c1a7f9f0ff39a795bbc5e02
     # via -r requirements.in
-pip-tools==6.14 \
-    --hash=sha256:06366be0e08d86b416407333e998b4d305d5bd925151b08942ed149380ba3e47 \
-    --hash=sha256:c5ad042cd27c0b343b10db1db7f77a7d087beafbec59ae6df1bba4d3368dfe8c
+pip-tools==7.1.0 \
+    --hash=sha256:4e60b7d05b046f49ad5bf3c2818df8e78dec5820e9b331cd9898cff5ec19ff2f \
+    --hash=sha256:f6ead499e726c8cfee04b2dea6282a9faf29663c378d9a4aca2ea6b86c8ec715
     # via -r requirements.in
 pycue==0.1.2 \
     --hash=sha256:c587f3d80ff6c67f035903ead6e8f988c9833a7180b90522a7d9796701d00b7a
@@ -267,6 +267,7 @@ tomli==2.0.1 \
     # via
     #   build
     #   pip-tools
+    #   pyproject-hooks
 tqdm==4.65.0 \
     --hash=sha256:1871fb68a86b8fb3b59ca4cdd3dcccbc7e6d613eeed31f4c332531977b89beb5 \
     --hash=sha256:c4f53a17fe37e132815abceec022631be8ffe1b9381c2e6e30aa70edc99e9671
