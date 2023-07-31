@@ -1,11 +1,17 @@
 import argparse
+import os
 from argparse import Namespace
+from pathlib import Path
 
 import cue  # type: ignore
 import pytest
 
 from lexique_2.actions import action
-from utils.paths import get_data_test_grammar
+from utils.paths import get_project_path
+
+
+def get_data_test_grammar() -> Path:
+    return Path(__file__).parent / "test" / "data_for_test"
 
 
 @pytest.mark.parametrize("namespace", [
