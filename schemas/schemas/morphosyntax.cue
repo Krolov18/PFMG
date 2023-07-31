@@ -1,9 +1,9 @@
 package morphosyntax
 
-import (
-	"list"
-	"struct"
-)
+//import (
+//	"list"
+//	"struct"
+//)
 
 #category: =~"^[A-Z]+$"
 
@@ -25,11 +25,11 @@ import (
 
 #identifier: =~"[A-Z]+P"
 
-#Syntagmes: [#identifier]: [...[...string]]
+#Syntagmes: [#identifier]: [...[...string] & [_, ...string]]
 
-#Accords: [#identifier]: [...[...string] | string]
+#Accords: [#identifier]: [...string] & [_, ...string]
 
-#Percolations: [#identifier]: [...[...string] | string]
+#Percolations: [#identifier]: [...string] & [_, ...string]
 
 #Traductions: [#identifier]: [...[...int]]
 
@@ -39,11 +39,4 @@ import (
 	percolations: _
 	_sameLength:  and([ for key, value in syntagmes {len(value), len(accords[key]), len(percolations[key])}])
 	_sameKeys:    and([...])
-}
-
-#Francais: #Longueur & {
-	syntagmes: NP: [["D", "A*", "N", "A*"]]
-	accords: NP: ["Genre,Nombre"]
-	percolations: NP: ["Genre,Nombre"]
-	traductions: NP: [[]]
 }
