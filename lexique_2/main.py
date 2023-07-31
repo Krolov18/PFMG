@@ -12,6 +12,6 @@ if __name__ == '__main__':
     # un argument pour le chemin des fichiers de config d'une grammaire (Phonology, Stems, Blocks et Gloses)
     LEXICON.add_argument("datapath", type=pathlib.Path)
 
-    args = PARSER.parse_args(["lexicon", "/home/korantin/PycharmProjects/PFMG/lexique_2/test/data_for_test/grammar"])
+    args = PARSER.parse_args()
 
     action(namespace=args)

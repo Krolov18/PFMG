@@ -1,0 +1,64 @@
+N:
+  - Nombre=sg: X+mo
+    Genre=a,Nombre=du: X+ak
+    Genre=b,Nombre=du: X+ek
+    Genre=c,Nombre=du: X+ik
+    Genre=d,Nombre=du: X+ok
+    Genre=a,Nombre=pl: X+uk
+    Genre=b,Nombre=pl: X+ut
+    Genre=c,Nombre=pl: X+op
+    Genre=d,Nombre=pl: X+ol
+  - Cas=erg: re+X
+    Cas=abs: bo+X
+    Cas=obl: ko+X
+    Cas=dat: li+X
+NNP:
+  - Nombre=sg: X+do
+    Genre=a,Nombre=du: X+ca
+    Genre=b,Nombre=du: X+ce
+    Genre=c,Nombre=du: X+ci
+    Genre=d,Nombre=du: X+cu
+    Genre=a,Nombre=pl: X+co
+    Genre=b,Nombre=pl: X+cp
+    Genre=c,Nombre=pl: X+ck
+    Genre=d,Nombre=pl: X+cm
+  - Cas=erg: re+X
+    Cas=abs: bo+X
+    Cas=obl: ko+X
+    Cas=dat: li+X
+V:
+  - Temps=prs,Genre=a: kol+X
+    Temps=prs,Genre=b: kop+X
+    Temps=prs,Genre=c: kou+X
+    Temps=prs,Genre=d: kof+X
+    Temps=pst,Genre=a: koe+X
+    Temps=pst,Genre=b: kor+X
+    Temps=pst,Genre=c: kot+X
+    Temps=pst,Genre=d: kod+X
+  - Nombre=sg: p+X
+    Nombre=du: s+X
+    Nombre=pl: d+X
+
+ADJ:
+  - Cf=1,Nombre=sg: X+i
+    Cf=2,Nombre=sg: X+o
+    Nombre=du: X+a
+    Cf=1,Nombre=pl: X+o
+    Cf=2,Nombre=pl: X+i
+  - Cf=1,Genre=a: X+v
+    Cf=1,Genre=b: X+f
+    Cf=1,Genre=c: X+d
+    Cf=1,Genre=d: X+k
+    Cf=2,Genre=a: X+m
+    Cf=2,Genre=b: X+v
+    Cf=2,Genre=c: X+t
+    Cf=2,Genre=d: X+g
+DET:
+  - Nombre=sg: X+o
+    Nombre=du: X+a
+    Nombre=pl: X+i
+  - Cas=obl: X+g
+    Cas=erg: X+m
+    Cas=abs: X+k
+    Cas=dat: X+t
+#PREP: {}
