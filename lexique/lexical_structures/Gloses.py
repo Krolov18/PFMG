@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import itertools as it
 from functools import cache
 from pathlib import Path
-from typing import Iterator
+from typing import Iterator, overload
 
 import yaml
 from frozendict import frozendict
@@ -47,7 +47,17 @@ class Gloses(Reader, Searchable):
                          for category, att_vals in data.items()})
 
     @staticmethod
-    def __gridify(grid: d_or_l_grid) -> Iterator[frozendict]:
+    @overload
+    def __gridify(grid: dict[str, list[str]]) -> Iterator[frozendict]:
+        ...
+
+    @staticmethod
+    @overload
+    def __gridify(grid: list[dict[str, list[str]]]) -> Iterator[frozendict]:
+        ...
+
+    @staticmethod
+    def __gridify(grid) -> Iterator[frozendict]:
         """
         :param grid: dictionnaire Attribut -> [Valeurs]
                      ou liste de dictionnaires Attribut -> [Valeurs]

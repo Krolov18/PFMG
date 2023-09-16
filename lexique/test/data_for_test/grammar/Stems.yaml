@@ -1,30 +1,30 @@
-#N:
-#  a:
-#    padaN: viande-2.F
-#    toSik: fruit-2.M
-#    modak: infirmière-2.F
-#    gatok: balai-2.M
-#    pebiz: plaine-2.F
-#  b:
-#    minet: autruche-2.F
-#    SeNon: souris-1.F
-#    sapum: coussin-2.M
-#    gitun: chambre-2.F
-#    maren: thé-2.M
-#  c:
-#    diNol: chasseur-2.M
-#    minut: fille-2.F
-#    Zerom: oeuf-2.M
-#    felot: café-2.M
-#    potaS: coyote-2.M
-#    kasab: village-2.M
-#  d:
-#    mesaZ: garçon-2.M
-#    pulop: cuisine-2.F
-#    Nazon: table-2.F
-#    rumak: chat,chatte-2
-#    gobid: lit-2.M
-#    kuroz: maison-2.F
+N:
+  a:
+    padaN: viande-F
+    toSik: fruit-M
+    modak: infirmière-F
+    gatok: balai-M
+    pebiz: plaine-F
+  b:
+    minet: autruche-F
+    SeNon: souris-F
+    sapum: coussin-M
+    gitun: chambre-F
+    maren: thé-M
+  c:
+    diNol: chasseur-M
+    minut: fille-F
+    Zerom: oeuf-M
+    felot: café-M
+    potaS: coyote-M
+    kasab: village-M
+  d:
+    mesaZ: garçon-M
+    pulop: cuisine-F
+    Nazon: table-F
+    rumak: chat,chatte
+    gobid: lit-M
+    kuroz: maison-F
 #####################
 ##
 ## ADJECTIFS
@@ -90,3 +90,5 @@ V:
 #  dul: devant
 #  laN: pour
 #  sil: de
+
+# le chat de Marie mange deux infirmières

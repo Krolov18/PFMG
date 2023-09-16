@@ -8,7 +8,7 @@ from lexique.lexical_structures.Morphemes import Morphemes
 
 
 @dataclass
-class Forme(MixinDisplay, Rulable):
+class FormeEntry(MixinDisplay, Rulable):
     """
     La forme est la réalisation d'un lexème.
     :param traduction : Réalisation du lexème de la traduction
@@ -33,3 +33,9 @@ class Forme(MixinDisplay, Rulable):
         sigma = {key: value for key, value in self.get_sigma().items() if key.istitle()}
         features = ','.join(f"{key}='{value}'" for key, value in sigma.items())
         return f"{self.pos}[{features}] -> '{self.to_string()}'"
+
+
+@dataclass
+class Forme:
+    source: FormeEntry
+    destination: FormeEntry

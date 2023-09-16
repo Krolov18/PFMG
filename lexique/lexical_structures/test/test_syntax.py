@@ -34,23 +34,23 @@ def test_syntax_raising(term) -> None:
 
 
 @pytest.mark.parametrize("term, expected", [
-    ("VER", [["VER"]]),
-    ("PP/?", [[""], ["PP"]]),
-    ("PP/{,0}", [[""]]),
-    ("PP/{,1}", [[""], ["PP"]]),
-    ("PP/{,2}", [[""], ["PP"], ["PP", "PP"]]),
-    ("PP/{0,2}", [[""], ["PP"], ["PP", "PP"]]),
-    ("PP/{1,2}", [["PP"], ["PP", "PP"]]),
-    ("PP/{2,2}", [["PP", "PP"]]),
-    ("PP/{0, 2}", [[""], ["PP"], ["PP", "PP"]]),
-    ("PP/{0 ,2}", [[""], ["PP"], ["PP", "PP"]]),
-    ("PP/{0 , 2}", [[""], ["PP"], ["PP", "PP"]]),
-    ("PP/{, 2}", [[""], ["PP"], ["PP", "PP"]]),
-    ("PP/{0,1}", [[""], ["PP"]]),
-    ("PP/{0 ,1}", [[""], ["PP"]]),
-    ("PP/{0, 1}", [[""], ["PP"]]),
-    ("PP/{0 , 1}", [[""], ["PP"]]),
-    ("PP/{ 0,1 }", [[""], ["PP"]]),
+    ("VER",         [["VER"]]),
+    ("PP/?",        [[""], ["PP"]]),
+    ("PP/{,0}",     [[""]]),
+    ("PP/{,1}",     [[""], ["PP"]]),
+    ("PP/{,2}",     [[""], ["PP"], ["PP", "PP"]]),
+    ("PP/{0,2}",    [[""], ["PP"], ["PP", "PP"]]),
+    ("PP/{1,2}",    [["PP"], ["PP", "PP"]]),
+    ("PP/{2,2}",    [["PP", "PP"]]),
+    ("PP/{0, 2}",   [[""], ["PP"], ["PP", "PP"]]),
+    ("PP/{0 ,2}",   [[""], ["PP"], ["PP", "PP"]]),
+    ("PP/{0 , 2}",  [[""], ["PP"], ["PP", "PP"]]),
+    ("PP/{, 2}",    [[""], ["PP"], ["PP", "PP"]]),
+    ("PP/{0,1}",    [[""], ["PP"]]),
+    ("PP/{0 ,1}",   [[""], ["PP"]]),
+    ("PP/{0, 1}",   [[""], ["PP"]]),
+    ("PP/{0 , 1}",  [[""], ["PP"]]),
+    ("PP/{ 0,1 }",  [[""], ["PP"]]),
 ])
 def test_syntax(term, expected):
     actual = syn.repeat(term)
@@ -73,8 +73,6 @@ def test_syntax(term, expected):
 def test_develop(term, expected) -> None:
     actual = list(syn.develop(term))
     assert actual == expected
-
-
 
 
 parametrize = pytest.mark.parametrize("accords, accumulator, expected", [
@@ -308,24 +306,79 @@ def test_parse_percolation(percolation, accords, accumulator, expected):
 
 
 parametrize = pytest.mark.parametrize("percolation, accords, accumulator, error", [
-    ("Genre=m", [FeatStruct(Source=FeatStruct()), FeatStruct(Source=FeatStruct())], FeatStruct(Source=FeatStruct()),
+
+    ("Genre=m",
+     [FeatStruct(Source=FeatStruct()),
+      FeatStruct(Source=FeatStruct())],
+     FeatStruct(Source=FeatStruct()),
      TypeError),
-    ("Genre=m", [FeatStruct(Destination=FeatStruct()), FeatStruct(Destination=FeatStruct())],
-     FeatStruct(Destination=FeatStruct()), TypeError),
-    ("Genre", [FeatStruct(Source=FeatStruct()), FeatStruct(Source=FeatStruct())], FeatStruct(Source=FeatStruct()),
+
+    ("Genre=m",
+     [FeatStruct(Destination=FeatStruct()),
+      FeatStruct(Destination=FeatStruct())],
+     FeatStruct(Destination=FeatStruct()),
      TypeError),
-    ("Genre", [FeatStruct(Destination=FeatStruct()), FeatStruct(Destination=FeatStruct())],
-     FeatStruct(Destination=FeatStruct()), TypeError),
-    ("Genre;", [], FeatStruct(Source=FeatStruct()), IndexError),
-    ("Genre;", [], FeatStruct(Destination=FeatStruct()), IndexError),
-    ("Genre=", [FeatStruct(Source=FeatStruct())], FeatStruct(Source=FeatStruct()), TypeError),
-    ("Genre=", [FeatStruct(Destination=FeatStruct())], FeatStruct(Destination=FeatStruct()), TypeError),
-    ("=m", [FeatStruct(Source=FeatStruct())], FeatStruct(Source=FeatStruct()), TypeError),
-    ("=m", [FeatStruct(Destination=FeatStruct())], FeatStruct(Destination=FeatStruct()), TypeError),
-    ("=", [FeatStruct(Source=FeatStruct())], FeatStruct(Source=FeatStruct()), TypeError),
-    ("=", [FeatStruct(Destination=FeatStruct())], FeatStruct(Destination=FeatStruct()), TypeError),
-    ("Genre=m", [FeatStruct(Source=FeatStruct(SGenre="f"))], FeatStruct(Source=FeatStruct(SGenre="f")), TypeError),
-    ("Genre=m", [FeatStruct(Destination=FeatStruct(DGenre="f"))], FeatStruct(Destination=FeatStruct(DGenre="f")),
+
+    ("Genre",
+     [FeatStruct(Source=FeatStruct()),
+      FeatStruct(Source=FeatStruct())],
+     FeatStruct(Source=FeatStruct()),
+     TypeError),
+
+    ("Genre",
+     [FeatStruct(Destination=FeatStruct()),
+      FeatStruct(Destination=FeatStruct())],
+     FeatStruct(Destination=FeatStruct()),
+     TypeError),
+
+    ("Genre;",
+     [],
+     FeatStruct(Source=FeatStruct()),
+     IndexError),
+
+    ("Genre;",
+     [],
+     FeatStruct(Destination=FeatStruct()),
+     IndexError),
+
+    ("Genre=",
+     [FeatStruct(Source=FeatStruct())],
+     FeatStruct(Source=FeatStruct()),
+     TypeError),
+
+    ("Genre=",
+     [FeatStruct(Destination=FeatStruct())],
+     FeatStruct(Destination=FeatStruct()),
+     TypeError),
+
+    ("=m",
+     [FeatStruct(Source=FeatStruct())],
+     FeatStruct(Source=FeatStruct()),
+     TypeError),
+
+    ("=m",
+     [FeatStruct(Destination=FeatStruct())],
+     FeatStruct(Destination=FeatStruct()),
+     TypeError),
+
+    ("=",
+     [FeatStruct(Source=FeatStruct())],
+     FeatStruct(Source=FeatStruct()),
+     TypeError),
+
+    ("=",
+     [FeatStruct(Destination=FeatStruct())],
+     FeatStruct(Destination=FeatStruct()),
+     TypeError),
+
+    ("Genre=m",
+     [FeatStruct(Source=FeatStruct(SGenre="f"))],
+     FeatStruct(Source=FeatStruct(SGenre="f")),
+     TypeError),
+
+    ("Genre=m",
+     [FeatStruct(Destination=FeatStruct(DGenre="f"))],
+     FeatStruct(Destination=FeatStruct(DGenre="f")),
      TypeError)
 ])
 
@@ -363,30 +416,37 @@ parametrize = pytest.mark.parametrize("syntagme, traduction, f_accords, f_percol
 
     (["D", "N"],
      [0, 1],
-     [FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))), FeatStruct(Source=FeatStruct(Genre=Variable("Genre")))],
+     [FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
+      FeatStruct(Source=FeatStruct(Genre=Variable("Genre")))],
      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
-     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("0"))),
-       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("1")))],
-      FeatStruct(
-          Source=FeatStruct(Genre=Variable("Genre"), Traduction=FeatureValueTuple([Variable("0"), Variable("1")]))))),
+     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("0"))),
+       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("1")))],
+      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                   Traduction=FeatureValueTuple([Variable("0"), Variable("1")]))))),
 
     (["D", "N"],
      [1, 0],
      [FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
       FeatStruct(Source=FeatStruct(Genre=Variable("Genre")))],
      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
-     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("0"))),
-       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("1")))],
-      FeatStruct(
-          Source=FeatStruct(Genre=Variable("Genre"), Traduction=FeatureValueTuple([Variable("1"), Variable("0")]))))),
+     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("0"))),
+       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("1")))],
+      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                   Traduction=FeatureValueTuple([Variable("1"), Variable("0")]))))),
 
     (["D", "N"],
      [0, 1, 0],
      [FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
       FeatStruct(Source=FeatStruct(Genre=Variable("Genre")))],
      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
-     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("0"))),
-       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("1")))],
+     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("0"))),
+       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("1")))],
       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
                                    Traduction=FeatureValueTuple([Variable("0"), Variable("1"), Variable("0")]))))),
 
@@ -395,20 +455,27 @@ parametrize = pytest.mark.parametrize("syntagme, traduction, f_accords, f_percol
      [FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
       FeatStruct(Source=FeatStruct(Genre=Variable("Genre")))],
      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"))),
-     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("0"))),
-       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=Variable("1")))],
-      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"), Traduction=FeatureValueTuple([Variable("1")]))))),
+     ([FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("0"))),
+       FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                    Traduction=Variable("1")))],
+      FeatStruct(Source=FeatStruct(Genre=Variable("Genre"),
+                                   Traduction=FeatureValueTuple([Variable("1")]))))),
 ])
 
 
 @parametrize
 def test_parse_traduction(syntagme, traduction, f_accords, f_percolation, expected) -> None:
-    syn.parse_traduction(syntagme=syntagme, traduction=traduction, f_accords=f_accords, f_percolation=f_percolation)
+    syn.parse_traduction(syntagme=syntagme,
+                         traduction=traduction,
+                         f_accords=f_accords,
+                         f_percolation=f_percolation)
     assert f_accords == expected[0]
     assert f_percolation == expected[1]
 
 
 parametrize = pytest.mark.parametrize("lhs, syntagme, accords, percolation, traduction, expected", [
+
     ("NP", ["D", "N"], "Genre,Nombre", "Genre,Nombre", None,
      Production(
          lhs=FeatStructNonterminal("NP",

@@ -18,6 +18,26 @@ class Paradigm(Realizer, Reader):
     gloses: Gloses
     blocks: Blocks
 
+    def __realise(self, lexeme: LexemeEntry, blocks: BlockEntry) -> list[Entry]:
+        entries: list[FormeEntry] = list()
+
+        for i_sigma in sigmas:
+            if lexeme.sigma.items() <= i_sigma.items():
+                entries.append(
+                    Entry(
+                        pos=lexeme.pos,
+                        sigma=i_sigma,
+                        morphemes=Morphemes(
+                            radical=lexeme.to_radical(),
+                            others=blocks.select_morphemes(
+                                pos=lexeme.pos,
+                                sigma=i_sigma
+                            )
+                        )
+                    )
+                )
+        return entries
+
     def realize(self, lexeme: Lexeme) -> list[Forme]:
         """
         Méthode qui permet de réaliser un lexème donné.
@@ -25,21 +45,12 @@ class Paradigm(Realizer, Reader):
         :param lexeme: Lexème à réaliser.
         :return: Liste des réalisations du lexème.
         """
-        formes: list[Forme] = []
-
-        for i_sigma in self.gloses.data[lexeme.pos]:
-            if lexeme.sigma.items() <= i_sigma.items():
-                formes.append(
-                    Forme(
-                        pos=lexeme.pos,
-                        morphemes=Morphemes(
-                            radical=lexeme.to_radical(),
-                            others=self.blocks.select_morphemes(
-                                pos=lexeme.pos,
-                                sigma=i_sigma)),
-                        sigma=i_sigma)
-                )
-        return formes
+        return [Forme(source=s,
+                      destination=d)
+                for s, d in zip(self.__realise(lexeme=lexeme.source,
+                                               blocks=self.blocks.source),
+                                self.__realise(lexeme=lexeme.destination,
+                                               blocks=self.blocks.destination))]
 
     @classmethod
     def from_disk(cls, path: Path) -> 'Paradigm':
