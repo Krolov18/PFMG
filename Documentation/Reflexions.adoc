@@ -1,227 +1,52 @@
 = Reflexions sur la construction du Kalabatiste
-:toc: left
-:toc-title: Table des matières
-:toc-class: toto
-:toc-max-pagenum-digits: 3
-:toclevels: 3
+:toc:
 
 [#Comment-reecrire-un-code-pour-le-rendre-plus-malleable]
 == Comment réécrire un code pour le rendre plus malléable
 
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
+Lecture et débuggage du code initial.
 
 [#oreinte-objet]
 === Orienté Objet
 
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-
+Le code de base se voulait orienté objet.
+Je me suis donc mis à réfléchir de manière orienté objet.
+Néanmoins, à force de fouiller le code, de comprendre le code, de comprendre logique derrière tout cela, il m'est apparu que certaines classes étaient en fait des fonctions et que d'autres étaient des structures de données.
+J'ai ainsi changé de façon d'opérer.
+Développant le projet en python, python 3.7 (à l'époque ahah), j'ai transformé toutes les structures de données nécessaires au fonctionnement du projet et DataClass (équivalent grossier des struct en C.) Il m'a fallu, de ce fait, identifier les éléments clés et les articulations avant de continuer.
 
 [#fonctionnel]
 === Fonctionnel
 
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-
+Je suis ainsi passé en fonctionnel.
+Mes structures (Lexeme, Forme, Morpheme) pouvaient se "réaliser".
+J'ai donc écrit une fonction "réalise" qui suivant le type du paramètre donné allait réaliser la structure de données.
 
 [#ni-l-un-ni-l-autre]
 === Ni l'un ni l'autre ?
 
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-
-
-[#decouverte-du-code-de-gb]
-== Découverte du code GB
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-
-
-[#retro-engineering-vers-un-code-fonctionnel]
-== Retro engineering vers un code fonctionnel
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
 [#Reecriture-en-se-focalisant-sur-les-fichiers-d-entree]
 == Réécriture en se focalisant sur les fichiers d'entrée
 
-texte
+Une fois le code stabilisé, fonctionnel, entièrement testé (enfin entièrement... disons au maximum), je me suis mis bille en tête que l'utilisateur de ce package ne devait pas toucher au code.
+Du moins, cette possibilité devait venir en tout dernier recours.
+J'ai donc mis le paquet sur les fichiers d'entrée.
+Le véritable point d'entrée.
 
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-
+L'utilisateur doit éditer quatre fichiers, Gloses, Blocks, Stems et MorphoSyntax.
+Ces cinq fichiers définissent dans l'ordre : les cases des paradigmes (Gloses).
+On va renseigner, par exemple qu'un nom, du fait qu'il varie en genre et en nombre et que le genre comme le nombre comptent deux valeurs, nous aurons (2 * 2) 4 cases dans le paradigme pour réaliser un lexème de catégorie nominale.
+Blocks définit les règles de réalisations soient les "morphèmes".
+On va pouvoir trouver dans fichier quelque chose comme `N -> [[nombre=pl: X+s]]`.
+Cette spécification nous apprend qu'un nom ne subira qu'une transformation lors de sa réalisation il sera suffixé d'un `s` mais uniquement si la forme est au pluriel (donc, peu importe le genre).
+Stems définit les lexèmes. Un lexème sera défnit comme une catégorie syntaxique, un ensemble thématique, un sigma inhérent et une traduction.
 
 [#decouverte-des-schemas-json]
 == Découverte des schema JSON
 
 texte
 
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-
-
 [#de-jsonschema-a-cue]
 == De JsonSchema à CUE
 
 texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
-texte
-
