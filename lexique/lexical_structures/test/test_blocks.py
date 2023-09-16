@@ -3,7 +3,7 @@ import yaml
 from frozendict import frozendict
 
 from lexique.lexical_structures.Blocks import Blocks
-from lexique.lexical_structures.Factoy import create_morpheme
+from lexique.lexical_structures.Factory import create_morpheme
 from lexique.lexical_structures.Phonology import Phonology
 from lexique.lexical_structures.Suffix import Suffix
 

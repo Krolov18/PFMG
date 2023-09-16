@@ -7,7 +7,7 @@ import yaml
 from frozendict import frozendict
 
 from lexique.lexical_structures.interfaces.Reader import Reader
-from lexique.lexical_structures.Factoy import create_morpheme
+from lexique.lexical_structures.Factory import create_morpheme
 from lexique.lexical_structures.Phonology import Phonology
 from lexique.lexical_structures.interfaces.Display import Display
 from lexique.lexical_structures.interfaces.Selector import Selector

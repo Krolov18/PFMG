@@ -1,6 +1,6 @@
 from frozendict import frozendict
 
-from lexique.lexical_structures.Factoy import create_morpheme
+from lexique.lexical_structures.Factory import create_morpheme
 from lexique.lexical_structures.Morphemes import Morphemes
 from lexique.lexical_structures.Phonology import Phonology
 

@@ -7,7 +7,7 @@ from lexique.lexical_structures.Circumfix import Circumfix
 from lexique.lexical_structures.Condition import Condition
 from lexique.lexical_structures.Selection import Selection
 from lexique.lexical_structures.Gabarit import Gabarit
-from lexique.lexical_structures.Factoy import create_morpheme
+from lexique.lexical_structures.Factory import create_morpheme
 from lexique.lexical_structures.Phonology import Phonology
 from lexique.lexical_structures.StemSpace import StemSpace
 
