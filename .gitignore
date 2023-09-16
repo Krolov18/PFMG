@@ -15,3 +15,10 @@ out/
 # fichier cache quelconques
 __pycache__/
 .idea/
+
+# dossier généré par antora pour la documentation
+# partie node pour aussi gérer la documentation
+build/
+node_modules/
+package.json
+package-lock.json
