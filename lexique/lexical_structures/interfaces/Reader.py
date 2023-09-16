@@ -9,7 +9,7 @@ class Reader(ABC):
 
     @classmethod
     @abstractmethod
-    def from_disk(cls, path: Path) -> 'Self':
+    def from_disk(cls, path: Path) -> 'Reader':
         """
         :param path:
         :return:

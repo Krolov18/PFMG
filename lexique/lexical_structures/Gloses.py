@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 import itertools as it
-from functools import cache
 from pathlib import Path
 from typing import Iterator, overload
 

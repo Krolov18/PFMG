@@ -2,6 +2,7 @@ import pytest
 
 from lexique.lexical_structures.StemSpace import StemSpace
 
+
 @pytest.mark.parametrize("stems", [
     ("truc",),
     ("truc", "machin"),

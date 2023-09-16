@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Match
 
 from frozendict import frozendict
 

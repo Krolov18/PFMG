@@ -61,8 +61,7 @@ class Blocks(Reader, Selector):
         yield output
 
     @staticmethod
-    def __rulify_list(block: list[dict[str, str]], phonology: Phonology) -> Iterator[
-        list[Display]]:  # pylint: disable=unused-private-member
+    def __rulify_list(block: list[dict[str, str]], phonology: Phonology) -> Iterator[list[Display]]:
         """
         :param block: Liste de blocs de règles
         :return: liste de blocs au format frozendict/Morpheme

@@ -13,6 +13,5 @@ def test_lexeme() -> None:
     assert lexeme.to_radical() == Radical(stems=StemSpace(("stem",)))
 
 
-
 def test_lexeme2() -> None:
     pass

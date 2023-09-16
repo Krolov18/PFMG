@@ -3,11 +3,15 @@ from pathlib import Path
 
 from lexique.lexical_structures.interfaces.Reader import Reader
 from lexique.lexical_structures.Blocks import Blocks
-from lexique.lexical_structures.Forme import Forme
+from lexique.lexical_structures.Forme import Forme, FormeEntry
 from lexique.lexical_structures.Gloses import Gloses
-from lexique.lexical_structures.Lexeme import Lexeme
+from lexique.lexical_structures.Lexeme import Lexeme, LexemeEntry
 from lexique.lexical_structures.Morphemes import Morphemes
 from lexique.lexical_structures.interfaces.Realizer import Realizer
+
+
+class BlockEntry:
+    pass
 
 
 @dataclass
@@ -18,13 +22,13 @@ class Paradigm(Realizer, Reader):
     gloses: Gloses
     blocks: Blocks
 
-    def __realise(self, lexeme: LexemeEntry, blocks: BlockEntry) -> list[Entry]:
+    def __realise(self, lexeme: LexemeEntry, blocks: BlockEntry) -> list[FormeEntry]:
         entries: list[FormeEntry] = list()
 
         for i_sigma in sigmas:
             if lexeme.sigma.items() <= i_sigma.items():
                 entries.append(
-                    Entry(
+                    FormeEntry(
                         pos=lexeme.pos,
                         sigma=i_sigma,
                         morphemes=Morphemes(

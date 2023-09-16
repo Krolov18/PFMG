@@ -1,13 +1,10 @@
 import argparse
-import os
 from argparse import Namespace
 from pathlib import Path
 
-import cue  # type: ignore
 import pytest
 
 from lexique.actions import action
-from utils.paths import get_project_path
 
 
 def get_data_test_grammar() -> Path:

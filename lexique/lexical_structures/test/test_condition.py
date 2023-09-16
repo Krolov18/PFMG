@@ -66,7 +66,6 @@ def test_suffix_error(rule, expected, sigma) -> None:
                           consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
                           voyelles=frozenset("iueoa"))
 
-
     with pytest.raises(TypeError):
         _ = Condition(rule=rule, sigma=sigma, phonology=phonology)
 

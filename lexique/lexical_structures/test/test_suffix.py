@@ -1,7 +1,6 @@
 import pytest
 from frozendict import frozendict
 
-from lexique.lexical_structures.Factory import create_morpheme
 from lexique.lexical_structures.StemSpace import StemSpace
 from lexique.lexical_structures.Suffix import Suffix
 from lexique.lexical_structures.Phonology import Phonology
