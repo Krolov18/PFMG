@@ -14,13 +14,20 @@ class Suffix(MixinDisplay, MixinEquality, MixinRepresentor):
     """
     Un suffixe encode une règle affixale succédant le Radical.
     """
-    __PATTERN: Callable[[str], Match[str] | None] = re.compile(r"^X\+(.*)$").fullmatch
+    __PATTERN: Callable[[str], Match[str] | None] = re.compile(
+        r"^X\+(.*)$"
+    ).fullmatch
 
     __rule: Match[str]
     __sigma: frozendict
     __phonology: Phonology
 
-    def __init__(self, rule: str, sigma: frozendict, phonology: Phonology) -> None:
+    def __init__(
+            self,
+            rule: str,
+            sigma: frozendict,
+            phonology: Phonology
+    ) -> None:
         _rule = Suffix.__PATTERN(rule)
         if _rule is None:
             raise TypeError()

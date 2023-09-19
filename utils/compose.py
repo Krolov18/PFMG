@@ -1,5 +1,3 @@
-# pylint: disable=line-too-long,missing-module-docstring,missing-function-docstring,invalid-name
-
 import functools
 
 from typing import Callable

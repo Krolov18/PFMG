@@ -12,15 +12,23 @@ from lexique.lexical_structures.mixins.MixinRepresentor import MixinRepresentor
 
 class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
     """
-    Un préfixe encode une règle affixale ajoutant un élément à la gauche du Radical.
+    Un préfixe encode une règle affixale 
+    ajoutant un élément à la gauche du Radical.
     """
-    __PATTERN: Callable[[str], Match[str] | None] = re.compile(r"^(.*)\+X$").fullmatch
+    __PATTERN: Callable[[str], Match[str] | None] = re.compile(
+        r"^(.*)\+X$"
+    ).fullmatch
 
     __rule: Match[str]
     __sigma: frozendict
     __phonology: Phonology
 
-    def __init__(self, rule: str, sigma: frozendict, phonology: Phonology) -> None:
+    def __init__(
+            self,
+            rule: str,
+            sigma: frozendict,
+            phonology: Phonology
+    ) -> None:
         _rule = Prefix.__PATTERN(rule)
         if _rule is None:
             raise TypeError()

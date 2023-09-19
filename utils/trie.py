@@ -1,6 +1,7 @@
 from typing import Callable, Literal, Mapping, TypeVar
 
-_special_chars_map = {i: '\\' + chr(i) for i in b'()[]{}?*+-|^$\\.&~#\t\n\r\v\f'}
+_special_chars_map = {i: '\\' + chr(i)
+                      for i in b'()[]{}?*+-|^$\\.&~#\t\n\r\v\f'}
 
 T = TypeVar("T")
 type_Memory = dict[str | Literal[""], 'type_Memory' | Literal[1] | str]
@@ -43,11 +44,15 @@ def add_words(memory: type_Memory, words: list[str]) -> None:
         add_word(memory, word)
 
 
-def __build_pattern(memory_data: type_Memory, escape: Callable[[str], str] = identity) -> str | None:
+def __build_pattern(
+        memory_data: type_Memory,
+        escape: Callable[[str], str] = identity
+) -> str | None:
     """
     Build a regular expression pattern from a dictionary.
 
-    :param escape: function to escape characters, default is the identity function
+    :param escape: function to escape characters,
+                   default is the identity function
     :param memory_data: mapping storing entries that have already been parsed
     :return: pattern ready to be compiled
     """
@@ -77,20 +82,33 @@ def __build_pattern(memory_data: type_Memory, escape: Callable[[str], str] = ide
     is_characters_only = not alternatives
 
     if len(characters) > 0:
-        alternatives.append(characters[0] if len(characters) == 1 else f"[{''.join(characters)}]")
+        alternatives.append(
+            characters[0]
+            if len(characters) == 1
+            else f"[{''.join(characters)}]"
+        )
 
-    result = alternatives[0] if len(alternatives) == 1 else f"(?:{'|'.join(alternatives)})"
+    result = (alternatives[0]
+              if len(alternatives) == 1
+              else f"(?:{'|'.join(alternatives)})")
 
     if has_quantifier:
-        result = f"{result}?" if is_characters_only else f"(?:{result})?"
+        result = (f"{result}?"
+                  if is_characters_only
+                  else f"(?:{result})?")
 
     return result
 
 
-def dict2str(memory: type_Memory, escape: Callable[[str], str] = identity) -> str | None:
+def dict2str(
+        memory: type_Memory,
+        escape: Callable[[str], str] = identity
+) -> str | None:
     """
-    Exploitation d'un arbre de préfixes pour construire une expression régulière.
-    :param escape: Fonction pour échapper les caractères liés aux expressions régulières.
+    Exploitation d'un arbre de préfixes
+    pour construire une expression régulière.
+    :param escape: Fonction pour échapper les caractères
+                   liés aux expressions régulières.
                    (fonction d'identité par défaut)
     :param memory: Mapping storing entries that have already been parsed
     :return: pattern ready to be compiled
@@ -102,7 +120,8 @@ def to_pattern(words: list[str]) -> str:
     """
     :param words: Liste de mots à convertir en un pattern optimisé.
     :return: Le pattern représente 'words' exactement. Ni plus, ni moins.
-             Tous les mots, et uniquement ceux-là, présents dans 'words' sont reconnus
+             Tous les mots, et uniquement ceux-là,
+             présents dans 'words' sont reconnus
              par le pattern après compilation du pattern.
     """
     memory: type_Memory = {}

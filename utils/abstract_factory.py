@@ -1,10 +1,8 @@
-# pylint: disable=line-too-long,missing-module-docstring,missing-function-docstring
-
-import typing
+from typing import Callable, TypeVar
 from importlib import import_module
 
-AbstractClass = typing.TypeVar("AbstractClass", type, typing.Callable)
-AbstractProduct = typing.TypeVar("AbstractProduct")
+AbstractClass = TypeVar("AbstractClass", type, Callable)
+AbstractProduct = TypeVar("AbstractProduct")
 
 
 def factory_function(
@@ -55,23 +53,35 @@ def factory_method(
 
 
 def __validate_params(concrete_product, package):
-    assert isinstance(concrete_product, str), f"'concrete_product' must be a string. A {type(package)} was given."
-    assert concrete_product, "'concrete_product' can't be empty."
-    assert isinstance(package, str), f"'package' must be a string. A {type(package)} was given."
-    assert package, "'package' can't be empty."
-    assert not (package.startswith(".") or package.endswith(".")), "Relative path are not allowed."
+    assert isinstance(concrete_product, str),\
+        f"'concrete_product' must be a string. A {type(package)} was given."
+    assert concrete_product,\
+        "'concrete_product' can't be empty."
+    assert isinstance(package, str),\
+        f"'package' must be a string. A {type(package)} was given."
+    assert package,\
+        "'package' can't be empty."
+    assert not (package.startswith(".") or package.endswith(".")),\
+        "Relative path are not allowed."
 
     return True
 
 
-def factory_type(concrete_product: str, package: str, getattr_=getattr) -> AbstractClass:
+def factory_type(
+        concrete_product: str,
+        package: str,
+        getattr_=getattr
+) -> AbstractClass:
     return getattr_(
         import_module(package),
         concrete_product
     )
 
 
-def factory_class(concrete_product: str, package: str) -> AbstractClass:
+def factory_class(
+        concrete_product: str,
+        package: str
+) -> AbstractClass:
     assert package
     assert concrete_product
 
@@ -90,4 +100,6 @@ def factory_object(
     return factory_class(
         concrete_product=concrete_product,
         package=package
-    )(**kwargs)
+    )(
+        **kwargs
+    )

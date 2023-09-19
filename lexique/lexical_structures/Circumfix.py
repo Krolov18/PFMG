@@ -12,15 +12,19 @@ from lexique.lexical_structures.StemSpace import StemSpace
 
 class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
     """
-    Un circonfixe encode une règle affixale préfixant ET suffixant le Radical simultanément.
+    Un circonfixe encode une règle affixale 
+    préfixant ET suffixant le Radical simultanément.
     """
-    __PATTERN: Callable[[str], Match[str] | None] = re.compile(r"^([^+]*)\+X\+([^+]*)$").fullmatch
+    __PATTERN: Callable[[str], Match[str] | None] = re.compile(
+        r"^([^+]*)\+X\+([^+]*)$"
+    ).fullmatch
 
     __rule: Match[str]
     __sigma: frozendict
     __phonology: Phonology
 
-    def __init__(self, rule: str, sigma: frozendict, phonology: Phonology) -> None:
+    def __init__(self, rule: str, sigma: frozendict,
+                 phonology: Phonology) -> None:
         _rule = Circumfix.__PATTERN(rule)
         if _rule is None:
             raise TypeError()

@@ -26,14 +26,20 @@ class Ruler(Enum):
     CONDITION = "Condition"
 
 
-def create_morpheme(rule: str, sigma: frozendict, phonology: Phonology) -> Display:
+def create_morpheme(
+        rule: str,
+        sigma: frozendict,
+        phonology: Phonology
+) -> Display:
     for id_ruler in Ruler:
         try:
-            return factory_method(concrete_product=id_ruler.value,
-                                  package=__package__,
-                                  rule=rule,
-                                  sigma=sigma,
-                                  phonology=phonology)
+            return factory_method(
+                concrete_product=id_ruler.value,
+                package=__package__,
+                rule=rule,
+                sigma=sigma,
+                phonology=phonology
+            )
         except TypeError:
             continue
     raise TypeError()

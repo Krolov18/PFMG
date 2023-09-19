@@ -16,5 +16,7 @@ class MixinEquality(Equality):
     def __eq__(self, other):
         eq_rules = self.get_rule().string == other.get_rule().string
         return (eq_rules
-                and ((self.get_sigma().items() <= other.get_sigma().items())
-                     or (other.get_sigma().items() <= self.get_sigma().items())))
+                and ((self.get_sigma().items()
+                      <= other.get_sigma().items())
+                     or (other.get_sigma().items()
+                         <= self.get_sigma().items())))

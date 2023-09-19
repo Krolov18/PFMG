@@ -13,13 +13,16 @@ from lexique.lexical_structures.StemSpace import StemSpace
 
 class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
     """
-    Pseudo-morpheme permettant d'encoder la règle ternaire au sein des règles morphologiques.
+    Pseudo-morpheme permettant d'encoder 
+    la règle ternaire au sein des règles morphologiques.
 
     :param cond : Construction du morphème
     :param true : Si la construction de la condition réussie, on récupère true.
     :param false : Si la construction de la condition échoue, on récupère false.
     """
-    __PATTERN: Callable[[str], Match[str] | None] = re.compile(r"^(.*)\?(.*):(.*)$").fullmatch
+    __PATTERN: Callable[[str], Match[str] | None] = re.compile(
+        r"^(.*)\?(.*):(.*)$"
+    ).fullmatch
 
     rule: Match[str]
     sigma: frozendict
@@ -38,9 +41,15 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
             raise TypeError()
         self.rule = _rule
         self.sigma = sigma
-        self.__cond = Selection(rule=_rule.group(1), sigma=sigma, phonology=phonology)
-        self.__true = Selection(rule=_rule.group(2), sigma=sigma, phonology=phonology)
-        self.__false = Selection(rule=_rule.group(3), sigma=sigma, phonology=phonology)
+        self.__cond = Selection(rule=_rule.group(1),
+                                sigma=sigma,
+                                phonology=phonology)
+        self.__true = Selection(rule=_rule.group(2),
+                                sigma=sigma,
+                                phonology=phonology)
+        self.__false = Selection(rule=_rule.group(3),
+                                 sigma=sigma,
+                                 phonology=phonology)
         self.phonology = phonology
 
     def _to_string__stemspace(self, term: StemSpace) -> str:

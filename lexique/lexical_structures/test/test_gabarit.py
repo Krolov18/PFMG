@@ -14,73 +14,123 @@ from lexique.lexical_structures.StemSpace import StemSpace
     ("4U55e6V6", ("4U55e6V6",), frozendict(Genre="m")),
 ])
 def test_equal(rule, expected, sigma) -> None:
-    phonology = Phonology(apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-                          mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                                               g="d", m="m", n="m", N="n", f="f",
-                                               s="f", S="s", v="f", z="v", Z="z",
-                                               r="w", l="r", j="w", w="w"),
-                          derives=frozendict(A="V", D="C"),
-                          consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-                          voyelles=frozenset("iueoa"))
-    gabarit = Gabarit(rule=rule, sigma=sigma, phonology=phonology)
+    phonology = Phonology(
+        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
+                             g="d", m="m", n="m", N="n", f="f",
+                             s="f", S="s", v="f", z="v", Z="z",
+                             r="w", l="r", j="w", w="w"),
+        derives=frozendict(A="V", D="C"),
+        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+        voyelles=frozenset("iueoa")
+    )
+    gabarit = Gabarit(
+        rule=rule,
+        sigma=sigma,
+        phonology=phonology
+    )
 
     # test d'identité
     assert gabarit == gabarit
 
     # test d'égalité
-    other_gabarit = Gabarit(rule=rule, sigma=sigma, phonology=phonology)
+    other_gabarit = Gabarit(
+        rule=rule,
+        sigma=sigma,
+        phonology=phonology
+    )
     assert gabarit == other_gabarit
 
     # test avec le sigma qui diffère
-    other_gabarit = Gabarit(rule=rule, sigma=frozendict(Genre="f"), phonology=phonology)
+    other_gabarit = Gabarit(
+        rule=rule,
+        sigma=frozendict(Genre="f"),
+        phonology=phonology
+    )
     assert gabarit != other_gabarit
 
     # test avec le rule qui diffère
-    other_gabarit = Gabarit(rule="5V44aV66", sigma=sigma, phonology=phonology)
+    other_gabarit = Gabarit(
+        rule="5V44aV66",
+        sigma=sigma,
+        phonology=phonology
+    )
     assert gabarit != other_gabarit
 
     # test avec rule et sigma qui diffèrent
-    other_gabarit = Gabarit(rule="5V44aV66", sigma=frozendict(), phonology=phonology)
+    other_gabarit = Gabarit(
+        rule="5V44aV66",
+        sigma=frozendict(),
+        phonology=phonology
+    )
     assert gabarit != other_gabarit
 
 
 def test_suffix_typeerror() -> None:
-    phonology = Phonology(apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-                          mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                                               g="d", m="m", n="m", N="n", f="f",
-                                               s="f", S="s", v="f", z="v", Z="z",
-                                               r="w", l="r", j="w", w="w"),
-                          derives=frozendict(A="V", D="C"),
-                          consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-                          voyelles=frozenset("iueoa"))
+    phonology = Phonology(
+        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
+                             g="d", m="m", n="m", N="n", f="f",
+                             s="f", S="s", v="f", z="v", Z="z",
+                             r="w", l="r", j="w", w="w"),
+        derives=frozendict(A="V", D="C"),
+        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+        voyelles=frozenset("iueoa")
+    )
     with pytest.raises(TypeError):
-        _ = Gabarit(rule=1, sigma=frozendict(), phonology=phonology)
+        _ = Gabarit(
+            rule=1,
+            sigma=frozendict(),
+            phonology=phonology
+        )
 
     with pytest.raises(TypeError):
-        _ = Gabarit(rule="1", sigma=1, phonology=phonology)
+        _ = Gabarit(
+            rule="1",
+            sigma=1,
+            phonology=phonology
+        )
 
     with pytest.raises(TypeError):
-        _ = Gabarit(rule="1", sigma=frozendict(), phonology=1)
+        _ = Gabarit(
+            rule="1",
+            sigma=frozendict(),
+            phonology=1
+        )
 
     with pytest.raises(TypeError):
-        _ = Gabarit(rule="", sigma=frozendict(Genre="m"), phonology=phonology)
+        _ = Gabarit(
+            rule="",
+            sigma=frozendict(Genre="m"),
+            phonology=phonology
+        )
 
     with pytest.raises(TypeError):
-        _ = Gabarit(rule="hHPJLK", sigma=frozendict(Genre="m"), phonology=phonology)
+        _ = Gabarit(
+            rule="hHPJLK",
+            sigma=frozendict(Genre="m"),
+            phonology=phonology
+        )
 
 
 def test_to_string() -> None:
-    phonology = Phonology(apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-                          mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                                               g="d", m="m", n="m", N="n", f="f",
-                                               s="f", S="s", v="f", z="v", Z="z",
-                                               r="w", l="r", j="w", w="w"),
-                          derives=frozendict(A="V", D="C"),
-                          consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-                          voyelles=frozenset("iueoa"))
+    phonology = Phonology(
+        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
+                             g="d", m="m", n="m", N="n", f="f",
+                             s="f", S="s", v="f", z="v", Z="z",
+                             r="w", l="r", j="w", w="w"),
+        derives=frozendict(A="V", D="C"),
+        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+        voyelles=frozenset("iueoa")
+    )
 
     # rule avec 'V'
-    gabarit = Gabarit(rule="5V44aV66", sigma=frozendict(Genre="m"), phonology=phonology)
+    gabarit = Gabarit(
+        rule="5V44aV66",
+        sigma=frozendict(Genre="m"),
+        phonology=phonology
+    )
 
     with pytest.raises(NotImplementedError):
         assert gabarit.to_string(None)
@@ -93,7 +143,11 @@ def test_to_string() -> None:
     assert actual == expected
 
     # rule avec 'U'
-    gabarit = Gabarit(rule="5U44aV66", sigma=frozendict(Genre="m"), phonology=phonology)
+    gabarit = Gabarit(
+        rule="5U44aV66",
+        sigma=frozendict(Genre="m"),
+        phonology=phonology
+    )
 
     with pytest.raises(NotImplementedError):
         assert gabarit.to_string(None)
@@ -106,7 +160,11 @@ def test_to_string() -> None:
     assert actual == expected
 
     # rule avec 'A'
-    gabarit = Gabarit(rule="5A44aV66", sigma=frozendict(Genre="m"), phonology=phonology)
+    gabarit = Gabarit(
+        rule="5A44aV66",
+        sigma=frozendict(Genre="m"),
+        phonology=phonology
+    )
 
     with pytest.raises(NotImplementedError):
         assert gabarit.to_string(None)
@@ -119,7 +177,11 @@ def test_to_string() -> None:
     assert actual == expected
 
     # rule avec 789
-    gabarit = Gabarit(rule="5A44aV68", sigma=frozendict(Genre="m"), phonology=phonology)
+    gabarit = Gabarit(
+        rule="5A44aV68",
+        sigma=frozendict(Genre="m"),
+        phonology=phonology
+    )
 
     with pytest.raises(NotImplementedError):
         assert gabarit.to_string(None)
@@ -133,15 +195,21 @@ def test_to_string() -> None:
 
 
 def test_repr() -> None:
-    phonology = Phonology(apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-                          mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                                               g="d", m="m", n="m", N="n", f="f",
-                                               s="f", S="s", v="f", z="v", Z="z",
-                                               r="w", l="r", j="w", w="w"),
-                          derives=frozendict(A="V", D="C"),
-                          consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-                          voyelles=frozenset("iueoa"))
+    phonology = Phonology(
+        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
+                             g="d", m="m", n="m", N="n", f="f",
+                             s="f", S="s", v="f", z="v", Z="z",
+                             r="w", l="r", j="w", w="w"),
+        derives=frozendict(A="V", D="C"),
+        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+        voyelles=frozenset("iueoa")
+    )
 
-    gabarit = Gabarit(rule="5A44aV66", sigma=frozendict(Genre="m"), phonology=phonology)
+    gabarit = Gabarit(
+        rule="5A44aV66",
+        sigma=frozendict(Genre="m"),
+        phonology=phonology
+    )
     actual = repr(gabarit)
     assert actual == "Gabarit(5A44aV66)"
