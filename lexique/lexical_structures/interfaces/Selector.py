@@ -7,7 +7,7 @@ from lexique.lexical_structures.interfaces.Display import Display
 
 class Selector(ABC):
     @abstractmethod
-    def select_morphemes(self, pos: str, sigma: frozendict) -> list[Display]:
+    def __call__(self, pos: str, sigma: frozendict) -> list[Display]:
         """
         :param pos:
         :param sigma:
