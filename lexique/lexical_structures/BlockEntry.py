@@ -1,4 +1,3 @@
-from ast import literal_eval
 from dataclasses import dataclass
 from typing import Iterator
 
@@ -8,6 +7,7 @@ from lexique.lexical_structures.Factory import create_morpheme
 from lexique.lexical_structures.interfaces.Display import Display
 from lexique.lexical_structures.interfaces.Selector import Selector
 from lexique.lexical_structures.Phonology import Phonology
+from lexique.lexical_structures.utils import dictify
 
 
 @dataclass
@@ -89,7 +89,7 @@ class BlockEntry(Selector):
         output: list[Display] = []
 
         for key, value in block.items():
-            _sigma = BlockEntry.__dictify_str(key)
+            _sigma = dictify(key)
             output.append(
                 create_morpheme(
                     rule=value,
@@ -117,23 +117,6 @@ class BlockEntry(Selector):
                 block=i_block,
                 phonology=phonology
             )
-
-    @staticmethod
-    def __dictify_str(chars: str) -> frozendict:
-        """
-        :param chars: Une chaine de caractère prête 
-                      à être parsée et convertie en frozendict.
-        :return: Transforme une chaine de caractère en un frozendict python.
-        """
-        return frozendict(
-            ({}
-             if chars == ""
-             else literal_eval(
-                ("{\""
-                 + chars.replace("=", "\":\"").replace(",", "\",\"")
-                 + "\"}")
-            ))
-        )
 
     @staticmethod
     def __select_morpheme(
