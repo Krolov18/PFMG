@@ -8,7 +8,7 @@ import itertools as it
 import re
 from functools import reduce
 from operator import add
-from typing import Iterator, Iterable, Literal, Self
+from typing import Iterator, Literal, Sequence
 
 from nltk import Production, FeatStruct, Variable, Feature
 from nltk.featstruct import FeatureValueTuple
@@ -63,7 +63,7 @@ def repeat(term: str) -> list[list[str]]:
         case c if _is_accolade(c):
             reg = getattr(repeat, "REG").search(term)
             deb: str
-            fin: Iterable[str]
+            fin: Sequence[str]
             assert reg
             deb, *fin = filter(None, reg.groups())
             term = term.rsplit("/", 1)[0]
@@ -125,7 +125,7 @@ def develop(rhs: list[str]) -> Iterator[list[str]]:
 
 
 def parse_config(
-        config: dict
+    config: dict
 ) -> tuple[FeatureGrammar, FeatureGrammar]:
     for lhs, rhss in config.items():
         _s_prods = [parse_one_rule(lhs, *i_config)
@@ -141,11 +141,11 @@ def parse_config(
 
 
 def parse_one_rule(
-        lhs: str,
-        syntagmes: list[str],
-        accords: str,
-        percolation: str,
-        traduction: list[int] | None = None
+    lhs: str,
+    syntagmes: list[str],
+    accords: str,
+    percolation: str,
+    traduction: list[int] | None = None
 ) -> Production:
     source: Literal["Source", "Destination"] = ("Destination"
                                                 if traduction is None
@@ -157,6 +157,8 @@ def parse_one_rule(
         case "Source":
             f_accords = [FeatStruct(Source=FeatStruct())
                          for _ in range(len(syntagmes))]
+        case _:
+            raise KeyError(source)
 
     parse_features(
         broadcast(
@@ -169,7 +171,8 @@ def parse_one_rule(
     parse_percolation(
         broadcast(
             percolation,
-            len(syntagmes)),
+            len(syntagmes)
+        ),
         f_accords,
         f_percolation
     )
@@ -188,16 +191,20 @@ def parse_one_rule(
 
 
 def concatenate_rule_features(p1: Production, p2: Production) -> Production:
-    assert "Traduction" in p1.lhs()["Source"]
-    assert all(["Traduction" in x["Source"]
-                for x in p1.rhs()
-                if isinstance(x, FeatStructNonterminal)])
-    assert "Traduction" not in p2.lhs()["Destination"]
+    p1_lhs: FeatStructNonterminal = p1.lhs()
+    p2_lhs: FeatStructNonterminal = p2.lhs()
+    assert "Traduction" in p1_lhs["Source"]
+    assert all(
+        ["Traduction" in x["Source"]
+         for x in p1.rhs()
+         if isinstance(x, FeatStructNonterminal)]
+        )
+    assert "Traduction" not in p2_lhs["Destination"]
     assert not any(["Traduction" in x["Destination"] for x in p2.rhs()])
 
-    p1.lhs().update(p2.lhs())
+    p1_lhs.update(p2_lhs)
 
-    for i_idx, i_x in enumerate(p1.lhs()["Source", "Traduction"]):
+    for i_idx, i_x in enumerate(p1_lhs["Source", "Traduction"]):
         p1.rhs()[int(i_x.name)].update(p2.rhs()[i_idx])
 
     return p1
@@ -212,22 +219,22 @@ def broadcast(accords: str, len_rhs: int) -> str:
 
 
 def parse_traduction(
-        syntagme: list[str],
-        traduction: list[int],
-        f_accords: list[FeatStruct],
-        f_percolation: FeatStruct
+    syntagme: list[str],
+    traduction: list[int],
+    f_accords: list[FeatStruct],
+    f_percolation: FeatStruct
 ) -> None:
     for i in range(len(syntagme)):
-        f_accords[i]["Source", "Traduction"] = Variable(str(i))
-    f_percolation["Source", "Traduction"] = FeatureValueTuple(
-        [f_accords[i_trad]["Source", "Traduction"]
+        f_accords[i]["Source", "Traduction"] = Variable(str(i))  # noqa
+    f_percolation["Source", "Traduction"] = FeatureValueTuple(  # noqa
+        [f_accords[i_trad]["Source", "Traduction"]  # noqa
          for i_trad in traduction]
     )
 
 
 def parse_features(
-        accords: str,
-        accumulator: list[FeatStruct] | FeatStruct
+    accords: str,
+    accumulator: list[FeatStruct] | FeatStruct
 ) -> None:
     if not accords:
         return
@@ -276,9 +283,11 @@ def parse_features(
                 raise TypeError(accords, accumulator)
 
 
-def parse_percolation(percolation: str,
-                      accords: list[FeatStruct] | FeatStruct,
-                      accumulator: FeatStruct) -> None:
+def parse_percolation(
+    percolation: str,
+    accords: list[FeatStruct] | FeatStruct,
+    accumulator: FeatStruct
+    ) -> None:
     """
     La différence entre parse_features et
     parse_percolation est la sémantique des ";"
@@ -297,7 +306,7 @@ def parse_percolation(percolation: str,
     if not percolation:
         return
 
-    source = [x for x in accumulator.keys() if x != Feature("type")][0]
+    source = [x for x in accumulator.keys() if x != Feature("type")][0]  # noqa
     source_init = source[0]
 
     if ";" in percolation:
@@ -315,12 +324,14 @@ def parse_percolation(percolation: str,
         if not all(lhs_rhs := percolation.partition("=")):
             raise TypeError(lhs_rhs)
         match accords:
-            case [a] if ((m := a[source].get(f"{source_init}{lhs_rhs[0]}",
-                                             None))
+            case [a] if ((m := a[source].get(
+                f"{source_init}{lhs_rhs[0]}",
+                None
+                ))
                          and m == lhs_rhs[2]):
                 # cas de stricte égalité entre ce qu'on cherche
                 # à percoler et ce qu'il y a dans la partie du rhs
-                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = m
+                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = m  # noqa
             case [a] if a[source].get(f"{source_init}{lhs_rhs[0]}", None):
                 # Cas à débattre.
                 # Soit raise une erreur puisqu'il y a dissonance entre
@@ -329,9 +340,9 @@ def parse_percolation(percolation: str,
                 # et de faire attention à cela.#
                 raise TypeError(percolation, accords, accumulator)
             case [_]:
-                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]
+                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]  # noqa
             case FeatStruct():  # type: ignore
-                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]
+                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]  # noqa
             case _:
                 raise TypeError(percolation, accords, accumulator)
 
@@ -339,17 +350,12 @@ def parse_percolation(percolation: str,
         match accords:
             case FeatStruct():
                 perco = f"{source_init}{percolation}"
-                accumulator[source][perco] = accords[source][perco]
+                accumulator[source][perco] = accords[source][perco]  # noqa
             case [FeatStruct()]:
                 perco = f"{source_init}{percolation}"
-                accumulator[source][perco] = accords[0][source][perco]
+                accumulator[source][perco] = accords[0][source][perco]  # noqa
             case _:
                 raise TypeError(
                     percolation,
                     accumulator
                 )
-
-
-class Alpha:
-    def __init__(self: Self):
-        pass
