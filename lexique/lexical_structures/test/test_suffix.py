@@ -125,4 +125,4 @@ def test_repr() -> None:
         sigma=frozendict(Genre="m"),
         phonology=phonology
     )
-    assert repr(suffix) == "Suffix(X+d)"
+    assert repr(suffix) == "Suffix(rule=X+d, sigma=frozendict({'Genre': 'm'}))"

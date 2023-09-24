@@ -23,10 +23,10 @@ class Suffix(MixinDisplay, MixinEquality, MixinRepresentor):
     __phonology: Phonology
 
     def __init__(
-            self,
-            rule: str,
-            sigma: frozendict,
-            phonology: Phonology
+        self,
+        rule: str,
+        sigma: frozendict,
+        phonology: Phonology
     ) -> None:
         _rule = Suffix.__PATTERN(rule)
         if _rule is None:
@@ -42,7 +42,9 @@ class Suffix(MixinDisplay, MixinEquality, MixinRepresentor):
         return f"{term}{self.__rule.group(1)}"
 
     def _repr_params(self) -> str:
-        return self.__rule.string
+        sigma = f"sigma=frozendict({dict(self.__sigma)})"
+        rule = f"rule={self.__rule.string}"
+        return f"{rule}, {sigma}"
 
     def get_sigma(self) -> frozendict:
         return self.__sigma

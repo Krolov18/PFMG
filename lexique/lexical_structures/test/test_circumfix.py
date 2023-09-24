@@ -92,7 +92,7 @@ def test_repr() -> None:
         phonology=phonology
     )
 
-    assert str(circumfix) == "Circumfix(a+X+d)"
+    assert str(circumfix) == "Circumfix(rule=a+X+d, sigma=frozendict({'Genre': 'm'}))"
 
 
 def test_to_string() -> None:

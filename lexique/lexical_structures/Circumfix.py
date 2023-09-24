@@ -45,4 +45,6 @@ class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
         return self.__rule
 
     def _repr_params(self) -> str:
-        return self.__rule.string
+        sigma = f"sigma=frozendict({dict(self.__sigma)})"
+        rule = f"rule={self.__rule.string}"
+        return f"{rule}, {sigma}"
