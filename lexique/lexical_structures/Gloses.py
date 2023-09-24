@@ -30,7 +30,7 @@ class Gloses(Reader):
     def __call__(
         self,
         pos: str
-    ) -> list[dict[Literal["source", "destination"], str]]:
+    ) -> list[dict[Literal["source", "destination"], frozendict[str, str]]]:
         return self.struct[pos]
 
     @classmethod
