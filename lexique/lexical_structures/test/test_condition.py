@@ -77,6 +77,7 @@ def test_condition(rule, expected, sigma) -> None:
     ("X2?X1X1", frozendict(Genre="m"), None),
     ("X2X1X1", frozendict(Genre="m"), None),
     ("X2?X1:XD", frozendict(Genre="m"), None),
+    ("X2?X2:X1+s", frozendict(Genre="m"), None),  # TODO: C'est une règle qu'on voudrait licite
 ])
 def test_suffix_error(rule, expected, sigma) -> None:
     phonology = Phonology(
