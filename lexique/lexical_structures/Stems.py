@@ -6,44 +6,61 @@ import yaml
 from frozendict import frozendict
 
 from lexique.lexical_structures.interfaces.Reader import Reader
-from lexique.lexical_structures.Gloses import Gloses
 from lexique.lexical_structures.Lexeme import Lexeme
+from lexique.lexical_structures.LexemeEntry import LexemeEntry
 from lexique.lexical_structures.StemSpace import StemSpace
-from lexique.lexical_structures.interfaces.Searchable import Searchable
+from lexique.lexical_structures.utils import dictify
 
 
 @dataclass
 class Stems(Reader, Iterable):
     data: Iterator[Lexeme]
-    searcher: Searchable
 
     @classmethod
     def from_disk(cls, path: Path) -> 'Stems':
         assert path.name.endswith("Stems.yaml")
         with open(path, mode="r", encoding="utf8") as file_handler:
-            gloses_from_disk = Gloses.from_disk(path.parent / "Gloses.yaml")
-            return cls(data=iter(Stems.__read_stems(yaml.load(file_handler, Loader=yaml.Loader),
-                                                    gloses_from_disk)),
-                       searcher=gloses_from_disk)
+            data = yaml.load(file_handler, Loader=yaml.Loader)
+            return cls(data=iter(Stems.__read_stems(data, data.keys())))
 
     @staticmethod
-    def __read_stems(data: dict[str, dict[str, list[str]] | dict[str, dict]],
-                     searcher: Searchable,
-                     accumulator: dict | None = None) -> Iterator[Lexeme]:
+    def __read_stems(
+        data: dict[str, dict[str, list[str]] | dict[str, dict]],
+        posses: set,
+        accumulator: dict | None = None
+    ) -> Iterator[Lexeme]:
         for key, value in data.items():
             match value:
                 case str():
                     _acc = accumulator.copy()
                     accumulator = {"pos": _acc.pop("pos")}
-                    yield Lexeme(stem=StemSpace(stems=tuple(key.split(","))),
-                                 pos=key if accumulator is None else accumulator["pos"],
-                                 sigma=frozendict(_acc))
+                    pos = (key
+                           if accumulator is None
+                           else accumulator["pos"])
+                    t_stems, t_sigma = Stems.__parse_traduction(value)
+                    yield Lexeme(
+                        source=LexemeEntry(
+                            stems=StemSpace(stems=tuple(key.split(","))),
+                            pos=pos,
+                            sigma=frozendict(_acc)
+                        ),
+                        destination=LexemeEntry(
+                            stems=t_stems,
+                            pos=pos,
+                            sigma=t_sigma
+                        )
+                    )
                 case dict():
-                    if searcher.is_pos(key):
+                    if key in posses:
                         accumulator = {"pos": key}
                     else:
-                        accumulator[searcher.search(accumulator["pos"], key)] = key
-                    yield from Stems.__read_stems(value, searcher, accumulator)
+                        accumulator.__setitem__(*key.split("="))
+                    yield from Stems.__read_stems(value, posses, accumulator)
+
+    @staticmethod
+    def __parse_traduction(token: str) -> tuple[StemSpace, frozendict]:
+        str_stems, str_sigma = token.split(".") if "." in token else (token, "")
+        return StemSpace(stems=tuple(str_stems.split(","))), dictify(str_sigma)
 
     def __iter__(self):
         return self.data
