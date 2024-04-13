@@ -1,9 +1,9 @@
-"""Representor."""
+"""ABCRepresentor."""
 from abc import ABC, abstractmethod
 
 
-class Representor(ABC):
-    """Representor."""
+class ABCRepresentor(ABC):
+    """ABCRepresentor."""
 
     @abstractmethod
     def __repr__(self) -> str:

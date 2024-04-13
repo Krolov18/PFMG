@@ -1,9 +1,9 @@
 """Mixin pour la représentation des objects."""
-from pfmg.lexique.display.Display import Display
+from pfmg.lexique.display.ABCDisplay import ABCDisplay
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class MixinDisplay(Display):
+class MixinDisplay(ABCDisplay):
     """Mixin qui implémente la factory to_string."""
 
     def to_string(self, term: StemSpace | str | None = None) -> str:

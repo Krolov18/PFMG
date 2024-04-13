@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 
-class Reader[T](ABC):
+class ABCReader[T](ABC):
     """Construit un type depuis des infos sur le disque."""
 
     @classmethod

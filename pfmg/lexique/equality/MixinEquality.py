@@ -1,27 +1,13 @@
 """Mixin définissant l'agalité par défaut."""
-from re import Match
-
-from frozendict import frozendict
-
-from pfmg.lexique.equality.Equality import Equality
 
 
-class MixinEquality(Equality):
+from pfmg.lexique.equality.ABCEquality import ABCEquality
+
+
+class MixinEquality(ABCEquality):
     """Mixin définissant l'agalité par défaut."""
 
-    def get_rule(self) -> Match:
-        """Récupère la règle.
-
-        :return: la règle
-        """
-
-    def get_sigma(self) -> frozendict:
-        """Récupère le sigma.
-
-        :returns: le sigma
-        """
-
-    def __eq__(self, other: "Equality"):
+    def __eq__(self, other: ABCEquality):
         """Vérifie l'égalité entre deux objets.
         
         :param other: un autre object

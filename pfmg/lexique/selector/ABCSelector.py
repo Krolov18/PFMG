@@ -1,15 +1,16 @@
-"""Selector."""
+"""ABCSelector."""
 from abc import ABC, abstractmethod
 
 from frozendict import frozendict
-from lexique.lexical_structures.interfaces.Display import Display
+
+from pfmg.lexique.display.ABCDisplay import ABCDisplay
 
 
-class Selector(ABC):
-    """Selector."""
+class ABCSelector(ABC):
+    """ABCSelector."""
 
     @abstractmethod
-    def __call__(self, pos: str, sigma: frozendict) -> list[Display]:
+    def __call__(self, pos: str, sigma: frozendict) -> list[ABCDisplay]:
         """Sélectionne une liste d'objets satisfaisant pos et sigma.
 
         :param pos: un POS

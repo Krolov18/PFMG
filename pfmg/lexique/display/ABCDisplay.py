@@ -6,7 +6,7 @@ from frozendict import frozendict
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Display(ABC):
+class ABCDisplay(ABC):
     """Interface pour la représentation des objets."""
 
     @abstractmethod
