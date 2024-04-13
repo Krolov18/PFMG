@@ -17,5 +17,4 @@ def get_validation_file_path(project_path: Path | None = None) -> Path:
     :param project_path:
     :return:
     """
-    print(get_project_path() / "schemas")
     return (project_path or get_project_path()) / "schemas"

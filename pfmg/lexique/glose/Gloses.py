@@ -126,5 +126,11 @@ class Gloses(ABCReader):
         for i_grid in grid:
             yield from Gloses.__gridify_dict(i_grid)
 
-    def __eq__(self, other):
+    def __eq__(self, other: "Gloses") -> bool:
+        """Renvoie l'égalité entre self et other.
+
+        :param other: Une autre Glose
+        :return: bool
+        """
         return (self.source == other.source) and (self.destination == other.destination)
+
