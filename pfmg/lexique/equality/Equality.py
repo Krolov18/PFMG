@@ -1,0 +1,31 @@
+"""Interface définissant l'égalité."""
+from abc import ABC, abstractmethod
+from re import Match
+
+from frozendict import frozendict
+
+
+class Equality(ABC):
+    """Interface définissant l'égalité."""
+
+    @abstractmethod
+    def __eq__(self, other: "Equality") -> bool:
+        """Calcule l'égalité entre deux objets.
+
+        :param other: un autre objet pouvant être comparé
+        :return: True si deux objets sont égaux
+        """
+
+    @abstractmethod
+    def get_rule(self) -> Match:
+        """Récupère le match de la régex.
+
+        :return:
+        """
+
+    @abstractmethod
+    def get_sigma(self) -> frozendict:
+        """Récupère les propriétés d'un élément.
+
+        :return:
+        """
