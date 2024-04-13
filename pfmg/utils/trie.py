@@ -1,15 +1,17 @@
-from typing import Callable, Literal, Mapping, TypeVar
+"""Implementation of a Trie."""
+from collections.abc import Callable, Mapping
+from typing import Literal, TypeVar
 
-_special_chars_map = {i: '\\' + chr(i)
-                      for i in b'()[]{}?*+-|^$\\.&~#\t\n\r\v\f'}
+_special_chars_map = {i: "\\" + chr(i)
+                      for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"}
 
 T = TypeVar("T")
-type_Memory = dict[str | Literal[""], 'type_Memory' | Literal[1] | str]
+type_memory = dict[str, "type_memory" | Literal[1] | str]
 
 
 def identity(param: T) -> T:
-    """
-    Fonction d'identité
+    """Fonction d'identité.
+
     :param param: n'importe quoi
     :return: param
     """
@@ -17,15 +19,17 @@ def identity(param: T) -> T:
 
 
 def __escape(pattern: str) -> str:
-    """
+    """Échappe les caractères de regex + quelques autres.
+
     :param pattern: Chaîne dans laquelle appliquer l'échappement.
     :return: Échappement à l'instar de celui du module re.
     """
     return pattern.translate(_special_chars_map)
 
 
-def add_word(memory: type_Memory, word: str) -> None:
-    """
+def add_word(memory: type_memory, word: str) -> None:
+    """Ajoute un mot dans le Trie.
+
     :param memory: Mapping mettant en mémoire les entrées déjà 'parsée'
     :param word: une nouvelle entrée à ajouter à memory
     """
@@ -35,8 +39,9 @@ def add_word(memory: type_Memory, word: str) -> None:
     ref[""] = 1
 
 
-def add_words(memory: type_Memory, words: list[str]) -> None:
-    """
+def add_words(memory: type_memory, words: list[str]) -> None:
+    """Ajoute une liste de mots dans le Trie.
+
     :param memory: Mapping mettant en mémoire les entrées déjà 'parsée'
     :param words: entrées à ajouter à memory
     """
@@ -45,11 +50,10 @@ def add_words(memory: type_Memory, words: list[str]) -> None:
 
 
 def __build_pattern(
-        memory_data: type_Memory,
-        escape: Callable[[str], str] = identity
+    memory_data: type_memory,
+    escape: Callable[[str], str] = identity,
 ) -> str | None:
-    """
-    Build a regular expression pattern from a dictionary.
+    """Build a regular expression pattern from a dictionary.
 
     :param escape: function to escape characters,
                    default is the identity function
@@ -75,7 +79,7 @@ def __build_pattern(
                 case None:
                     characters.append(escape(char))
                 case _:
-                    raise ValueError()
+                    raise ValueError
         else:
             has_quantifier = True
 
@@ -85,7 +89,7 @@ def __build_pattern(
         alternatives.append(
             characters[0]
             if len(characters) == 1
-            else f"[{''.join(characters)}]"
+            else f"[{''.join(characters)}]",
         )
 
     result = (alternatives[0]
@@ -101,12 +105,11 @@ def __build_pattern(
 
 
 def dict2str(
-        memory: type_Memory,
-        escape: Callable[[str], str] = identity
+    memory: type_memory,
+    escape: Callable[[str], str] = identity,
 ) -> str | None:
-    """
-    Exploitation d'un arbre de préfixes
-    pour construire une expression régulière.
+    """Exploite un arbre de préfixes pour construire une tegex.
+
     :param escape: Fonction pour échapper les caractères
                    liés aux expressions régulières.
                    (fonction d'identité par défaut)
@@ -117,14 +120,15 @@ def dict2str(
 
 
 def to_pattern(words: list[str]) -> str:
-    """
+    """Contruis et remplis un Trie avec une liste de mots.
+
     :param words: Liste de mots à convertir en un pattern optimisé.
     :return: Le pattern représente 'words' exactement. Ni plus, ni moins.
              Tous les mots, et uniquement ceux-là,
              présents dans 'words' sont reconnus
              par le pattern après compilation du pattern.
     """
-    memory: type_Memory = {}
+    memory: type_memory = {}
     add_words(memory, words)
     dict_str = dict2str(memory)
     assert dict_str is not None

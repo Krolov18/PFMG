@@ -3,7 +3,7 @@ import itertools
 
 import pytest
 
-from utils.abstract_factory import factory_method, factory_function
+from pfmg.utils.abstract_factory import factory_method, factory_function
 
 params_factory_method_concrete_product: list[str] = ["ConcreteProduct"]
 params_factory_method_package: list[str] = ["utils.test.data_for_test"]

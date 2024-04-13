@@ -1,6 +1,6 @@
 import pytest
 
-from utils.trie import add_word, add_words, dict2str
+from pfmg.utils.trie import add_word, add_words, dict2str
 
 
 @pytest.mark.parametrize("tree, word, tree_true", [

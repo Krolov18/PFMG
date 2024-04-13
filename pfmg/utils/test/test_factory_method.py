@@ -1,6 +1,6 @@
 import pytest
 
-from utils.test.data_for_test.ConcreteProduct import ConcreteProduct
+from pfmg.utils.test.data_for_test.ConcreteProduct import ConcreteProduct
 
 
 @pytest.mark.parametrize("concrete_product", [
