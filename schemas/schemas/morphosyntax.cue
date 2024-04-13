@@ -7,23 +7,30 @@ package morphosyntax
 
 #category: =~"^[A-Z]+$"
 
-#MS: {
-	source:      #SAPT
-	destination: #SAP
+#File: {
+	start?: string
+	#Rules
 }
 
+#Rule: {
+	Source: #SAPT
+	Destination: #SAP
+}
+
+#Rules: [#identifier]: #Rule
+
 #SAP: {
-	syntagmes:    #Syntagmes
-	accords:      #Accords
-	percolations: #Percolations
+	Syntagmes:    #Syntagmes
+	Accords:      #Accords
+	Percolations: #Percolations
 }
 
 #SAPT: {
 	#SAP
-	traductions: #Traductions
+	Traduction: #Traductions
 }
 
-#identifier: =~"[A-Z]+P"
+#identifier: =~"[A-Z]+P?"
 
 #Syntagmes: [#identifier]: [...[...string] & [_, ...string]]
 
@@ -40,3 +47,5 @@ package morphosyntax
 	_sameLength:  and([ for key, value in syntagmes {len(value), len(accords[key]), len(percolations[key])}])
 	_sameKeys:    and([...])
 }
+
+#File
