@@ -4,7 +4,7 @@ jedi==0.19.1
 jupyter==1.0.0
 mypy==1.5.1
 pandas-stubs==2.0.3.230814
-pyright==1.1.356
+pyright==1.1.358
 pytest==7.4.2
 ruff==0.3.4
 types-frozendict==2.0.9
