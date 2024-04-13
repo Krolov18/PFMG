@@ -1,0 +1,9 @@
+source: # Français
+  NOM:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+destination: # Kalaba
+  NOM:
+    Cf: [ n1, n2 ]
+    Genre: [ m, f, n ]
+    Nombre: [ sg, pl ]

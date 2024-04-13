@@ -1,0 +1,52 @@
+N:
+  Genre: [ a, b, c, d ]
+  Nombre: [ sg, du, pl ]
+  Cas: [ erg, abs, obl, dat ]
+V:
+  Genre: [ a, b, c, d ]
+  Nombre: [ sg, du, pl ]
+  Temps: [ prs, pst ]
+  Type: [ vi, vt, vd ]
+DET:
+  Nombre: [ sg, du, pl ]
+  Cas: [ erg, abs, obl, dat ]
+ADJ:
+  Clfx: [ '1', '2' ]
+  Genre: [ a, b, c, d ]
+  Nombre: [ sg, du, pl ]
+NNP:
+  Genre: [ a, b, c, d ]
+  Nombre: [ sg, du, pl ]
+  Cas: [ erg, abs, obl, dat ]
+PREP: { }
+
+ADJ2:
+  Source:
+    Clfx: [ "1", "2" ]
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  Destination:
+    Clfx: [ "1", "2" ]
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+
+V2:
+  Source:
+    Type: [ vi, vt, vd ]
+    Nombre: [ sg, pl ]
+    Temps: [ prs, pst ]
+  Destination:
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+    Temps: [ prs, pst ]
+    Type: [ vi, vt, vd ]
+
+# POS Stype SNombre STemps DGenre DNombre DTemps DType
+# V2 vi sg prs a sg prs vi
+# V2 vi sg prs a sg prs vt
+# V2 vi sg prs a sg prs vd
+# V2 vi sg prs a sg pst vi
+# V2 vi sg prs a sg pst vt
+# V2 vi sg prs a sg pst vd
+# V2 vi sg prs a du prs vi
+# ...

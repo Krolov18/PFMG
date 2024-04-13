@@ -1,0 +1,10 @@
+source:
+  NOM:
+    - Nombre=pl: X2?X2:X+s
+#    - Nombre=pl: X+s
+destination:
+  NOM:
+    - Cf=n1,Nombre=sg: X+v
+      Cf=n1,Nombre=pl: X+l
+      Cf=n2,Nombre=sg: X+j
+      Cf=n2,Nombre=pl: X+g

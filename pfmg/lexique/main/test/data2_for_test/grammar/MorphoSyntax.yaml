@@ -1,0 +1,19 @@
+start: "S"
+
+NP:
+  Source:
+    Syntagmes:
+      - [ "D", "N" ]
+    Accords:
+      - "Genre,Nombre"
+    Percolation:
+      - "Genre,Nombre"
+    Traduction:
+      - [ 1, 0 ]
+  Destination:
+    Syntagmes:
+      - [ "N", "D" ]
+    Accords:
+      - "Genre,Nombre"
+    Percolation:
+      - "Genre,Nombre"
