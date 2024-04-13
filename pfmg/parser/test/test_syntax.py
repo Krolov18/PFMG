@@ -6,7 +6,7 @@ from nltk import FeatStruct, Variable, Production
 from nltk.featstruct import FeatureValueTuple
 from nltk.grammar import FeatStructNonterminal
 
-import pfmg.parser.Syntax as syn
+import pfmg.parser.utils as syn
 
 
 @pytest.mark.parametrize("term", [
