@@ -11,7 +11,7 @@ def factory_function(
         concrete_product: str,
         package: str,
         **kwargs,
-) -> AbstractProduct:
+        ) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
     """Appelle n'importe quel fonction concrète.
 
     :param concrete_product: nom de l'objet concret
@@ -39,7 +39,7 @@ def factory_method(
         concrete_product: str,
         package: str,
         **kwargs,
-) -> AbstractProduct:
+) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
     """Construit n'importe quelle classe concrète.
 
     :param concrete_product:
@@ -75,7 +75,7 @@ def __validate_params(concrete_product: str, package: str) -> bool:
 def factory_type(
         concrete_product: str,
         package: str,
-) -> AbstractClass:
+) -> AbstractClass:  # type: ignore reportInvalidTypeVarUse
     """Recherche et renvoie une classe concrète d'un package sans l'instantier.
 
     :param concrete_product:
@@ -92,7 +92,7 @@ def factory_type(
 def factory_class(
         concrete_product: str,
         package: str,
-) -> AbstractClass:
+) -> AbstractClass:  # type: ignore reportInvalidTypeVarUse
     """Recherche et renvoie une classe concrète d'un package sans l'instantier.
 
     Contrainte: nom du module == nom de la classe qu'il contient
@@ -115,7 +115,7 @@ def factory_object(
         concrete_product: str,
         package: str,
         **kwargs,
-) -> AbstractProduct:
+) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
     """Renvoie un object concret.
 
     Contrainte: nom du module == nom de la classe qu'il contient

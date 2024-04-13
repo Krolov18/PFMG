@@ -1,12 +1,12 @@
 """Implementation of a Trie."""
-from collections.abc import Callable, Mapping
-from typing import Literal, TypeVar
+from collections.abc import Callable
+from typing import TypeVar
 
 _special_chars_map = {i: "\\" + chr(i)
                       for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"}
 
 T = TypeVar("T")
-type_memory = dict[str, "type_memory" | Literal[1] | str]
+# type_memory = dict[str, "type_memory | Literal[1] | str"]
 
 
 def identity(param: T) -> T:
@@ -27,7 +27,7 @@ def __escape(pattern: str) -> str:
     return pattern.translate(_special_chars_map)
 
 
-def add_word(memory: type_memory, word: str) -> None:
+def add_word(memory: dict, word: str) -> None:
     """Ajoute un mot dans le Trie.
 
     :param memory: Mapping mettant en mémoire les entrées déjà 'parsée'
@@ -39,7 +39,7 @@ def add_word(memory: type_memory, word: str) -> None:
     ref[""] = 1
 
 
-def add_words(memory: type_memory, words: list[str]) -> None:
+def add_words(memory: dict, words: list[str]) -> None:
     """Ajoute une liste de mots dans le Trie.
 
     :param memory: Mapping mettant en mémoire les entrées déjà 'parsée'
@@ -50,7 +50,7 @@ def add_words(memory: type_memory, words: list[str]) -> None:
 
 
 def __build_pattern(
-    memory_data: type_memory,
+    memory_data: dict,
     escape: Callable[[str], str] = identity,
 ) -> str | None:
     """Build a regular expression pattern from a dictionary.
@@ -71,7 +71,7 @@ def __build_pattern(
     has_quantifier: bool = False
 
     for char, value in sorted(memory_data.items()):
-        if isinstance(value, Mapping):
+        if isinstance(value, dict):
             dict_str = __build_pattern(value)
             match dict_str:
                 case str():
@@ -105,7 +105,7 @@ def __build_pattern(
 
 
 def dict2str(
-    memory: type_memory,
+    memory: dict,
     escape: Callable[[str], str] = identity,
 ) -> str | None:
     """Exploite un arbre de préfixes pour construire une tegex.
@@ -128,7 +128,7 @@ def to_pattern(words: list[str]) -> str:
              présents dans 'words' sont reconnus
              par le pattern après compilation du pattern.
     """
-    memory: type_memory = {}
+    memory = {}
     add_words(memory, words)
     dict_str = dict2str(memory)
     assert dict_str is not None
