@@ -1,7 +1,0 @@
-% start S
-
-S -> NP[nombre=?a,personne=?b] VP[nombre=?a,personne=?b]
-
-NP -> DET[nombre=?a,genre=?b] N[nombre=?a,genre=?b]
-
-VP[nombre=?a,personne=?b] -> V[nombre=?a,personne=?b] NP
