@@ -28,6 +28,9 @@ jobs:
     - name: Linter
       run: |
         ruff check
+    - name: Type Checker
+      run: |
+        pyright
     - name: Test with pytest
       run: |
         pytest
