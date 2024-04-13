@@ -1,0 +1,7 @@
+N:
+  Genre: [ a, b, c, d ]
+  Nombre: [ sg, du, pl ]
+  Cas: [ erg, abs, obl, dat ]
+
+# #Category: =~"^(N)$"
+# #SigmaN

@@ -1,0 +1,16 @@
+# % start S
+# N, V, ADJ, PREP, DET
+S:
+  - [ "VP" ]
+VP:
+  - [ "NP[Cas=Abs]", "PP/?", "V[Type=VI]" ]
+  - [ "NP[Cas=Erg]", "V[Type=VT]", "NP[Cas=Abs]" ]
+  - [ "NP[Cas=Erg]", "V[Type=VD]", "NP[Cas=Abs]", "NP[Cas=Dat]/?" ]
+NP:
+  - [ "N[Genre=?a,Nombre=?b,Cas=?c,CF=1]" ]
+  - [ "DET[Genre=?a,Nombre=?b,Cas=?c]", "ADJ[Genre=?a,Nombre=?b]/?", "N[Genre=?a,Nombre=?b,Cas=?c,CF=2]", "ADJ[Genre=?a,Nombre=?b]/?", "PP/?" ]
+  - [ "DET[Genre=?a,Nombre=?b,Cas=Du]", "'deux'", "ADJ[Genre=?a,Nombre=Du]/?", "N[Genre=?a,Nombre=?b,Cas=Du,CF=2]", "ADJ[Genre=?a,Nombre=Du]/?", "PP/?" ]
+  - [ "à", "NP[Cas=Dat]" ]
+PP:
+  A:
+    - [ "PREP", "NP[Cas=Obl]" ]

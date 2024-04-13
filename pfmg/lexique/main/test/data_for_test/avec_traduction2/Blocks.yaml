@@ -1,0 +1,52 @@
+source:
+  N:
+    1:
+      þCF=þ2,þGenre=þM: X1
+      þCF=þ2,þGenre=þF: "X2?X2:X1"
+    2:
+      þCF=þ2,Nombre=Du: X+s
+      þCF=þ2,Nombre=Pl: X+s
+  ADJ:
+    1:
+      þCF=þ1,þGenre=þM: X1
+      þCF=þ1,þGenre=þF: X2
+      þCF=þ2: X1
+      þCF=þ3: X1
+      þCF=þ4,þGenre=þM: X1
+      þCF=þ4,þGenre=þF: X2
+    2:
+      þCF=þ1,þNombre=þPl: X+s
+      þCF=þ2,þNombre=þPl: X+s
+      þCF=þ4,þGenre=þF,þNombre=þPl: X+s
+  DET:
+    1:
+      þDEF=þDEF,þGenre=þM: X1
+      þDEF=þDEF,þGenre=þM,þVOC=þCX: X4
+      þDEF=þDEF,þGenre=þF: X2
+      þDEF=þDEF,þNombre=þPl: X3
+destination:
+  N:
+    1:
+      Nombre=Sg: X+a
+      Nombre=Du: X+i
+      Nombre=Pl: X+u
+    2:
+      Cas=Erg: re+X
+      Cas=Abs: bo+X
+      Cas=Obl: ko+X
+      Cas=Dat: li+X
+  ADJ:
+    1:
+      Nombre=Sg: X+i
+      Nombre=Du: X+a
+      Nombre=Pl: X+o
+  DET:
+    1:
+      Nombre=Sg: X+o
+      Nombre=Du: X+a
+      Nombre=Pl: X+i
+    2:
+      Cas=Obl: X+g
+      Cas=Erg: X+m
+      Cas=Abs: X+k
+      Cas=Dat: X+t

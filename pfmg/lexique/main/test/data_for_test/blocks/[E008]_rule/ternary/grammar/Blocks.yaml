@@ -1,0 +1,8 @@
+source:
+  N:
+    1:
+      Genre=M: "X2X2:X1"
+destination:
+  N:
+    1:
+      Genre=M: X1

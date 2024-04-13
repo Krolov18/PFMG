@@ -1,0 +1,6 @@
+source:
+  N: { }
+destination:
+  N:
+    1:
+      Genre=M: X1

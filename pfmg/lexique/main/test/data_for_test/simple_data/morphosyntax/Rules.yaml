@@ -1,0 +1,38 @@
+# % start S
+# N, V, ADJ, PREP, DET
+# NP, VP, PP
+
+VP:
+  TRAD=(?e+?f+?c+?d):
+    - [ "NP[Cas=Abs,Genre=?a,Nombre=?b,TRAD=?c]", "V[Type=VI,Genre=?a,Nombre=?b,TRAD=?d]", "PP[Cas=Obl,TRAD=?e]/?", "PP[Cas=Obl,TRAD=?f]/?" ]
+  TRAD=(?y+?z+?c+?d+?e):
+    - [ "NP[Cas=Erg,TRAD=?c]", "V[Type=VT,Genre=?a,Nombre=?b,TRAD=?e]", "NP[Cas=Abs,Genre=?a,Nombre=?b,TRAD=?d]", "PP[Cas=Obl,TRAD=?y]/?", "PP[Cas=Obl,TRAD=?z]/?" ]
+  TRAD=(?g+?h+?c+?f+?e+?d):
+    - [ "NP[Cas=Erg,TRAD=?c]", "V[Type=VD,Genre=?a,Nombre=?b,TRAD=?d]", "NP[Cas=Abs,Genre=?a,Nombre=?b,TRAD=?e]", "NP[Cas=Dat,TRAD=?f]/?", "PP[Cas=Obl,TRAD=?g]/?", "PP[Cas=Obl,TRAD=?h]/?" ]
+NP:
+  Genre=?a,Nombre=Sg,Cas=?c,TRAD=(?b+?h+?d+?e+?g+?f):
+    - [ "DET[Genre=?a,Nombre=Sg,Cas=?c,TRAD=?b]/?",
+        "ADJ[Genre=?a,Nombre=Sg,TRAD=?d]/?",
+        "ADJ[Genre=?a,Nombre=Sg,TRAD=?e]/?",
+        "N[Genre=?a,Nombre=Sg,Cas=?c,TRAD=?f]",
+        "ADJ[Genre=?a,Nombre=Sg,TRAD=?g]/?",
+        "PP[Cas=Obl,TRAD=?h]/?" ]
+  Genre=?a,Nombre=Pl,Cas=?c,TRAD=(?d+?i+?e+?f+?g+?h):
+    - [ "DET[Genre=?a,Nombre=Pl,Cas=?c,TRAD=?d]/?",
+        "ADJ[Genre=?a,Nombre=Pl,TRAD=?e]/?",
+        "ADJ[Genre=?a,Nombre=Pl,TRAD=?f]/?",
+        "N[Genre=?a,Nombre=Pl,Cas=?c,TRAD=?h]",
+        "ADJ[Genre=?a,Nombre=Pl,TRAD=?g]/?",
+        "PP[Cas=Obl,TRAD=?i]/?" ]
+  Genre=?a,Nombre=Du,Cas=?c,TRAD=(?b+?h+?e+?g+?f):
+    - [ "DET[Genre=?a,Nombre=Du,Cas=?c,TRAD=?b]/?",
+        "deux",
+        "ADJ[Genre=?a,Nombre=Du,TRAD=?e]/?",
+        "N[Genre=?a,Nombre=Du,Cas=?c,TRAD=?f]",
+        "ADJ[Genre=?a,Nombre=Du,TRAD=?g]/?",
+        "PP[Cas=Obl,TRAD=?h]/?" ]
+  TRAD=?a:
+    - [ "à", "NP[Cas=Dat,TRAD=?a]" ]
+PP:
+  Cas=Obl,TRAD=(?b+?a):
+    - [ "PREP[TRAD=?a]", "NP[Cas=Obl,TRAD=?b]" ]

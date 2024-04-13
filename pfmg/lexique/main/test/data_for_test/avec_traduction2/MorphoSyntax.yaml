@@ -1,0 +1,61 @@
+contractions:
+  au: [ "à", "le" ]
+  aux: [ "à", "les" ]
+  du: [ "de", "le" ]
+  Des: [ "de", "les" ]
+  l': [ "l" ]  # les apostrophes ne sont pas bien gérées par NLTK
+
+start: "S"
+
+# On décrit les syntagmes, les accords et les percolations dans deux ensembles différenciés
+# la langue SOURCE et la langue de DESTINATION
+syntagmes:
+  S:
+    - [ "NP", "PP/?", "VP", "PP/?" ]
+  NP:
+    - [ "D", "deux", "N" ]
+accords:
+  S:
+    - [ { Nombre: "*", Personne: "*" }, { }, { Nombre: "*", Personne: "*" }, { } ]
+  NP:
+    - [ { Nombre: "Pl", Genre: "*" }, { }, { Nombre: "Pl", Genre: "*" } ]
+percolations:
+  S:
+    - { Nombre: "*", Personne: "*" }
+traductions:
+  S:
+    - [ 0, 2, 1, 3 ]
+  NP:
+    - [ 0, 2 ]
+
+source:
+  syntagmes:
+    S:
+      - [ "NP", "PP/?", "VP", "PP/?" ]
+    NP:
+      - [ "D", "deux", "N" ]
+  accords:
+    S:
+      - [ { Nombre: "*", Personne: "*" }, { }, { Nombre: "*", Personne: "*" }, { } ]
+    NP:
+      - [ { Nombre: "Pl", Genre: "*" }, { }, { Nombre: "Pl", Genre: "*" } ]
+  percolations:
+    S:
+      - { Nombre: "*", Personne: "*" }
+  traductions:
+    S:
+      - [ 0, 2, 1, 3 ]
+    NP:
+      - [ 0, 2 ]
+destination:
+  syntagmes:
+    S:
+      - [ "NP", "VP", "PP/?", "PP/?" ]
+    NP:
+      - [ "D", "N" ]
+  accords:
+    NP:
+      - [ { Nombre: "Du", Cas: "*" }, { Nombre: "Du", Cas: "*" } ]
+  percolations:
+    NP:
+      - { }

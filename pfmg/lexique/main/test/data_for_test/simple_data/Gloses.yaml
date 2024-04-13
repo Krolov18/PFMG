@@ -1,0 +1,33 @@
+N:
+  Genre: [ A, B, C, D ]
+  þGenre: [ þM, þF ]
+  Nombre: [ Sg, Du, Pl ]
+  þNombre: [ þSg, þPl ]
+  Cas: [ Erg, Abs, Obl, Dat ]
+  þCF: [ þ1, þ2 ]
+V:
+  Type: [ VI, VT, VD ]
+  þType: [ þVI, þVT, þVD ]
+  Temps: [ PRS, PST ]
+  þTemps: [ þPRS, þPST ]
+  Genre: [ A, B, C, D ]
+  þGenre: [ þM, þF ]
+  Nombre: [ Sg, Du, Pl ]
+  þNombre: [ þSg, þPl ]
+DET:
+  Nombre: [ Sg, Du, Pl ]
+  þGenre: [ þM, þF ]
+  þNombre: [ þSg, þPl ]
+  Cas: [ Erg, Abs, Obl, Dat ]
+  þDEF: [ þDEF, þINDEF, þDEM ]
+ADJ:
+  CF: [ '1', '2' ]
+  þCF: [ 'þ1', 'þ2', 'þ3', 'þ4' ]
+  Genre: [ A, B, C, D ]
+  þGenre: [ þM, þF ]
+  Nombre: [ Sg, Du, Pl ]
+  þNombre: [ þSg, þPl ]
+#PREP: [ ]
+PREP:
+  DEFAULT: [ 'K' ]
+  þDEFAULT: [ 'þK' ]

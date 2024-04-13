@@ -1,0 +1,44 @@
+# Instanciation des lexemes
+
+# katiSa: {#LexemeNNP, stems: katiSa, sigma: {genre: a}, traduction: {stems: Katisha, sigma: {#SigmaCf1, genre: F } } }
+# nikol: {#LexemeNNP, stems: nikol, sigma: {genre: b}, traduction: {stems: Nicole, sigma: {#SigmaCf1, genre: F } } }
+# katiSa: {#LexemeNNP, stems: katiSa, sigma: {genre: d}, traduction: {stems: Nabil, sigma: {#SigmaCf1, genre: M } } }
+
+NNP:
+  a:
+    katiSa: Katisha-1.F
+  b:
+    nikol: Nicole-1.F
+  d:
+    nabil: Nabil-1.M
+
+
+#Lexeme: {
+    pos: string
+    stems: string
+    sigma: #Sigma
+    traduction: #Lexeme
+    pos: traduction.pos
+}
+
+#Sigma: {
+    genre?: string
+    nombre?: string
+    cf?: string
+}
+#SigmaNNP: {#Sigma, cf: "1"}
+
+nikol: {
+    #Lexeme
+    stems: "nikol"
+    pos: "NNP"
+    sigma: {genre: "b"}
+    traduction: {
+        stems: "Nicole"
+        //pos: "NNP"
+        sigma: {
+            #SigmaNNP
+            genre: "F"
+        }
+    }
+}

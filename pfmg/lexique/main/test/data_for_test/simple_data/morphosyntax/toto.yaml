@@ -1,0 +1,19 @@
+contractions:
+  au: [ à, le ]
+  aux: [ à, les ]
+  du: [ de, le ]
+  Des: [ de, les ]
+start: "NP"
+syntagmes:
+  NP:
+    - [ "DET", "N" ]
+accords:
+  NP:
+    - DET: { Genre: "*", Nombre: "*", Cas: "*" }
+      N: { Genre: "*", Nombre: "*", Cas: "*" }
+percolations:
+  NP:
+    - { Genre: "*", Nombre: "*", Cas: "*" }
+traductions:
+  NP:
+    - [ "DET", "PP", "ADJ", "N" ]

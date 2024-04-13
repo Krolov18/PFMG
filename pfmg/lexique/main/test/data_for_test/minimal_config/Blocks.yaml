@@ -1,0 +1,9 @@
+N:
+  - - sigma: {Genre: "f"},
+      rule: "X+e"
+    - sigma: {Genre: "m"},
+      rule: "X+a"
+  - - sigma: {Nombre: "pl"},
+      rule: "X+s"
+
+# #MorphemesN: #Morphemes & [#]

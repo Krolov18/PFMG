@@ -1,0 +1,21 @@
+Q:
+  A:
+    katiSa: katisha-1.F
+    padaN: viande-2.F
+    toSik: fruit-2.M
+    modak: infirmière-2.F
+    gatok: balai-2.M
+    pebiz: plaine-2.F
+
+N:
+  1:
+    F:
+      Katisha: katiSa-A
+  2:
+    F:
+      viande,viandes: padaN-A
+      infirmière,infirmières: modak-A
+      plaine,plaines: pebiz-A
+    M:
+      fruit,fruits: toSik-A
+      balai,balais: gatok-A

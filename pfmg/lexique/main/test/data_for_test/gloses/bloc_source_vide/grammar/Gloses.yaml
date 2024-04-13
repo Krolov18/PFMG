@@ -1,0 +1,13 @@
+# Fichier généré par la commande startproject
+source:
+  N:
+    Temps: [ passé, present, futur ]
+destination:
+  N:
+    Genre: [ m ]
+    Nombre: [ s, p ]
+  V:
+    - Mode: [ infinitif ]
+    - Mode: [ indicatif, imperatif ]
+      Personne: [ 1sg, 2sg, 3sg, 1pl, 2pl, 3pl ]
+      Temps: [ éer, present, futur ]

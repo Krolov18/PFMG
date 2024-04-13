@@ -1,0 +1,39 @@
+source:
+  N:
+    Genre: [ M, F ]
+    Nombre: [ Sg, Pl ]
+    CF: [ 1, 2 ]
+  V:
+    Genre: [ M, F ]
+    Nombre: [ Sg, Pl ]
+    Temps: [ PRS, PST ]
+    Type: [ VI, VT, VD ]
+  DET:
+    Genre: [ M, F ]
+    Nombre: [ Sg, Pl ]
+    DEF: [ DEF, INDEF, DEM ]
+  ADJ:
+    CF: [ "1", "2", "3", "4" ]
+    Genre: [ M, F ]
+    Nombre: [ Sg, Pl ]
+  PREP: Null
+  PRE: Null
+destination:
+  N:
+    Genre: [ A, B, C, D ]
+    Nombre: [ Sg, Du, Pl ]
+    Cas: [ Erg, Abs, Obl, Dat ]
+  V:
+    Genre: [ A, B, C, D ]
+    Nombre: [ Sg, Du, Pl ]
+    Temps: [ PRS, PST ]
+    Type: [ VI, VT, VD ]
+  DET:
+    Nombre: [ Sg, Du, Pl ]
+    Cas: [ Erg, Abs, Obl, Dat ]
+  ADJ:
+    CF: [ "1", "2" ]
+    Genre: [ A, B, C, D ]
+    Nombre: [ Sg, Du, Pl ]
+  PREP: Null
+  PRE: Null

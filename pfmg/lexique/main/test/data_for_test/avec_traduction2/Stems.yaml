@@ -1,0 +1,13 @@
+N:
+  A:
+    padaN: viande-2.F
+  B:
+    minet: chat,chatte-2
+    pinet: avion-2
+ADJ:
+  '1':
+    meN: grand,grande-1
+  '2':
+    lap: gros,grosse-4
+DET:
+  b: le,la,les,l-DEF

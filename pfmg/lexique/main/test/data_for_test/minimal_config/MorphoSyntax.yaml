@@ -1,0 +1,28 @@
+contractions:
+  au: [ "à", "le" ]
+start: NP
+source:
+  syntagmes:
+    NP:
+      - [ "DET/?", "ADJ/?", "N", "ADJ/?" ]
+  accords:
+    RTT: [ [ { Toto: "z" } ] ]
+    NP: # Genre, Nombre
+      - [ { Genre: "*", Nombre: "*" },
+          { Genre: "*", Nombre: "*" },
+          { Genre: "*", Nombre: "*" },
+          { Genre: "*", Nombre: "*" } ] ]
+  percolations: # Genre, Nombre
+    NP: [ { Genre: "*", Nombre: "*" } ]
+  traductions: [ [ 0 ] ]
+destination:
+  syntagmes:
+    NP: [ [ "DET/?", "ADJ/?", "ADJ/?", "N" ] ]
+  accords:
+    NP:
+      - [ { Genre: "*", Nombre: "*", Cas: "*" },
+          { Genre: "*", Nombre: "*" },
+          { Genre: "*", Nombre: "*" },
+          { Genre: "*", Nombre: "*", Cas: "*" } ]
+  percolations: # Genre, Nombre, Cas
+    NP: [ { Genre: "*", Nombre: "*", Cas: "*" } ]

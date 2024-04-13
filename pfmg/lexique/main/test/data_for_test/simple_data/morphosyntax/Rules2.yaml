@@ -1,0 +1,29 @@
+# Description de la grammaire du français
+# avec les optionnalité "/?" et les spécificités du français "a" et "deux"
+# Pour chaque
+contractions: {}
+start: "NP"
+syntagmes:
+  NP:
+    - [ "DET", "ADJ/?", "ADJ/?", "N", "ADJ/?", "PP/?" ]
+    - [ "DET/?", "deux", "ADJ/?", "ADJ/?", "N", "ADJ/?", "PP/?" ]
+    - [ "N" ]
+accords:
+  NP:
+    - DET: { Genre: "*", Nombre: "*", Cas: "*" }
+      ADJ: { Genre: "*", Nombre: "*" }
+      N: { Genre: "*", Nombre: "*", Cas: "*" }
+    - DET: { Genre: "*", Nombre: "Du", Cas: "*" }
+      ADJ: { Genre: "*", Nombre: "Du" }
+      N: { Genre: "*", Nombre: "Du", Cas: "*" }
+    - N: { CF: "1" }
+percolations:
+  NP:
+    - { Genre: "*", Nombre: "*", Cas: "*" }
+    - { Genre: "*", Nombre: "Du", Cas: "*" }
+    - { Genre: "*", Nombre: "*", Cas: "*", CF: "1" }
+traductions:
+  NP:
+    - [ "Det", "PP", "ADJ", "N" ]
+    - [ "Det", "PP", "ADJ", "N" ]
+    - [ "N" ]
