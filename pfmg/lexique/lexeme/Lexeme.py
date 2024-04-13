@@ -1,7 +1,7 @@
 """Lexeme."""
 from dataclasses import dataclass
 
-from lexique.lexical_structures.LexemeEntry import LexemeEntry
+from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 
 
 @dataclass

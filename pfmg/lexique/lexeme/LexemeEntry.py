@@ -2,8 +2,9 @@
 from dataclasses import dataclass
 
 from frozendict import frozendict
-from lexique.lexical_structures.Radical import Radical
-from lexique.lexical_structures.StemSpace import StemSpace
+
+from pfmg.lexique.morpheme.Radical import Radical
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass

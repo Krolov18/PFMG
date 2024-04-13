@@ -1,9 +1,9 @@
 import pytest
 from frozendict import frozendict
 
-from lexique.lexical_structures.Gabarit import Gabarit
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.StemSpace import StemSpace
+from pfmg.lexique.morpheme.Gabarit import Gabarit
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @pytest.mark.parametrize("rule, expected, sigma", [
@@ -78,24 +78,24 @@ def test_suffix_typeerror() -> None:
         voyelles=frozenset("iueoa")
     )
     with pytest.raises(TypeError):
-        _ = Gabarit(
-            rule=1,
+        _ = Gabarit( 
+            rule=1,  # type: ignore reportArgumentType
             sigma=frozendict(),
+            phonology=phonology 
+        )
+
+    with pytest.raises(TypeError):
+        _ = Gabarit(
+            rule="1",
+            sigma=1,  # type: ignore reportArgumentType
             phonology=phonology
         )
 
     with pytest.raises(TypeError):
         _ = Gabarit(
             rule="1",
-            sigma=1,
-            phonology=phonology
-        )
-
-    with pytest.raises(TypeError):
-        _ = Gabarit(
-            rule="1",
             sigma=frozendict(),
-            phonology=1
+            phonology=1  # type: ignore reportArgumentType
         )
 
     with pytest.raises(TypeError):

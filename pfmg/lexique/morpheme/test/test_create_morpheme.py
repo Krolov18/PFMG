@@ -1,15 +1,15 @@
 import pytest
 from frozendict import frozendict
 
-from lexique.lexical_structures.Prefix import Prefix
-from lexique.lexical_structures.Suffix import Suffix
+from pfmg.lexique.morpheme.Prefix import Prefix
+from pfmg.lexique.morpheme.Suffix import Suffix
 from pfmg.lexique.morpheme import Circumfix
-from lexique.lexical_structures.Condition import Condition
-from lexique.lexical_structures.Selection import Selection
-from lexique.lexical_structures.Gabarit import Gabarit
-from lexique.lexical_structures.Factory import create_morpheme
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.StemSpace import StemSpace
+from pfmg.lexique.morpheme.Condition import Condition
+from pfmg.lexique.morpheme.Selection import Selection
+from pfmg.lexique.morpheme.Gabarit import Gabarit
+from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @pytest.mark.parametrize("rule, sigma, expected_type", [

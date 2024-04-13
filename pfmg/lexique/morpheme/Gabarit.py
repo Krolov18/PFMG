@@ -19,8 +19,8 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
     peuvent subir des modifications phonologiques.
     """
 
-    __PATTERN: Callable[[str], Match[str] | None]
-    rule: Match[str]
+    __PATTERN: Callable[[str], Match | None]
+    rule: Match
     sigma: frozendict
     phonology: Phonology
 
@@ -109,7 +109,7 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
         """
         return self.rule.string
 
-    def get_rule(self) -> str:
+    def get_rule(self) -> Match:
         """Récupère la règle.
 
         :return: la règle sous forme de chaine de caractère

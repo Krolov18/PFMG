@@ -1,8 +1,10 @@
 from frozendict import frozendict
 
-from lexique.lexical_structures.Factory import create_morpheme
-from lexique.lexical_structures.Morphemes import Morphemes
-from lexique.lexical_structures.Phonology import Phonology
+from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.morpheme.Morphemes import Morphemes
+from pfmg.lexique.morpheme.Radical import Radical
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 def test_morpheme() -> None:
@@ -17,7 +19,7 @@ def test_morpheme() -> None:
         voyelles=frozenset("iueoa")
     )
     morpheme = Morphemes(
-        radical="radical",
+        radical=Radical(stems=StemSpace(("radical",))),
         others=[
             create_morpheme(
                 rule="a+X",

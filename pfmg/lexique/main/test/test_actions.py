@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from lexique.actions import action
+from pfmg.lexique.main.actions import action
 
 
 def test_unknown_path_to_grammar(tmp_path) -> None:

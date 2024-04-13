@@ -5,13 +5,14 @@ from re import Match
 from typing import ClassVar
 
 from frozendict import frozendict
-from lexique.lexical_structures.Factory import create_morpheme
-from lexique.lexical_structures.mixins.MixinDisplay import MixinDisplay
-from lexique.lexical_structures.mixins.MixinEquality import MixinEquality
-from lexique.lexical_structures.mixins.MixinRepresentor import MixinRepresentor
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.Selection import Selection
-from lexique.lexical_structures.StemSpace import StemSpace
+
+from pfmg.lexique.display.ABCDisplay import ABCDisplay
+from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
@@ -22,16 +23,16 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
     :param false : Si la construction de la condition échoue, on récupère false.
     """
 
-    __PATTERN: ClassVar[Callable[[str], Match[str] | None]] = re.compile(
+    __PATTERN: ClassVar[Callable[[str], Match | None]] = re.compile(
         r"^(.*)\?(.*):(.*)$",
     ).fullmatch
 
-    rule: Match[str]
+    rule: Match
     sigma: frozendict
 
-    __cond: Selection
-    __true: Selection
-    __false: Selection
+    __cond: ABCDisplay 
+    __true: ABCDisplay 
+    __false: ABCDisplay 
     phonology: Phonology
 
     def __init__(
@@ -79,7 +80,7 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
     def _repr_params(self) -> str:
         return self.rule.string
 
-    def get_rule(self) -> str:
+    def get_rule(self) -> Match:
         """Récupère la règle.
 
         :return: la règle

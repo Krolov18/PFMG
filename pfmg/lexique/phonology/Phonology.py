@@ -3,12 +3,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
+from frozendict import frozendict
 
-from pfmg.lexique.reader.Reader import Reader
+from pfmg.lexique.reader.ABCReader import ABCReader
 
 
 @dataclass
-class Phonology(Reader):
+class Phonology(ABCReader):
     """DataClass encodant les informations phonologiques.
 
     TODO : transformer cette classe en Singleton.
@@ -23,11 +24,11 @@ class Phonology(Reader):
     :param voyelles : Ensemble des voyelles.
     """
 
-    apophonies: dict[str, str]
-    derives: dict[str, str]
-    mutations: dict[str, str]
-    consonnes: set[str]
-    voyelles: set[str]
+    apophonies: frozendict
+    derives: frozendict
+    mutations: frozendict
+    consonnes: frozenset
+    voyelles: frozenset
 
     @classmethod
     def from_disk(cls, path: Path) -> "Phonology":

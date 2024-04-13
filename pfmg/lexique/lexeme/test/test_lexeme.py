@@ -1,7 +1,7 @@
 from frozendict import frozendict
-from lexique.lexical_structures.Lexeme import Lexeme
-from lexique.lexical_structures.LexemeEntry import LexemeEntry
-from lexique.lexical_structures.StemSpace import StemSpace
+from pfmg.lexique.lexeme.Lexeme import Lexeme
+from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 def test_lexeme() -> None:

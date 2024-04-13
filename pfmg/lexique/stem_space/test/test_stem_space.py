@@ -1,6 +1,6 @@
 import pytest
 
-from lexique.lexical_structures.StemSpace import StemSpace
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @pytest.mark.parametrize("stems", [

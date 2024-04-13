@@ -4,11 +4,12 @@ from collections.abc import Callable
 from re import Match
 
 from frozendict import frozendict
-from lexique.lexical_structures.mixins.MixinDisplay import MixinDisplay
-from lexique.lexical_structures.mixins.MixinEquality import MixinEquality
-from lexique.lexical_structures.mixins.MixinRepresentor import MixinRepresentor
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.StemSpace import StemSpace
+
+from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):

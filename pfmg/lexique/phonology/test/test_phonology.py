@@ -1,6 +1,7 @@
 import yaml
 from frozendict import frozendict
-from lexique.lexical_structures.Phonology import Phonology
+
+from pfmg.lexique.phonology.Phonology import Phonology
 
 
 def fx_phonology() -> Phonology:

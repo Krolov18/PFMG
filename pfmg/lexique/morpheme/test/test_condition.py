@@ -1,9 +1,9 @@
 import pytest
 from frozendict import frozendict
 
-from lexique.lexical_structures.Condition import Condition
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.StemSpace import StemSpace
+from pfmg.lexique.morpheme.Condition import Condition
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @pytest.mark.parametrize("rule, expected, sigma", [

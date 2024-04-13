@@ -1,8 +1,8 @@
 """Structure qui rassemble un radical et ses morphèmes."""
 from dataclasses import dataclass
 
-from lexique.lexical_structures.interfaces.Display import Display
-from lexique.lexical_structures.Radical import Radical
+from pfmg.lexique.display.ABCDisplay import ABCDisplay
+from pfmg.lexique.morpheme.Radical import Radical
 
 
 @dataclass
@@ -14,4 +14,4 @@ class Morphemes:
     """
 
     radical: Radical
-    others: list[Display]
+    others: list[ABCDisplay]
