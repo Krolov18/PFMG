@@ -39,8 +39,8 @@ class Phonology(ABCReader):
         """
         assert path.name.endswith("Phonology.yaml")
 
-        with open(path, encoding="utf8") as file_handler:
-            data = yaml.safe_load(file_handler)
+        with open(path, mode="r", encoding="utf8") as file_handler:
+            data = yaml.load(file_handler, Loader=yaml.Loader)
 
         return cls(
             apophonies=data["apophonies"],

@@ -110,8 +110,8 @@ def test_validate_gloses(tmp_path):
     stems.write_text("")
     phonology = datapath / "Phonology.yaml"
     phonology.write_text("")
-    morpho = datapath / "MorphoSyntax.yaml"
-    morpho.write_text("")
+    # morpho = datapath / "MorphoSyntax.yaml"
+    # morpho.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
     with pytest.raises(argparse.ArgumentTypeError,
                        match=".*does not contain MorphoSyntax.*"):

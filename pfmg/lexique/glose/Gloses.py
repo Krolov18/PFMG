@@ -45,6 +45,8 @@ class Gloses(ABCReader):
         :param destination:
         :return:
         """
+        self.source=  source
+        self.destination = destination
         self.struct = {k: [dict(zip(vars(self).keys(), sigma, strict=True))
                            for sigma in
                            product(self.source[k], self.destination[k])]
@@ -71,7 +73,7 @@ class Gloses(ABCReader):
         """
         assert path.name.endswith("Gloses.yaml")
         with open(path, encoding="utf8") as file_handler:
-            data: dict[str, dict[str, list[str]]] = yaml.safe_load(file_handler)
+            data: dict[str, dict[str, list[str]]] = yaml.load(file_handler, Loader=yaml.Loader)
         source = {category: list(cls.__gridify(att_vals))
                   for category, att_vals in data["source"].items()}
         destination = {category: list(cls.__gridify(att_vals))
@@ -123,3 +125,6 @@ class Gloses(ABCReader):
         """
         for i_grid in grid:
             yield from Gloses.__gridify_dict(i_grid)
+
+    def __eq__(self, other):
+        return (self.source == other.source) and (self.destination == other.destination)

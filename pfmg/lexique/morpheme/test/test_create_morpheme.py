@@ -3,7 +3,7 @@ from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Prefix import Prefix
 from pfmg.lexique.morpheme.Suffix import Suffix
-from pfmg.lexique.morpheme import Circumfix
+from pfmg.lexique.morpheme.Circumfix import Circumfix
 from pfmg.lexique.morpheme.Condition import Condition
 from pfmg.lexique.morpheme.Selection import Selection
 from pfmg.lexique.morpheme.Gabarit import Gabarit

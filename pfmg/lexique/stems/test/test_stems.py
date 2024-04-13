@@ -7,7 +7,7 @@ from pfmg.lexique.stems.Stems import Stems
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-@pytest.mark.parametrize(
+parametrize = pytest.mark.parametrize(
     "stems, gloses, expected", [
         ({"N": {"pSit": "toto,tutu.Genre=m"},
           "A": {"Cas=erg": {"ksit": "kiki,koko"}},
@@ -27,31 +27,33 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
          [
              Lexeme(
                  source=LexemeEntry(
-                     stems=StemSpace(stems=("ksit",)),
-                     pos="A",
-                     sigma=frozendict(Cas="erg"),
-                 ),
-                 destination=LexemeEntry(
                      stems=StemSpace(stems=("kiki", "koko")),
                      pos="A",
-                     sigma=frozendict(),
+                     sigma=frozendict({}),
+                 ),
+                 destination=LexemeEntry(
+                     stems=StemSpace(stems=("ksit",)),
+                     pos="A",
+                     sigma=frozendict({"Cas": "erg"}),
                  ),
              ),
              Lexeme(
                  source=LexemeEntry(
-                     stems=StemSpace(stems=("pSit",)),
-                     pos="N",
-                     sigma=frozendict(),
-                 ),
-                 destination=LexemeEntry(
                      stems=StemSpace(stems=("toto", "tutu")),
                      pos="N",
                      sigma=frozendict(Genre="m"),
+                 ),
+                 destination=LexemeEntry(
+                     stems=StemSpace(stems=("pSit",)),
+                     pos="N",
+                     sigma=frozendict(),
                  ),
              )]),
 
     ],
 )
+
+@parametrize
 def test_from_disk(tmp_path, stems, gloses, expected):
     gloses_path = tmp_path / "Gloses.yaml"
     with open(gloses_path, mode="w", encoding="utf8") as file_handler:
@@ -63,3 +65,4 @@ def test_from_disk(tmp_path, stems, gloses, expected):
 
     actual = Stems.from_disk(stems_path)
     assert list(actual) == expected
+

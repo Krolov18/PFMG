@@ -8,7 +8,7 @@ def get_project_path() -> Path:
 
     :return:
     """
-    return Path(os.path.dirname(os.path.dirname(__file__)))
+    return Path(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 
 def get_validation_file_path(project_path: Path | None = None) -> Path:
@@ -17,4 +17,5 @@ def get_validation_file_path(project_path: Path | None = None) -> Path:
     :param project_path:
     :return:
     """
+    print(get_project_path() / "schemas")
     return (project_path or get_project_path()) / "schemas"

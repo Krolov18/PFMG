@@ -32,7 +32,7 @@ class Blocks(ABCReader):
         assert path.name.endswith("Blocks.yaml")
 
         with open(path, encoding="utf8") as file_handler:
-            data: dict = yaml.safe_load(file_handler)
+            data: dict = yaml.load(file_handler, Loader=yaml.Loader)
 
         assert data
 

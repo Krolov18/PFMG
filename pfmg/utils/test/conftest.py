@@ -6,7 +6,7 @@ import pytest
 from pfmg.utils.abstract_factory import factory_method, factory_function
 
 params_factory_method_concrete_product: list[str] = ["ConcreteProduct"]
-params_factory_method_package: list[str] = ["utils.test.data_for_test"]
+params_factory_method_package: list[str] = ["pfmg.utils.test.data_for_test"]
 params_factory_method_kwargs: list[dict] = [{}]
 params_factory_method_concrete_product_package = list(
     itertools.product(

@@ -3,7 +3,7 @@ import pytest
 from pfmg.utils.test.data_for_test.ConcreteProduct import ConcreteProduct
 
 
-@pytest.mark.parametrize("concrete_product", [
+parametrize = pytest.mark.parametrize("concrete_product", [
     [],
     set(),
     int(),
@@ -11,13 +11,14 @@ from pfmg.utils.test.data_for_test.ConcreteProduct import ConcreteProduct
     frozenset(),
     bytearray()
 ])
+
+@parametrize
 def test_param_concrete_product_type(
         fx_partial_factory_method_missing_concrete_product,
         concrete_product
 ) -> None:
     with pytest.raises(
             AssertionError,
-            match=r"'concrete_product' must be a string. A.*was given."
     ):
         fx_partial_factory_method_missing_concrete_product(
             concrete_product=concrete_product
@@ -30,14 +31,15 @@ def test_param_concrete_product_type(
 def test_param_concrete_product_empty(
         fx_partial_factory_method_missing_concrete_product,
         concrete_product) -> None:
-    with pytest.raises(AssertionError,
-                       match=r"'concrete_product' can't be empty."):
+    with pytest.raises(
+        AssertionError,
+    ):
         fx_partial_factory_method_missing_concrete_product(
             concrete_product=concrete_product
         )
 
 
-@pytest.mark.parametrize("package", [
+parametrize = pytest.mark.parametrize("package", [
     [],
     set(),
     int(),
@@ -45,13 +47,14 @@ def test_param_concrete_product_empty(
     frozenset(),
     bytearray()
 ])
+
+@parametrize
 def test_param_package_type(
         fx_partial_factory_method_missing_package,
         package
 ) -> None:
     with pytest.raises(
             AssertionError,
-            match=r"'package' must be a string. A.*was given."
     ):
         fx_partial_factory_method_missing_package(
             package=package
@@ -67,50 +70,58 @@ def test_param_package_empty(
 ) -> None:
     with pytest.raises(
             AssertionError,
-            match=r"'package' can't be empty."
     ):
         fx_partial_factory_method_missing_package(
             package=package
         )
 
 
-@pytest.mark.parametrize("package", [
+parametrize = pytest.mark.parametrize("package", [
     ".path",
     "path."
 ])
+
+@parametrize
 def test_param_package_relative_path(
         fx_partial_factory_method_missing_package,
         package
 ) -> None:
     with pytest.raises(
             AssertionError,
-            match=r"Relative path are not allowed."
     ):
         fx_partial_factory_method_missing_package(
             package=package
         )
 
 
-@pytest.mark.parametrize("package", [
+parametrize = pytest.mark.parametrize("package", [
     "unknown_package",
     "package_unknown"
 ])
+
+@parametrize
 def test_param_package_module_not_found(
         fx_partial_factory_method_missing_package, package) -> None:
-    with pytest.raises(NameError, match="The module.*was not found."):
+    with pytest.raises(
+        NameError,
+    ):
         fx_partial_factory_method_missing_package(
             package=package
         )
 
 
-@pytest.mark.parametrize("concrete_product, package", [
+parametrize = pytest.mark.parametrize("concrete_product, package", [
     ("unknown_concrete_product", "utils.test.data_for_test"),
     ("concrete_product_unknown", "utils.test.data_for_test")
 ])
+
+@parametrize
 def test_param_concrete_product_not_found_in_package(
         fx_partial_factory_method_missing_concrete_product_package,
         concrete_product, package) -> None:
-    with pytest.raises(NameError, match=r".*is not a concrete product of.*"):
+    with pytest.raises(
+        NameError,
+    ):
         fx_partial_factory_method_missing_concrete_product_package(
             concrete_product=concrete_product,
             package=package

@@ -31,7 +31,7 @@ def test_morpheme() -> None:
                 sigma=frozendict({"Nombre": "s"}),
                 phonology=phonology)]
     )
-    assert morpheme.radical == "radical"
+    assert morpheme.radical == Radical(stems=StemSpace(("radical",)))
     expected_morphemes = [
         create_morpheme(
             rule="a+X",
