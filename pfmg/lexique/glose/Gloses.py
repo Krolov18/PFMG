@@ -126,7 +126,7 @@ class Gloses(ABCReader):
         for i_grid in grid:
             yield from Gloses.__gridify_dict(i_grid)
 
-    def __eq__(self, other: "Gloses") -> bool:
+    def __eq__(self, other: "Gloses") -> bool:  # type: ignore reportIncompatibleMethodOverride
         """Renvoie l'égalité entre self et other.
 
         :param other: Une autre Glose
