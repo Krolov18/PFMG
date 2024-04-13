@@ -30,7 +30,7 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Linter
       run: |
-        ruff check $(git ls-files '*.py')
+        ruff check
     - name: Test with pytest
       run: |
         pytest
