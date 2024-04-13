@@ -1,0 +1,16 @@
+N:
+    genre:  [m,f]
+    nombre: [sg, pl]
+V:
+    temps: [passe, futur]
+    nombre: [sg, pl]
+    personne: ["1", "2", "3"]
+DET:
+    genre: [m,f]
+    def: [def, indef, dem]
+    nombre: [sg, pl]
+ADJ:
+    CF: ["1", "2", "3", "4"]
+    genre:  [m,f]
+    nombre: [sg, pl]
+PREP: {}

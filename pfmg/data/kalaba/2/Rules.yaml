@@ -1,0 +1,19 @@
+# % start S
+
+# phrases valides
+S:
+  - [ 'PP/?', 'NP[Cas=Abs,Nombre=?b,Genre=?a]', 'PP/?', 'VP[Type=VI,Nombre=?b,Genre=?a]' ]
+  - [ 'PP/?', 'NP[Cas=Erg]', 'PP/?', 'VP[Type=VT]' ]
+  - [ 'PP/?', 'NP[Cas=Erg]', 'PP/?', 'VP[Type=VD]' ]
+VP:
+  Type=VI,Nombre=?a,Genre=?b:
+    - [ 'V[Type=VI,Nombre=?a,Genre=?b]' ]
+  Type=VT,Nombre=?a:
+    - [ 'NP[Cas=Abs,Nombre=?a,Genre=?b]', 'V[Type=VT,Nombre=?a,Genre=?b]' ]
+  Type=VD,Nombre=?a:
+    - [ 'NP[Cas=Dat]', 'NP[Cas=Abs,Nombre=?a,Genre=?b]', 'V[Type=VD,Nombre=?a,Genre=?b]' ]
+NP:
+  Genre=?a,Nombre=?b,Cas=?c:
+    - [ 'DET[Genre=?a,Nombre=?b,Cas=?c]', 'PP/?', 'ADJ[Genre=?a,Nombre=?b,Cas=?c]/{,2}', 'N[Genre=?a,Nombre=?b,Cas=?c]' ]
+PP:
+  - [ 'NP[Cas=Obl]', 'PREP' ]

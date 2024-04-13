@@ -1,0 +1,16 @@
+% start S
+
+S[TOrth=(?f+?g)] -> NP[KCas='Abs',KNombre=?b,KGenre=?c,TNombre=?e,TOrth=?f] VP[KNombre=?b,KGenre=?c,KType='VI',TNombre=?e,TOrth=?g]
+
+VP[KType=?a,KNombre=?b,KGenre=?c,TNombre=?e,TOrth=?f] -> V[KType=?a,KNombre=?b,KGenre=?c,TNombre=?e,TOrth=?f]
+
+NP[KCas=?a,KNombre=?b,KGenre=?c,TGenre=?d,TNombre=?e,TOrth=(?f+?g)] -> DET[KCas=?a,KNombre=?b,KGenre=?c,TGenre=?d,TNombre=?e,TOrth=?f] N[KCas=?a,KNombre=?b,KGenre=?c,TGenre=?d,TNombre=?e,TOrth=?g]
+
+DET[KCas='Abs',KNombre='Sg',TOrth='le',TGenre='M',TNombre='Sg'] -> 'bok'
+DET[KCas='Abs',KNombre='Du',TOrth='les deux',TGenre='M',TNombre='Pl'] -> 'bak'
+
+N[KCas='Abs',KGenre='A',KNombre='Sg',TOrth='chat',TGenre='M',TNombre='Sg'] -> 'bokatutaSe'
+N[KCas='Abs',KGenre='A',KNombre='Du',TOrth='chats',TGenre='M',TNombre='Pl'] -> 'bokatutiSa'
+
+V[KGenre='A',KNombre='Sg',KType='VI',KTemps='PRS',TOrth='arrive',TNombre='Sg',TPersonne='3',TTemps=PRS] -> 'pabirawiNu'
+V[KGenre='A',KNombre='Du',KType='VI',KTemps='PRS',TOrth='arrivent',TNombre='Pl',TPersonne='3',TTemps=PRS] -> 'pabirawaNi'

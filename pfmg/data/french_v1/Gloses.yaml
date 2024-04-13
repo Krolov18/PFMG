@@ -1,0 +1,15 @@
+P:
+    Genre:  ["m", "f"]
+    Nombre: ["sg", "pl"]
+V:
+    Temps: ["passe", "futur"]
+    Nombre: ["sg", "pl"]
+    Personne: ["1", "2", "3"]
+DET:
+    Genre: ["m","f"]
+    Def: ["def", "indef", "dem"]
+    Nombre: ["sg", "pl"]
+ADJ:
+    Cf: ["1", "2", "3", "4"]
+    Genre:  ["m","f"]
+    Nombre: ["sg", "pl"]
