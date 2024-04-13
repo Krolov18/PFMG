@@ -1,8 +1,8 @@
 """Mixin implémentant le comportement par défaut de __str__ et __repr__."""
-from lexique.lexical_structures.interfaces.Representor import Representor
+from pfmg.lexique.representor.ABCRepresentor import ABCRepresentor
 
 
-class MixinRepresentor(Representor):
+class MixinRepresentor(ABCRepresentor):
     """Mixin."""
 
     def __repr__(self) -> str:

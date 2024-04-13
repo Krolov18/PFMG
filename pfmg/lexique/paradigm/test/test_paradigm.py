@@ -1,28 +1,29 @@
 import yaml
 from frozendict import frozendict
 
-from lexique.lexical_structures.Forme import Forme
-from lexique.lexical_structures.FormeEntry import FormeEntry
-from lexique.lexical_structures.Lexeme import Lexeme
-from lexique.lexical_structures.LexemeEntry import LexemeEntry
-from lexique.lexical_structures.Morphemes import Morphemes
-from lexique.lexical_structures.Paradigm import Paradigm
-from lexique.lexical_structures.Radical import Radical
-from lexique.lexical_structures.StemSpace import StemSpace
-from lexique.lexical_structures.Suffix import Suffix
+from pfmg.lexique.forme.Forme import Forme
+from pfmg.lexique.forme.FormeEntry import FormeEntry
+from pfmg.lexique.lexeme.Lexeme import Lexeme
+from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
+from pfmg.lexique.morpheme.Morphemes import Morphemes
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.paradigm.Paradigm import Paradigm
+from pfmg.lexique.morpheme.Radical import Radical
+from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.lexique.morpheme.Suffix import Suffix
 
 
-def phonology():
+def phonology() -> dict:
     return dict(
-        apophonies=dict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=dict(
+        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=frozendict(
             p="p", t="p", k="t", b="p", d="b",
             g="d", m="m", n="m", N="n", f="f",
             s="f", S="s", v="f", z="v", Z="z",
             r="w", l="r", j="w", w="w"
         ),
-        derives=dict(A="V", D="C"),
-        consonnes=set("ptkbdgmnNfsSvzZrljw"),
+        derives=frozendict(A="V", D="C"),
+        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
         voyelles=set("iueoa")
     )
 
@@ -139,7 +140,7 @@ def test_from_disk(tmp_path):
                         Suffix(
                             rule="X+s",
                             sigma=frozendict({'Nombre': 'pl'}),
-                            phonology=phonology()
+                            phonology=Phonology(**phonology())
                         )]
                     ),
                 sigma=frozendict(Genre="f", Nombre="pl", f="Genre", pl="Nombre")

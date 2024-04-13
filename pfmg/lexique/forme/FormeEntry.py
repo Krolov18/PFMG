@@ -2,9 +2,10 @@
 from dataclasses import dataclass
 
 from frozendict import frozendict
-from lexique.lexical_structures.interfaces.Rulable import Rulable
-from lexique.lexical_structures.mixins.MixinDisplay import MixinDisplay
-from lexique.lexical_structures.Morphemes import Morphemes
+
+from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.lexique.morpheme.Morphemes import Morphemes
+from pfmg.lexique.rulable.Rulable import Rulable
 
 
 @dataclass

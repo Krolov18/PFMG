@@ -4,18 +4,18 @@ from dataclasses import dataclass
 
 from frozendict import frozendict
 
-from pfmg.lexique.display.Display import Display
+from pfmg.lexique.display.ABCDisplay import ABCDisplay
 from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.selector.Selector import Selector
+from pfmg.lexique.selector.ABCSelector import ABCSelector
 from pfmg.lexique.utils import dictify
 
 
 @dataclass
-class BlockEntry(Selector):
+class BlockEntry(ABCSelector):
     """Entry d'un Bloc. Structure de données contenant les règles d'un Bloc."""
 
-    data: dict[str, list[list[Display]]]
+    data: dict[str, list[list[ABCDisplay]]]
 
     def __post_init__(self):
         """Vérfication de base sur 'data'."""
@@ -27,7 +27,7 @@ class BlockEntry(Selector):
         self,
         pos: str,
         sigma: frozendict,
-    ) -> list[Display]:
+    ) -> list[ABCDisplay]:
         """Calcule les morphèmes disponible pour le couple POS/sigma.
 
         :param pos: un POS disponible
@@ -39,7 +39,7 @@ class BlockEntry(Selector):
                        f"{list(self.data.keys())}.")
             raise KeyError(message)
 
-        output: list[Display] = []
+        output: list[ABCDisplay] = []
 
         for bloc in self.data[pos]:
             morpheme = BlockEntry.__select_morpheme(sigma, bloc)
@@ -70,7 +70,7 @@ class BlockEntry(Selector):
     def __rulify(
         block: dict[str, str] | list[dict[str, str]],
         phonology: Phonology,
-    ) -> Iterator[list[Display]]:
+    ) -> Iterator[list[ABCDisplay]]:
         """Factory qui met en forme 'block' pour être facilement interrogé.
 
         :param block: Bloc ou liste de blocs de règles
@@ -90,7 +90,7 @@ class BlockEntry(Selector):
     def __rulify_dict(
         block: dict[str, str],
         phonology: Phonology,
-    ) -> Iterator[list[Display]]:
+    ) -> Iterator[list[ABCDisplay]]:
         """Met en forme un bloc.
 
         :param block: Bloc de règles
@@ -99,7 +99,7 @@ class BlockEntry(Selector):
         if not block:
             raise ValueError
 
-        output: list[Display] = []
+        output: list[ABCDisplay] = []
 
         for key, value in block.items():
             _sigma = dictify(key)
@@ -117,7 +117,7 @@ class BlockEntry(Selector):
     def __rulify_list(
         block: list[dict[str, str]],
         phonology: Phonology,
-    ) -> Iterator[list[Display]]:
+    ) -> Iterator[list[ABCDisplay]]:
         """Met en forme une liste de blocs.
 
         :param block: Liste de blocs de règles
@@ -135,15 +135,15 @@ class BlockEntry(Selector):
     @staticmethod
     def __select_morpheme(
         sigma: frozendict,
-        morphemes: list[Display],
-    ) -> Display | None:
+        morphemes: list[ABCDisplay],
+    ) -> ABCDisplay | None:
         """Sélectionne un morphème si sigma contient morphemes[i].sigma.
 
         :param sigma: sigma d'un léxème
         :param morphemes: liste de morphèmes
         :return: le morphème le plus général lors du "<="
         """
-        winner: Display | None = None
+        winner: ABCDisplay | None = None
         for morpheme in morphemes:
             if morpheme.get_sigma().items() <= sigma.items():
                 winner = morpheme

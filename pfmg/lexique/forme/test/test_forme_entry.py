@@ -1,12 +1,12 @@
 import pytest
-
-from lexique.lexical_structures.Factory import create_morpheme
-from lexique.lexical_structures.FormeEntry import FormeEntry
-from lexique.lexical_structures.Morphemes import Morphemes
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.Radical import Radical
-from lexique.lexical_structures.StemSpace import StemSpace
 from frozendict import frozendict
+
+from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.forme.FormeEntry import FormeEntry
+from pfmg.lexique.morpheme.Morphemes import Morphemes
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.morpheme.Radical import Radical
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 def test_to_string() -> None:
@@ -22,7 +22,7 @@ def test_to_string() -> None:
 
     forme = FormeEntry(pos="N",
                        morphemes=Morphemes(radical=Radical(
-                           stems=StemSpace(stems=["a", "b", "c"])),
+                           stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
                        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
     actual = forme.to_string(None)
@@ -33,7 +33,7 @@ def test_to_string() -> None:
         pos="N",
         morphemes=Morphemes(
             radical=Radical(
-                stems=StemSpace(stems=["a", "b", "c"])),
+                stems=StemSpace(stems=("a", "b", "c"))),
             others=[
                 create_morpheme(
                     rule="a+X",
@@ -52,13 +52,13 @@ def test_to_string() -> None:
         _ = forme.to_string("")
 
     with pytest.raises(NotImplementedError):
-        _ = forme.to_string(StemSpace(stems=["a", "b", "c"]))
+        _ = forme.to_string(StemSpace(stems=("a", "b", "c")))
 
 
 def test_get_sigma() -> None:
     forme = FormeEntry(pos="N",
                        morphemes=Morphemes(radical=Radical(
-                           stems=StemSpace(stems=["a", "b", "c"])),
+                           stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
                        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
     actual = forme.get_sigma()
@@ -80,7 +80,7 @@ def test_to_lexical() -> None:
 
     forme = FormeEntry(pos="N",
                        morphemes=Morphemes(radical=Radical(
-                           stems=StemSpace(stems=["a", "b", "c"])),
+                           stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
                        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
     actual = forme.to_lexical()
@@ -92,7 +92,7 @@ def test_to_lexical() -> None:
         morphemes=Morphemes(
             radical=Radical(
                 stems=StemSpace(
-                    stems=["a", "b", "c"])),
+                    stems=("a", "b", "c"))),
             others=[
                 create_morpheme(
                     rule="a+X",

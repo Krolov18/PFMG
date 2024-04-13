@@ -1,22 +1,24 @@
 from functools import cache
+from collections.abc import Generator
 
 import pytest
 import yaml
 from frozendict import frozendict
 
-from lexique.lexical_structures.Blocks import Blocks
-from pfmg.lexique.morpheme import Circumfix
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.Suffix import Suffix
+from pfmg.lexique.block.Blocks import Blocks
+from pfmg.lexique.block.BlockEntry import BlockEntry
+from pfmg.lexique.morpheme.Circumfix import Circumfix
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.morpheme.Suffix import Suffix
 
 
 @pytest.fixture(scope="module")
-def fx_phonology() -> Phonology:
+def fx_phonology() -> Generator[Phonology, None, None]:
     yield phonology()
 
 
 @cache
-def phonology():
+def phonology() -> Phonology:
     return Phonology(
         apophonies=frozendict(
             Ø="i", i="a", a="u",
@@ -71,9 +73,9 @@ def test___call__(fx_phonology, tmp_path, blocks, pos, sigma, expected):
 
 def test_errors():
     with pytest.raises(AssertionError):
-        Blocks(source={},
-               destination={"N": {}})
+        Blocks(source=BlockEntry(data={}),
+                destination=BlockEntry({"N": {}}))  # type: ignore
 
     with pytest.raises(AssertionError):
-        Blocks(source={"N": {}},
-               destination={})
+        Blocks(source=BlockEntry({"N": {}}),  # type: ignore
+               destination=BlockEntry({}))

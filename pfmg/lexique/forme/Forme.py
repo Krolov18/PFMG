@@ -6,18 +6,7 @@ from nltk.grammar import FeatStructNonterminal, Production
 
 from pfmg.lexique.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.forme.FormeEntry import FormeEntry
-
-
-@dataclass
-class KalabaProduction:
-    """Production de Kalaba.
-
-    source: Production pour la traduction
-    destination: productionpour la validation
-    """
-    
-    source: Production
-    destination: Production
+from pfmg.parser.production.KalabaProduction import KalabaProduction
 
 
 @dataclass
@@ -31,7 +20,7 @@ class Forme(MixinDisplay):
         """Vérifications post initialisation."""
         assert self.source.pos == self.destination.pos
 
-    def to_lexical(self) -> Production:
+    def to_lexical(self) -> KalabaProduction:
         """Transforme une Forme en règle syntaxique lexicale.
 
         :return: une production lexicale.

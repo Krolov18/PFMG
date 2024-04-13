@@ -1,7 +1,7 @@
 import pytest
 import yaml
 from frozendict import frozendict
-from lexique.lexical_structures.Gloses import Gloses
+from pfmg.lexique.glose.Gloses import Gloses
 
 parametrize = pytest.mark.parametrize("gloses, expected", [
 

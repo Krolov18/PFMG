@@ -1,6 +1,5 @@
 """Implémente les cases des paradigmes par POS."""
 from collections.abc import Iterator
-from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
 from typing import TypedDict
@@ -8,7 +7,7 @@ from typing import TypedDict
 import yaml
 from frozendict import frozendict
 
-from pfmg.lexique.reader.Reader import Reader
+from pfmg.lexique.reader.ABCReader import ABCReader
 
 d_grid = dict[str, list[str]]
 l_grid = list[d_grid]
@@ -24,19 +23,28 @@ class GlosesStruct(TypedDict):
     destination: frozendict[str, str]
 
 
-@dataclass
-class Gloses(Reader):
+class Gloses(ABCReader):
     """Représente les cases des paradigmes.
 
     Quand cet objet est callé on récupère les cases
     du paradigme pour un POS donné.
     """
-
+    
     source: SubGlose
     destination: SubGlose
+    struct: dict
 
-    def __post_init__(self):
-        """Validation post initialisation."""
+    def __init__(
+        self,
+        source: SubGlose,
+        destination: SubGlose,
+    ) -> None:
+        """Initialise la classe GLose.
+
+        :param source:
+        :param destination:
+        :return:
+        """
         self.struct = {k: [dict(zip(vars(self).keys(), sigma, strict=True))
                            for sigma in
                            product(self.source[k], self.destination[k])]
@@ -75,7 +83,7 @@ class Gloses(Reader):
         )
 
     @staticmethod
-    def __gridify(grid: d_or_l_grid) -> Iterator[frozendict]:
+    def __gridify(grid: list | dict) -> Iterator[frozendict]:
         """Gridify a list or a dict.
 
         :param grid: dictionnaire Attribut -> [Valeurs]
@@ -113,9 +121,5 @@ class Gloses(Reader):
         :param grid: liste de dictionnaires Attribut -> [Valeurs]
         :return: générateur de Gloses
         """
-        if not grid:
-            # cas où grid est une liste vide
-            yield []
-            return
         for i_grid in grid:
             yield from Gloses.__gridify_dict(i_grid)

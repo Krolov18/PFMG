@@ -1,13 +1,14 @@
 import pytest
+from collections.abc import Generator
 from frozendict import frozendict
 
-from lexique.lexical_structures.BlockEntry import BlockEntry
-from lexique.lexical_structures.Phonology import Phonology
-from lexique.lexical_structures.Suffix import Suffix
+from pfmg.lexique.block.BlockEntry import BlockEntry
+from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.morpheme.Suffix import Suffix
 
 
 @pytest.fixture(scope="module")
-def fx_phonology() -> Phonology:
+def fx_phonology() -> Generator[Phonology, None, None]:
     yield phonology()
 
 
@@ -89,7 +90,7 @@ def test_raise_errors():
         _ = BlockEntry(data={"N": []})
 
     with pytest.raises(AssertionError):
-        _ = BlockEntry(data={"N": [[], [{"qqch"}]]})
+        _ = BlockEntry(data={"N": [[], [{"qqch"}]]})  # type: ignore
 
     with pytest.raises(KeyError):
         _ = BlockEntry(

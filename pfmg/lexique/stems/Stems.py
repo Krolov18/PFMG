@@ -8,13 +8,13 @@ from frozendict import frozendict
 
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
-from pfmg.lexique.reader.Reader import Reader
+from pfmg.lexique.reader.ABCReader import ABCReader
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.utils import dictify
 
 
 @dataclass
-class Stems(Reader, Iterable):
+class Stems(ABCReader, Iterable):
     """Itérateur de Lexèmes."""
 
     data: Iterator[Lexeme]
@@ -33,7 +33,7 @@ class Stems(Reader, Iterable):
 
     @staticmethod
     def __read_stems(
-        data: dict[str, dict[str, list[str]] | dict[str, dict]],
+        data: dict,
         posses: set,
         accumulator: dict | None = None,
     ) -> Iterator[Lexeme]:
@@ -49,6 +49,7 @@ class Stems(Reader, Iterable):
         for key, value in data.items():
             match value:
                 case str():
+                    assert accumulator is not None
                     _acc = accumulator.copy()
                     accumulator = {"pos": _acc.pop("pos")}
                     pos = (key
@@ -71,6 +72,7 @@ class Stems(Reader, Iterable):
                     if key in posses:
                         accumulator = {"pos": key}
                     else:
+                        assert accumulator is not None
                         accumulator.__setitem__(*key.split("="))
                     yield from Stems.__read_stems(value, posses, accumulator)
 

@@ -9,12 +9,12 @@ from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.glose.Gloses import Gloses
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.morpheme.Morphemes import Morphemes
-from pfmg.lexique.reader.Reader import Reader
-from pfmg.lexique.realizable.Realizer import Realizer
+from pfmg.lexique.reader.ABCReader import ABCReader
+from pfmg.lexique.realizable.ABCRealizable import ABCRealizable
 
 
 @dataclass
-class Paradigm(Realizer, Reader):
+class Paradigm(ABCRealizable, ABCReader):
     """Réalise les Lexeme en Forme."""
 
     gloses: Gloses

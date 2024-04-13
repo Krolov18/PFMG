@@ -1,8 +1,9 @@
 import pytest
 
-from lexique.lexical_structures.FormeEntry import FormeEntry
-from lexique.lexical_structures.Forme import Forme
 from frozendict import frozendict
+
+from pfmg.lexique.forme.FormeEntry import FormeEntry
+from pfmg.lexique.forme.Forme import Forme
 
 
 @pytest.mark.parametrize("source, destination", [
