@@ -59,7 +59,7 @@ fastjsonschema==2.18.0
     # via nbformat
 fqdn==1.5.1
     # via jsonschema
-frozendict==2.3.8
+frozendict==2.4.1
     # via -r requirements.txt
 h11==0.14.0
     # via httpcore
@@ -171,7 +171,7 @@ nodeenv==1.8.0
     # via pyright
 notebook-shim==0.2.3
     # via jupyterlab
-numpy==1.26.0
+numpy==1.26.4
     # via
     #   -r requirements.txt
     #   pandas
@@ -186,7 +186,7 @@ packaging==23.1
     #   jupyterlab-server
     #   nbconvert
     #   pytest
-pandas==2.1.0
+pandas==2.2.2
     # via -r requirements.txt
 pandas-stubs==2.2.1.240316
     # via -r requirements-dev.in
