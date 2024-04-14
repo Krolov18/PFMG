@@ -43,10 +43,10 @@ def phonology() -> Phonology:
       {"N": [[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=phonology())]]})),])
 def test_blocks(fx_phonology, tmp_path, blocks, expected):
     with open(tmp_path / "Phonology.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.dump(vars(fx_phonology), file_handler)
+        yaml.safe_dump(fx_phonology.to_json(), file_handler)
 
     with open(tmp_path / "Blocks.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.dump(blocks, file_handler)
+        yaml.safe_dump(blocks, file_handler)
     blocks = Blocks.from_disk(tmp_path / "Blocks.yaml")
     assert blocks.source.data == expected[0]
     assert blocks.destination.data == expected[1]
@@ -63,10 +63,10 @@ def test_blocks(fx_phonology, tmp_path, blocks, expected):
 ])
 def test___call__(fx_phonology, tmp_path, blocks, pos, sigma, expected):
     with open(tmp_path / "Phonology.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.dump(vars(fx_phonology), file_handler)
+        yaml.safe_dump(fx_phonology.to_json(), file_handler)
 
     with open(tmp_path / "Blocks.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.dump(blocks, file_handler)
+        yaml.safe_dump(blocks, file_handler)
     blocks = Blocks.from_disk(tmp_path / "Blocks.yaml")
     assert blocks(pos, sigma) == expected
 

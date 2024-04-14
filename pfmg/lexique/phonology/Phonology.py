@@ -40,12 +40,34 @@ class Phonology(ABCReader):
         assert path.name.endswith("Phonology.yaml")
 
         with open(path, encoding="utf8") as file_handler:
-            data = yaml.load(file_handler, Loader=yaml.Loader)
+            data = yaml.safe_load(file_handler)
 
-        return cls(
-            apophonies=data["apophonies"],
-            derives=data["derives"],
-            mutations=data["mutations"],
-            consonnes=data["consonnes"],
-            voyelles=data["voyelles"],
-        )
+        return cls(**Phonology.from_json(data))
+
+    def to_json(self) -> dict:
+        """Convertit les membres en un dictionnaire sérialisable par JSON/YAML.
+
+        :return: un dico des memebres de Phonology
+        """
+        return {
+            "apophonies": dict(self.apophonies),
+            "derives": dict(self.derives),
+            "mutations": dict(self.mutations),
+            "consonnes": list(self.consonnes),
+            "voyelles": list(self.voyelles),
+        }
+
+    @staticmethod
+    def from_json(data: dict) -> dict:
+        """Met data au bon format.
+
+        :reurn: les membres de phonologie au bon format
+        """
+        return {
+            "apophonies": frozendict(data["apophonies"]),
+            "derives": frozendict(data["derives"]),
+            "mutations": frozendict(data["mutations"]),
+            "consonnes": frozenset(data["consonnes"]),
+            "voyelles": frozenset(data["voyelles"]),
+        }
+
