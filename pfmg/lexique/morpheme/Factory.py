@@ -32,9 +32,10 @@ def create_morpheme(
     :return: quelque chose qui peut s'afficher
     """
     assert __package__ is not None
+
     for id_ruler in Ruler:
         try:
-            return factory_method(
+            result = factory_method(
                 concrete_product=id_ruler.value,
                 package=__package__,
                 rule=rule,
@@ -43,5 +44,8 @@ def create_morpheme(
             )
         except TypeError:
             continue
-    message = f"{rule} n'est pas une règle valide"
-    raise TypeError(message)
+        else:
+            return result
+    else:
+        message = f"{rule} n'est pas une règle valide"
+        raise TypeError(message)
