@@ -46,13 +46,17 @@ click==8.1.7
 comm==0.1.4
     # via ipykernel
 coverage==7.4.4
-    # via -r requirements-dev.in
+    # via
+    #   -r requirements-dev.in
+    #   pytest-cov
 debugpy==1.8.0
     # via ipykernel
 decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
+execnet==2.1.1
+    # via pytest-xdist
 executing==1.2.0
     # via stack-data
 fastjsonschema==2.18.0
@@ -225,6 +229,13 @@ pygments==2.16.1
 pyright==1.1.358
     # via -r requirements-dev.in
 pytest==8.1.1
+    # via
+    #   -r requirements-dev.in
+    #   pytest-cov
+    #   pytest-xdist
+pytest-cov==5.0.0
+    # via -r requirements-dev.in
+pytest-xdist==3.5.0
     # via -r requirements-dev.in
 python-dateutil==2.8.2
     # via
