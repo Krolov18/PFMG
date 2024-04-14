@@ -2,6 +2,7 @@
 # Exclude a variety of commonly ignored directories.
 exclude = [
     ".bzr",
+    ".coverage",
     ".direnv",
     ".eggs",
     ".git",
