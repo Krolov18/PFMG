@@ -20,19 +20,19 @@ def fx_phonology() -> Generator[Phonology, None, None]:
 @cache
 def phonology() -> Phonology:
     return Phonology(
-        apophonies=frozendict(
+        apophonies=dict(
             Ø="i", i="a", a="u",
             u="u", e="o", o="o"
         ),
-        mutations=frozendict(
+        mutations=dict(
             p="p", t="p", k="t", b="p", d="b",
             g="d", m="m", n="m", N="n", f="f",
             s="f", S="s", v="f", z="v", Z="z",
             r="w", l="r", j="w", w="w"
         ),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
+        derives=dict(A="V", D="C"),
+        consonnes=list("ptkbdgmnNfsSvzZrljw"),
+        voyelles=list("iueoa")
     )
 
 
