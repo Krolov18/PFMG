@@ -20,7 +20,7 @@ def fx_phonology() -> Phonology:
 def test_phonology_from_disk(tmp_path) -> None:
     phono_path = tmp_path / "Phonology.yaml"
     with open(phono_path, mode="w", encoding="utf8") as file_handler:
-        yaml.dump(fx_phonology().__dict__, file_handler)
+        yaml.safe_dump(fx_phonology().to_json(), file_handler)
 
     actual = Phonology.from_disk(phono_path)
     assert actual == fx_phonology()
