@@ -45,6 +45,10 @@ class Phonology(ABCReader):
         return cls(**Phonology.from_json(data))
 
     def to_json(self) -> dict:
+        """Convertit la structure interne en JSON-compatible
+
+        :return: un dictionnaire sérialisable par JSON
+        """
         return {
             "apophonies": dict(self.apophonies),
             "derives": dict(self.derives),
@@ -55,6 +59,11 @@ class Phonology(ABCReader):
 
     @staticmethod
     def from_json(data: dict) -> dict:
+        """Construit la strcture interne depuis un dict JSON.
+
+        :param data: un dict provenant d'un fichier JSON
+        :return: un dictionnaire formatté pour la structure interne à Phonology
+        """
         return {
             "apophonies": frozendict(data["apophonies"]),
             "derives": frozendict(data["derives"]),
