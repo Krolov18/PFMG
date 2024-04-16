@@ -15,16 +15,16 @@ from pfmg.lexique.morpheme.Suffix import Suffix
 
 def phonology() -> dict:
     return dict(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(
+        apophonies=dict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=dict(
             p="p", t="p", k="t", b="p", d="b",
             g="d", m="m", n="m", N="n", f="f",
             s="f", S="s", v="f", z="v", Z="z",
             r="w", l="r", j="w", w="w"
         ),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=set("iueoa")
+        derives=dict(A="V", D="C"),
+        consonnes=list("ptkbdgmnNfsSvzZrljw"),
+        voyelles=list("iueoa")
     )
 
 
@@ -83,15 +83,15 @@ def test_from_disk(tmp_path):
 
     _path = tmp_path / "Blocks.yaml"
     with open(_path, mode="w", encoding="utf8") as file_handler:
-        yaml.dump(blocks, file_handler)
+        yaml.safe_dump(blocks, file_handler)
 
     _path = tmp_path / "Gloses.yaml"
     with open(_path, mode="w", encoding="utf8") as file_handler:
-        yaml.dump(gloses, file_handler)
+        yaml.safe_dump(gloses, file_handler)
 
     _path = tmp_path / "Phonology.yaml"
     with open(_path, mode="w", encoding="utf8") as file_handler:
-        yaml.dump(phonology(), file_handler)
+        yaml.safe_dump(phonology(), file_handler)
 
     paradigm = Paradigm.from_disk(path=tmp_path)
 

@@ -4,19 +4,45 @@ from frozendict import frozendict
 
 from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.forme.Forme import Forme
+from pfmg.lexique.morpheme.Morphemes import Morphemes
+from pfmg.lexique.morpheme.Radical import Radical
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-@pytest.mark.parametrize("source, destination", [
-    (("N", [], frozendict()), ("N", [], frozendict()))
-])
+@pytest.mark.parametrize(
+    "source, destination", [
+        (("N", [], frozendict()), ("N", [], frozendict()))
+    ]
+)
 def test_forme(source, destination):
-    source_forme = FormeEntry(pos=source[0],
-                              morphemes=source[1],
-                              sigma=source[2])
-    dest_forme = FormeEntry(pos=source[0],
-                            morphemes=source[1],
-                            sigma=source[2])
-    actual = Forme(source=source_forme,
-                   destination=dest_forme)
+    source_forme = FormeEntry(
+        pos=source[0],
+        morphemes=Morphemes(
+            radical=Radical(
+                stems=StemSpace(stems=("source",))
+            ),
+            others=source[1]
+        ),
+        sigma=source[2]
+    )
+    dest_forme = FormeEntry(
+        pos=source[0],
+        morphemes=Morphemes(
+            radical=Radical(
+                stems=StemSpace(stems=("destination",))
+            ),
+            others=source[1]
+        ),
+        sigma=source[2]
+    )
+    actual = Forme(
+        source=source_forme,
+        destination=dest_forme
+    )
     assert actual.source == source_forme
     assert actual.destination == dest_forme
+
+    with pytest.raises(NotImplementedError):
+        _ = actual.get_sigma()
+
+    assert actual.to_string() == "source, destination"
