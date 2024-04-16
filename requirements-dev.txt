@@ -63,7 +63,7 @@ fastjsonschema==2.18.0
     # via nbformat
 fqdn==1.5.1
     # via jsonschema
-frozendict==2.3.8
+frozendict==2.4.2
     # via -r requirements.txt
 h11==0.14.0
     # via httpcore
