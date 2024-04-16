@@ -45,7 +45,7 @@ class Phonology(ABCReader):
         return cls(**Phonology.from_json(data))
 
     def to_json(self) -> dict:
-        """Convertit la structure interne en JSON-compatible
+        """Convertit la structure interne en JSON-compatible.
 
         :return: un dictionnaire sérialisable par JSON
         """
