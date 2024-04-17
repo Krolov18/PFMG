@@ -1,9 +1,11 @@
 """Implementation of a Trie."""
+
 from collections.abc import Callable
 from typing import TypeVar
 
-_special_chars_map = {i: "\\" + chr(i)
-                      for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"}
+_special_chars_map = {
+    i: "\\" + chr(i) for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"
+}
 
 T = TypeVar("T")
 # type_memory = dict[str, "type_memory | Literal[1] | str"]
@@ -92,14 +94,14 @@ def __build_pattern(
             else f"[{''.join(characters)}]",
         )
 
-    result = (alternatives[0]
-              if len(alternatives) == 1
-              else f"(?:{'|'.join(alternatives)})")
+    result = (
+        alternatives[0]
+        if len(alternatives) == 1
+        else f"(?:{'|'.join(alternatives)})"
+    )
 
     if has_quantifier:
-        result = (f"{result}?"
-                  if is_characters_only
-                  else f"(?:{result})?")
+        result = f"{result}?" if is_characters_only else f"(?:{result})?"
 
     return result
 
@@ -135,7 +137,4 @@ def to_pattern(words: list[str]) -> str:
     return dict_str
 
 
-__all__ = ["add_word",
-           "add_words",
-           "to_pattern",
-           "dict2str"]
+__all__ = ["add_word", "add_words", "to_pattern", "dict2str"]

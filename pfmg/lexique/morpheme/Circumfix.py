@@ -1,4 +1,5 @@
 """Circonfixe."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -15,7 +16,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
     """Structurte représentant un Circonfixe.
 
-    Un circonfixe encode une règle affixale 
+    Un circonfixe encode une règle affixale
     préfixant ET suffixant le Radical simultanément.
     """
 
@@ -75,4 +76,3 @@ class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
         sigma = f"sigma=frozendict({dict(self.__sigma)})"
         rule = f"rule={self.__rule.string}"
         return f"{rule}, {sigma}"
-

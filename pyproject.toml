@@ -78,12 +78,15 @@ select = [
     "TRIO",
     "T20",
     "UP",
+    "W292",
     "YTT",
 ]
 ignore = [
+    "COM812",
     "D203",
     "D213",
     "D401",
+    "ISC001",
     "N803",
     "N999",
     "ANN101",  # Deprecated rule

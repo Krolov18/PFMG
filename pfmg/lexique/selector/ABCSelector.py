@@ -1,4 +1,5 @@
 """ABCSelector."""
+
 from abc import ABC, abstractmethod
 
 from frozendict import frozendict

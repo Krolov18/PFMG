@@ -1,0 +1,17 @@
+repos:
+ - repo: https://github.com/astral-sh/ruff-pre-commit
+   # Ruff version.
+   rev: "v0.3.7"
+   hooks:
+     # Run the linter.
+     - id: "ruff"
+     # Run the formatter.
+     - id: ruff-format
+ - repo: local
+   hooks:
+     - id: pytest
+       name: pytest
+       entry: /home/koko/.pyenv/versions/3.12.0/envs/PFMG/bin/pytest
+       language: python
+       pass_filenames: false
+       always_run: true

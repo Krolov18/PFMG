@@ -1,4 +1,5 @@
 """Gabarit."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -15,7 +16,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
     """Le gabarit encode une règle affixale qui touche la structure du Radical.
 
-    Dans la règle gabaritique, les consonnes comme les voyelles 
+    Dans la règle gabaritique, les consonnes comme les voyelles
     peuvent subir des modifications phonologiques.
     """
 
@@ -38,7 +39,7 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
         """
         if not hasattr(Gabarit, "_Gabarit__PATTERN"):
             Gabarit.__PATTERN = re.compile(
-                fr"^([{''.join(phonology.voyelles)}AUV1-9]{{4,9}})$",
+                rf"^([{''.join(phonology.voyelles)}AUV1-9]{{4,9}})$",
             ).fullmatch
 
         _rule = Gabarit.__PATTERN(rule)
@@ -57,32 +58,39 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
         """
         result = ""
         for char in self.rule.string:
-            result += self.__verify(char, Gabarit.__format_default_stem(
-                term.stems[0]))
+            result += self.__verify(
+                char, Gabarit.__format_default_stem(term.stems[0])
+            )
         return result
 
     def __verify(self, char: str, stem: frozendict) -> str:
         """TODO: Pourquoi pas considérer cette fonction comme méthode à Phonology.
 
-        :param char: Un caractère compris 
+        :param char: Un caractère compris
                      dans l'union [consonnes|voyelles|UAV1-9]
-        :param stem: une racine au format 
+        :param stem: une racine au format
                      d'un dictionnaire unique et figé
-        :return: la réalisation du caractère d'une règle gabaritique 
+        :return: la réalisation du caractère d'une règle gabaritique
                  appliquée à un stem (racine)
         """
         assert char
         match char:
             case "U":
-                return self.phonology.apophonies[self.phonology.apophonies[stem["V"]]]
+                return self.phonology.apophonies[
+                    self.phonology.apophonies[stem["V"]]
+                ]
             case "A":
-                return self.phonology.apophonies[stem[self.phonology.derives[char]]]
+                return self.phonology.apophonies[
+                    stem[self.phonology.derives[char]]
+                ]
             case "1" | "2" | "3" | "V":
                 return stem[char]
             case "4" | "5" | "6":
                 return self.phonology.mutations[stem[str(int(char) - 3)]]
             case "7" | "8" | "9":
-                return self.phonology.mutations[self.phonology.mutations[stem[str(int(char) - 6)]]]
+                return self.phonology.mutations[
+                    self.phonology.mutations[stem[str(int(char) - 6)]]
+                ]
             case _:
                 return char
 

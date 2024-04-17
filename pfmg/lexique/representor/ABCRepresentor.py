@@ -1,4 +1,5 @@
 """ABCRepresentor."""
+
 from abc import ABC, abstractmethod
 
 
@@ -8,14 +9,14 @@ class ABCRepresentor(ABC):
     @abstractmethod
     def __repr__(self) -> str:
         """Représente un object en string.
-        
+
         :return: la représentation d'un objet
         """
 
     @abstractmethod
     def __str__(self) -> str:
         """Convertit un objet en string.
-        
+
         :return: le string d'un objet
         """
 

@@ -1,4 +1,5 @@
 """Réalise les léxèmes."""
+
 from collections.abc import Generator
 from dataclasses import dataclass
 from pathlib import Path
@@ -33,10 +34,10 @@ class Paradigm(ABCRealizable, ABCReader):
         for i_sigma in gloses:
             i_sigma_source = i_sigma["source"]
             i_sigma_destination = i_sigma["destination"]
-            source_validation = (source_sigma_items
-                                 <= i_sigma_source.items())
-            destination_validation = (destination_sigma_items
-                                      <= i_sigma_destination.items())
+            source_validation = source_sigma_items <= i_sigma_source.items()
+            destination_validation = (
+                destination_sigma_items <= i_sigma_destination.items()
+            )
             if source_validation and destination_validation:
                 yield Forme(
                     source=FormeEntry(

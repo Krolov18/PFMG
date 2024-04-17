@@ -1,4 +1,5 @@
 """Suffix."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -44,7 +45,7 @@ class Suffix(MixinDisplay, MixinEquality, MixinRepresentor):
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
         """Applique la concaténation du radical et du suffixe.
-        
+
         :param term: Un espace thématique
         :return: la forme réalisée en string
         """

@@ -1,4 +1,5 @@
 """ValidatorParser."""
+
 from collections.abc import Iterator
 
 from nltk import ParserI
@@ -48,4 +49,3 @@ class ValidatorParser(ABCParser):
         :param sents: Set de phrases
         """
         raise NotImplementedError
-

@@ -1,4 +1,5 @@
 """StemSpace."""
+
 from dataclasses import dataclass
 
 

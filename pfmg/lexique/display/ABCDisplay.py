@@ -1,4 +1,5 @@
 """Interface pour la représentation des objets."""
+
 from abc import ABC, abstractmethod
 
 from frozendict import frozendict
