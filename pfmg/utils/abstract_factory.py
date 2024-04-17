@@ -1,4 +1,5 @@
 """Implémentation de l'abstract factory avec import_module et getattr."""
+
 from collections.abc import Callable
 from importlib import import_module
 from typing import TypeVar
@@ -8,10 +9,10 @@ AbstractProduct = TypeVar("AbstractProduct")
 
 
 def factory_function(
-        concrete_product: str,
-        package: str,
-        **kwargs,
-        ) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
+    concrete_product: str,
+    package: str,
+    **kwargs,
+) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
     """Appelle n'importe quel fonction concrète.
 
     :param concrete_product: nom de l'objet concret
@@ -36,9 +37,9 @@ def factory_function(
 
 
 def factory_method(
-        concrete_product: str,
-        package: str,
-        **kwargs,
+    concrete_product: str,
+    package: str,
+    **kwargs,
 ) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
     """Construit n'importe quelle classe concrète.
 
@@ -73,8 +74,8 @@ def __validate_params(concrete_product: str, package: str) -> bool:
 
 
 def factory_type(
-        concrete_product: str,
-        package: str,
+    concrete_product: str,
+    package: str,
 ) -> AbstractClass:  # type: ignore reportInvalidTypeVarUse
     """Recherche et renvoie une classe concrète d'un package sans l'instantier.
 
@@ -90,8 +91,8 @@ def factory_type(
 
 
 def factory_class(
-        concrete_product: str,
-        package: str,
+    concrete_product: str,
+    package: str,
 ) -> AbstractClass:  # type: ignore reportInvalidTypeVarUse
     """Recherche et renvoie une classe concrète d'un package sans l'instantier.
 
@@ -112,9 +113,9 @@ def factory_class(
 
 
 def factory_object(
-        concrete_product: str,
-        package: str,
-        **kwargs,
+    concrete_product: str,
+    package: str,
+    **kwargs,
 ) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
     """Renvoie un object concret.
 

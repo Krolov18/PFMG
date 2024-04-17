@@ -1,4 +1,5 @@
 """Phonology."""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -45,9 +46,9 @@ class Phonology(ABCReader):
         return cls(**Phonology.from_json(data))
 
     def to_json(self) -> dict:
-        """Convertit les membres en un dictionnaire sérialisable par JSON/YAML.
+        """Convertit la structure interne en JSON-compatible.
 
-        :return: un dico des memebres de Phonology
+        :return: un dictionnaire sérialisable par JSON
         """
         return {
             "apophonies": dict(self.apophonies),
@@ -59,9 +60,10 @@ class Phonology(ABCReader):
 
     @staticmethod
     def from_json(data: dict) -> dict:
-        """Met data au bon format.
+        """Construit la strcture interne depuis un dict JSON.
 
-        :reurn: les membres de phonologie au bon format
+        :param data: un dict provenant d'un fichier JSON
+        :return: un dictionnaire formatté pour la structure interne à Phonology
         """
         return {
             "apophonies": frozendict(data["apophonies"]),
@@ -70,4 +72,3 @@ class Phonology(ABCReader):
             "consonnes": frozenset(data["consonnes"]),
             "voyelles": frozenset(data["voyelles"]),
         }
-

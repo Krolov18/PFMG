@@ -1,4 +1,5 @@
 """LexemeEntry."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict
@@ -13,7 +14,7 @@ class LexemeEntry:
 
     :param stems: Espace thématique d'un lexème
     :param pos: Catégorie morpho-syntaxique d'un léxème
-    :param sigma: Dictionnaire figé représentation 
+    :param sigma: Dictionnaire figé représentation
                   les informations inhérentes d'un léxème
     """
 
@@ -23,7 +24,7 @@ class LexemeEntry:
 
     def to_radical(self) -> Radical:
         """Convertir un Lexeme en un Radical.
-        
+
         :return: un radical
         """
         return Radical(stems=self.stems)

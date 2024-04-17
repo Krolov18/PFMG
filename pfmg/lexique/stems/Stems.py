@@ -1,4 +1,5 @@
 """Itérateur de Lexèmes."""
+
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
@@ -52,9 +53,7 @@ class Stems(ABCReader, Iterable):
                     assert accumulator is not None
                     _acc = accumulator.copy()
                     accumulator = {"pos": _acc.pop("pos")}
-                    pos = (key
-                           if accumulator is None
-                           else accumulator["pos"])
+                    pos = key if accumulator is None else accumulator["pos"]
                     t_stems, t_sigma = Stems.__parse_traduction(value)
                     yield Lexeme(
                         source=LexemeEntry(

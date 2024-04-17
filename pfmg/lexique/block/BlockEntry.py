@@ -1,4 +1,5 @@
 """Entry d'un Bloc. Structure de données contenant les règles d'un Bloc."""
+
 from collections.abc import Iterator
 from dataclasses import dataclass
 
@@ -35,8 +36,10 @@ class BlockEntry(ABCSelector):
         :return: les morphèmes existant dans les blocs
         """
         if pos not in self.data:
-            message = (f"'{pos}' n'est pas dans les catégories disponibles "
-                       f"{list(self.data.keys())}.")
+            message = (
+                f"'{pos}' n'est pas dans les catégories disponibles "
+                f"{list(self.data.keys())}."
+            )
             raise KeyError(message)
 
         output: list[ABCDisplay] = []
@@ -57,13 +60,15 @@ class BlockEntry(ABCSelector):
 
         TODO : changer le type de 'data' en un TypedDict ou équivalent.
 
-        :param data: 
+        :param data:
         :param phonology:
         :return:
         """
         return cls(
-            data={category: list(cls.__rulify(block=rules, phonology=phonology))
-                  for category, rules in data.items()},
+            data={
+                category: list(cls.__rulify(block=rules, phonology=phonology))
+                for category, rules in data.items()
+            },
         )
 
     @staticmethod
@@ -76,8 +81,10 @@ class BlockEntry(ABCSelector):
         :param block: Bloc ou liste de blocs de règles
         :return: liste de blocs au format frozendict/Morpheme
         """
-        method_name = (f"_{BlockEntry.__name__}__rulify_"
-                       f"{block.__class__.__name__.lower()}")
+        method_name = (
+            f"_{BlockEntry.__name__}__rulify_"
+            f"{block.__class__.__name__.lower()}"
+        )
         return getattr(
             BlockEntry,
             method_name,

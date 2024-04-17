@@ -1,4 +1,5 @@
 """Main du lexique."""
+
 import argparse
 import pathlib
 
@@ -14,7 +15,9 @@ if __name__ == "__main__":
     # d'une grammaire (Phonology, Stems, Blocks et Gloses)
     LEXICON.add_argument("datapath", type=pathlib.Path)
     LEXICON.add_argument(
-        "-l", "--list", choices=("to_string", "to_lexical"),
+        "-l",
+        "--list",
+        choices=("to_string", "to_lexical"),
         default="to_string",
     )
 
