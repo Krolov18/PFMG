@@ -1,4 +1,5 @@
 """KalabaParser."""
+
 from collections.abc import Iterator
 
 from nltk.grammar import FeatureGrammar
@@ -35,7 +36,7 @@ class KalabaParser(ABCParser):
         """Calcule le premier arbre trouvé.
 
         :param sent: une chaine de caractères
-        :return: 
+        :return:
         """
         return next(self.parse_all(sent), None)
 
@@ -75,5 +76,3 @@ class KalabaParser(ABCParser):
         :return:
         """
         return (self.parse_all(sent) for sent in sents)
-
-

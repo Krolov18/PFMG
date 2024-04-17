@@ -1,4 +1,5 @@
 """Structure qui rassemble un radical et ses morphèmes."""
+
 from dataclasses import dataclass
 
 from pfmg.lexique.display.ABCDisplay import ABCDisplay

@@ -1,4 +1,5 @@
 """Morpheme quiu permet de faire une règle conditionnelle."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -30,9 +31,9 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
     rule: Match
     sigma: frozendict
 
-    __cond: ABCDisplay 
-    __true: ABCDisplay 
-    __false: ABCDisplay 
+    __cond: ABCDisplay
+    __true: ABCDisplay
+    __false: ABCDisplay
     phonology: Phonology
 
     def __init__(
@@ -52,15 +53,15 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
             raise TypeError
         self.rule = _rule
         self.sigma = sigma
-        self.__cond = create_morpheme(rule=_rule.group(1),
-                                      sigma=sigma,
-                                      phonology=phonology)
-        self.__true = create_morpheme(rule=_rule.group(2),
-                                      sigma=sigma,
-                                      phonology=phonology)
-        self.__false = create_morpheme(rule=_rule.group(3),
-                                       sigma=sigma,
-                                       phonology=phonology)
+        self.__cond = create_morpheme(
+            rule=_rule.group(1), sigma=sigma, phonology=phonology
+        )
+        self.__true = create_morpheme(
+            rule=_rule.group(2), sigma=sigma, phonology=phonology
+        )
+        self.__false = create_morpheme(
+            rule=_rule.group(3), sigma=sigma, phonology=phonology
+        )
         self.phonology = phonology
 
     def _to_string__stemspace(self, term: StemSpace) -> str:

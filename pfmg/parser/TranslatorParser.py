@@ -1,4 +1,5 @@
 """TranslatorParser."""
+
 from collections.abc import Iterator
 
 from nltk import ParserI
@@ -50,4 +51,3 @@ class TranslatorParser(ABCParser):
         :return: tous les arbres de toutes les 'sents'
         """
         raise NotImplementedError
-

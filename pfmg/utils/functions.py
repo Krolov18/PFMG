@@ -1,4 +1,5 @@
 """Helper functions."""
+
 import functools
 from collections.abc import Callable
 
@@ -12,6 +13,7 @@ def static_vars(**kwargs):
     :param kwargs:
     :return:
     """
+
     def _(func: Callable):
         """Inner function stockant les variables.
 
@@ -34,6 +36,7 @@ def compose(*functions: Callable) -> Callable:
     :param functions: Callable chaînables
     :return:
     """
+
     def __compose(f: Callable, g: Callable):
         """Construit une lambda effectuant l'opération de base de la composition.
 
@@ -42,4 +45,5 @@ def compose(*functions: Callable) -> Callable:
         :return: le résultat de f appliqué au résultat de g appliqué aux args
         """
         return lambda *args: f(g(*args))
+
     return functools.reduce(__compose, functions, lambda y: y)

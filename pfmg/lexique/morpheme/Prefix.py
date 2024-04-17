@@ -1,4 +1,5 @@
 """Prefix."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -24,10 +25,10 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
     __phonology: Phonology
 
     def __init__(
-            self,
-            rule: str,
-            sigma: frozendict,
-            phonology: Phonology,
+        self,
+        rule: str,
+        sigma: frozendict,
+        phonology: Phonology,
     ) -> None:
         """Initialise rule, sigma et phonology.
 
@@ -66,7 +67,7 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
 
     def get_rule(self) -> Match:
         """Récupère la règle.
-        
+
         :return: le Match de la rule
         """
         return self.__rule

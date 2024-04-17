@@ -3,6 +3,7 @@
 On dévie légèrement de la logique de NLTK pour manipuler nos propres structures.
 Un parseur renverra donc des Sentences et non des Trees.
 """
+
 import enum
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
@@ -45,7 +46,7 @@ class ABCParser(ABC):
         """Calcule tous les arbres pour chaucune des phrases données.
 
         :param sents: PLusieurs phrases à parser
-        :return: 
+        :return:
         """
 
 
@@ -72,4 +73,3 @@ def create_parser(
         package=__package__,
         fcfg=fcfg,
     )
-

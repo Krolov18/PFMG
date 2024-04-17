@@ -1,4 +1,5 @@
 """Selection."""
+
 import re
 from collections.abc import Callable
 from re import Match

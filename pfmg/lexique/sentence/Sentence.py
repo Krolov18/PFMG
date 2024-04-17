@@ -1,4 +1,5 @@
 """Sentence."""
+
 from dataclasses import dataclass
 
 from pfmg.lexique.forme.Forme import Forme
@@ -12,4 +13,3 @@ class Sentence:
     """
 
     words: list[Forme]
-
