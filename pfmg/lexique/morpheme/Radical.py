@@ -1,4 +1,5 @@
 """Radical."""
+
 from dataclasses import dataclass
 
 from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor

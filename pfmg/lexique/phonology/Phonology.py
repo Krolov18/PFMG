@@ -1,4 +1,5 @@
 """Phonology."""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -71,4 +72,3 @@ class Phonology(ABCReader):
             "consonnes": frozenset(data["consonnes"]),
             "voyelles": frozenset(data["voyelles"]),
         }
-

@@ -1,4 +1,5 @@
 """Searchable."""
+
 from abc import ABC, abstractmethod
 
 

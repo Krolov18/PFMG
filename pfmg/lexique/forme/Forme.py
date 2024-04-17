@@ -1,4 +1,5 @@
 """Structure de données pour représenter la réalisation d'un Léxème."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict
@@ -26,7 +27,7 @@ class Forme(MixinDisplay):
         :return: une production lexicale.
         """
         features = {
-            "Source":      {
+            "Source": {
                 "Traduction": self.destination.to_string(),
                 **self.source.get_sigma(),
             },

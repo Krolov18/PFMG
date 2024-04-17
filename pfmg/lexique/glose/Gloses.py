@@ -1,4 +1,5 @@
 """Implémente les cases des paradigmes par POS."""
+
 from collections.abc import Iterator
 from itertools import product
 from pathlib import Path
@@ -29,7 +30,7 @@ class Gloses(ABCReader):
     Quand cet objet est callé on récupère les cases
     du paradigme pour un POS donné.
     """
-    
+
     source: SubGlose
     destination: SubGlose
     struct: dict
@@ -45,13 +46,16 @@ class Gloses(ABCReader):
         :param destination:
         :return:
         """
-        self.source=  source
+        self.source = source
         self.destination = destination
-        self.struct = {k: [dict(zip(vars(self).keys(), sigma, strict=True))
-                           for sigma in
-                           product(self.source[k], self.destination[k])]
-                       for k in self.source.keys()
-                       if k in self.source and k in self.destination}
+        self.struct = {
+            k: [
+                dict(zip(vars(self).keys(), sigma, strict=True))
+                for sigma in product(self.source[k], self.destination[k])
+            ]
+            for k in self.source.keys()
+            if k in self.source and k in self.destination
+        }
 
     def __call__(
         self,
@@ -73,11 +77,17 @@ class Gloses(ABCReader):
         """
         assert path.name.endswith("Gloses.yaml")
         with open(path, encoding="utf8") as file_handler:
-            data: dict[str, dict[str, list[str]]] = yaml.load(file_handler, Loader=yaml.Loader)
-        source = {category: list(cls.__gridify(att_vals))
-                  for category, att_vals in data["source"].items()}
-        destination = {category: list(cls.__gridify(att_vals))
-                       for category, att_vals in data["destination"].items()}
+            data: dict[str, dict[str, list[str]]] = yaml.load(
+                file_handler, Loader=yaml.Loader
+            )
+        source = {
+            category: list(cls.__gridify(att_vals))
+            for category, att_vals in data["source"].items()
+        }
+        destination = {
+            category: list(cls.__gridify(att_vals))
+            for category, att_vals in data["destination"].items()
+        }
 
         return cls(
             source=source,
@@ -92,8 +102,9 @@ class Gloses(ABCReader):
                      ou liste de dictionnaires Attribut -> [Valeurs]
         :return: générateur de Gloses
         """
-        method_name: str = (f"_{Gloses.__name__}__gridify_"
-                            f"{grid.__class__.__name__.lower()}")
+        method_name: str = (
+            f"_{Gloses.__name__}__gridify_" f"{grid.__class__.__name__.lower()}"
+        )
         return getattr(Gloses, method_name)(grid=grid)
 
     @staticmethod
@@ -112,8 +123,10 @@ class Gloses(ABCReader):
         keys, values = zip(*items, strict=True)
         for value in product(*values):
             yield frozendict(
-                [*zip(keys, value, strict=True),
-                 *zip(value, keys, strict=True)],
+                [
+                    *zip(keys, value, strict=True),
+                    *zip(value, keys, strict=True),
+                ],
             )
 
     @staticmethod
@@ -132,5 +145,6 @@ class Gloses(ABCReader):
         :param other: Une autre Glose
         :return: bool
         """
-        return (self.source == other.source) and (self.destination == other.destination)
-
+        return (self.source == other.source) and (
+            self.destination == other.destination
+        )

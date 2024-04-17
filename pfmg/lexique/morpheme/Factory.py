@@ -1,4 +1,5 @@
 """Méthode de construction d'un morphème."""
+
 from enum import Enum
 
 from frozendict import frozendict
@@ -20,9 +21,9 @@ class Ruler(Enum):
 
 
 def create_morpheme(
-        rule: str,
-        sigma: frozendict,
-        phonology: Phonology,
+    rule: str,
+    sigma: frozendict,
+    phonology: Phonology,
 ) -> ABCDisplay:
     """Factory pour construire n'importe quel morphème.
 

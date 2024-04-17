@@ -1,4 +1,5 @@
 """Actions du main du package lexique."""
+
 import argparse
 import os.path
 from pathlib import Path
@@ -49,19 +50,19 @@ def check_if_datapath_contains_all_files(
     message = f"{namespace.datapath} does not contain Gloses.yaml"
     if not (namespace.datapath / "Gloses.yaml").exists():
         raise argparse.ArgumentTypeError(message)
-    
+
     message = f"{namespace.datapath} does not contain Blocks.yaml"
     if not (namespace.datapath / "Blocks.yaml").exists():
         raise argparse.ArgumentTypeError(message)
-    
+
     message = f"{namespace.datapath} does not contain Stems.yaml"
     if not (namespace.datapath / "Stems.yaml").exists():
         raise argparse.ArgumentTypeError(message)
-    
+
     message = f"{namespace.datapath} does not contain Phonology.yaml"
     if not (namespace.datapath / "Phonology.yaml").exists():
         raise argparse.ArgumentTypeError(message)
-    
+
     message = f"{namespace.datapath} does not contain MorphoSyntax.yaml"
     if not (namespace.datapath / "MorphoSyntax.yaml").exists():
         raise argparse.ArgumentTypeError(message)
@@ -69,7 +70,7 @@ def check_if_datapath_contains_all_files(
 
 def check_yaml_files_with_cue(namespace: argparse.Namespace) -> None:
     """Valide les fichiers YAML avec avec CUE.
-    
+
     On change temporairement le cwd, le temps de la validation.
     :param namespace: namespace généré par ArgumentParser.parse_args()
     """

@@ -3,6 +3,7 @@
 Fonctions permettant de séparer les contractions.
 Fonctions permettant de générer les productions non lexicales fournies dans Rules.yaml.
 """
+
 import itertools as it
 import re
 from collections.abc import Iterator, Sequence
@@ -55,8 +56,10 @@ def _is_accolade(term: str) -> bool:
 
 @static_vars(
     REG=re.compile(
-        (r"{(?: (\d+),(\d+) }|,(?: (\d+)}|(\d+)})|(\d+)"
-         r"(?: ,(?: (\d+)}|(\d+)})|,(?: (\d+)}|(\d+)})))"),
+        (
+            r"{(?: (\d+),(\d+) }|,(?: (\d+)}|(\d+)})|(\d+)"
+            r"(?: ,(?: (\d+)}|(\d+)})|,(?: (\d+)}|(\d+)})))"
+        ),
     ),
 )
 def repeat(term: str) -> list[list[str]]:
@@ -83,10 +86,10 @@ def repeat(term: str) -> list[list[str]]:
             deb, *fin = filter(None, reg.groups())
             term = term.rsplit("/", 1)[0]
             if not fin:
-                return [([term] * i or [""])
-                        for i in range(int(deb) + 1)]
-            return [([term] * i or [""])
-                    for i in range(int(deb), int(fin[0]) + 1)]
+                return [([term] * i or [""]) for i in range(int(deb) + 1)]
+            return [
+                ([term] * i or [""]) for i in range(int(deb), int(fin[0]) + 1)
+            ]
         case c if _is_star(c):
             raise NotImplementedError
         case c if _is_plus(c):
@@ -98,7 +101,7 @@ def repeat(term: str) -> list[list[str]]:
 
 def develop(rhs: list[str]) -> Iterator[list[str]]:
     """Décompresse une partie droite de règle.
-        
+
     En association avec la fonction 'repeat',
     develop va générer autant de règles que le produit cartésien
     des membres de rhs fourniront.
@@ -113,8 +116,10 @@ def develop(rhs: list[str]) -> Iterator[list[str]]:
     :return: un itérateur de RHSs
     """
     for i_x in it.product(*(repeat(t) for t in rhs)):
-        yield [f"'{i_y}'" if (i_y and i_y.islower()) else i_y
-               for i_y in reduce(add, i_x)]
+        yield [
+            f"'{i_y}'" if (i_y and i_y.islower()) else i_y
+            for i_y in reduce(add, i_x)
+        ]
 
 
 # def cleave(
@@ -151,14 +156,19 @@ def parse_config(
     :return:
     """
     for lhs, rhss in config.items():
-        _s_prods = [parse_one_rule(lhs, *i_config)
-                    for i_config in zip(*rhss["Source"].values(), strict=True)]
-        d_prods = [parse_one_rule(lhs, *i_config)
-                   for i_config in
-                   zip(*rhss["Destination"].values(), strict=True)]
+        _s_prods = [
+            parse_one_rule(lhs, *i_config)
+            for i_config in zip(*rhss["Source"].values(), strict=True)
+        ]
+        d_prods = [
+            parse_one_rule(lhs, *i_config)
+            for i_config in zip(*rhss["Destination"].values(), strict=True)
+        ]
         assert len(_s_prods) == len(d_prods)
-        s_prods = [concatenate_rule_features(p1, p2)
-                   for p1, p2 in zip(_s_prods, d_prods, strict=True)]
+        s_prods = [
+            concatenate_rule_features(p1, p2)
+            for p1, p2 in zip(_s_prods, d_prods, strict=True)
+        ]
         assert len(s_prods) == len(d_prods)
         start = FeatStructNonterminal("S")
         return start, s_prods, d_prods
@@ -182,16 +192,19 @@ def parse_one_rule(
     :param traduction:
     :return: Une Production
     """
-    source: Literal["Source", "Destination"] = ("Destination"
-                                                if traduction is None
-                                                else "Source")
+    source: Literal["Source", "Destination"] = (
+        "Destination" if traduction is None else "Source"
+    )
     match source:
         case "Destination":
-            f_accords = [FeatStruct(Destination=FeatStruct())
-                         for _ in range(len(syntagmes))]
+            f_accords = [
+                FeatStruct(Destination=FeatStruct())
+                for _ in range(len(syntagmes))
+            ]
         case "Source":
-            f_accords = [FeatStruct(Source=FeatStruct())
-                         for _ in range(len(syntagmes))]
+            f_accords = [
+                FeatStruct(Source=FeatStruct()) for _ in range(len(syntagmes))
+            ]
         case _:
             raise KeyError(source)
 
@@ -225,9 +238,11 @@ def parse_one_rule(
             f_percolation,
         )
     return Production(
-            lhs=FeatStructNonterminal(lhs, **f_percolation),  # type: ignore reportCallIssue
-        rhs=[i_s if i_s.islower() else FeatStructNonterminal(i_s, **i_a)  # type: ignore reportCallIssue
-             for i_s, i_a in zip(syntagmes, f_accords, strict=True)],
+        lhs=FeatStructNonterminal(lhs, **f_percolation),  # type: ignore reportCallIssue
+        rhs=[
+            i_s if i_s.islower() else FeatStructNonterminal(i_s, **i_a)  # type: ignore reportCallIssue
+            for i_s, i_a in zip(syntagmes, f_accords, strict=True)
+        ],
     )
 
 
@@ -260,7 +275,7 @@ def concatenate_rule_features(p1: Production, p2: Production) -> Production:
 
 def broadcast(accords: str, len_rhs: int) -> str:
     """TODO: écrire la doc de cela.
-    
+
     :param :
     :param :
     :return :
@@ -282,8 +297,10 @@ def parse_traduction(
     for i in range(len(syntagme)):
         f_accords[i]["Source", "Traduction"] = Variable(str(i))  # type: ignore reportIndexIssue
     f_percolation["Source", "Traduction"] = FeatureValueTuple(  # type: ignore reportIndexIssue
-        [f_accords[i_trad]["Source", "Traduction"]  # type: ignore reportIndexIssue
-         for i_trad in traduction],
+        [
+            f_accords[i_trad]["Source", "Traduction"]  # type: ignore reportIndexIssue
+            for i_trad in traduction
+        ],
     )
 
 
@@ -345,7 +362,7 @@ def parse_percolation(
     accumulator: FeatStruct,
 ) -> None:
     """Parse la partie percolation d'une règle.
-        
+
         La différence entre parse_features et
         parse_percolation est la sémantique des ";"
         Ici, "Genre;Nombre" signifie qu'on percole
@@ -353,7 +370,7 @@ def parse_percolation(
         ATTENTION: on peut tomber dans des pièges.
         "Genre=m;Nombre" si le premier élément comporte un Genre
         avec une autre valeur, il y aua conflit.
-    
+
     :param percolation:
     :param accords:
     :param accumulator:
@@ -381,11 +398,15 @@ def parse_percolation(
         if not all(lhs_rhs := percolation.partition("=")):
             raise TypeError(lhs_rhs)
         match accords:
-            case [a] if ((m := a[source].get(  # type: ignore reportIndexIssue
-                f"{source_init}{lhs_rhs[0]}",
-                None,
-            ))
-                         and m == lhs_rhs[2]):
+            case [a] if (
+                (
+                    m := a[source].get(  # type: ignore reportIndexIssue
+                        f"{source_init}{lhs_rhs[0]}",
+                        None,
+                    )
+                )
+                and m == lhs_rhs[2]
+            ):
                 # cas de stricte égalité entre ce qu'on cherche
                 # à percoler et ce qu'il y a dans la partie du rhs
                 accumulator[source][f"{source_init}{lhs_rhs[0]}"] = m  # type: ignore reportIndexIssue

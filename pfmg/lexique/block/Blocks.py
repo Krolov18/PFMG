@@ -1,4 +1,5 @@
 """Blocks."""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -63,5 +64,7 @@ class Blocks(ABCReader):
         :param sigma:
         :return:
         """
-        return {key: getattr(self, key)(pos, sigma[key])
-                for key, value in sigma.items()}
+        return {
+            key: getattr(self, key)(pos, sigma[key])
+            for key, value in sigma.items()
+        }
