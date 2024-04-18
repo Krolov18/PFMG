@@ -1,3 +1,8 @@
+# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
+# All rights reserved.
+
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
 """Interface d'un Parseur de strings.
 
 On dévie légèrement de la logique de NLTK pour manipuler nos propres structures.
@@ -8,12 +13,12 @@ import enum
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 
-from factory.factory import (  # type: ignore reportMissingImports
-    factory_self_object,  # type: ignore reportMissingImports
-)
 from nltk.grammar import FeatureGrammar
 
 from pfmg.lexique.sentence.Sentence import Sentence
+from pfmg.utils.abstract_factory import (
+    factory_method,
+)
 
 
 class ABCParser(ABC):
@@ -68,7 +73,8 @@ def create_parser(
 
     :return: instance d'un Parser
     """
-    return factory_self_object(
+    assert __package__ is not None
+    return factory_method(
         concrete_product=f"{id_parser.value}Parser",
         package=__package__,
         fcfg=fcfg,

@@ -1,3 +1,8 @@
+# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
+# All rights reserved.
+
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
 """Actions du main du package lexique."""
 
 import argparse
@@ -112,6 +117,8 @@ def lexicon_action(
 
     :param namespace: namespace généré par ArgumentParser.parse_args()
     """
+    import sys
+
     from pfmg.lexique.paradigm.Paradigm import Paradigm
     from pfmg.lexique.stems.Stems import Stems
 
@@ -131,5 +138,4 @@ def lexicon_action(
 
     for lexeme in Stems.from_disk(path / "Stems.yaml"):
         for forme in paradigm.realize(lexeme):
-            forme.to_string()
-    # getattr(forme, namespace.list)
+            sys.stdout.write(forme.to_string() + "\n")
