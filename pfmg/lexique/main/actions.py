@@ -112,6 +112,8 @@ def lexicon_action(
 
     :param namespace: namespace généré par ArgumentParser.parse_args()
     """
+    import sys
+
     from pfmg.lexique.paradigm.Paradigm import Paradigm
     from pfmg.lexique.stems.Stems import Stems
 
@@ -131,5 +133,4 @@ def lexicon_action(
 
     for lexeme in Stems.from_disk(path / "Stems.yaml"):
         for forme in paradigm.realize(lexeme):
-            forme.to_string()
-    # getattr(forme, namespace.list)
+            sys.stdout.write(forme.to_string() + "\n")
