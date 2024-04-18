@@ -8,12 +8,12 @@ import enum
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 
-from factory.factory import (  # type: ignore reportMissingImports
-    factory_self_object,  # type: ignore reportMissingImports
-)
 from nltk.grammar import FeatureGrammar
 
 from pfmg.lexique.sentence.Sentence import Sentence
+from pfmg.utils.abstract_factory import (
+    factory_method,
+)
 
 
 class ABCParser(ABC):
@@ -68,7 +68,8 @@ def create_parser(
 
     :return: instance d'un Parser
     """
-    return factory_self_object(
+    assert __package__ is not None
+    return factory_method(
         concrete_product=f"{id_parser.value}Parser",
         package=__package__,
         fcfg=fcfg,
