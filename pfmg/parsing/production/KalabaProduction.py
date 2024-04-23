@@ -20,3 +20,8 @@ class KalabaProduction:
 
     source: Production
     destination: Production
+
+    def to_string(self):
+        return str(self.source)
+
+

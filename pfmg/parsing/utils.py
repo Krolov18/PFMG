@@ -114,7 +114,7 @@ def develop(rhs: list[str]) -> Iterator[list[str]]:
         input: [D, N, A/?]
         output: [[D, N], [D, N, A]]
 
-        input: [D/?, N, A/?]
+        input: [D, A/?, N, A/?]
         output: [[D, N], [D, N, A], [D, A, N], [D, A, N, A]]
 
     :param rhs: partie droite d'une règle de production d'une CFG.
@@ -243,9 +243,9 @@ def parse_one_rule(
             f_percolation,
         )
     return Production(
-        lhs=FeatStructNonterminal(lhs, **f_percolation),  # type: ignore reportCallIssue
+        lhs=FeatStructNonterminal(lhs, **f_percolation),
         rhs=[
-            i_s if i_s.islower() else FeatStructNonterminal(i_s, **i_a)  # type: ignore reportCallIssue
+            i_s if i_s.islower() else FeatStructNonterminal(i_s, **i_a)
             for i_s, i_a in zip(syntagmes, f_accords, strict=True)
         ],
     )
@@ -300,10 +300,10 @@ def parse_traduction(
 ) -> None:
     """TODO: écrire doc."""
     for i in range(len(syntagme)):
-        f_accords[i]["Source", "Traduction"] = Variable(str(i))  # type: ignore reportIndexIssue
-    f_percolation["Source", "Traduction"] = FeatureValueTuple(  # type: ignore reportIndexIssue
+        f_accords[i]["Source", "Traduction"] = Variable(str(i))
+    f_percolation["Source", "Traduction"] = FeatureValueTuple(
         [
-            f_accords[i_trad]["Source", "Traduction"]  # type: ignore reportIndexIssue
+            f_accords[i_trad]["Source", "Traduction"]
             for i_trad in traduction
         ],
     )
@@ -320,7 +320,7 @@ def parse_features(  # noqa C901
     if ";" in accords:
         # il y a plusieurs ensemble de features
         for i_idx, i_x in enumerate(accords.split(";")):
-            parse_features(i_x, accumulator[i_idx])  # type: ignore reportIndexIssue
+            parse_features(i_x, accumulator[i_idx])
     elif "," in accords:
         # il y a plusieurs traits
         for x in accords.split(","):
@@ -332,13 +332,13 @@ def parse_features(  # noqa C901
         match accumulator:
             case [a]:
                 match a:
-                    case {"Source": values}:  # type: ignore
+                    case {"Source": values}:
                         values[f"S{lhs_rhs[0]}"] = lhs_rhs[2]
-                    case {"Destination": values}:  # type: ignore
+                    case {"Destination": values}:
                         values[f"D{lhs_rhs[0]}"] = lhs_rhs[2]
-            case {"Source": values}:  # type: ignore
+            case {"Source": values}:
                 values[f"S{lhs_rhs[0]}"] = lhs_rhs[2]
-            case {"Destination": values}:  # type: ignore
+            case {"Destination": values}:
                 values[f"D{lhs_rhs[0]}"] = lhs_rhs[2]
             case _:
                 raise TypeError(accords, accumulator)
@@ -380,17 +380,17 @@ def parse_percolation(
     :param accords:
     :param accumulator:
     """
-    assert "Destination" in accumulator or "Source" in accumulator  # type: ignore reportOperatorIssue
+    assert "Destination" in accumulator or "Source" in accumulator
 
     if not percolation:
         return
 
-    source = next(x for x in accumulator.keys() if x != Feature("type"))  # type: ignore reportIndexIssue
+    source = next(x for x in accumulator.keys() if x != Feature("type"))
     source_init = source[0]
 
     if ";" in percolation:
         for i_idx, i_x in enumerate(percolation.split(";")):
-            parse_percolation(i_x, accords[i_idx], accumulator)  # type: ignore reportIndexIssue
+            parse_percolation(i_x, accords[i_idx], accumulator)
     elif "," in percolation:
         for i_x in percolation.split(","):
             parse_percolation(i_x, accords, accumulator)
@@ -405,7 +405,7 @@ def parse_percolation(
         match accords:
             case [a] if (
                 (
-                    m := a[source].get(  # type: ignore reportIndexIssue
+                    m := a[source].get(
                         f"{source_init}{lhs_rhs[0]}",
                         None,
                     )
@@ -414,29 +414,28 @@ def parse_percolation(
             ):
                 # cas de stricte égalité entre ce qu'on cherche
                 # à percoler et ce qu'il y a dans la partie du rhs
-                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = m  # type: ignore reportIndexIssue
-            case [a] if a[source].get(f"{source_init}{lhs_rhs[0]}", None):  # type: ignore reportIndexIssue
+                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = m
+            case [a] if a[source].get(f"{source_init}{lhs_rhs[0]}", None):
                 # Cas à débattre.
                 # Soit raise une erreur puisqu'il y a dissonance entre
                 # la partie du rhs et ce qu'on veut percoler,
                 # Soit on laisse et c'est à l'utilisateur de gérer cela
-                # et de faire attention à cela.#
+                # et de faire attention à cela.
                 raise TypeError(percolation, accords, accumulator)
             case [_]:
-                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]  # type: ignore reportIndexIssue
-            case FeatStruct():  # type: ignore
-                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]  # type: ignore reportIndexIssue
+                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]
+            case FeatStruct():
+                accumulator[source][f"{source_init}{lhs_rhs[0]}"] = lhs_rhs[2]
             case _:
                 raise TypeError(percolation, accords, accumulator)
-
     else:
         match accords:
             case FeatStruct():
                 perco = f"{source_init}{percolation}"
-                accumulator[source][perco] = accords[source][perco]  # type: ignore reportIndexIssue
+                accumulator[source][perco] = accords[source][perco]
             case [FeatStruct()]:
                 perco = f"{source_init}{percolation}"
-                accumulator[source][perco] = accords[0][source][perco]  # type: ignore reportIndexIssue
+                accumulator[source][perco] = accords[0][source][perco]
             case _:
                 raise TypeError(
                     percolation,

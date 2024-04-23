@@ -21,8 +21,12 @@ from pfmg.utils.abstract_factory import (
 )
 
 
-class ABCParser(ABC):
-    """Même sémantique que NLTK."""
+class ABCParsable(ABC):
+    """Interface pour les objects parsable.
+
+    Chacune des méthode ce-dessous va parser une ou plusieurs phrases
+    afin de calculer une structure Sentence sous-jacente.
+    """
 
     @abstractmethod
     def parse_one(self, sent: str) -> Sentence | None:
@@ -50,32 +54,33 @@ class ABCParser(ABC):
     ) -> Iterator[Iterator[Sentence]]:
         """Calcule tous les arbres pour chaucune des phrases données.
 
-        :param sents: PLusieurs phrases à parser
+        :param sents: Plusieurs phrases à parser
         :return:
         """
 
 
-class IdParserEnum(enum.Enum):
-    """Tous les identifiants possibles pour les parseurs."""
+class IdParsableEnum(enum.Enum):
+    """Tous les identifiants possibles pour les objects parsables."""
 
     kalaba = "Kalaba"
     validator = "Validator"
     translator = "Translator"
 
 
-def create_parser(
-    id_parser: IdParserEnum,
+def create_parsable(
+    id_parsable: IdParserEnum,
     fcfg: FeatureGrammar,
-) -> ABCParser:
-    """Factory pour construire un parseur.
+) -> ABCParsable:
+    """Factory pour construire un object parsable.
 
     Contraint par IdParserEnum.
 
-    :return: instance d'un Parser
+    :return: instance d'un object parsable
     """
     assert __package__ is not None
     return factory_method(
-        concrete_product=f"{id_parser.value}Parser",
+        concrete_product=f"{id_parsable.value}Parser",
         package=__package__,
         fcfg=fcfg,
     )
+
