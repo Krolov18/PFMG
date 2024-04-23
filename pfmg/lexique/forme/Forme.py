@@ -8,11 +8,12 @@
 from dataclasses import dataclass
 
 from frozendict import frozendict
+from nltk.featstruct import FeatStruct
 from nltk.grammar import FeatStructNonterminal, Production
 
-from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.forme.FormeEntry import FormeEntry
-from pfmg.parser.production.KalabaProduction import KalabaProduction
+from pfmg.parsing.production.KalabaProduction import KalabaProduction
 
 
 @dataclass
@@ -32,13 +33,13 @@ class Forme(MixinDisplay):
         :return: une production lexicale.
         """
         features = {
-            "Source": {
+            "Source": FeatStruct({
                 "Traduction": self.destination.to_string(),
                 **self.source.get_sigma(),
-            },
-            "Destination": {
+            }),
+            "Destination": FeatStruct({
                 **self.destination.get_sigma(),
-            },
+            }),
         }
         source_lhs = FeatStructNonterminal(self.source.pos, **features)
         destination_lhs = FeatStructNonterminal(

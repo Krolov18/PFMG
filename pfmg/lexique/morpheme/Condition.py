@@ -12,8 +12,8 @@ from typing import ClassVar
 
 from frozendict import frozendict
 
-from pfmg.lexique.display.ABCDisplay import ABCDisplay
-from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.external.display import ABCDisplay
+from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.equality.MixinEquality import MixinEquality
 from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.phonology.Phonology import Phonology

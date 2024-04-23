@@ -7,7 +7,7 @@
 
 from dataclasses import dataclass
 
-from pfmg.lexique.display.ABCDisplay import ABCDisplay
+from pfmg.external.display import ABCDisplay
 from pfmg.lexique.morpheme.Radical import Radical
 
 

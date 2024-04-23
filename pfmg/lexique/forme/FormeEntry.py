@@ -9,7 +9,7 @@ from dataclasses import dataclass
 
 from frozendict import frozendict
 
-from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.rulable.Rulable import Rulable
 
