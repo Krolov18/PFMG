@@ -5,7 +5,7 @@
 # LICENSE file in the root directory of this source tree.
 """Mixin pour la représentation des objects."""
 
-from pfmg.lexique.display.ABCDisplay import ABCDisplay
+from pfmg.external.display.ABCDisplay import ABCDisplay
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
