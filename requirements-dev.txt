@@ -240,7 +240,7 @@ pygments==2.16.1
     # via
     #   ipython
     #   nbconvert
-pyright==1.1.358
+pyright==1.1.360
     # via -r requirements-dev.in
 pytest==8.1.1
     # via
