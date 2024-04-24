@@ -11,7 +11,7 @@ from pathlib import Path
 import yaml
 from frozendict import frozendict
 
-from pfmg.lexique.reader.ABCReader import ABCReader
+from pfmg.external.reader.ABCReader import ABCReader
 
 
 @dataclass
@@ -37,7 +37,7 @@ class Phonology(ABCReader):
     voyelles: frozenset
 
     @classmethod
-    def from_disk(cls, path: Path) -> "Phonology":
+    def from_yaml(cls, path: Path) -> "Phonology":
         """Construit un Phonology à partir d'un Fichier YAML.
 
         :param path: Chemin vers le fichier YAML
@@ -48,9 +48,9 @@ class Phonology(ABCReader):
         with open(path, encoding="utf8") as file_handler:
             data = yaml.safe_load(file_handler)
 
-        return cls(**Phonology.from_json(data))
+        return cls(**Phonology.from_dict(data))
 
-    def to_json(self) -> dict:
+    def to_dict(self) -> dict:
         """Convertit la structure interne en JSON-compatible.
 
         :return: un dictionnaire sérialisable par JSON
@@ -64,7 +64,7 @@ class Phonology(ABCReader):
         }
 
     @staticmethod
-    def from_json(data: dict) -> dict:
+    def from_dict(data: dict) -> dict:
         """Construit la strcture interne depuis un dict JSON.
 
         :param data: un dict provenant d'un fichier JSON

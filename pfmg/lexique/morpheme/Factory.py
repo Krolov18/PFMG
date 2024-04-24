@@ -9,7 +9,7 @@ from enum import Enum
 
 from frozendict import frozendict
 
-from pfmg.lexique.display.ABCDisplay import ABCDisplay
+from pfmg.external.display import ABCDisplay
 from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.utils.abstract_factory import factory_method
 

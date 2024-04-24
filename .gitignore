@@ -22,3 +22,6 @@ build/
 node_modules/
 package.json
 package-lock.json
+
+# useless CUE files... maybe to delete
+/projects/

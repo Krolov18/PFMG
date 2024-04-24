@@ -9,7 +9,7 @@ from abc import ABC, abstractmethod
 
 from frozendict import frozendict
 
-from pfmg.lexique.display.ABCDisplay import ABCDisplay
+from pfmg.external.display import ABCDisplay
 
 
 class ABCSelector(ABC):

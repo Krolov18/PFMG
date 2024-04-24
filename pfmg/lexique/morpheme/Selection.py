@@ -11,7 +11,7 @@ from re import Match
 
 from frozendict import frozendict
 
-from pfmg.lexique.display.MixinDisplay import MixinDisplay
+from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.equality.MixinEquality import MixinEquality
 from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
