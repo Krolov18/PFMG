@@ -13,7 +13,7 @@ from typing import TypedDict
 import yaml
 from frozendict import frozendict
 
-from pfmg.lexique.reader.ABCReader import ABCReader
+from pfmg.external.reader.ABCReader import ABCReader
 
 d_grid = dict[str, list[str]]
 l_grid = list[d_grid]
@@ -74,7 +74,7 @@ class Gloses(ABCReader):
         return self.struct[pos]
 
     @classmethod
-    def from_disk(cls, path: Path) -> "Gloses":
+    def from_yaml(cls, path: Path) -> "Gloses":
         """Construit Gloses à partir d'un fichier YAML.
 
         :param path: Chemin vers le YAML des gloses de la grammaire.

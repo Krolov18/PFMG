@@ -14,7 +14,7 @@ from frozendict import frozendict
 
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
-from pfmg.lexique.reader.ABCReader import ABCReader
+from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.utils import dictify
 
@@ -26,7 +26,7 @@ class Stems(ABCReader, Iterable):
     data: Iterator[Lexeme]
 
     @classmethod
-    def from_disk(cls, path: Path) -> "Stems":
+    def from_yaml(cls, path: Path) -> "Stems":
         """Construit l'Itérateur à partir d'un fichier YAML.
 
         :param path: Chemin vers le fichier YAML.

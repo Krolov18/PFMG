@@ -13,7 +13,7 @@ from frozendict import frozendict
 
 from pfmg.lexique.block.BlockEntry import BlockEntry
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.reader.ABCReader import ABCReader
+from pfmg.external.reader.ABCReader import ABCReader
 
 
 @dataclass
@@ -29,7 +29,7 @@ class Blocks(ABCReader):
         assert self.destination
 
     @classmethod
-    def from_disk(cls, path: Path) -> "Blocks":
+    def from_yaml(cls, path: Path) -> "Blocks":
         """Construit un Blocks depuis un fichier JSON.
 
         :param path: Chemin vers le fichier JSON
@@ -42,7 +42,7 @@ class Blocks(ABCReader):
 
         assert data
 
-        phonology_from_disk = Phonology.from_disk(
+        phonology_from_disk = Phonology.from_yaml(
             path.parent / "Phonology.yaml",
         )
 

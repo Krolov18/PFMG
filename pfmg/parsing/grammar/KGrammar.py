@@ -3,7 +3,7 @@ from pathlib import Path
 
 import yaml
 
-from pfmg.lexique.reader import ABCReader
+from pfmg.external.reader import ABCReader
 from pfmg.parsing.grammar import Grammar
 from pfmg.parsing.production import Production
 

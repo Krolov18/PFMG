@@ -14,7 +14,7 @@ class ABCReader[T](ABC):
 
     @classmethod
     @abstractmethod
-    def from_disk(cls, path: Path) -> T:
+    def from_yaml(cls, path: Path) -> T:
         """Construit un type depuis un fichier sur le disque.
 
         :param path: Chemin du fichier
