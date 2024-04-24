@@ -7,6 +7,7 @@ from pfmg.parsing.agreement.Agreement import Agreement
 @dataclass
 class Percolation:
     """TODO : Write some doc."""
+
     data: str
 
     @staticmethod
@@ -28,7 +29,7 @@ class Percolation:
             for i_idx, i_x in enumerate(data.split(";")):
                 Percolation.__parse_percolation(
                     i_x,
-                    agreement[i_idx],
+                    agreement[i_idx], # type: ignore
                     accumulator
                 )
         elif "," in data:

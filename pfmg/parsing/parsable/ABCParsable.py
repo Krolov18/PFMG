@@ -68,7 +68,7 @@ class IdParsableEnum(enum.Enum):
 
 
 def create_parsable(
-    id_parsable: IdParserEnum,
+    id_parsable: IdParsableEnum,
     fcfg: FeatureGrammar,
 ) -> ABCParsable:
     """Factory pour construire un object parsable.
@@ -83,4 +83,3 @@ def create_parsable(
         package=__package__,
         fcfg=fcfg,
     )
-

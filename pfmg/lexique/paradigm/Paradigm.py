@@ -9,13 +9,13 @@ from collections.abc import Generator
 from dataclasses import dataclass
 from pathlib import Path
 
+from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.forme.Forme import Forme
 from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.glose.Gloses import Gloses
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.morpheme.Morphemes import Morphemes
-from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.realizable.ABCRealizable import ABCRealizable
 
 

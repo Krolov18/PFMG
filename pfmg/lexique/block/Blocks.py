@@ -11,9 +11,9 @@ from pathlib import Path
 import yaml
 from frozendict import frozendict
 
+from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.block.BlockEntry import BlockEntry
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.external.reader.ABCReader import ABCReader
 
 
 @dataclass

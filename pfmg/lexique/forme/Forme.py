@@ -44,13 +44,13 @@ class Forme(MixinDisplay):
         source_lhs = FeatStructNonterminal(self.source.pos, **features)
         destination_lhs = FeatStructNonterminal(
             self.destination.pos,
-            **features["Destination"],
+            **features["Destination"],  # type: ignore
         )
         rhs = self.source.to_string()
         source_prod = Production(lhs=source_lhs, rhs=[rhs])
         destination_prod = Production(
             lhs=destination_lhs,
-            rhs=[features["Source"]["Traduction"]],
+            rhs=[features["Source"]["Traduction"]],  # type: ignore
         )
         return KalabaProduction(
             source=source_prod,

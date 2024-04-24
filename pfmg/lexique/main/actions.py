@@ -119,10 +119,8 @@ def lexicon_action(
     """
     import sys
 
-    from pfmg.lexique.paradigm.Paradigm import Paradigm
-    from pfmg.lexique.stems.Stems import Stems
+    from pfmg.lexique.lexicon import Lexicon
 
-    # print(namespace)
     path = Path(namespace.datapath)
     # vérifier que l'archive namespace.datapath existe
     # et que seuls les fichiers suivants sont présents
@@ -134,8 +132,5 @@ def lexicon_action(
     check_if_datapath_contains_all_files(namespace)
     check_yaml_files_with_cue(namespace)
 
-    paradigm = Paradigm.from_disk(path)
-
-    for lexeme in Stems.from_disk(path / "Stems.yaml"):
-        for forme in paradigm.realize(lexeme):
-            sys.stdout.write(forme.to_string() + "\n")
+    for forme in Lexicon.from_yaml(path):
+        sys.stdout.write(forme.to_lexical().to_string() + "\n")

@@ -1,15 +1,19 @@
+"""TODO : Write some doc."""
 from dataclasses import dataclass
 
 
 @dataclass
 class Agreement:
+    """TODO : Write some doc."""
+
     data: dict
 
-    def from_string(
+    def from_string(  # noqa C901
         self,
         accords: str,
         accumulator: list[dict] | dict
     ) -> None:
+        """TODO : Write some doc."""
         if not accords:
             return
 

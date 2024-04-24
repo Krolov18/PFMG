@@ -12,9 +12,9 @@ from pathlib import Path
 import yaml
 from frozendict import frozendict
 
+from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
-from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.utils import dictify
 

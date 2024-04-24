@@ -12,10 +12,10 @@ from nltk.grammar import FeatureGrammar
 from nltk.parse.earleychart import FeatureEarleyChartParser
 
 from pfmg.lexique.sentence.Sentence import Sentence
-from pfmg.parser.ABCParser import ABCParser
+from pfmg.parsing.parsable import ABCParsable
 
 
-class ValidatorParser(ABCParser):
+class ValidatorParser(ABCParsable):
     """Parseur de validation à effectuer après la traduction."""
 
     __parser: ParserI
