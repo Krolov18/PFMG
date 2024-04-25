@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -40,28 +41,20 @@ class KGrammar(ABCReader, ABCToValidation):
             for i_rule in zip(*target["Source"].values(), strict=True):
                 sources.append(
                     Production(
-                        lhs=lhs,
-                        **dict(zip(parameters, i_rule, strict=True))
+                        lhs=lhs, **dict(zip(parameters, i_rule, strict=True))
                     )
                 )
 
             for i_rule in zip(*target["Destination"].values(), strict=True):
                 destinations.append(
                     Production(
-                        lhs=lhs,
-                        **dict(zip(parameters, i_rule, strict=True))
+                        lhs=lhs, **dict(zip(parameters, i_rule, strict=True))
                     )
                 )
 
         return cls(
-            translator=Grammar(
-                start=start,
-                productions=sources
-            ),
-            validator=Grammar(
-                start=start,
-                productions=destinations
-            )
+            translator=Grammar(start=start, productions=sources),
+            validator=Grammar(start=start, productions=destinations),
         )
 
     def to_validation(self) -> Self:

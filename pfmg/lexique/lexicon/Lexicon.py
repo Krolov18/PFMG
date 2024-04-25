@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -23,7 +24,7 @@ class Lexicon(ABCReader, ABCToValidation):
         path = Path(path)
         return cls(
             paradigm=Paradigm.from_yaml(path),
-            lexemes=list(Stems.from_yaml(path / "Stems.yaml"))
+            lexemes=list(Stems.from_yaml(path / "Stems.yaml")),
         )
 
     def to_validation(self) -> Self:

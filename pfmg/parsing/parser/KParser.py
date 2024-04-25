@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -27,12 +28,8 @@ class KParser(ABCReader):
         lexicon = Lexicon.from_yaml(path)
         grammar = KGrammar.from_yaml(path)
         return cls(
-            translator=Parser(
-                lexique=lexicon,
-                grammar=grammar.translator
-            ),
+            translator=Parser(lexique=lexicon, grammar=grammar.translator),
             validator=Parser(
-                lexique=lexicon.to_validation(),
-                grammar=grammar.validator
-            )
+                lexique=lexicon.to_validation(), grammar=grammar.validator
+            ),
         )

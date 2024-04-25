@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from collections.abc import Iterator
 from dataclasses import dataclass
 

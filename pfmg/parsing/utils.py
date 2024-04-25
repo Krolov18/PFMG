@@ -245,9 +245,11 @@ def parse_one_rule(
     return Production(
         lhs=FeatStructNonterminal(lhs, **f_percolation),  # type: ignore
         rhs=[
-            (i_s  # type: ignore
-             if i_s.islower()  # type: ignore
-             else FeatStructNonterminal(i_s, **i_a))  # type: ignore
+            (
+                i_s  # type: ignore
+                if i_s.islower()  # type: ignore
+                else FeatStructNonterminal(i_s, **i_a)  # type: ignore
+            )
             for i_s, i_a in zip(syntagmes, f_accords, strict=True)
         ],
     )
