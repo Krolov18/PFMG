@@ -33,13 +33,17 @@ class Forme(MixinDisplay):
         :return: une production lexicale.
         """
         features = {
-            "Source": FeatStruct({
-                "Traduction": self.destination.to_string(),
-                **self.source.get_sigma(),
-            }),
-            "Destination": FeatStruct({
-                **self.destination.get_sigma(),
-            }),
+            "Source": FeatStruct(
+                {
+                    "Traduction": self.destination.to_string(),
+                    **self.source.get_sigma(),
+                }
+            ),
+            "Destination": FeatStruct(
+                {
+                    **self.destination.get_sigma(),
+                }
+            ),
         }
         source_lhs = FeatStructNonterminal(self.source.pos, **features)
         destination_lhs = FeatStructNonterminal(

@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass, field
 
 
@@ -18,6 +19,5 @@ class Translation:
         for i in range(len(syntagme)):
             f_accords[i]["Source"]["Traduction"] = f"?{i}"
         f_percolation["Source"]["Traduction"] = tuple(
-            f_accords[i_trad]["Source"]["Traduction"]
-            for i_trad in self.data
+            f_accords[i_trad]["Source"]["Traduction"] for i_trad in self.data
         )

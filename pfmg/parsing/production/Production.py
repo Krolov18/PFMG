@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 from typing import Any
 
@@ -28,9 +29,11 @@ class Production:
             lhs=self.lhs,
             percolation=self.percolation.to_string(),  # type: ignore
             rhs=" ".join(
-                [f"{s}{a}" for s, a in
-                 zip(self.syntagmes, self.accords, strict=True)]  # type: ignore
-            )
+                [
+                    f"{s}{a}"
+                    for s, a in zip(self.syntagmes, self.accords, strict=True)  # type: ignore
+                ]
+            ),
         )
 
         # source = "Destination" if self.translation is None else "Source"
@@ -71,13 +74,13 @@ class Production:
             return self.accords  # type: ignore
         if len(self.syntagmes) < 1:
             return self.accords  # type: ignore
-        return ((self.accords + ";")  # type: ignore
-                * len(self.syntagmes)).strip(";")  # type: ignore
+        return (
+            (self.accords + ";")  # type: ignore
+            * len(self.syntagmes)
+        ).strip(";")  # type: ignore
 
     def __parse_translation(
-        self,
-        f_accords: list[nltk.FeatStruct],
-        f_percolation: nltk.FeatStruct
+        self, f_accords: list[nltk.FeatStruct], f_percolation: nltk.FeatStruct
     ):
         """TODO : Write some doc."""
         from nltk.featstruct import FeatureValueTuple

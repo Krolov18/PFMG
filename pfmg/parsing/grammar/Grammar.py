@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict
@@ -24,7 +25,7 @@ class Grammar(ABCDisplay):
         return "\n\n".join(
             (
                 f"% start {self.start}",
-                "\n".join(x.to_string() for x in self.productions)
+                "\n".join(x.to_string() for x in self.productions),
             )
         )
 

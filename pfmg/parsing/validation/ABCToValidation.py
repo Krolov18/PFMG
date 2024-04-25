@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from abc import abstractmethod
 from typing import Self
 
