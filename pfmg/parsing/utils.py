@@ -213,27 +213,10 @@ def parse_one_rule(
         case _:
             raise KeyError(source)
 
-    parse_features(
-        broadcast(
-            accords,
-            len(syntagmes),
-        ),
-        f_accords,
-    )
-    f_percolation = FeatStruct(
-        FeatStruct(
-            {
-                source: FeatStruct(),
-            },
-        ),
-    )
+    parse_features(broadcast(accords, len(syntagmes)), f_accords)
+    f_percolation = FeatStruct(FeatStruct({source: FeatStruct()}))
     parse_percolation(
-        broadcast(
-            percolation,
-            len(syntagmes),
-        ),
-        f_accords,
-        f_percolation,
+        broadcast(percolation, len(syntagmes)), f_accords, f_percolation
     )
     if traduction is not None:
         parse_traduction(
