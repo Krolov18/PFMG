@@ -1,0 +1,17 @@
+source:
+  D:
+    - Nombre=pl: X2?X2:X+s
+  NOM:
+    - Nombre=pl: X2?X2:X+s
+destination:
+  D:
+    - Genre=m: X+o
+      Genre=f: X+i
+      Genre=n: X+e
+    - Nombre=sg: X+s
+      Nombre=pl: X+j
+  NOM:
+    - Cf=n1,Nombre=sg: X+v
+      Cf=n1,Nombre=pl: X+l
+      Cf=n2,Nombre=sg: X+j
+      Cf=n2,Nombre=pl: X+g
