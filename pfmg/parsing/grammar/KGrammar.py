@@ -14,11 +14,10 @@ import yaml
 from pfmg.external.reader import ABCReader
 from pfmg.parsing.grammar import Grammar
 from pfmg.parsing.production import Production
-from pfmg.parsing.validation.ABCToValidation import ABCToValidation
 
 
 @dataclass
-class KGrammar(ABCReader, ABCToValidation):
+class KGrammar(ABCReader):
     """TODO : Write some doc."""
 
     translator: Grammar

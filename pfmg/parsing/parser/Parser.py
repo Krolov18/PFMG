@@ -35,13 +35,13 @@ class Parser(MixinParseParsable):
         self.parser = EarleyChartParser(grammar)
 
     def _parse_first_str(self, data: str) -> Sentence:
-        pass
+        raise NotImplementedError
 
     def _parse_first_list(self, data: list[str]) -> Iterator[Sentence]:
-        pass
+        raise NotImplementedError
 
     def _parse_all_str(self, data: str) -> Iterator[Sentence]:
-        pass
+        raise NotImplementedError
 
     def _parse_all_list(self, data: list[str]) -> Iterator[Sentence]:
-        pass
+        raise NotImplementedError

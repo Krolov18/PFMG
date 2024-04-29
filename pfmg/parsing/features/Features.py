@@ -4,7 +4,6 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 """TODO : Write some doc."""
-from collections.abc import Mapping
 from dataclasses import dataclass
 
 from pfmg.parsing.features.utils import FeatureReader
@@ -14,7 +13,7 @@ from pfmg.parsing.features.utils import FeatureReader
 class Features:
     """TODO : Write some doc."""
 
-    data: list[Mapping]
+    data: list[dict]
 
     @staticmethod
     def broadcast(data: str, i: int) -> str:

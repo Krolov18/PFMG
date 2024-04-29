@@ -7,7 +7,7 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, Self
+from typing import Self
 
 from pfmg.external.reader import ABCReader
 from pfmg.parsing.parsable.MixinParseParsable import MixinParseParsable
@@ -46,7 +46,7 @@ class KParser(ABCReader, MixinParseParsable):
             ),
         )
 
-    def parse(self, data: str | list[str], keep: Literal["first", "all"]):
+    def parse(self, data, keep):  # noqa ANN001
         """TODO : Write some doc."""
         try:
             translation = self.translator.parse(data, keep)

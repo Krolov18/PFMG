@@ -13,11 +13,10 @@ from pfmg.external.reader import ABCReader
 from pfmg.lexique.lexeme import Lexeme
 from pfmg.lexique.paradigm import Paradigm
 from pfmg.lexique.stems import Stems
-from pfmg.parsing.validation.ABCToValidation import ABCToValidation
 
 
 @dataclass
-class Lexicon(ABCReader, ABCToValidation):
+class Lexicon(ABCReader):
     """TODO : Write some doc."""
 
     paradigm: Paradigm
