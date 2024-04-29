@@ -5,10 +5,8 @@ source_file="bin/header_copyright.txt"
 
 # Fonction pour vérifier si le contenu du fichier source est déjà présent au début du fichier cible
 contains_source() {
-    local source_content
-    source_content=$(cat "$source_file")
-    local file_content
-    file_content=$(head -n "$(wc -l < "$source_file")" "$1")
+    local source_content=$(cat "$source_file")
+    local file_content=$(head -n $(wc -l < "$source_file") "$1")
     [ "$source_content" = "$file_content" ]
 }
 
