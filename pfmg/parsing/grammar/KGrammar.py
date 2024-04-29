@@ -62,6 +62,6 @@ class KGrammar(ABCReader, ABCToValidation):
             validator=Grammar(start=start, productions=destinations),
         )
 
-    def to_validation(self) -> Self:
+    def to_validation(self) -> Grammar:
         """TODO : Write some doc."""
-        raise NotImplementedError
+        return self.validator
