@@ -16,13 +16,24 @@ class MixinParseParsable(ABCParsable):
     """TODO : Write some doc."""
 
     @overload
-    def parse(self, data, keep: Literal["first"]) -> Sentence: ...
+    def parse(self, data: str | list[str], keep: Literal["first"]) -> Sentence:
+        ...
 
     @overload
-    def parse(self, data, keep: Literal["all"]) -> Iterator[Sentence]: ...
+    def parse(
+        self,
+        data: str | list[str],
+        keep: Literal["all"]
+    ) -> Iterator[Sentence]:
+        ...
 
     @overload
-    def parse(self, data: list[str], keep) -> Iterator[Sentence]: ...
+    def parse(
+        self,
+        data: list[str],
+        keep: Literal["first", "all"]
+    ) -> Iterator[Sentence]:
+        ...
 
     def parse(self, data, keep):
         """TODO : Write some doc."""

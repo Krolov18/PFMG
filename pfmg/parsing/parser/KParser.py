@@ -7,7 +7,7 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Self
+from typing import Literal, Self
 
 from pfmg.external.reader import ABCReader
 from pfmg.parsing.parsable.MixinParseParsable import MixinParseParsable
@@ -46,15 +46,18 @@ class KParser(ABCReader, MixinParseParsable):
             ),
         )
 
-    def parse(self, data, keep):
+    def parse(self, data: str | list[str], keep: Literal["first", "all"]):
+        """TODO : Write some doc."""
         try:
             translation = self.translator.parse(data, keep)
-        except:
-            print("erreur de traduction")
+        except:  # noqa EM101
+            message = "erreur de traduction"
+            raise TypeError(message) from None
         else:
             try:
                 self.validator.parse(translation, keep)
-            except:
-                print("erreur de validation")
+            except:  # noqa EM101
+                message = "erreur de validation"
+                raise TypeError(message) from None
             else:
                 return translation
