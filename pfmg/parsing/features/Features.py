@@ -4,7 +4,7 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 """TODO : Write some doc."""
-
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 from pfmg.parsing.features.utils import FeatureReader
@@ -14,7 +14,7 @@ from pfmg.parsing.features.utils import FeatureReader
 class Features:
     """TODO : Write some doc."""
 
-    data: list[dict]
+    data: list[Mapping]
 
     @staticmethod
     def broadcast(data: str, i: int) -> str:
@@ -23,20 +23,12 @@ class Features:
         return ((data + ";") * i).rstrip(";")
 
     @classmethod
-    def from_string(
-        cls,
-        data: str,
-        target: str
-    ) -> "Features":
+    def from_string(cls, data: str, target: str) -> "Features":
         """TODO : Write some doc."""
-        return cls(
-            data=FeatureReader().parse(
-                data=data,
-                target=target
-            )
-        )
+        return cls(data=FeatureReader().parse(data=data, target=target))
 
     def to_nltk(self) -> list[str]:
+        """TODO : Write some doc."""
         result: list[str] = []
 
         for i_x in self.data:
@@ -57,4 +49,5 @@ class Features:
             self.data[i]["Traduction"] = f"?{translations[i]}{i}"
 
     def get_translations(self) -> tuple[str, ...]:
+        """TODO : Write some doc."""
         return tuple(x["Traduction"] for x in self.data)
