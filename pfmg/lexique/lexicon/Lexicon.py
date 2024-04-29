@@ -32,9 +32,21 @@ class Lexicon(ABCReader, ABCToValidation):
             lexemes=list(Stems.from_yaml(path / "Stems.yaml")),
         )
 
-    def to_validation(self) -> Self:
+    def to_validation(self) -> str:
         """TODO : Write some doc."""
-        raise NotImplementedError
+        result = []
+        for lexeme in self.lexemes:
+            for forme in self.paradigm.realize(lexeme):
+                result.append(forme.to_validation())
+        return "\n".join(result)
+
+    def to_translation(self) -> str:
+        """TODO : Write some doc."""
+        result = []
+        for lexeme in self.lexemes:
+            for forme in self.paradigm.realize(lexeme):
+                result.append(forme.to_translation())
+        return "\n".join(result)
 
     def __iter__(self):
         """TODO : Write some doc."""

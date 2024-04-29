@@ -88,7 +88,7 @@ def test_to_lexical() -> None:
                            stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
                        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
-    actual = forme.to_lexical()
+    actual = forme.to_nltk()
     expected = "N[Genre='m',Nombre='s'] -> 'a'"
     assert actual == expected
 
@@ -108,6 +108,6 @@ def test_to_lexical() -> None:
         sigma=frozendict({"Genre": "m", "Nombre": "s"})
     )
 
-    actual = forme.to_lexical()
+    actual = forme.to_nltk()
     expected = "N[Genre='m',Nombre='s'] -> 'aa'"
     assert actual == expected

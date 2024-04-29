@@ -14,11 +14,11 @@ from pfmg.parsing.production.Production import Production
     "data", [
         {
             "Source": {
-                "lhs":          "NP",
-                "Syntagmes":    ["D", "A", "N"],
-                "Accords":      "genre,nombre",
-                "Percolation":  "genre,nombre",
-                "Traduction": [2, 0, 1]
+                "lhs":         "NP",
+                "Syntagmes":   ["D", "A", "N"],
+                "Accords":     "genre,nombre",
+                "Percolation": "genre,nombre",
+                "Traduction":  [2, 0, 1]
             }
         }
     ]
@@ -39,10 +39,11 @@ parametrize = pytest.mark.parametrize(
                  "Syntagmes":   ["D", "N"],
                  "Accords":     "Genre",
                  "Percolation": "Genre",
-                 "Traduction": [1, 0]
+                 "Traduction":  [1, 0]
              }
          },
-         "NP[SGenre=?SGenre,Traduction=(?N1,?D0)] -> D[SGenre=?SGenre,Traduction=?D0] N[SGenre=?SGenre,Traduction=?N1]"),
+         ("NP[SGenre=?SGenre,Traduction=(?N1,?D0)] -> "
+          "D[SGenre=?SGenre,Traduction=?D0] N[SGenre=?SGenre,Traduction=?N1]")),
 
         ({
              "Source": {
@@ -50,10 +51,11 @@ parametrize = pytest.mark.parametrize(
                  "Syntagmes":   ["N"],
                  "Accords":     "Genre",
                  "Percolation": "Genre",
-                 "Traduction": [0]
+                 "Traduction":  [0]
              }
          },
-         "NP[SGenre=?SGenre,Traduction=(?N0)] -> N[SGenre=?SGenre,Traduction=?N0]"),
+         ("NP[SGenre=?SGenre,Traduction=(?N0)] -> "
+          "N[SGenre=?SGenre,Traduction=?N0]")),
 
     ]
 )
@@ -63,4 +65,34 @@ parametrize = pytest.mark.parametrize(
 def test_production(data, expected) -> None:
     production = Production.from_yaml(data=data)
     actual = production.to_nltk()
+    assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "pos, realization, sigma, expected",
+    [
+        ("N",
+         "'garçon'",
+         {
+             "Genre": "'m'"
+         },
+         "N[Genre='m'] -> 'garçon'"),
+
+        ("N",
+         "'garçon'",
+         {
+             "SGenre":     "'m'",
+             "DGenre":     "'f'",
+             "Traduction": "'hazif'"
+         },
+         "N[SGenre='m',DGenre='f',Traduction='hazif'] -> 'garçon'"),
+    ]
+)
+def test_production_lexical(pos, realization, sigma, expected) -> None:
+    actual = Production(
+        lhs=pos,
+        syntagmes=[realization],
+        accords=Features([{}]),
+        percolation=Percolation(sigma)
+    ).to_nltk()
     assert actual == expected
