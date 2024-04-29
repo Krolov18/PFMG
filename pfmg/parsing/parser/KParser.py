@@ -10,11 +10,12 @@ from pathlib import Path
 from typing import Self
 
 from pfmg.external.reader import ABCReader
+from pfmg.parsing.parsable.MixinParseParsable import MixinParseParsable
 from pfmg.parsing.parser import Parser
 
 
 @dataclass
-class KParser(ABCReader):
+class KParser(ABCReader, MixinParseParsable):
     """Parser bipartite.
 
     Le KParser va parser une première pour traduire
@@ -33,8 +34,27 @@ class KParser(ABCReader):
         lexicon = Lexicon.from_yaml(path)
         grammar = KGrammar.from_yaml(path)
         return cls(
-            translator=Parser(lexique=lexicon, grammar=grammar.translator),
+            translator=Parser(
+                lexique=lexicon,
+                grammar=grammar.translator,
+                how="translation"
+            ),
             validator=Parser(
-                lexique=lexicon.to_validation(), grammar=grammar.validator
+                lexique=lexicon,
+                grammar=grammar.validator,
+                how="validation"
             ),
         )
+
+    def parse(self, data, keep):
+        try:
+            translation = self.translator.parse(data, keep)
+        except:
+            print("erreur de traduction")
+        else:
+            try:
+                self.validator.parse(translation, keep)
+            except:
+                print("erreur de validation")
+            else:
+                return translation
