@@ -6,7 +6,7 @@
 """TODO : Write some doc."""
 
 from collections.abc import Iterator
-from typing import Literal
+from typing import Literal, overload
 
 from pfmg.lexique.sentence.Sentence import Sentence
 from pfmg.parsing.parsable import ABCParsable
@@ -15,9 +15,16 @@ from pfmg.parsing.parsable import ABCParsable
 class MixinParseParsable(ABCParsable):
     """TODO : Write some doc."""
 
-    def parse(
-        self, data: str | list[str], keep: Literal["all", "first"]
-    ) -> Iterator[Sentence]:
+    @overload
+    def parse(self, data, keep: Literal["first"]) -> Sentence: ...
+
+    @overload
+    def parse(self, data, keep: Literal["all"]) -> Iterator[Sentence]: ...
+
+    @overload
+    def parse(self, data: list[str], keep) -> Iterator[Sentence]: ...
+
+    def parse(self, data, keep):
         """TODO : Write some doc."""
         name = f"_parse_{type(data).__name__}_{keep}"
         return getattr(self, name)(data=data)
