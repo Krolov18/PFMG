@@ -31,12 +31,8 @@ jobs:
     - name: Type Checker
       run: |
         pyright
-    - name: Pytest coverage comment
-      uses: MishaKav/pytest-coverage-comment@main
-      with:
-        pytest-coverage-path: ./pytest-coverage.txt
-        junitxml-path: ./pytest.xml
-        #    - name: Test with pytest
-        #      run: |
-        #        pytest
+    - name: Test with pytest
+      run: |
+        pytest --cov
+      shell: bash
 
