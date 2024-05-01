@@ -11,13 +11,9 @@ Un parseur renverra donc des Sentences et non des Trees.
 
 import enum
 from abc import ABC, abstractmethod
-from collections.abc import Iterator
-from typing import Literal
+from typing import Literal, overload
 
-from pfmg.lexique.sentence.Sentence import Sentence
-from pfmg.utils.abstract_factory import (
-    factory_method,
-)
+from pfmg.utils.abstract_factory import factory_method
 
 
 class ABCParsable(ABC):
@@ -27,48 +23,31 @@ class ABCParsable(ABC):
     afin de calculer une structure Sentence sous-jacente.
     """
 
+    @overload
+    @abstractmethod
+    def parse(self, data: str, keep: Literal["first"]) -> str: ...
+
+    @overload
     @abstractmethod
     def parse(
-        self, data: str | list[str], keep: Literal["all", "first"]
-    ) -> Iterator[Sentence]:
+        self, data: str | list[str], keep: Literal["all"]
+    ) -> list[str]: ...
+
+    @overload
+    @abstractmethod
+    def parse(
+        self, data: list[str], keep: Literal["first", "all"]
+    ) -> list[str]: ...
+
+    @abstractmethod
+    def parse(self, data, keep):
         """TODO : Write some doc.
 
         :param data:
         :param keep:
         :return:
         """
-
-    @abstractmethod
-    def _parse_first_str(self, data: str) -> Sentence:
-        """TODO : Write some doc.
-
-        :param data:
-        :return:
-        """
-
-    @abstractmethod
-    def _parse_first_list(self, data: list[str]) -> Iterator[Sentence]:
-        """TODO : Write some doc.
-
-        :param data:
-        :return:
-        """
-
-    @abstractmethod
-    def _parse_all_str(self, data: str) -> Iterator[Sentence]:
-        """TODO : Write some doc.
-
-        :param data:
-        :return:
-        """
-
-    @abstractmethod
-    def _parse_all_list(self, data: list[str]) -> Iterator[Sentence]:
-        """TODO : Write some doc.
-
-        :param data:
-        :return:
-        """
+        raise NotImplementedError
 
 
 class IdParsableEnum(enum.Enum):
