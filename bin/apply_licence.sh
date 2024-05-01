@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Définir le chemin du fichier source
-source_file="header_copyright.txt"
+source_file="bin/header_copyright.txt"
 
 # Fonction pour vérifier si le contenu du fichier source est déjà présent au début du fichier cible
 contains_source() {
@@ -12,10 +12,13 @@ contains_source() {
 
 # Récupérer la liste des fichiers dans le répertoire
 for file in `find . -name "*.py"`; do
-    # Vérifier si le contenu du fichier source est déjà présent au début du fichier cible
-    if ! contains_source "$file"; then
-        # Copier le contenu du fichier source au début du fichier actuel
-        cat "$source_file" "$file" > temp && mv temp "$file"
-    fi
+  # Vérifier si le contenu du fichier source est déjà présent au début du fichier cible
+  if ! contains_source "$file"; then
+    echo "$file"
+    # Copier le contenu du fichier source au début du fichier actuel
+    cat "$source_file" "$file" > temp && mv temp "$file"
+  fi
 done
 
+# find . -name "*.py" -exec sed -i 's/<year>/2024/g' {} +
+# find . -name "*.py" -exec sed -i 's/<copyright holder>/Korantin Lévêque <korantin.leveque@protonmail.com>/g' {} +

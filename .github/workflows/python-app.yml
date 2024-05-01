@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
 permissions:
   contents: read
@@ -33,4 +33,6 @@ jobs:
         pyright
     - name: Test with pytest
       run: |
-        pytest
+        pytest --cov
+      shell: bash
+

@@ -2,7 +2,7 @@
 # All rights reserved.
 
 # This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree. 
+# LICENSE file in the root directory of this source tree.
 import pytest
 from frozendict import frozendict
 
@@ -71,7 +71,7 @@ def test_get_sigma() -> None:
     assert actual == expected
 
 
-def test_to_lexical() -> None:
+def test_to_nltk() -> None:
     phonology = Phonology(
         apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
         mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
@@ -88,7 +88,7 @@ def test_to_lexical() -> None:
                            stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
                        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
-    actual = forme.to_lexical()
+    actual = forme.to_nltk()
     expected = "N[Genre='m',Nombre='s'] -> 'a'"
     assert actual == expected
 
@@ -108,6 +108,6 @@ def test_to_lexical() -> None:
         sigma=frozendict({"Genre": "m", "Nombre": "s"})
     )
 
-    actual = forme.to_lexical()
+    actual = forme.to_nltk()
     expected = "N[Genre='m',Nombre='s'] -> 'aa'"
     assert actual == expected

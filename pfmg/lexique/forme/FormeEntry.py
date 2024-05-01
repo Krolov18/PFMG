@@ -11,11 +11,10 @@ from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.morpheme.Morphemes import Morphemes
-from pfmg.lexique.rulable.Rulable import Rulable
 
 
 @dataclass
-class FormeEntry(MixinDisplay, Rulable):
+class FormeEntry(MixinDisplay):
     """La forme est la réalisation d'un lexème.
 
     :param traduction : Réalisation du lexème de la traduction
@@ -43,11 +42,17 @@ class FormeEntry(MixinDisplay, Rulable):
         """
         return self.sigma
 
-    def to_lexical(self) -> str:
+    def to_nltk(self, infos: dict | None = None) -> str:
         """Transforme la Forme en une production lexicale.
 
         :return: une production lexicale
         """
+        name = f"_{self.__class__.__name__}__to_nltk_{type(infos).__name__.lower()}"
+        return getattr(self, name)(infos)
+
+    def __to_nltk_nonetype(self, infos: None = None) -> str:
+        assert infos is None
+
         sigma = {
             key: value
             for key, value in self.get_sigma().items()
@@ -56,15 +61,13 @@ class FormeEntry(MixinDisplay, Rulable):
         features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
         return f"{self.pos}[{features}] -> '{self.to_string()}'"
 
-    def to_partial_lexical(self) -> tuple[str, str]:
-        """Transforme une Forme en une version partielle de production lexicale.
-
-        :return: les features et la forme réalisée
-        """
+    def __to_nltk_dict(self, infos: dict) -> str:
+        assert isinstance(infos, dict)
         sigma = {
-            key: value
+            f"S{key}": value
             for key, value in self.get_sigma().items()
             if key.istitle()
         }
+        sigma.update(infos)
         features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
-        return features, self.to_string()
+        return f"{self.pos}[{features}] -> '{self.to_string()}'"

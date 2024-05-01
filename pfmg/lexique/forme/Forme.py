@@ -8,12 +8,9 @@
 from dataclasses import dataclass
 
 from frozendict import frozendict
-from nltk.featstruct import FeatStruct
-from nltk.grammar import FeatStructNonterminal, Production
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.forme.FormeEntry import FormeEntry
-from pfmg.parsing.production.KalabaProduction import KalabaProduction
 
 
 @dataclass
@@ -27,39 +24,24 @@ class Forme(MixinDisplay):
         """Vérifications post initialisation."""
         assert self.source.pos == self.destination.pos
 
-    def to_lexical(self) -> KalabaProduction:
+    def to_translation(self) -> str:
         """Transforme une Forme en règle syntaxique lexicale.
+
+        N[SGenre='m',DGenre='f',Traduction='hazif'] -> 'garçon'
+        N[Genre='f'] -> 'hazif'
 
         :return: une production lexicale.
         """
-        features = {
-            "Source": FeatStruct(
-                {
-                    "Traduction": self.destination.to_string(),
-                    **self.source.get_sigma(),
-                }
-            ),
-            "Destination": FeatStruct(
-                {
-                    **self.destination.get_sigma(),
-                }
-            ),
-        }
-        source_lhs = FeatStructNonterminal(self.source.pos, **features)
-        destination_lhs = FeatStructNonterminal(
-            self.destination.pos,
-            **features["Destination"],  # type: ignore
-        )
-        rhs = self.source.to_string()
-        source_prod = Production(lhs=source_lhs, rhs=[rhs])
-        destination_prod = Production(
-            lhs=destination_lhs,
-            rhs=[features["Source"]["Traduction"]],  # type: ignore
-        )
-        return KalabaProduction(
-            source=source_prod,
-            destination=destination_prod,
-        )
+        infos = {f"D{k}": v for k, v in self.destination.get_sigma().items()}
+        infos["Traduction"] = self.destination.to_string()
+        return self.source.to_nltk(infos)
+
+    def to_validation(self):
+        """TODO : Write some doc.
+
+        :return:
+        """
+        return self.destination.to_nltk()
 
     def _to_string__nonetype(self, term: None = None) -> str:
         """Inner function pour représenter une forme.

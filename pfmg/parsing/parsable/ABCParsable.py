@@ -11,14 +11,9 @@ Un parseur renverra donc des Sentences et non des Trees.
 
 import enum
 from abc import ABC, abstractmethod
-from collections.abc import Iterator
+from typing import Literal, overload
 
-from nltk.grammar import FeatureGrammar
-
-from pfmg.lexique.sentence.Sentence import Sentence
-from pfmg.utils.abstract_factory import (
-    factory_method,
-)
+from pfmg.utils.abstract_factory import factory_method
 
 
 class ABCParsable(ABC):
@@ -28,49 +23,38 @@ class ABCParsable(ABC):
     afin de calculer une structure Sentence sous-jacente.
     """
 
+    @overload
     @abstractmethod
-    def parse_one(self, sent: str) -> Sentence | None:
-        """Calcule le premier arbre trouvé.
+    def parse(self, data: str, keep: Literal["first"]) -> str: ...
 
-        :param sent: une chaine de caractère quelconque
-        :return: Le premier arbre trouvé en parsant 'sent'
-        """
-
+    @overload
     @abstractmethod
-    def parse_all(
-        self,
-        sent: str,
-    ) -> Iterator[Sentence]:
-        """Calcule tous les arbres couverts par la grammaire sur cette phrase.
+    def parse(
+        self, data: str | list[str], keep: Literal["all"]
+    ) -> list[str]: ...
 
-        :param sent: une chaine de caractère quelconque
-        :return: Tous les arbres
-        """
+    @overload
+    @abstractmethod
+    def parse(
+        self, data: list[str], keep: Literal["first", "all"]
+    ) -> list[str]: ...
 
     @abstractmethod
-    def parse_sents(
-        self,
-        sents: Iterator[str],
-    ) -> Iterator[Iterator[Sentence]]:
-        """Calcule tous les arbres pour chaucune des phrases données.
+    def parse(self, data, keep):
+        """TODO : Write some doc.
 
-        :param sents: Plusieurs phrases à parser
+        :param data:
+        :param keep:
         :return:
         """
+        raise NotImplementedError
 
 
 class IdParsableEnum(enum.Enum):
     """Tous les identifiants possibles pour les objects parsables."""
 
-    kalaba = "Kalaba"
-    validator = "Validator"
-    translator = "Translator"
 
-
-def create_parsable(
-    id_parsable: IdParsableEnum,
-    fcfg: FeatureGrammar,
-) -> ABCParsable:
+def create_parsable(id_parsable: IdParsableEnum) -> ABCParsable:
     """Factory pour construire un object parsable.
 
     Contraint par IdParserEnum.
@@ -79,7 +63,5 @@ def create_parsable(
     """
     assert __package__ is not None
     return factory_method(
-        concrete_product=f"{id_parsable.value}Parser",
-        package=__package__,
-        fcfg=fcfg,
+        concrete_product=f"{id_parsable.value}Parser", package=__package__
     )

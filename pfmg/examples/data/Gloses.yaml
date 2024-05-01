@@ -1,0 +1,15 @@
+source: # Français
+  D:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  NOM:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+destination: # Kalaba
+  D:
+    Genre: [ m, f, n ]
+    Nombre: [ sg, pl ]
+  NOM:
+    Cf: [ n1, n2 ]
+    Genre: [ m, f, n ]
+    Nombre: [ sg, pl ]

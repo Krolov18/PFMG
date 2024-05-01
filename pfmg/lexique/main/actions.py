@@ -133,4 +133,5 @@ def lexicon_action(
     check_yaml_files_with_cue(namespace)
 
     for forme in Lexicon.from_yaml(path):
-        sys.stdout.write(forme.to_lexical().to_string() + "\n")
+        sys.stdout.write(forme.to_translation() + "\n")
+        sys.stdout.write(forme.to_validation() + "\n")
