@@ -71,7 +71,7 @@ def test_get_sigma() -> None:
     assert actual == expected
 
 
-def test_to_lexical() -> None:
+def test_to_nltk() -> None:
     phonology = Phonology(
         apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
         mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
