@@ -4,6 +4,7 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 
 from pfmg.parsing.features.utils import FeatureReader
