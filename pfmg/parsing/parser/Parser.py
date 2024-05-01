@@ -5,15 +5,13 @@
 # LICENSE file in the root directory of this source tree.
 """TODO : Write some doc."""
 
-from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
 import nltk.grammar
-from nltk import FeatureEarleyChartParser
+from nltk import FeatureEarleyChartParser, Tree
 
 from pfmg.lexique.lexicon import Lexicon
-from pfmg.lexique.sentence.Sentence import Sentence
 from pfmg.parsing.grammar import Grammar
 from pfmg.parsing.parsable.MixinParseParsable import MixinParseParsable
 from pfmg.parsing.tokenizer.SpaceTokenizer import SpaceTokenizer
@@ -33,6 +31,7 @@ class Parser(MixinParseParsable):
         grammar = nltk.grammar.FeatureGrammar.fromstring(
             "\n\n".join((g, getattr(self.lexique, f"to_{self.how}")()))
         )
+
         self.tokenizer = SpaceTokenizer()
         self.parserj = FeatureEarleyChartParser(grammar)
 
@@ -53,34 +52,38 @@ class Parser(MixinParseParsable):
             case list():
                 return [self.tokenizer.tokenize(d) for d in data]
 
-    def _parse_str_first(self, data: str) -> Sentence:
+    def _parse_str_first(self, data: str) -> Tree:
         """Retourne le premier arbre disponible.
 
         :param data: Une phrase
         :return: Une Sentence
         """
-        return next(self._parse_str_all(data))
+        return self._parse_str_all(data)[0]
 
-    def _parse_list_first(self, data: list[str]) -> Iterator[Sentence]:
+    def _parse_list_first(self, data: list[str]) -> list[Tree]:
         """Pour chaque phrase de data, retourne le premier arbre disponible.
 
         :param data: une liste de phrases
         :return: Une liste de Sentence
         """
-        return (self.parserj.parse_one(x) for x in self.__tokenize(data))
+        return [
+            result
+            for x in self.__tokenize(data)
+            if (result := self.parserj.parse_one(x)) is not None
+        ]
 
-    def _parse_str_all(self, data: str) -> Iterator[Sentence]:
+    def _parse_str_all(self, data: str) -> list[Tree]:
         """Retourne tous les arbres disponibles de data.
 
         :param data: Une phrase
         :return: une Sentence
         """
-        return iter(self.parserj.parse_all(self.__tokenize(data)))
+        return list(self.parserj.parse_all(self.__tokenize(data)))
 
-    def _parse_list_all(self, data: list[str]) -> Iterator[Sentence]:
+    def _parse_list_all(self, data: list[str]) -> list[Tree]:
         """Pour chaque phrase, retourne tous les arbres disponibles.
 
         :param data: liste de phrases
         :return: liste de Sentence
         """
-        return self.parserj.parse_sents(self.__tokenize(data))
+        return list(self.parserj.parse_sents(self.__tokenize(data)))
