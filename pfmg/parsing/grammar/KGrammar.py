@@ -32,7 +32,7 @@ class KGrammar(ABCReader):
         with open(path, encoding="utf8") as file_handler:
             data = yaml.safe_load(file_handler)
 
-        start = data.pop("start", None)
+        start = data.pop("Start", None)
 
         assert start is not None
         assert data
@@ -41,18 +41,34 @@ class KGrammar(ABCReader):
         destinations: list[Production] = []
 
         for lhs, target in data.items():
-            parameters = [x.lower() for x in target["Source"].keys()]
-            for i_rule in zip(*target["Source"].values(), strict=True):
-                sources.append(
-                    Production(
-                        lhs=lhs, **dict(zip(parameters, i_rule, strict=True))
-                    )
+            parameters = [
+                x for x in target["Source"].keys() if x != "Traduction"
+            ]
+            for i_idx, i_rule in enumerate(
+                zip(*target["Source"].values(), strict=True)
+            ):
+                production = Production.from_yaml(
+                    {
+                        "Source": dict(
+                            lhs=lhs,
+                            **dict(zip(parameters, i_rule[:-1], strict=True)),
+                        )
+                    }
                 )
+                production.add_translation(
+                    target["Source"]["Traduction"][i_idx]
+                )
+                sources.append(production)
 
             for i_rule in zip(*target["Destination"].values(), strict=True):
                 destinations.append(
-                    Production(
-                        lhs=lhs, **dict(zip(parameters, i_rule, strict=True))
+                    Production.from_yaml(
+                        {
+                            "Destination": dict(
+                                lhs=lhs,
+                                **dict(zip(parameters, i_rule, strict=True)),
+                            )
+                        }
                     )
                 )
 
