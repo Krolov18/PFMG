@@ -4,9 +4,23 @@ repos:
    rev: "v0.3.7"
    hooks:
      # Run the linter.
-     - id: "ruff"
+     - id: ruff
+       always_run: true
      # Run the formatter.
      - id: ruff-format
+       always_run: true
+ - repo: https://github.com/RobertCraigie/pyright-python
+   rev: v1.1.361
+   hooks:
+   - id: pyright
+     always_run: true
+     # Need to add those three lines because pyright is buggy at config point Oo
+     additional_dependencies:
+       - -r
+       - /home/koko/projects/PFMG/requirements-dev.txt
+ # Same thing that for pyright...
+ # all this section is wordy because
+ # they did not provide a simplest way to do it.
  - repo: local
    hooks:
      - id: pytest
