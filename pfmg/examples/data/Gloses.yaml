@@ -13,3 +13,16 @@ destination: # Kalaba
     Cf: [ n1, n2 ]
     Genre: [ m, f, n ]
     Nombre: [ sg, pl ]
+
+N:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  destination:
+    Genre: [ a, b, c, d ]
+    Nombre: [ sg, du, pl ]
+  alignment:
+    Genre=m: [ Genre=a, Genre=d ]
+    Genre=f: [ Genre=b, Genre=c ]
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl ]

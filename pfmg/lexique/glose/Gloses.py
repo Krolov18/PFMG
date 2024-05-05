@@ -6,29 +6,18 @@
 """Implémente les cases des paradigmes par POS."""
 
 from collections.abc import Iterator
+from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
-from typing import TypedDict
 
 import yaml
 from frozendict import frozendict
 
 from pfmg.external.reader.ABCReader import ABCReader
-
-d_grid = dict[str, list[str]]
-l_grid = list[d_grid]
-d_or_l_grid = d_grid | l_grid
-
-SubGlose = dict[str, list[frozendict]]
+from pfmg.lexique.glose import GlosesStruct, SubGlose, d_grid, l_grid
 
 
-class GlosesStruct(TypedDict):
-    """Typage stricte du dictionnaire Gloses."""
-
-    source: frozendict[str, str]
-    destination: frozendict[str, str]
-
-
+@dataclass
 class Gloses(ABCReader):
     """Représente les cases des paradigmes.
 
@@ -38,21 +27,9 @@ class Gloses(ABCReader):
 
     source: SubGlose
     destination: SubGlose
-    struct: dict
 
-    def __init__(
-        self,
-        source: SubGlose,
-        destination: SubGlose,
-    ) -> None:
-        """Initialise la classe GLose.
-
-        :param source:
-        :param destination:
-        :return:
-        """
-        self.source = source
-        self.destination = destination
+    def __post_init__(self):
+        """TODO : Doc to write."""
         self.struct = {
             k: [
                 dict(zip(vars(self).keys(), sigma, strict=True))
@@ -71,7 +48,7 @@ class Gloses(ABCReader):
         :param item: un POS valide
         :return: Les cases du paradigmes de 'item'
         """
-        return self.struct[pos]
+        return self.struct[pos]  # type: ignore
 
     @classmethod
     def from_yaml(cls, path: Path) -> "Gloses":
