@@ -1,6 +1,8 @@
 source:
   D:
-    - Nombre=pl: X2?X2:X+s
+    - Genre=m,Nombre=sg: X1
+      Genre=f,Nombre=sg: X2
+      Nombre=pl: X3
   NOM:
     - Nombre=pl: X2?X2:X+s
 destination:
