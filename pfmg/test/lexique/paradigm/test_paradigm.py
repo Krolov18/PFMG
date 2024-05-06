@@ -124,7 +124,7 @@ def test_from_disk(tmp_path):
                     radical=Radical(StemSpace(("tortue",))),
                     others=[]
                     ),
-                sigma=frozendict(Genre="f", Nombre="sg", f="Genre", sg="Nombre")
+                sigma=frozendict(Genre="f", Nombre="sg")
             ),
             destination=FormeEntry(
                 pos="N",
@@ -132,7 +132,7 @@ def test_from_disk(tmp_path):
                     radical=Radical(StemSpace(("turtle",))),
                     others=[]
                     ),
-                sigma=frozendict(Genre="m", Nombre="sg", m="Genre", sg="Nombre")
+                sigma=frozendict(Genre="m", Nombre="sg")
             )
         ),
 
@@ -148,7 +148,7 @@ def test_from_disk(tmp_path):
                             phonology=Phonology(**phonology())
                         )]
                     ),
-                sigma=frozendict(Genre="f", Nombre="pl", f="Genre", pl="Nombre")
+                sigma=frozendict(Genre="f", Nombre="pl")
             ),
             destination=FormeEntry(
                 pos="N",
@@ -156,7 +156,7 @@ def test_from_disk(tmp_path):
                     radical=Radical(StemSpace(("turtle",))),
                     others=[]
                     ),
-                sigma=frozendict(Genre="m", Nombre="sg", m="Genre", sg="Nombre")
+                sigma=frozendict(Genre="m", Nombre="sg")
             )
         )
     ]

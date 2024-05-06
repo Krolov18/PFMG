@@ -1,9 +1,9 @@
 D:
-  z: un,des.Def=INDEF
-  r: le,les.Def=DEF
-  t: ce,ces.Def=DEM
+  z: un,une,des
+  r: le,la,les
+  t: ce,cette,ces
 NOM:
-  CF=n1:
+  Cf=n1:
     Genre=f:
       di: jardin.Genre=m
       do: princesse.Genre=f
@@ -30,7 +30,7 @@ NOM:
       sibi: salon.Genre=m
       ve: crèche.Genre=f
       veno: famille.Genre=f
-  CF=n2:
+  Cf=n2:
     Genre=f:
       gri: fille.Genre=f
       jovo: étoile.Genre=f

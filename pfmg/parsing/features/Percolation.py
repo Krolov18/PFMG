@@ -7,11 +7,12 @@
 
 from dataclasses import dataclass
 
+from pfmg.parsing.features.FeatureMixin import FeatureMixin
 from pfmg.parsing.features.utils import FeatureReader
 
 
 @dataclass
-class Percolation:
+class Percolation(FeatureMixin):
     """TODO : Write some doc."""
 
     data: dict
@@ -30,8 +31,11 @@ class Percolation:
         return ",".join(f"{key}={value}" for key, value in self.data.items())
 
     @classmethod
-    def from_string(cls, data: str, target: str) -> "Percolation":
+    def from_string(
+        cls, data: str, target: str, phrase_len: int
+    ) -> "Percolation":
         """TODO : Write some doc."""
+        data = Percolation.broadcast(data, phrase_len)
         features = FeatureReader().parse(data=data, target=target)
         return cls(data=cls.unify(features))
 
@@ -39,3 +43,11 @@ class Percolation:
         """TODO : Write some doc."""
         values = ",".join(translations)
         self.data["Traduction"] = f"({values})"
+
+    def update(self, other: "Percolation") -> None:
+        """TODO : Write some doc.
+
+        :param other:
+        :return:
+        """
+        self.data.update(other.data)

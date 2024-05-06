@@ -41,36 +41,41 @@ class KGrammar(ABCReader):
         destinations: list[Production] = []
 
         for lhs, target in data.items():
-            parameters = [
-                x for x in target["Source"].keys() if x != "Traduction"
-            ]
-            for i_idx, i_rule in enumerate(
-                zip(*target["Source"].values(), strict=True)
-            ):
-                production = Production.from_yaml(
-                    {
-                        "Source": dict(
-                            lhs=lhs,
-                            **dict(zip(parameters, i_rule[:-1], strict=True)),
-                        )
-                    }
+            nb_rules = len(target["Source"]["Syntagmes"])
+            for i in range(nb_rules):
+                d_phrase = target["Destination"]["Syntagmes"][i]
+                d_agreement = target["Destination"]["Accords"][i]
+                d_percolation = target["Destination"]["Percolation"][i]
+                d_production = Production.from_yaml(
+                    data={
+                        "lhs": lhs,
+                        "Syntagmes": d_phrase,
+                        "Accords": d_agreement,
+                        "Percolation": d_percolation,
+                    },
+                    target="D",
                 )
-                production.add_translation(
-                    target["Source"]["Traduction"][i_idx]
-                )
-                sources.append(production)
 
-            for i_rule in zip(*target["Destination"].values(), strict=True):
-                destinations.append(
-                    Production.from_yaml(
-                        {
-                            "Destination": dict(
-                                lhs=lhs,
-                                **dict(zip(parameters, i_rule, strict=True)),
-                            )
-                        }
-                    )
+                s_phrase = target["Source"]["Syntagmes"][i]
+                s_agreement = target["Source"]["Accords"][i]
+                s_percolation = target["Source"]["Percolation"][i]
+                s_traduction = target["Source"]["Traduction"][i]
+                s_production = Production.from_yaml(
+                    data={
+                        "lhs": lhs,
+                        "Syntagmes": s_phrase,
+                        "Accords": s_agreement,
+                        "Percolation": s_percolation,
+                        "Traduction": s_traduction,
+                    },
+                    target="S",
                 )
+
+                s_production.update(
+                    production=d_production, indices=s_traduction
+                )
+                sources.append(s_production)
+                destinations.append(d_production)
 
         return cls(
             translator=Grammar(start=start, productions=sources),

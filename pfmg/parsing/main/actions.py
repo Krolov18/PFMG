@@ -33,9 +33,11 @@ def parsing_action(namespace: dict) -> None:
 
     :param namespace: paramètres de KParser et de parse
     """
-    result = KParser.from_yaml(namespace.pop("path")).parse(**namespace)
+    parser = KParser.from_yaml(namespace.pop("path"))
+
+    result = parser.parse(**namespace)
 
     if isinstance(result, str):
         result = [result]
 
-    sys.stdout.writelines(result)
+    sys.stdout.write("\n".join(result) + "\n")
