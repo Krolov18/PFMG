@@ -139,15 +139,20 @@ jupyter-server==2.14.0
     #   jupyter-lsp
     #   jupyterlab
     #   jupyterlab-server
+    #   notebook
     #   notebook-shim
 jupyter-server-terminals==0.5.3
     # via jupyter-server
 jupyterlab==4.2.0rc0
-    # via -r requirements-dev.in
+    # via
+    #   -r requirements-dev.in
+    #   notebook
 jupyterlab-pygments==0.3.0
     # via nbconvert
 jupyterlab-server==2.27.1
-    # via jupyterlab
+    # via
+    #   jupyterlab
+    #   notebook
 markupsafe==2.1.5
     # via
     #   jinja2
@@ -181,8 +186,12 @@ nodeenv==1.8.0
     # via
     #   pre-commit
     #   pyright
+notebook==7.0.7
+    # via -r requirements-dev.in
 notebook-shim==0.2.4
-    # via jupyterlab
+    # via
+    #   jupyterlab
+    #   notebook
 numpy==2.0.0rc1
     # via
     #   -r requirements.txt
@@ -327,6 +336,7 @@ tornado==6.4
     #   jupyter-client
     #   jupyter-server
     #   jupyterlab
+    #   notebook
     #   terminado
 tqdm==4.66.3
     # via
