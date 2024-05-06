@@ -127,12 +127,7 @@ class Gloses(ABCReader):
 
         keys, values = zip(*items, strict=True)
         for value in product(*values):
-            yield frozendict(
-                [
-                    *zip(keys, value, strict=True),
-                    *zip(value, keys, strict=True),
-                ],
-            )
+            yield frozendict([*zip(keys, value, strict=True)])
 
     @staticmethod
     def __gridify_list(grid: l_grid) -> Iterator[frozendict]:
@@ -144,7 +139,7 @@ class Gloses(ABCReader):
         for i_grid in grid:
             yield from Gloses.__gridify_dict(i_grid)
 
-    def __eq__(self, other: "Gloses") -> bool:  # type: ignore reportIncompatibleMethodOverride
+    def __eq__(self, other: "Gloses") -> bool:  # type: ignore
         """Renvoie l'égalité entre self et other.
 
         :param other: Une autre Glose
