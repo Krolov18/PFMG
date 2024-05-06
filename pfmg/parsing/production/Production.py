@@ -6,9 +6,10 @@
 """TODO : Write some doc."""
 
 from dataclasses import dataclass
+from typing import Literal
 
 from pfmg.parsing.features.Features import Features
-from pfmg.parsing.percolation.Percolation import Percolation
+from pfmg.parsing.features.Percolation import Percolation
 
 
 @dataclass
@@ -42,7 +43,9 @@ class Production:
             lhs=self.lhs, features=features, rhs=" ".join(rhs)
         )
 
-    def add_translation(self, indices: list[int]):
+    def add_translation(
+        self, indices: list[int], production: "Production"
+    ) -> None:
         """TODO : Write some doc."""
         assert min(indices) >= 0
         assert max(indices) < len(self.syntagmes)
@@ -51,33 +54,43 @@ class Production:
         trads = self.accords.get_translations()
         self.percolation.add_translation([trads[x] for x in indices])
 
+    def update(self, production: "Production", indices: list[int]) -> None:
+        """Ajoute les infos morphosyntaxique destination à source.
+
+        :param production: une production de destination
+        :param indices:
+        """
+        # Ajoute les accords de destination
+        for i_idx in indices:
+            self.accords[i_idx].update(production.accords[i_idx])
+        # Ajoute la percolation de destination
+        self.percolation.update(production.percolation)
+
+        # Ajoute la traduction
+        self.add_translation(indices, production)
+
     @classmethod
-    def from_yaml(cls, data: dict):
+    def from_yaml(cls, data: dict, target: Literal["S", "D"]):
         """TODO : Write some doc.
 
         TODO : Faire en sorte que les clés du fichier MorphoSyntax
          soit les noms des paramètres de la classe Production.
 
         :param data:
+        :param target:
         :return:
         """
-        assert len(data.keys()) == 1
-        target = next(iter(data.keys()))
-        assert target in ("Source", "Destination")
-        data = data[target]
-
-        production = cls(
+        return cls(
             lhs=data["lhs"],
             syntagmes=data["Syntagmes"],
             accords=Features.from_string(
-                Features.broadcast(data["Accords"], len(data["Syntagmes"])),
-                target=target[0],
+                data=data["Accords"],
+                target=target,
+                phrase_len=len(data["Syntagmes"]),
             ),
             percolation=Percolation.from_string(
-                Features.broadcast(data["Percolation"], len(data["Syntagmes"])),
-                target=target[0],
+                data=data["Percolation"],
+                target=target,
+                phrase_len=len(data["Syntagmes"]),
             ),
         )
-        if "Traduction" in data:
-            production.add_translation(data["Traduction"])
-        return production

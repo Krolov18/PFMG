@@ -7,24 +7,32 @@
 
 from dataclasses import dataclass
 
+from pfmg.parsing.features.FeatureMixin import FeatureMixin
 from pfmg.parsing.features.utils import FeatureReader
 
 
 @dataclass
-class Features:
+class Features(FeatureMixin):
     """TODO : Write some doc."""
 
     data: list[dict]
 
-    @staticmethod
-    def broadcast(data: str, i: int) -> str:
+    def __setitem__(self, key: int, value: dict):
         """TODO : Write some doc."""
-        assert (data.count(";") == 0) or (data.count(";") != (i - 1))
-        return ((data + ";") * i).rstrip(";")
+        self.data[key] = value
+
+    def __getitem__(self, item: int):
+        """TODO : Write some doc."""
+        return self.data[item]
+
+    def __iter__(self):
+        """TODO : Write some doc."""
+        return iter(self.data)
 
     @classmethod
-    def from_string(cls, data: str, target: str) -> "Features":
+    def from_string(cls, data: str, target: str, phrase_len: int) -> "Features":
         """TODO : Write some doc."""
+        data = Features.broadcast(data, phrase_len)
         return cls(data=FeatureReader().parse(data=data, target=target))
 
     def to_nltk(self) -> list[str]:

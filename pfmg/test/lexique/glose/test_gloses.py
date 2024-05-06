@@ -12,29 +12,29 @@ parametrize = pytest.mark.parametrize("gloses, expected", [
 
     ({"source": {"N": {"Genre": ["m"]}},
       "destination": {"N": {"Genre": ["m"]}}},
-     {"source": {"N": [frozendict({"Genre": "m", "m": "Genre"})]},
-      "destination": {"N": [frozendict({"Genre": "m", "m": "Genre"})]}}),
+     {"source": {"N": [frozendict({"Genre": "m"})]},
+      "destination": {"N": [frozendict({"Genre": "m"})]}}),
 
     ({"source": {"N": {"Genre": ["m", "f"]}},
       "destination": {"N": {"Genre": ["m", "f"]}}},
-     {"source": {"N": [frozendict({"Genre": "m", "m": "Genre"}),
-                       frozendict({"Genre": "f", "f": "Genre"})]},
-      "destination": {"N": [frozendict({"Genre": "m", "m": "Genre"}),
-                            frozendict({"Genre": "f", "f": "Genre"})]}}),
+     {"source": {"N": [frozendict({"Genre": "m"}),
+                       frozendict({"Genre": "f"})]},
+      "destination": {"N": [frozendict({"Genre": "m"}),
+                            frozendict({"Genre": "f"})]}}),
 
     ({"source": {"N": {"Genre": ["m", "f"], "Nombre": ["sg", "pl"]}},
       "destination": {"N": {"Cas": ["nom", "acc", "dat"]}}},
-     {"source": {"N": [frozendict({"Genre": "m", "m": "Genre",
-                                   "Nombre": "sg", "sg": "Nombre"}),
-                       frozendict({"Genre": "m", "m": "Genre",
-                                   "Nombre": "pl", "pl": "Nombre"}),
-                       frozendict({"Genre": "f", "f": "Genre",
-                                   "Nombre": "sg", "sg": "Nombre"}),
-                       frozendict({"Genre": "f", "f": "Genre",
-                                   "Nombre": "pl", "pl": "Nombre"})]},
-      "destination": {"N": [frozendict({"Cas": "nom", "nom": "Cas"}),
-                            frozendict({"Cas": "acc", "acc": "Cas"}),
-                            frozendict({"Cas": "dat", "dat": "Cas"})]}}),
+     {"source": {"N": [frozendict({"Genre": "m",
+                                   "Nombre": "sg"}),
+                       frozendict({"Genre": "m",
+                                   "Nombre": "pl"}),
+                       frozendict({"Genre": "f",
+                                   "Nombre": "sg"}),
+                       frozendict({"Genre": "f",
+                                   "Nombre": "pl"})]},
+      "destination": {"N": [frozendict({"Cas": "nom"}),
+                            frozendict({"Cas": "acc"}),
+                            frozendict({"Cas": "dat"})]}}),
 ])
 
 
@@ -44,55 +44,56 @@ def test_gloses_from_disk(tmp_path, gloses, expected) -> None:
     with open(gloses_path, mode="w", encoding="utf8") as file_handler:
         yaml.dump(gloses, file_handler)
     actual = Gloses.from_yaml(gloses_path)
+    expected = Gloses(**expected)
 
-    assert actual == Gloses(**expected)
+    assert actual == expected
 
 
 parametrize = pytest.mark.parametrize("params, expected", [
 
-    ({"source": {"N": [frozendict({"Genre": "m", "m": "Genre"})]},
-      "destination": {"N": [frozendict({"Genre": "m", "m": "Genre"})]}},
-     [{"source": frozendict({"Genre": "m", "m": "Genre"}),
-       "destination": frozendict({"Genre": "m", "m": "Genre"})}]),
+    ({"source": {"N": [frozendict({"Genre": "m"})]},
+      "destination": {"N": [frozendict({"Genre": "m"})]}},
+     [{"source": frozendict({"Genre": "m"}),
+       "destination": frozendict({"Genre": "m"})}]),
 
-    ({"source": {"N": [frozendict({"Genre": "m", "m": "Genre"}),
-                       frozendict({"Genre": "f", "f": "Genre"})]},
-      "destination": {"N": [frozendict({"Genre": "m", "m": "Genre"}),
-                            frozendict({"Genre": "f", "f": "Genre"})]}},
-     [{"destination": frozendict({"Genre": "m", "m": "Genre"}),
-       "source": frozendict({"Genre": "m", "m": "Genre"})},
-      {"destination": frozendict({"Genre": "f", "f": "Genre"}),
-       "source": frozendict({"Genre": "m", "m": "Genre"})},
-      {"destination": frozendict({"Genre": "m", "m": "Genre"}),
-       "source": frozendict({"Genre": "f", "f": "Genre"})},
-      {"destination": frozendict({"Genre": "f", "f": "Genre"}),
-       "source": frozendict({"Genre": "f", "f": "Genre"})}]),
+    ({"source": {"N": [frozendict({"Genre": "m"}),
+                       frozendict({"Genre": "f"})]},
+      "destination": {"N": [frozendict({"Genre": "m"}),
+                            frozendict({"Genre": "f"})]}},
+     [{"destination": frozendict({"Genre": "m"}),
+       "source": frozendict({"Genre": "m"})},
+      {"destination": frozendict({"Genre": "f"}),
+       "source": frozendict({"Genre": "m"})},
+      {"destination": frozendict({"Genre": "m"}),
+       "source": frozendict({"Genre": "f"})},
+      {"destination": frozendict({"Genre": "f"}),
+       "source": frozendict({"Genre": "f"})}]),
 
-    ({"source": {"N": [frozendict({"Genre": "m", "m": "Genre",
-                                   "Nombre": "sg", "sg": "Nombre"}),
-                       frozendict({"Genre": "m", "m": "Genre",
-                                   "Nombre": "pl", "pl": "Nombre"}),
-                       frozendict({"Genre": "f", "f": "Genre",
-                                   "Nombre": "sg", "sg": "Nombre"}),
-                       frozendict({"Genre": "f", "f": "Genre",
-                                   "Nombre": "pl", "pl": "Nombre"})]},
-      "destination": {"N": [frozendict({"Cas": "m", "m": "Cas"})]}},
-     [{"destination": frozendict({"Cas": "m", "m": "Cas"}),
-       "source": frozendict({"Genre": "m", "m": "Genre",
-                             "Nombre": "sg", "sg": "Nombre"})},
-      {"destination": frozendict({"Cas": "m", "m": "Cas"}),
-       "source": frozendict({"Genre": "m", "m": "Genre",
-                             "Nombre": "pl", "pl": "Nombre"})},
-      {"destination": frozendict({"Cas": "m", "m": "Cas"}),
-       "source": frozendict({"Genre": "f", "f": "Genre",
-                             "Nombre": "sg", "sg": "Nombre"})},
-      {"destination": frozendict({"Cas": "m", "m": "Cas"}),
-       "source": frozendict({"Genre": "f", "f": "Genre",
-                             "Nombre": "pl", "pl": "Nombre"})}]),
+    ({"source": {"N": [frozendict({"Genre": "m",
+                                   "Nombre": "sg"}),
+                       frozendict({"Genre": "m",
+                                   "Nombre": "pl"}),
+                       frozendict({"Genre": "f",
+                                   "Nombre": "sg"}),
+                       frozendict({"Genre": "f",
+                                   "Nombre": "pl"})]},
+      "destination": {"N": [frozendict({"Cas": "m"})]}},
+     [{"destination": frozendict({"Cas": "m"}),
+       "source": frozendict({"Genre": "m",
+                             "Nombre": "sg"})},
+      {"destination": frozendict({"Cas": "m"}),
+       "source": frozendict({"Genre": "m",
+                             "Nombre": "pl"})},
+      {"destination": frozendict({"Cas": "m"}),
+       "source": frozendict({"Genre": "f",
+                             "Nombre": "sg"})},
+      {"destination": frozendict({"Cas": "m"}),
+       "source": frozendict({"Genre": "f", "Nombre": "pl"})}]),
 ])
 
 
 @parametrize
 def test__call__(tmp_path, params, expected) -> None:
-    actual = Gloses(**params)
-    assert actual(pos="N") == expected
+    gloses = Gloses(**params)
+    actual = gloses(pos="N")
+    assert actual == expected

@@ -1,18 +1,18 @@
-Start: "S"
+Start: "NP"
 NP:
   Source:
     Syntagmes:
-      - [ "D", "deux", "N", "A" ]
+      - [ "D", "NOM" ]
     Accords:
       - "Genre,Nombre"
     Percolation:
       - "Genre,Nombre"
     Traduction:
-      - [ 2, 0, 3 ]
+      - [ 1, 0 ]
   Destination:
     Syntagmes:
-      - [ "N", "D", "A" ]
+      - [ "NOM", "D" ]
     Accords:
-      - "Cas,Nombre=Du"
+      - "Nombre"
     Percolation:
-      - "Cas,Nombre=Du"
+      - "Nombre"

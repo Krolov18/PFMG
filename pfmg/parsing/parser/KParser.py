@@ -93,7 +93,7 @@ class KParser(ABCReader, MixinParseParsable):
             match tree:
                 case Tree():
                     translation = " ".join(tree.label()["Traduction"])
-                case Iterator():
+                case Iterator() | list():
                     translation = [
                         " ".join(x.label()["Traduction"]) for x in tree
                     ]
