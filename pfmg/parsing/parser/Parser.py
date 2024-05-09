@@ -86,4 +86,7 @@ class Parser(MixinParseParsable):
         :param data: liste de phrases
         :return: liste de Sentence
         """
-        return list(self.parserj.parse_sents(self.__tokenize(data)))
+        output = []
+        for parsing in self.parserj.parse_sents(self.__tokenize(data)):
+            output.extend(parsing)
+        return output

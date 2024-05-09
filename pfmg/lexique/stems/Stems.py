@@ -59,7 +59,7 @@ class Stems(ABCReader, Iterable):
                     _acc = accumulator.copy()
                     accumulator = {"pos": _acc.pop("pos")}
                     pos = key if accumulator is None else accumulator["pos"]
-                    t_stems, t_sigma = Stems.__parse_traduction(value)
+                    t_stems, t_sigma = Stems.__parse_translation(value)
                     yield Lexeme(
                         source=LexemeEntry(
                             stems=t_stems,
@@ -81,7 +81,7 @@ class Stems(ABCReader, Iterable):
                     yield from Stems.__read_stems(value, posses, accumulator)
 
     @staticmethod
-    def __parse_traduction(token: str) -> tuple[StemSpace, frozendict]:
+    def __parse_translation(token: str) -> tuple[StemSpace, frozendict]:
         """Méthode privée qui parse la traduction.
 
         :param token: string + POS + inhérence

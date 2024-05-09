@@ -59,20 +59,20 @@ class KGrammar(ABCReader):
                 s_phrase = target["Source"]["Syntagmes"][i]
                 s_agreement = target["Source"]["Accords"][i]
                 s_percolation = target["Source"]["Percolation"][i]
-                s_traduction = target["Source"]["Traduction"][i]
+                s_translation = target["Source"]["translations"][i]
                 s_production = Production.from_yaml(
                     data={
                         "lhs": lhs,
                         "Syntagmes": s_phrase,
                         "Accords": s_agreement,
                         "Percolation": s_percolation,
-                        "Traduction": s_traduction,
+                        "translations": s_translation,
                     },
                     target="S",
                 )
 
                 s_production.update(
-                    production=d_production, indices=s_traduction
+                    production=d_production, indices=s_translation
                 )
                 sources.append(s_production)
                 destinations.append(d_production)

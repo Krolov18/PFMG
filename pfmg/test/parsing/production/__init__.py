@@ -17,7 +17,7 @@ from pfmg.parsing.production.Production import Production
             "Syntagmes":   ["D", "A", "N"],
             "Accords":     "genre,nombre",
             "Percolation": "genre,nombre",
-            "Traduction":  [2, 0, 1]
+            "translations":  [2, 0, 1]
         }
     ]
 )
@@ -36,7 +36,7 @@ parametrize = pytest.mark.parametrize(
              "Syntagmes":   ["D", "N"],
              "Accords":     "Genre",
              "Percolation": "Genre",
-             "Traduction":  [1, 0]
+             "translations":  [1, 0]
          },
          {
              "lhs":         "NP",
@@ -44,25 +44,25 @@ parametrize = pytest.mark.parametrize(
              "Accords":     "Genre",
              "Percolation": "Genre"
          },
-         ("NP[SGenre=?SGenre,Traduction=(?N1,?D0)] -> "
-          "D[SGenre=?SGenre,Traduction=?D0] N[SGenre=?SGenre,Traduction=?N1]")),
+         ("NP[SGenre=?SGenre,translation=(?N1,?D0)] -> "
+          "D[SGenre=?SGenre,translation=?D0] N[SGenre=?SGenre,translation=?N1]")),
 
         ({
              "lhs":         "NP",
              "Syntagmes":   ["N"],
              "Accords":     "Genre",
              "Percolation": "Genre",
-             "Traduction":  [0]
+             "translations":  [0]
          },
          {
              "lhs":         "NP",
              "Syntagmes":   ["N"],
              "Accords":     "Genre",
              "Percolation": "Genre",
-             "Traduction":  [0]
+             "translations":  [0]
          },
-         ("NP[SGenre=?SGenre,Traduction=(?N0)] -> "
-          "N[SGenre=?SGenre,Traduction=?N0]")),
+         ("NP[SGenre=?SGenre,translation=(?N0)] -> "
+          "N[SGenre=?SGenre,translation=?N0]")),
 
     ]
 )
@@ -72,7 +72,7 @@ parametrize = pytest.mark.parametrize(
 def test_production(data_s, data_d, expected) -> None:
     source = Production.from_yaml(data=data_s, target="S")
     destination = Production.from_yaml(data=data_d, target="S")
-    source.update(production=destination, indices=data_s["Traduction"])
+    source.update(production=destination, indices=data_s["translations"])
     actual = source.to_nltk()
     assert actual == expected
 
@@ -92,9 +92,9 @@ def test_production(data_s, data_d, expected) -> None:
          {
              "SGenre":     "'m'",
              "DGenre":     "'f'",
-             "Traduction": "'hazif'"
+             "translation": "'hazif'"
          },
-         "N[SGenre='m',DGenre='f',Traduction='hazif'] -> 'garçon'"),
+         "N[SGenre='m',DGenre='f',translation='hazif'] -> 'garçon'"),
     ]
 )
 def test_production_lexical(pos, realization, sigma, expected) -> None:
