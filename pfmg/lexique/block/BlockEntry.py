@@ -3,160 +3,68 @@
 
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
-"""Entry d'un Bloc. Structure de données contenant les règles d'un Bloc."""
+"""Structure qui génère des Desinence."""
 
-from collections.abc import Iterator
 from dataclasses import dataclass
+from pathlib import Path
 
-from frozendict import frozendict
+import yaml
 
-from pfmg.external.display import ABCDisplay
-from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.block.Blocks import Blocks
+from pfmg.lexique.block.Desinence import Desinence
+from pfmg.lexique.glose.Sigma import Sigma
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.selector.ABCSelector import ABCSelector
-from pfmg.lexique.utils import dictify
 
 
 @dataclass
-class BlockEntry(ABCSelector):
-    """Entry d'un Bloc. Structure de données contenant les règles d'un Bloc."""
+class BlockEntry:
+    """Structure qui génère des Desinence."""
 
-    data: dict[str, list[list[ABCDisplay]]]
+    source: dict[str, Blocks]
+    destination: dict[str, Blocks]
 
     def __post_init__(self):
-        """Vérfication de base sur 'data'."""
-        assert self.data
-        assert all(self.data.values())
-        assert all(all(x) for x in self.data.values())
+        """Vérifie les structures d'entrées.
 
-    def __call__(
-        self,
-        pos: str,
-        sigma: frozendict,
-    ) -> list[ABCDisplay]:
-        """Calcule les morphèmes disponible pour le couple POS/sigma.
-
-        :param pos: un POS disponible
-        :param sigma: un sigma associé à ce POS
-        :return: les morphèmes existant dans les blocs
+        Pour garder les structures le plus propre possible,
+        Toute entrée vide est refusée.
         """
-        if pos not in self.data:
-            message = (
-                f"'{pos}' n'est pas dans les catégories disponibles "
-                f"{list(self.data.keys())}."
-            )
-            raise KeyError(message)
+        assert self.source
+        assert self.destination
 
-        output: list[ABCDisplay] = []
+    def __call__(self, pos: str, sigma: Sigma) -> Desinence:
+        """Construit un Desinence si le couple pos/sigma le permet.
 
-        for bloc in self.data[pos]:
-            morpheme = BlockEntry.__select_morpheme(sigma, bloc)
-            if morpheme is not None:
-                output.append(morpheme)
-        return output
+        :param pos: un POS disponible dans source et destination
+        :param sigma: un Sigma valide
+        :return: Instance de Desinence
+        """
+        return Desinence(
+            source=self.source[pos](sigma.source),
+            destination=self.destination[pos](sigma.destination),
+        )
 
     @classmethod
-    def from_dict(
-        cls,
-        data: dict[str, list[dict[str, str]]],
-        phonology: Phonology,
-    ) -> "BlockEntry":
-        """Construit un BlockEntry depuis un dictionnaire.
+    def from_yaml(cls, path: Path) -> "BlockEntry":
+        """Construit un BlockEntry depuis un fichier yaml.
 
-        TODO : changer le type de 'data' en un TypedDict ou équivalent.
-
-        :param data:
-        :param phonology:
-        :return:
+        :param path: Chemin vers le fichier yaml
+        :return: un BlockEntry prêt à l'emploi
         """
-        return cls(
-            data={
-                category: list(cls.__rulify(block=rules, phonology=phonology))
-                for category, rules in data.items()
-            },
+        assert path.name.endswith("Blocks.yaml")
+
+        phonology = Phonology.from_yaml(
+            path.parent / "Phonology.yaml",
         )
 
-    @staticmethod
-    def __rulify(
-        block: dict[str, str] | list[dict[str, str]],
-        phonology: Phonology,
-    ) -> Iterator[list[ABCDisplay]]:
-        """Factory qui met en forme 'block' pour être facilement interrogé.
+        with open(path, encoding="utf8") as file_handler:
+            data: dict = yaml.safe_load(file_handler)
 
-        :param block: Bloc ou liste de blocs de règles
-        :return: liste de blocs au format frozendict/Morpheme
-        """
-        method_name = (
-            f"_{BlockEntry.__name__}__rulify_"
-            f"{block.__class__.__name__.lower()}"
-        )
-        return getattr(
-            BlockEntry,
-            method_name,
-        )(
-            block=block,
-            phonology=phonology,
-        )
-
-    @staticmethod
-    def __rulify_dict(
-        block: dict[str, str],
-        phonology: Phonology,
-    ) -> Iterator[list[ABCDisplay]]:
-        """Met en forme un bloc.
-
-        :param block: Bloc de règles
-        :return: liste de blocs au format frozendict/Morpheme
-        """
-        if not block:
-            raise ValueError
-
-        output: list[ABCDisplay] = []
-
-        for key, value in block.items():
-            _sigma = dictify(key)
-            output.append(
-                create_morpheme(
-                    rule=value,
-                    sigma=_sigma,
-                    phonology=phonology,
-                ),
+        sources = {}
+        destinations = {}
+        for pos, blocks in data.items():
+            sources[pos] = Blocks.from_list(blocks["source"], phonology)
+            destinations[pos] = Blocks.from_list(
+                blocks["destination"], phonology
             )
-
-        yield output
-
-    @staticmethod
-    def __rulify_list(
-        block: list[dict[str, str]],
-        phonology: Phonology,
-    ) -> Iterator[list[ABCDisplay]]:
-        """Met en forme une liste de blocs.
-
-        :param block: Liste de blocs de règles
-        :return: liste de blocs au format frozendict/Morpheme
-        """
-        if not block:
-            raise ValueError
-
-        for i_block in block:
-            yield from BlockEntry.__rulify_dict(
-                block=i_block,
-                phonology=phonology,
-            )
-
-    @staticmethod
-    def __select_morpheme(
-        sigma: frozendict,
-        morphemes: list[ABCDisplay],
-    ) -> ABCDisplay | None:
-        """Sélectionne un morphème si sigma contient morphemes[i].sigma.
-
-        :param sigma: sigma d'un léxème
-        :param morphemes: liste de morphèmes
-        :return: le morphème le plus général lors du "<="
-        """
-        winner: ABCDisplay | None = None
-        for morpheme in morphemes:
-            if morpheme.get_sigma().items() <= sigma.items():
-                winner = morpheme
-        return winner
+        return cls(sources, destinations)

@@ -6,70 +6,70 @@
 """Blocks."""
 
 from dataclasses import dataclass
-from pathlib import Path
 
-import yaml
 from frozendict import frozendict
 
-from pfmg.external.reader.ABCReader import ABCReader
-from pfmg.lexique.block.BlockEntry import BlockEntry
+from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.parsing.features.utils import FeatureReader
 
 
 @dataclass
-class Blocks(ABCReader):
-    """Réprésente les blocs d'application de règles."""
+class Blocks:
+    """Blocks."""
 
-    source: BlockEntry
-    destination: BlockEntry
+    data: list[list["Morpheme"]]  # noqa # type: ignore
 
     def __post_init__(self):
-        """Vérification après initialisation."""
-        assert self.source
-        assert self.destination
+        """Vérifie les structures d'entrées.
+
+        Pour garder les structures le plus propre possible,
+        Toute entrée vide est refusée.
+        """
+        assert self.data
+        assert all(x for x in self.data)
+
+    def __call__(self, sigma: frozendict) -> list["Morpheme"]:  # noqa # type: ignore
+        """Récupère la liste de morphèmes valides pour le sigma donné.
+
+        :param sigma: le sigma d'une forme
+        :return: une liste de morphème valide pour ce sigma
+        """
+        assert sigma
+
+        output: list["Morpheme"] = []  # noqa # type: ignore
+        for morphemes in self.data:
+            winner: "Morpheme | None" = None  # noqa # type: ignore
+            for morpheme in morphemes:
+                if morpheme.get_sigma().items() <= sigma.items():
+                    winner = morpheme
+            if winner is not None:
+                output.append(winner)
+        return output
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "Blocks":
-        """Construit un Blocks depuis un fichier JSON.
+    def from_list(cls, data: list[dict], phonology: "Phonology") -> "Blocks":  # type: ignore
+        """Construit un Blocks à partir d'une liste de blocs.
 
-        :param path: Chemin vers le fichier JSON
-        :return: une instance de Blocks
+        :param data: listes de bloc pour un pos donné
+        :param phonology: Instance de Phonology
+        :return: un Blocks prêt à l'emploi
         """
-        assert path.name.endswith("Blocks.yaml")
+        output: list[list["Morpheme"]] = []  # noqa # type: ignore
 
-        with open(path, encoding="utf8") as file_handler:
-            data: dict = yaml.load(file_handler, Loader=yaml.Loader)
+        fr = FeatureReader()
+        for block in data:
+            _tmp = []
+            for key, value in block.items():
+                _sigma = frozendict(fr.parse(key)[0])
+                _tmp.append(
+                    create_morpheme(
+                        rule=value,
+                        sigma=_sigma,
+                        phonology=phonology,
+                    ),
+                )
+            output.append(_tmp)
 
-        assert data
-
-        phonology_from_disk = Phonology.from_yaml(
-            path.parent / "Phonology.yaml",
-        )
-
-        source = BlockEntry.from_dict(
-            data=data["source"],
-            phonology=phonology_from_disk,
-        )
-
-        destination = BlockEntry.from_dict(
-            data=data["destination"],
-            phonology=phonology_from_disk,
-        )
-
-        return cls(source=source, destination=destination)
-
-    def __call__(
-        self,
-        pos: str,
-        sigma: frozendict,
-    ) -> dict:
-        """Construit un dictionnaire avec en clé les POS et les blocs en valeurs.
-
-        :param pos:
-        :param sigma:
-        :return:
-        """
-        return {
-            key: getattr(self, key)(pos, sigma[key])
-            for key, value in sigma.items()
-        }
+        assert output
+        return cls(output)

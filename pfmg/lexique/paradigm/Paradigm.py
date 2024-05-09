@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pfmg.external.reader.ABCReader import ABCReader
-from pfmg.lexique.block.Blocks import Blocks
+from pfmg.lexique.block.BlockEntry import BlockEntry
 from pfmg.lexique.forme.Forme import Forme
 from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.glose import new_gloses
@@ -26,7 +26,7 @@ class Paradigm(ABCRealizable, ABCReader):
     """Réalise les Lexeme en Forme."""
 
     gloses: Gloses
-    blocks: Blocks
+    blocks: BlockEntry
 
     def realize(self, lexeme: Lexeme) -> Generator[Forme, None, None]:
         """Méthode qui permet de réaliser un lexème donné.
@@ -38,16 +38,14 @@ class Paradigm(ABCRealizable, ABCReader):
         lexeme_pos = lexeme.source.pos
         for i_sigma in gloses:
             if Sigma(lexeme.source.sigma, lexeme.destination.sigma) <= i_sigma:
+                desinence = self.blocks(lexeme_pos, i_sigma)
                 yield Forme(
                     source=FormeEntry(
                         pos=lexeme_pos,
                         sigma=i_sigma.source,
                         morphemes=Morphemes(
                             radical=lexeme.source.to_radical(),
-                            others=self.blocks.source(
-                                pos=lexeme_pos,
-                                sigma=i_sigma.source,
-                            ),
+                            others=desinence.source,
                         ),
                     ),
                     destination=FormeEntry(
@@ -55,27 +53,20 @@ class Paradigm(ABCRealizable, ABCReader):
                         sigma=i_sigma.destination,
                         morphemes=Morphemes(
                             radical=lexeme.destination.to_radical(),
-                            others=self.blocks.destination(
-                                pos=lexeme_pos,
-                                sigma=i_sigma.destination,
-                            ),
+                            others=desinence.destination,
                         ),
                     ),
                 )
 
     @classmethod
     def from_yaml(cls, path: Path) -> "Paradigm":
-        """Méthode permettant de charger un paradigme à partir d'un chemin donné.
+        """Charge un paradigme à partir d'un chemin donné.
 
         :param path: Chemin à partir duquel charger le paradigme.
         :return: Instance de Paradigm.
         """
         assert (path / "Gloses.yaml").exists()
         return cls(
-            gloses=new_gloses(
-                path=path / "Gloses.yaml",
-            ),
-            blocks=Blocks.from_yaml(
-                path=path / "Blocks.yaml",
-            ),
+            gloses=new_gloses(path=path / "Gloses.yaml"),
+            blocks=BlockEntry.from_yaml(path=path / "Blocks.yaml"),
         )
