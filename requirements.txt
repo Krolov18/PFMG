@@ -6,7 +6,7 @@
 #
 click==8.1.7
     # via nltk
-frozendict==2.4.2
+frozendict==2.4.4
     # via -r requirements.in
 joblib==1.4.0
     # via nltk
