@@ -9,7 +9,7 @@
 class FeatureReader:
     """TODO : Write some doc."""
 
-    def parse(self, data: str, target: str) -> list[dict]:
+    def parse(self, data: str, target: str = "") -> list[dict]:
         """TODO : Write some doc."""
         assert data
 
@@ -18,7 +18,7 @@ class FeatureReader:
         self.__read(
             data,
             target=target,
-            accumulator=accumulator,
+            accumulator=accumulator if nb_c > 1 else accumulator[0],
             separators=("scolon", "comma", "equal", "char"),
         )
         return accumulator
