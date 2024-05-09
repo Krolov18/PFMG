@@ -24,7 +24,7 @@ class Blocks:
         """Vérifie les structures d'entrées.
 
         Pour garder les structures le plus propre possible,
-        Tout entrée vide est refusée.
+        Toute entrée vide est refusée.
         """
         assert self.data
         assert all(x for x in self.data)
@@ -49,7 +49,7 @@ class Blocks:
 
     @classmethod
     def from_list(cls, data: list[dict], phonology: "Phonology") -> "Blocks":  # type: ignore
-        """Construit un Blocks à partir dd'une liste de blocs.
+        """Construit un Blocks à partir d'une liste de blocs.
 
         :param data: listes de bloc pour un pos donné
         :param phonology: Instance de Phonology

@@ -27,7 +27,7 @@ class BlockEntry:
         """Vérifie les structures d'entrées.
 
         Pour garder les structures le plus propre possible,
-        Tout entrée vide est refusée.
+        Toute entrée vide est refusée.
         """
         assert self.source
         assert self.destination

@@ -51,9 +51,6 @@ def test___call__() -> None:
     blocks = Blocks(
         data=[[Suffix(rule="X+v", sigma=frozendict(Genre="m", Nombre="sg"),
                       phonology=phonology())]])
-    # actual = blocks(sigma=frozendict())
-    # expected = []
-    # assert actual == expected
 
     actual = blocks(sigma=frozendict(Genre="f", Nombre="sg"))
     expected = []
