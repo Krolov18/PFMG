@@ -45,27 +45,27 @@ class KGrammar(ABCReader):
             for i in range(nb_rules):
                 d_phrase = target["Destination"]["phrases"][i]
                 d_agreement = target["Destination"]["Accords"][i]
-                d_percolation = target["Destination"]["Percolation"][i]
+                d_percolation = target["Destination"]["percolations"][i]
                 d_production = Production.from_yaml(
                     data={
                         "lhs": lhs,
                         "phrases": d_phrase,
                         "Accords": d_agreement,
-                        "Percolation": d_percolation,
+                        "percolations": d_percolation,
                     },
                     target="D",
                 )
 
                 s_phrase = target["Source"]["phrases"][i]
                 s_agreement = target["Source"]["Accords"][i]
-                s_percolation = target["Source"]["Percolation"][i]
+                s_percolation = target["Source"]["percolations"][i]
                 s_translation = target["Source"]["translations"][i]
                 s_production = Production.from_yaml(
                     data={
                         "lhs": lhs,
                         "phrases": s_phrase,
                         "Accords": s_agreement,
-                        "Percolation": s_percolation,
+                        "percolations": s_percolation,
                         "translations": s_translation,
                     },
                     target="S",

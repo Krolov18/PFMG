@@ -5,7 +5,7 @@ NP:
       - [ "D", "NOM" ]
     Accords:
       - "Genre,Nombre"
-    Percolation:
+    percolations:
       - "Genre,Nombre"
     translations:
       - [ 1, 0 ]
@@ -14,5 +14,5 @@ NP:
       - [ "NOM", "D" ]
     Accords:
       - "Nombre"
-    Percolation:
+    percolations:
       - "Nombre"

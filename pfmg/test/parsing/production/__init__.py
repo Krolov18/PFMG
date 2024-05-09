@@ -16,7 +16,7 @@ from pfmg.parsing.production.Production import Production
             "lhs":         "NP",
             "phrases":   ["D", "A", "N"],
             "Accords":     "genre,nombre",
-            "Percolation": "genre,nombre",
+            "percolations": "genre,nombre",
             "translations":  [2, 0, 1]
         }
     ]
@@ -35,14 +35,14 @@ parametrize = pytest.mark.parametrize(
              "lhs":         "NP",
              "phrases":   ["D", "N"],
              "Accords":     "Genre",
-             "Percolation": "Genre",
+             "percolations": "Genre",
              "translations":  [1, 0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N", "D"],
              "Accords":     "Genre",
-             "Percolation": "Genre"
+             "percolations": "Genre"
          },
          ("NP[SGenre=?SGenre,translation=(?N1,?D0)] -> "
           "D[SGenre=?SGenre,translation=?D0] N[SGenre=?SGenre,translation=?N1]")),
@@ -51,14 +51,14 @@ parametrize = pytest.mark.parametrize(
              "lhs":         "NP",
              "phrases":   ["N"],
              "Accords":     "Genre",
-             "Percolation": "Genre",
+             "percolations": "Genre",
              "translations":  [0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N"],
              "Accords":     "Genre",
-             "Percolation": "Genre",
+             "percolations": "Genre",
              "translations":  [0]
          },
          ("NP[SGenre=?SGenre,translation=(?N0)] -> "
