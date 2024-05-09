@@ -87,7 +87,7 @@ class Production:
                 phrase_len=len(data["phrases"]),
             ),
             percolation=Percolation.from_string(
-                data=data["Percolation"],
+                data=data["percolations"],
                 target=target,
                 phrase_len=len(data["phrases"]),
             ),

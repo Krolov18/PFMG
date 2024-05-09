@@ -13,11 +13,11 @@ from pfmg.parsing.production.Production import Production
 @pytest.mark.parametrize(
     "data", [
         {
-            "lhs":         "NP",
-            "phrases":   ["D", "A", "N"],
-            "agreements":     "genre,nombre",
-            "Percolation": "genre,nombre",
-            "translations":  [2, 0, 1]
+            "lhs":          "NP",
+            "phrases":      ["D", "A", "N"],
+            "percolations": "genre,nombre",
+            "agreements":   "genre,nombre",
+            "translations": [2, 0, 1]
         }
     ]
 )
@@ -34,15 +34,15 @@ parametrize = pytest.mark.parametrize(
         ({
              "lhs":         "NP",
              "phrases":   ["D", "N"],
+             "percolations": "Genre",
              "agreements":     "Genre",
-             "Percolation": "Genre",
              "translations":  [1, 0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N", "D"],
+             "percolations": "Genre",
              "agreements":     "Genre",
-             "Percolation": "Genre"
          },
          ("NP[SGenre=?SGenre,translation=(?N1,?D0)] -> "
           "D[SGenre=?SGenre,translation=?D0] N[SGenre=?SGenre,translation=?N1]")),
@@ -50,15 +50,15 @@ parametrize = pytest.mark.parametrize(
         ({
              "lhs":         "NP",
              "phrases":   ["N"],
+             "percolations": "Genre",
              "agreements":     "Genre",
-             "Percolation": "Genre",
              "translations":  [0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N"],
+             "percolations": "Genre",
              "agreements":     "Genre",
-             "Percolation": "Genre",
              "translations":  [0]
          },
          ("NP[SGenre=?SGenre,translation=(?N0)] -> "
