@@ -1,9 +1,7 @@
-source:
-  NOM:
+NOM:
+  source:
     - Nombre=pl: X2?X2:X+s
-#    - Nombre=pl: X+s
-destination:
-  NOM:
+  destination:
     - Cf=n1,Nombre=sg: X+v
       Cf=n1,Nombre=pl: X+l
       Cf=n2,Nombre=sg: X+j

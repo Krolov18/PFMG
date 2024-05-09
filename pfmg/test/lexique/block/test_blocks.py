@@ -3,16 +3,11 @@
 
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
-from functools import cache
-from collections.abc import Generator
-
 import pytest
-import yaml
+from collections.abc import Generator
 from frozendict import frozendict
 
 from pfmg.lexique.block.Blocks import Blocks
-from pfmg.lexique.block.BlockEntry import BlockEntry
-from pfmg.lexique.morpheme.Circumfix import Circumfix
 from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.morpheme.Suffix import Suffix
 
@@ -22,8 +17,7 @@ def fx_phonology() -> Generator[Phonology, None, None]:
     yield phonology()
 
 
-@cache
-def phonology() -> Phonology:
+def phonology():
     return Phonology(
         apophonies=frozendict(
             Ø="i", i="a", a="u",
@@ -41,46 +35,201 @@ def phonology() -> Phonology:
     )
 
 
-@pytest.mark.parametrize("blocks, expected", [
-    ({"source": {"N": [{"genre=m": "X+s"}]},
-      "destination": {"N": [{"cas=erg": "a+X+s"}]}},
-     ({"N": [[Suffix(rule="X+s", sigma=frozendict(genre="m"), phonology=phonology())]]},
-      {"N": [[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=phonology())]]})),])
-def test_blocks(fx_phonology, tmp_path, blocks, expected):
-    with open(tmp_path / "Phonology.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.safe_dump(fx_phonology.to_dict(), file_handler)
-
-    with open(tmp_path / "Blocks.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.safe_dump(blocks, file_handler)
-    blocks = Blocks.from_yaml(tmp_path / "Blocks.yaml")
-    assert blocks.source.data == expected[0]
-    assert blocks.destination.data == expected[1]
-
-
-@pytest.mark.parametrize("blocks, pos, sigma, expected", [
-    ({"source": {"N": [{"genre=m": "X+s"}]},
-      "destination": {"N": [{"cas=erg": "a+X+s"}]}},
-     "N",
-     {"source": frozendict(genre="m"),
-      "destination": frozendict(cas="erg")},
-     {"source": [Suffix(rule="X+s", sigma=frozendict(genre="m"), phonology=phonology())],
-      "destination": [Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=phonology())]}),
+@pytest.mark.parametrize(
+    "blocks, expected", [
+        ([{"CF=N1,Nombre=Sg": "X+v"}],
+         [[Suffix(rule="X+v", sigma=frozendict(CF="N1", Nombre="Sg"),
+                  phonology=phonology())]])
 ])
-def test___call__(fx_phonology, tmp_path, blocks, pos, sigma, expected):
-    with open(tmp_path / "Phonology.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.safe_dump(fx_phonology.to_dict(), file_handler)
-
-    with open(tmp_path / "Blocks.yaml", mode="w", encoding="utf8") as file_handler:
-        yaml.safe_dump(blocks, file_handler)
-    blocks = Blocks.from_yaml(tmp_path / "Blocks.yaml")
-    assert blocks(pos, sigma) == expected
+def test_from_dict(fx_phonology, blocks, expected) -> None:
+    actual = Blocks.from_list(blocks, fx_phonology)
+    assert isinstance(actual, Blocks)
+    assert actual.data == expected
 
 
-def test_errors():
+def test___call__() -> None:
+    blocks = Blocks(
+        data=[[Suffix(rule="X+v", sigma=frozendict(Genre="m", Nombre="sg"),
+                      phonology=phonology())]])
+    # actual = blocks(sigma=frozendict())
+    # expected = []
+    # assert actual == expected
+
+    actual = blocks(sigma=frozendict(Genre="f", Nombre="sg"))
+    expected = []
+    assert actual == expected
+
+    actual = blocks(sigma=frozendict(Genre="m", Nombre="sg"))
+    expected = [Suffix(
+        rule="X+v",
+        sigma=frozendict(Genre="m", Nombre="sg"),
+        phonology=phonology()
+    )]
+    assert actual == expected
+
+    actual = blocks(sigma=frozendict(Genre="m", Nombre="sg", Cas="erg"))
+    expected = [Suffix(
+        rule="X+v",
+        sigma=frozendict(Genre="m", Nombre="sg"),
+        phonology=phonology()
+    )]
+    assert actual == expected
+
+
+def test_raise_errors():
     with pytest.raises(AssertionError):
-        Blocks(source=BlockEntry(data={}),
-                destination=BlockEntry({"N": {}}))  # type: ignore
+        _ = Blocks(data=[])
 
     with pytest.raises(AssertionError):
-        Blocks(source=BlockEntry({"N": {}}),  # type: ignore
-               destination=BlockEntry({}))
+        _ = Blocks(data=[[]])
+
+    with pytest.raises(AssertionError):
+        _ = Blocks(data=[[], [{"qqch"}]])  # type: ignore
+
+    with pytest.raises(AssertionError):
+        _ = Blocks(
+            data=[[Suffix(
+                rule="X+v",
+                sigma=frozendict(Genre="m", Nombre="sg"),
+                phonology=phonology()
+            )]]
+        )(sigma=frozendict())
+        
+    with pytest.raises(AssertionError):
+        _ = Blocks.from_list(data=[], phonology=phonology())
+
+    with pytest.raises(AssertionError):
+        _ = Blocks.from_list(data=[{}], phonology=phonology())
+
+
+# @pytest.mark.parametrize(
+#     "blocks, phonology, expected", [
+#         ({"N": []},
+#          dict(
+#              apophonies=frozendict(Ø="i", i="a", a="u",
+#                                    u="u", e="o", o="o"),
+#              mutations=frozendict(
+#                  p="p", t="p", k="t", b="p", d="b",
+#                  g="d", m="m", n="m", N="n", f="f",
+#                  s="f", S="s", v="f", z="v", Z="z",
+#                  r="w", l="r", j="w", w="w"
+#              ),
+#              derives=frozendict(A="V", D="C"),
+#              consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+#              voyelles=frozenset("iueoa")
+#          ),
+#          {}),
+# 
+#         ({"N": [{}]},
+#          dict(
+#              apophonies=frozendict(Ø="i", i="a", a="u",
+#                                    u="u", e="o", o="o"),
+#              mutations=frozendict(
+#                  p="p", t="p", k="t", b="p", d="b",
+#                  g="d", m="m", n="m", N="n", f="f",
+#                  s="f", S="s", v="f", z="v", Z="z",
+#                  r="w", l="r", j="w", w="w"
+#              ),
+#              derives=frozendict(A="V", D="C"),
+#              consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+#              voyelles=frozenset("iueoa")
+#          ),
+#          {}),
+#     ]
+# )
+# def test_from_disk_errors(
+#     tmp_path,
+#     blocks,
+#     phonology,
+#     expected
+# ) -> None:
+#     blocks_path = tmp_path / "Blocks.yaml"
+#     with open(blocks_path, mode="w", encoding="utf8") as file_handler:
+#         yaml.dump(blocks, file_handler)
+# 
+#     phono_path = tmp_path / "Phonology.yaml"
+#     with open(phono_path, mode="w", encoding="utf8") as file_handler:
+#         yaml.dump(phonology, file_handler)
+# 
+#     with pytest.raises(ValueError):
+#         _ = BlockEntry.from_disk(blocks_path)
+# 
+# 
+# @pytest.mark.parametrize(
+#     "blocks, pos, sigma, expected", [
+# 
+#         # Aucun morpheme trouvé : le sigma est totalement différent.
+#         ({"N": [{"Genre=m,Nombre=pl": "X+s"}]},
+#          "N", frozendict(Genre="f"), []),
+# 
+#         # Aucun morphème trouvé : le sigma n'inclut pas celui 
+#         # d'un des sigmas des morphèmes de Blocks.N
+#         ({"N": [{"Genre=m,Nombre=pl": "X+s"}]},
+#          "N", frozendict(Genre="m"), []),
+# 
+#         # Un morphème trouvé : le sigma correspond exactement 
+#         # à l'un des sigmas des morphèmes de Blocks.N.
+#         ({"N": [{"Genre=m,Nombre=pl": "X+s"}]},
+#          "N", frozendict(Genre="m", Nombre="pl"),
+#          [create_morpheme(
+#              rule="X+s",
+#              sigma=frozendict(Genre="m", Nombre="pl", Cas="erg"),
+#              phonology=fx_phonology()
+#          )]),
+# 
+#         # Un morphème trouvé : le sigma inclut un des morphèmes de Blocks.N.
+#         ({"N": [{"Genre=m,Nombre=pl": "X+s"}]},
+#          "N",
+#          frozendict(Genre="m", Nombre="pl", Cas="erg"),
+#          [create_morpheme(
+#              rule="X+s",
+#              sigma=frozendict(Genre="m", Nombre="pl", Cas="erg"),
+#              phonology=fx_phonology()
+#          )]),
+# 
+#     ]
+# )
+# def test_select_morphemes(tmp_path, blocks, pos, sigma, expected) -> None:
+#     blocks_path = tmp_path / "Blocks.yaml"
+#     with open(blocks_path, mode="w", encoding="utf8") as file_handler:
+#         yaml.dump(blocks, file_handler)
+# 
+#     phono_path = tmp_path / "Phonology.yaml"
+#     with open(phono_path, mode="w", encoding="utf8") as file_handler:
+#         yaml.dump(fx_phonology().__dict__, file_handler)
+# 
+#     _blocks = BlockEntry.from_dict(blocks_path)
+#     actual = _blocks(pos=pos, sigma=sigma)
+#     assert actual == expected
+# 
+# 
+# def test_select_morphemes_errors(tmp_path) -> None:
+#     blocks_path = tmp_path / "Blocks.yaml"
+#     with open(blocks_path, mode="w", encoding="utf8") as file_handler:
+#         yaml.dump({}, file_handler)
+# 
+#     phono_path = tmp_path / "Phonology.yaml"
+#     with open(phono_path, mode="w", encoding="utf8") as file_handler:
+#         yaml.dump(fx_phonology().__dict__, file_handler)
+# 
+#     _blocks = BlockEntry.from_disk(blocks_path)
+#     with pytest.raises(KeyError):
+#         # POS n'est pas dans blocks
+#         _ = _blocks(
+#             pos="N",
+#             sigma=frozendict(Genre="m", Nombre="pl")
+#         )
+# 
+#     with pytest.raises(KeyError):
+#         # POS est dans blocks, mais sigma n'est pas dans blocks[POS]
+#         _ = _blocks(
+#             pos="N",
+#             sigma=frozendict(Genre="m", Nombre="pl")
+#         )
+# 
+#     with pytest.raises(KeyError):
+#         # POS est dans blocks, mais sigma n'est pas dans blocks[POS]
+#         _ = _blocks(
+#             pos="N",
+#             sigma=frozendict(Genre="m", Nombre="pl", Cas="erg")
+#         )

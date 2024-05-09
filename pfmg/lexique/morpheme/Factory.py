@@ -9,7 +9,6 @@ from enum import Enum
 
 from frozendict import frozendict
 
-from pfmg.external.display import ABCDisplay
 from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.utils.abstract_factory import factory_method
 
@@ -29,7 +28,7 @@ def create_morpheme(
     rule: str,
     sigma: frozendict,
     phonology: Phonology,
-) -> ABCDisplay:
+) -> "Morpheme":  # noqa # type: ignore
     """Factory pour construire n'importe quel morphème.
 
     :param rule: une règle valide

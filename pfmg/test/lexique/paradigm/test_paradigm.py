@@ -83,8 +83,8 @@ def test_from_disk(tmp_path):
                     "destination": {"Genre":  ["m"],
                                     "Nombre": ["sg"]}}}
 
-    blocks = {"source": {"N": [{"Nombre=pl": "X+s"}]},
-              "destination": {"N": [{"Nombre=pl": "X+s"}]}}
+    blocks = {"N": {"source": [{"Nombre=pl": "X+s"}],
+                    "destination": [{"Nombre=pl": "X+s"}]}}
 
     _path = tmp_path / "Blocks.yaml"
     with open(_path, mode="w", encoding="utf8") as file_handler:
