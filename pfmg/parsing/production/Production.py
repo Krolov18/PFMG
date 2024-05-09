@@ -18,7 +18,7 @@ class Production:
 
     lhs: str
     phrases: list[str]
-    accords: Features
+    agreements: Features
     percolation: Percolation
 
     def __post_init__(self):
@@ -26,7 +26,7 @@ class Production:
         assert isinstance(self.lhs, str)
         assert isinstance(self.phrases, list)
         assert all(isinstance(x, str) for x in self.phrases)
-        assert isinstance(self.accords, Features)
+        assert isinstance(self.agreements, Features)
         assert isinstance(self.percolation, Percolation)
 
     def to_nltk(self) -> str:
@@ -36,7 +36,7 @@ class Production:
         rhs = [
             f"{nt}[{feats}]" if nt.isupper() else nt
             for nt, feats in zip(
-                self.phrases, self.accords.to_nltk(), strict=True
+                self.phrases, self.agreements.to_nltk(), strict=True
             )
         ]
         return template.format(
@@ -48,8 +48,8 @@ class Production:
         assert min(indices) >= 0
         assert max(indices) < len(self.phrases)
 
-        self.accords.add_translation(self.phrases)
-        trads = self.accords.get_translations()
+        self.agreements.add_translation(self.phrases)
+        trads = self.agreements.get_translations()
         self.percolation.add_translation([trads[x] for x in indices])
 
     def update(self, production: "Production", indices: list[int]) -> None:
@@ -60,7 +60,7 @@ class Production:
         """
         # Ajoute les accords de destination
         for i_idx in indices:
-            self.accords[i_idx].update(production.accords[i_idx])
+            self.agreements[i_idx].update(production.agreements[i_idx])
         # Ajoute la percolation de destination
         self.percolation.update(production.percolation)
 
@@ -81,8 +81,8 @@ class Production:
         return cls(
             lhs=data["lhs"],
             phrases=data["phrases"],
-            accords=Features.from_string(
-                data=data["Accords"],
+            agreements=Features.from_string(
+                data=data["agreements"],
                 target=target,
                 phrase_len=len(data["phrases"]),
             ),

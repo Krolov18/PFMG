@@ -13,11 +13,11 @@ from pfmg.parsing.production.Production import Production
 @pytest.mark.parametrize(
     "data", [
         {
-            "lhs":         "NP",
-            "phrases":   ["D", "A", "N"],
-            "Accords":     "genre,nombre",
+            "lhs":          "NP",
+            "phrases":      ["D", "A", "N"],
             "percolations": "genre,nombre",
-            "translations":  [2, 0, 1]
+            "agreements":   "genre,nombre",
+            "translations": [2, 0, 1]
         }
     ]
 )
@@ -25,7 +25,7 @@ def test_from_yaml(data) -> None:
     production = Production.from_yaml(data=data, target="S")
     assert production.lhs == data["lhs"]
     assert production.phrases == data["phrases"]
-    assert isinstance(production.accords, Features)
+    assert isinstance(production.agreements, Features)
     assert isinstance(production.percolation, Percolation)
 
 
@@ -34,15 +34,15 @@ parametrize = pytest.mark.parametrize(
         ({
              "lhs":         "NP",
              "phrases":   ["D", "N"],
-             "Accords":     "Genre",
              "percolations": "Genre",
+             "agreements":     "Genre",
              "translations":  [1, 0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N", "D"],
-             "Accords":     "Genre",
              "percolations": "Genre"
+             "agreements":     "Genre",
          },
          ("NP[SGenre=?SGenre,translation=(?N1,?D0)] -> "
           "D[SGenre=?SGenre,translation=?D0] N[SGenre=?SGenre,translation=?N1]")),
@@ -50,15 +50,15 @@ parametrize = pytest.mark.parametrize(
         ({
              "lhs":         "NP",
              "phrases":   ["N"],
-             "Accords":     "Genre",
              "percolations": "Genre",
+             "agreements":     "Genre",
              "translations":  [0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N"],
-             "Accords":     "Genre",
              "percolations": "Genre",
+             "agreements":     "Genre",
              "translations":  [0]
          },
          ("NP[SGenre=?SGenre,translation=(?N0)] -> "
@@ -101,7 +101,7 @@ def test_production_lexical(pos, realization, sigma, expected) -> None:
     actual = Production(
         lhs=pos,
         phrases=[realization],
-        accords=Features([{}]),
+        agreements=Features([{}]),
         percolation=Percolation(sigma)
     ).to_nltk()
     assert actual == expected
