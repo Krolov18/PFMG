@@ -3,7 +3,7 @@ NP:
   Source:
     phrases:
       - [ "D", "NOM" ]
-    Accords:
+    agreements:
       - "Genre,Nombre"
     Percolation:
       - "Genre,Nombre"
@@ -12,7 +12,7 @@ NP:
   Destination:
     phrases:
       - [ "NOM", "D" ]
-    Accords:
+    agreements:
       - "Nombre"
     Percolation:
       - "Nombre"

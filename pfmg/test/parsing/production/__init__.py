@@ -15,7 +15,7 @@ from pfmg.parsing.production.Production import Production
         {
             "lhs":         "NP",
             "phrases":   ["D", "A", "N"],
-            "Accords":     "genre,nombre",
+            "agreements":     "genre,nombre",
             "Percolation": "genre,nombre",
             "translations":  [2, 0, 1]
         }
@@ -25,7 +25,7 @@ def test_from_yaml(data) -> None:
     production = Production.from_yaml(data=data, target="S")
     assert production.lhs == data["lhs"]
     assert production.phrases == data["phrases"]
-    assert isinstance(production.accords, Features)
+    assert isinstance(production.agreements, Features)
     assert isinstance(production.percolation, Percolation)
 
 
@@ -34,14 +34,14 @@ parametrize = pytest.mark.parametrize(
         ({
              "lhs":         "NP",
              "phrases":   ["D", "N"],
-             "Accords":     "Genre",
+             "agreements":     "Genre",
              "Percolation": "Genre",
              "translations":  [1, 0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N", "D"],
-             "Accords":     "Genre",
+             "agreements":     "Genre",
              "Percolation": "Genre"
          },
          ("NP[SGenre=?SGenre,translation=(?N1,?D0)] -> "
@@ -50,14 +50,14 @@ parametrize = pytest.mark.parametrize(
         ({
              "lhs":         "NP",
              "phrases":   ["N"],
-             "Accords":     "Genre",
+             "agreements":     "Genre",
              "Percolation": "Genre",
              "translations":  [0]
          },
          {
              "lhs":         "NP",
              "phrases":   ["N"],
-             "Accords":     "Genre",
+             "agreements":     "Genre",
              "Percolation": "Genre",
              "translations":  [0]
          },
@@ -101,7 +101,7 @@ def test_production_lexical(pos, realization, sigma, expected) -> None:
     actual = Production(
         lhs=pos,
         phrases=[realization],
-        accords=Features([{}]),
+        agreements=Features([{}]),
         percolation=Percolation(sigma)
     ).to_nltk()
     assert actual == expected
