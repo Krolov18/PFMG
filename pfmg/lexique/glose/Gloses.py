@@ -5,146 +5,68 @@
 # LICENSE file in the root directory of this source tree.
 """Implémente les cases des paradigmes par POS."""
 
-from collections.abc import Iterator
+from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
-from typing import TypedDict
 
 import yaml
-from frozendict import frozendict
 
-from pfmg.external.reader.ABCReader import ABCReader
-
-d_grid = dict[str, list[str]]
-l_grid = list[d_grid]
-d_or_l_grid = d_grid | l_grid
-
-SubGlose = dict[str, list[frozendict]]
+from pfmg.lexique.glose.Sigma import Sigma
+from pfmg.lexique.glose.Sigmas import Sigmas
+from pfmg.lexique.utils import gridify
 
 
-class GlosesStruct(TypedDict):
-    """Typage stricte du dictionnaire Gloses."""
+@dataclass
+class Gloses:
+    """Structure simulant les cases des paradigmes d'une langue.
 
-    source: frozendict[str, str]
-    destination: frozendict[str, str]
+    Un ensemble de case représente un paradigme.
+    Les Sigmas sont les étiquettes des cases.
+    Les cases d'un paradigmes sont dirigés par le POS.
 
+    Args:
+    ----
+        data: Structure interne contenant les différents paradigmes.
 
-class Gloses(ABCReader):
-    """Représente les cases des paradigmes.
-
-    Quand cet objet est callé on récupère les cases
-    du paradigme pour un POS donné.
     """
 
-    source: SubGlose
-    destination: SubGlose
-    struct: dict
+    data: dict[str, Sigmas]
 
-    def __init__(
-        self,
-        source: SubGlose,
-        destination: SubGlose,
-    ) -> None:
-        """Initialise la classe GLose.
+    def __call__(self, pos: str) -> Sigmas:
+        """Récupère le paradigme d'un 'pos' donné.
 
-        :param source:
-        :param destination:
-        :return:
+        :param pos: un POS existant dans la structure interne
+        :return: les Sigmas pour le 'pos' donné
+        :raise KeyError: Si le 'pos' n'existe pas
         """
-        self.source = source
-        self.destination = destination
-        self.struct = {
-            k: [
-                dict(zip(vars(self).keys(), sigma, strict=True))
-                for sigma in product(self.source[k], self.destination[k])
-            ]
-            for k in self.source.keys()
-            if k in self.source and k in self.destination
-        }
-
-    def __call__(
-        self,
-        pos: str,
-    ) -> list[GlosesStruct]:
-        """Rècupère un ensemble de sigma, soit un sigma par case.
-
-        :param item: un POS valide
-        :return: Les cases du paradigmes de 'item'
-        """
-        return self.struct[pos]
+        return self.data[pos]
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "Gloses":
-        """Construit Gloses à partir d'un fichier YAML.
+    def from_yaml(cls, path: Path | str) -> "Gloses":
+        """Construit un Gloses à partir d'un fichier YAML.
 
-        :param path: Chemin vers le YAML des gloses de la grammaire.
-        :return: Instance de Gloses
+        :param path: Chemin vers le fichier YAML.
+        :return: Un Gloses valide et prêt à l'emploi
         """
+        path = Path(path)
         assert path.name.endswith("Gloses.yaml")
         with open(path, encoding="utf8") as file_handler:
-            data: dict[str, dict[str, list[str]]] = yaml.load(
-                file_handler, Loader=yaml.Loader
+            data = yaml.safe_load(file_handler)
+        return cls.from_dict(data)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Gloses":
+        """Construit un Gloses à partir d'un dictionnaire.
+
+        :param data: les données pour construire Gloses
+        :return: Un Gloses valide et prêt à l'emploi
+        """
+        output = {}
+        source = data["source"]
+        dest = data["destination"]
+        pos_sd = zip(source.keys(), source.values(), dest.values(), strict=True)
+        for pos, *sd in pos_sd:
+            output[pos] = Sigmas(
+                [Sigma(x, y) for x, y in product(*gridify(list(sd)))]
             )
-        source = {
-            category: list(cls.__gridify(att_vals))
-            for category, att_vals in data["source"].items()
-        }
-        destination = {
-            category: list(cls.__gridify(att_vals))
-            for category, att_vals in data["destination"].items()
-        }
-
-        return cls(
-            source=source,
-            destination=destination,
-        )
-
-    @staticmethod
-    def __gridify(grid: list | dict) -> Iterator[frozendict]:
-        """Gridify a list or a dict.
-
-        :param grid: dictionnaire Attribut -> [Valeurs]
-                     ou liste de dictionnaires Attribut -> [Valeurs]
-        :return: générateur de Gloses
-        """
-        method_name: str = (
-            f"_{Gloses.__name__}__gridify_" f"{grid.__class__.__name__.lower()}"
-        )
-        return getattr(Gloses, method_name)(grid=grid)
-
-    @staticmethod
-    def __gridify_dict(grid: d_grid) -> Iterator[frozendict]:
-        """Transform un dictionnaire Attribut -> [Valeurs] en un générateur.
-
-        :param grid: dictionnaire Attribut -> [Valeurs]
-        :return: générateur de Gloses
-        """
-        items: list[tuple[str, list[str]]] = sorted(grid.items())
-
-        if not grid:
-            # cas où grid est un dictionnaire vide
-            return frozendict()
-
-        keys, values = zip(*items, strict=True)
-        for value in product(*values):
-            yield frozendict([*zip(keys, value, strict=True)])
-
-    @staticmethod
-    def __gridify_list(grid: l_grid) -> Iterator[frozendict]:
-        """Gridify a list.
-
-        :param grid: liste de dictionnaires Attribut -> [Valeurs]
-        :return: générateur de Gloses
-        """
-        for i_grid in grid:
-            yield from Gloses.__gridify_dict(i_grid)
-
-    def __eq__(self, other: "Gloses") -> bool:  # type: ignore
-        """Renvoie l'égalité entre self et other.
-
-        :param other: Une autre Glose
-        :return: bool
-        """
-        return (self.source == other.source) and (
-            self.destination == other.destination
-        )
+        return cls(data=output)

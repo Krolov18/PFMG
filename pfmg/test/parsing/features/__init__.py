@@ -14,33 +14,41 @@ parametrize = pytest.mark.parametrize(
         # ("Genre",
         #  "s",
         #  [{"sGenre": "?sGenre"}]),
-        #
-        # ("Genre,Nombre",
-        #  "s",
-        #  [{"sGenre": "?sGenre", "sNombre": "?sNombre"}]),
-        #
-        # ("Genre;Nombre",
-        #  "s",
-        #  [{"sGenre": "?sGenre"}, {"sNombre": "?sNombre"}]),
-        #
-        # ("Genre=m",
-        #  "s",
-        #  [{"sGenre": "m"}]),
-        #
-        # ("Genre,Nombre;Genre,Nombre",
-        #  "s",
-        #  [{"sGenre":  "?sGenre", "sNombre": "?sNombre"},
-        #   {"sGenre":  "?sGenre", "sNombre": "?sNombre"}]),
-        #
-        # ("Genre,Nombre;Genre,Nombre;Cas=erg",
-        #  "s",
-        #  [{"sGenre":  "?sGenre", "sNombre": "?sNombre"},
-        #   {"sGenre":  "?sGenre", "sNombre": "?sNombre"},
-        #   {"sCas":  "erg"}]),
-        #
-        # ("Genre;;", "s", [{"sGenre":  "?sGenre"}, {}, {}]),
 
-        ("Genre;;Nombre", "s", [{"sGenre":  "?sGenre"}, {}, {"sNombre": "?sNombre"}]),
+        ("Genre,Nombre",
+         "s",
+         [{"sGenre": "?sGenre", "sNombre": "?sNombre"}]),
+
+        ("Genre;Nombre",
+         "s",
+         [{"sGenre": "?sGenre"}, {"sNombre": "?sNombre"}]),
+
+        ("Genre=m",
+         "s",
+         [{"sGenre": "m"}]),
+
+        ("Genre,Nombre;Genre,Nombre",
+         "s",
+         [{"sGenre":  "?sGenre", "sNombre": "?sNombre"},
+          {"sGenre":  "?sGenre", "sNombre": "?sNombre"}]),
+
+        ("Genre,Nombre;Genre,Nombre;Cas=erg",
+         "s",
+         [{"sGenre":  "?sGenre", "sNombre": "?sNombre"},
+          {"sGenre":  "?sGenre", "sNombre": "?sNombre"},
+          {"sCas":  "erg"}]),
+
+        ("Genre;;",
+         "s",
+         [{"sGenre":  "?sGenre"}, {}, {}]),
+
+        ("Genre;;Nombre",
+         "s",
+         [{"sGenre":  "?sGenre"}, {}, {"sNombre": "?sNombre"}]),
+
+        ("Genre=m,Nombre",
+         "s",
+         [{"sGenre":  "m", "sNombre": "?sNombre"}]),
     ]
 )
 
@@ -49,12 +57,3 @@ parametrize = pytest.mark.parametrize(
 def test_features_parse(data, target, expected):
     features = FeatureReader().parse(data, target=target)
     assert features == expected
-
-
-# parametrize = pytest.mark.parametrize()
-#
-#
-# @parametrize
-# def test_features_parse(data, target, expected):
-#     features = Features()
-#     assert features == expected
