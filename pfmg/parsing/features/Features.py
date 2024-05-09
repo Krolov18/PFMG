@@ -47,15 +47,15 @@ class Features(FeatureMixin):
         return result
 
     def add_translation(self, translations: list[str]) -> None:
-        """Ajoute les champs traductions aux parties de la RHS.
+        """Ajoute les champs 'translation' aux parties de la RHS.
 
         :param translations:
         :return:
         """
         assert len(translations) == len(self.data)
         for i in range(len(translations)):
-            self.data[i]["Traduction"] = f"?{translations[i]}{i}"
+            self.data[i]["translation"] = f"?{translations[i]}{i}"
 
     def get_translations(self) -> tuple[str, ...]:
         """TODO : Write some doc."""
-        return tuple(x["Traduction"] for x in self.data)
+        return tuple(x["translation"] for x in self.data)

@@ -43,9 +43,7 @@ class Production:
             lhs=self.lhs, features=features, rhs=" ".join(rhs)
         )
 
-    def add_translation(
-        self, indices: list[int], production: "Production"
-    ) -> None:
+    def add_translation(self, indices: list[int]) -> None:
         """TODO : Write some doc."""
         assert min(indices) >= 0
         assert max(indices) < len(self.syntagmes)
@@ -67,7 +65,7 @@ class Production:
         self.percolation.update(production.percolation)
 
         # Ajoute la traduction
-        self.add_translation(indices, production)
+        self.add_translation(indices)
 
     @classmethod
     def from_yaml(cls, data: dict, target: Literal["S", "D"]):

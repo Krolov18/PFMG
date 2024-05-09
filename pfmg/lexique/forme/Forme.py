@@ -27,13 +27,13 @@ class Forme(MixinDisplay):
     def to_translation(self) -> str:
         """Transforme une Forme en règle syntaxique lexicale.
 
-        N[SGenre='m',DGenre='f',Traduction='hazif'] -> 'garçon'
+        N[SGenre='m',DGenre='f',translation='hazif'] -> 'garçon'
         N[Genre='f'] -> 'hazif'
 
         :return: une production lexicale.
         """
         infos = {f"D{k}": v for k, v in self.destination.get_sigma().items()}
-        infos["Traduction"] = self.destination.to_string()
+        infos["translation"] = self.destination.to_string()
         return self.source.to_nltk(infos)
 
     def to_validation(self):

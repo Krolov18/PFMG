@@ -42,7 +42,7 @@ class Percolation(FeatureMixin):
     def add_translation(self, translations: list[str]) -> None:
         """TODO : Write some doc."""
         values = ",".join(translations)
-        self.data["Traduction"] = f"({values})"
+        self.data["translation"] = f"({values})"
 
     def update(self, other: "Percolation") -> None:
         """TODO : Write some doc.

@@ -92,10 +92,10 @@ class KParser(ABCReader, MixinParseParsable):
             tree = self.translator.parse(data, keep)
             match tree:
                 case Tree():
-                    translation = " ".join(tree.label()["Traduction"])
+                    translation = " ".join(tree.label()["translation"])
                 case Iterator() | list():
                     translation = [
-                        " ".join(x.label()["Traduction"]) for x in tree
+                        " ".join(x.label()["translation"]) for x in tree
                     ]
                 case _:
                     raise TypeError
@@ -107,9 +107,9 @@ class KParser(ABCReader, MixinParseParsable):
                 self.validator.parse(translation, keep)
             except Exception:  # noqa BLE001
                 message = (
-                    f"'{data}' a été correctement traduit mais le "
-                    f"validateur l'a refusé. Revoyez le champ "
-                    f"Traduction."
+                    f"'{data}' a été correctement traduite mais le "
+                    f"validateur l'a refusée. Revoyez le champ "
+                    f"'translation'."
                 )
                 raise ValueError(message) from None
             else:

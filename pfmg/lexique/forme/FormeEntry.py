@@ -15,10 +15,7 @@ from pfmg.lexique.morpheme.Morphemes import Morphemes
 
 @dataclass
 class FormeEntry(MixinDisplay):
-    """La forme est la réalisation d'un lexème.
-
-    :param traduction : Réalisation du lexème de la traduction
-    """
+    """La forme est la réalisation d'un lexème."""
 
     pos: str
     morphemes: Morphemes

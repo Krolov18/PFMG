@@ -7,7 +7,7 @@ NP:
       - "Genre,Nombre"
     Percolation:
       - "Genre,Nombre"
-    Traduction:
+    translations:
       - [ 1, 0 ]
   Destination:
     Syntagmes:
