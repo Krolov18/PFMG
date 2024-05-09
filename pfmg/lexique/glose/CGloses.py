@@ -63,27 +63,22 @@ class CGloses(ABCReader):
         with open(path, encoding="utf8") as fh:
             data = yaml.safe_load(fh)
         gloses = Gloses.from_dict(data)
-        alignments = Gloses(cls.__read_alignments(data["alignments"]))
+        alignments = Gloses(cls.__read_alignments(data))
         return cls(gloses=gloses, alignments=alignments)
 
     @staticmethod
-    def __read_alignments(data: dict[str, dict[str, list[str]]]) -> dict:
-        """Méthode privée qui lit et met enforme les alignements.
-
-        :param data: l'entrée 'alignments' du fichier YAML.
-        :return: la structure de données correctement formattée pour Gloses
-        """
+    def __read_alignments(data: dict) -> dict:
         fr = FeatureReader()
-        output: dict[str, Sigmas] = {}
-        for pos, sigmas in data.items():
-            _tmp: list[Sigma] = []
-            for key, value in sigmas.items():
-                for val in value:
-                    _tmp.append(
-                        Sigma(
-                            source=frozendict(fr.parse(key)[0]),
-                            destination=frozendict(fr.parse(val)[0]),
-                        )
+        return {
+            pos: Sigmas(
+                [
+                    Sigma(
+                        source=frozendict(fr.parse(key)[0]),
+                        destination=frozendict(fr.parse(value)[0]),
                     )
-            output[pos] = Sigmas(_tmp)
-        return output
+                    for key, values in sigmas["alignments"].items()
+                    for value in values
+                ]
+            )
+            for pos, sigmas in data.items()
+        }

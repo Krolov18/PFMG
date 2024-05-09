@@ -1,22 +1,21 @@
-source: # Français
-  D:
+D:
+  source:
     Genre: [ m, f ]
     Nombre: [ sg, pl ]
-  NOM:
-    Genre: [ m, f ]
-    Nombre: [ sg, pl ]
-destination: # Kalaba
-  D:
+  destination:
     Genre: [ m, f, n ]
     Nombre: [ sg, du, pl ]
-  NOM:
+  alignments:
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl ]
+NOM:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  destination:
     Cf: [ n1, n2 ]
     Genre: [ m, f, n ]
     Nombre: [ sg, du, pl ]
-alignments:
-  D:
-    Nombre=sg: [ Nombre=sg ]
-    Nombre=pl: [ Nombre=du, Nombre=pl ]
-  NOM:
+  alignments:
     Nombre=sg: [ Nombre=sg ]
     Nombre=pl: [ Nombre=du, Nombre=pl ]
