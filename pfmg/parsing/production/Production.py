@@ -17,15 +17,15 @@ class Production:
     """TODO : Write some doc."""
 
     lhs: str
-    syntagmes: list[str]
+    phrases: list[str]
     accords: Features
     percolation: Percolation
 
     def __post_init__(self):
         """TODO : Write some doc."""
         assert isinstance(self.lhs, str)
-        assert isinstance(self.syntagmes, list)
-        assert all(isinstance(x, str) for x in self.syntagmes)
+        assert isinstance(self.phrases, list)
+        assert all(isinstance(x, str) for x in self.phrases)
         assert isinstance(self.accords, Features)
         assert isinstance(self.percolation, Percolation)
 
@@ -36,7 +36,7 @@ class Production:
         rhs = [
             f"{nt}[{feats}]" if nt.isupper() else nt
             for nt, feats in zip(
-                self.syntagmes, self.accords.to_nltk(), strict=True
+                self.phrases, self.accords.to_nltk(), strict=True
             )
         ]
         return template.format(
@@ -46,9 +46,9 @@ class Production:
     def add_translation(self, indices: list[int]) -> None:
         """TODO : Write some doc."""
         assert min(indices) >= 0
-        assert max(indices) < len(self.syntagmes)
+        assert max(indices) < len(self.phrases)
 
-        self.accords.add_translation(self.syntagmes)
+        self.accords.add_translation(self.phrases)
         trads = self.accords.get_translations()
         self.percolation.add_translation([trads[x] for x in indices])
 
@@ -80,15 +80,15 @@ class Production:
         """
         return cls(
             lhs=data["lhs"],
-            syntagmes=data["Syntagmes"],
+            phrases=data["phrases"],
             accords=Features.from_string(
                 data=data["Accords"],
                 target=target,
-                phrase_len=len(data["Syntagmes"]),
+                phrase_len=len(data["phrases"]),
             ),
             percolation=Percolation.from_string(
                 data=data["Percolation"],
                 target=target,
-                phrase_len=len(data["Syntagmes"]),
+                phrase_len=len(data["phrases"]),
             ),
         )

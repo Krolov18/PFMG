@@ -1,7 +1,7 @@
 Start: "NP"
 NP:
   Source:
-    Syntagmes:
+    phrases:
       - [ "D", "NOM" ]
     Accords:
       - "Genre,Nombre"
@@ -10,7 +10,7 @@ NP:
     translations:
       - [ 1, 0 ]
   Destination:
-    Syntagmes:
+    phrases:
       - [ "NOM", "D" ]
     Accords:
       - "Nombre"

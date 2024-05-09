@@ -14,7 +14,7 @@ from pfmg.parsing.production.Production import Production
     "data", [
         {
             "lhs":         "NP",
-            "Syntagmes":   ["D", "A", "N"],
+            "phrases":   ["D", "A", "N"],
             "Accords":     "genre,nombre",
             "Percolation": "genre,nombre",
             "translations":  [2, 0, 1]
@@ -24,7 +24,7 @@ from pfmg.parsing.production.Production import Production
 def test_from_yaml(data) -> None:
     production = Production.from_yaml(data=data, target="S")
     assert production.lhs == data["lhs"]
-    assert production.syntagmes == data["Syntagmes"]
+    assert production.phrases == data["phrases"]
     assert isinstance(production.accords, Features)
     assert isinstance(production.percolation, Percolation)
 
@@ -33,14 +33,14 @@ parametrize = pytest.mark.parametrize(
     "data_s, data_d, expected", [
         ({
              "lhs":         "NP",
-             "Syntagmes":   ["D", "N"],
+             "phrases":   ["D", "N"],
              "Accords":     "Genre",
              "Percolation": "Genre",
              "translations":  [1, 0]
          },
          {
              "lhs":         "NP",
-             "Syntagmes":   ["N", "D"],
+             "phrases":   ["N", "D"],
              "Accords":     "Genre",
              "Percolation": "Genre"
          },
@@ -49,14 +49,14 @@ parametrize = pytest.mark.parametrize(
 
         ({
              "lhs":         "NP",
-             "Syntagmes":   ["N"],
+             "phrases":   ["N"],
              "Accords":     "Genre",
              "Percolation": "Genre",
              "translations":  [0]
          },
          {
              "lhs":         "NP",
-             "Syntagmes":   ["N"],
+             "phrases":   ["N"],
              "Accords":     "Genre",
              "Percolation": "Genre",
              "translations":  [0]
@@ -100,7 +100,7 @@ def test_production(data_s, data_d, expected) -> None:
 def test_production_lexical(pos, realization, sigma, expected) -> None:
     actual = Production(
         lhs=pos,
-        syntagmes=[realization],
+        phrases=[realization],
         accords=Features([{}]),
         percolation=Percolation(sigma)
     ).to_nltk()
