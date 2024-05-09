@@ -15,277 +15,49 @@ from pfmg.lexique.glose.Sigmas import Sigmas
 
 parametrize = pytest.mark.parametrize(
     "gloses, expected_data", [
+        ({"N": {"source": {"Genre": ["m"]},
+                "destination": {"Genre": ["m"]}}},
+         {"N": Sigmas([Sigma(**{"source":      frozendict({"Genre": "m"}),
+                                "destination": frozendict({"Genre": "m"})})])}),
 
-        ({
-             "source":      {
-                 "N": {
-                     "Genre": ["m"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Genre": ["m"]
-                 }
-             }
-         },
-         {
-             "N": Sigmas(
-                 [Sigma(
-                     **{
-                         "source":      frozendict(
-                             {
-                                 "Genre": "m"
-                             }
-                         ),
-                         "destination": frozendict(
-                             {
-                                 "Genre": "m"
-                             }
-                         )
-                     }
-                 )]
-             )
-         }),
+        ({"N": {"source": {"Genre": ["m", "f"]},
+                "destination": {"Genre": ["m", "f"]}}},
+         {'N': Sigmas(data=[Sigma(source=frozendict({'Genre': 'm'}),
+                                  destination=frozendict({'Genre': 'm'})),
+                            Sigma(source=frozendict({'Genre': 'm'}),
+                                  destination=frozendict({'Genre': 'f'})),
+                            Sigma(source=frozendict({'Genre': 'f'}),
+                                  destination=frozendict({'Genre': 'm'})),
+                            Sigma(source=frozendict({'Genre': 'f'}),
+                                  destination=frozendict({'Genre': 'f'}))])}),
 
-        ({
-             "source":      {
-                 "N": {
-                     "Genre": ["m", "f"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Genre": ["m", "f"]
-                 }
-             }
-         },
-         {
-             'N': Sigmas(
-                 data=[Sigma(
-                     source=frozendict(
-                         {
-                             'Genre': 'm'
-                         }
-                     ),
-                     destination=frozendict(
-                         {
-                             'Genre': 'm'
-                         }
-                     )
-                 ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre': 'm'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Genre': 'f'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre': 'f'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Genre': 'm'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre': 'f'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Genre': 'f'
-                             }
-                         )
-                     )]
-             )
-         }),
-
-        ({
-             "source":      {
-                 "N": {
-                     "Genre":  ["m", "f"],
-                     "Nombre": ["sg", "pl"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Cas": ["nom", "acc", "dat"]
-                 }
-             }
-         },
-         {
-             'N': Sigmas(
-                 data=[Sigma(
-                     source=frozendict(
-                         {
-                             'Genre':  'm',
-                             'Nombre': 'sg'
-                         }
-                     ),
-                     destination=frozendict(
-                         {
-                             'Cas': 'nom'
-                         }
-                     )
-                 ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'm',
-                                 'Nombre': 'sg'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'acc'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'm',
-                                 'Nombre': 'sg'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'dat'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'm',
-                                 'Nombre': 'pl'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'nom'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'm',
-                                 'Nombre': 'pl'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'acc'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'm',
-                                 'Nombre': 'pl'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'dat'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'f',
-                                 'Nombre': 'sg'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'nom'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'f',
-                                 'Nombre': 'sg'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'acc'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'f',
-                                 'Nombre': 'sg'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'dat'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'f',
-                                 'Nombre': 'pl'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'nom'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'f',
-                                 'Nombre': 'pl'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'acc'
-                             }
-                         )
-                     ),
-                     Sigma(
-                         source=frozendict(
-                             {
-                                 'Genre':  'f',
-                                 'Nombre': 'pl'
-                             }
-                         ),
-                         destination=frozendict(
-                             {
-                                 'Cas': 'dat'
-                             }
-                         )
-                     )]
-             )
-         }
-        ),
+        ({"N": {"source": {"Genre":  ["m", "f"], "Nombre": ["sg", "pl"]},
+                "destination": {"Cas": ["nom", "acc", "dat"]}}},
+         {'N': Sigmas(data=[
+             Sigma(source=frozendict({'Genre':  'm', 'Nombre': 'sg'}),
+                   destination=frozendict({'Cas': 'nom'})),
+             Sigma(source=frozendict({'Genre':  'm', 'Nombre': 'sg'}),
+                   destination=frozendict({'Cas': 'acc'})),
+             Sigma(source=frozendict({'Genre':  'm', 'Nombre': 'sg'}),
+                   destination=frozendict({'Cas': 'dat'})),
+             Sigma(source=frozendict({'Genre':  'm', 'Nombre': 'pl'}),
+                   destination=frozendict({'Cas': 'nom'})),
+             Sigma(source=frozendict({'Genre':  'm', 'Nombre': 'pl'}),
+                   destination=frozendict({'Cas': 'acc'})),
+             Sigma(source=frozendict({'Genre':  'm', 'Nombre': 'pl'}),
+                   destination=frozendict({'Cas': 'dat'})),
+             Sigma(source=frozendict({'Genre':  'f', 'Nombre': 'sg'}),
+                   destination=frozendict({'Cas': 'nom'})),
+             Sigma(source=frozendict({'Genre':  'f', 'Nombre': 'sg'}),
+                   destination=frozendict({'Cas': 'acc'})),
+             Sigma(source=frozendict({'Genre':  'f', 'Nombre': 'sg'}),
+                   destination=frozendict({'Cas': 'dat'})),
+             Sigma(source=frozendict({'Genre':  'f', 'Nombre': 'pl'}),
+                   destination=frozendict({'Cas': 'nom'})),
+             Sigma(source=frozendict({'Genre':  'f', 'Nombre': 'pl'}),
+                   destination=frozendict({'Cas': 'acc'})),
+             Sigma(source=frozendict({'Genre':  'f', 'Nombre': 'pl'}),
+                   destination=frozendict({'Cas': 'dat'}))])}),
     ]
 )
 
@@ -304,185 +76,37 @@ def test_gloses_from_disk(tmp_path, gloses, expected_data) -> None:
 parametrize = pytest.mark.parametrize(
     "params, expected", [
 
-        ({
-             "source":      {
-                 "N": {
-                     "Genre": ["m"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Genre": ["m"]
-                 }
-             }
-         },
-         Sigmas(
-             [Sigma(
-                 **{
-                     "source":      frozendict(
-                         {
-                             "Genre": "m"
-                         }
-                     ),
-                     "destination": frozendict(
-                         {
-                             "Genre": "m"
-                         }
-                     )
-                 }
-             )]
-         )),
+        ({"N": {"source":      {"Genre": ["m"]},
+                "destination": {"Genre": ["m"]}}},
+         Sigmas([Sigma(**{"source":      frozendict({"Genre": "m"}),
+                          "destination": frozendict({"Genre": "m"})})])),
 
-        ({
-             "source":      {
-                 "N": {
-                     "Genre": ["m", "f"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Genre": ["m", "f"]
-                 }
-             }
-         },
-         Sigmas(
-             [
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Genre": "m"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre": "m"
-                             }
-                         )
-                     }
-                 ),
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Genre": "f"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre": "m"
-                             }
-                         )
-                     }
-                 ),
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Genre": "m"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre": "f"
-                             }
-                         )
-                     }
-                 ),
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Genre": "f"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre": "f"
-                             }
-                         )
-                     }
-                 )
-             ]
-         )),
+        ({"N": {"source":      {"Genre": ["m", "f"]},
+                "destination": {"Genre": ["m", "f"]}}},
+         Sigmas([Sigma(**{"destination": frozendict({"Genre": "m"}),
+                          "source":      frozendict({"Genre": "m"})}),
+                 Sigma(**{"destination": frozendict({"Genre": "f"}),
+                          "source":      frozendict({"Genre": "m"})}),
+                 Sigma(**{"destination": frozendict({"Genre": "m"}),
+                          "source":      frozendict({"Genre": "f"})}),
+                 Sigma(**{"destination": frozendict({"Genre": "f"}),
+                          "source":      frozendict({"Genre": "f"})})])),
 
-        ({
-             "source":      {
-                 "N": {
-                     "Genre":  ["m", "f"],
-                     "Nombre": ["sg", "pl"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Cas": ["m"]
-                 }
-             }
-         },
-         Sigmas(
-             [
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Cas": "m"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre":  "m",
-                                 "Nombre": "sg"
-                             }
-                         )
-                     }
-                 ),
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Cas": "m"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre":  "m",
-                                 "Nombre": "pl"
-                             }
-                         )
-                     }
-                 ),
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Cas": "m"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre":  "f",
-                                 "Nombre": "sg"
-                             }
-                         )
-                     }
-                 ),
-                 Sigma(
-                     **{
-                         "destination": frozendict(
-                             {
-                                 "Cas": "m"
-                             }
-                         ),
-                         "source":      frozendict(
-                             {
-                                 "Genre":  "f",
-                                 "Nombre": "pl"
-                             }
-                         )
-                     }
-                 )
-             ]
-         )),
+        ({"N": {"source": {"Genre":  ["m", "f"],
+                           "Nombre": ["sg", "pl"]},
+                "destination": {"Cas": ["m"]}}},
+         Sigmas([Sigma(**{"destination": frozendict({"Cas": "m"}),
+                          "source":      frozendict({"Genre":  "m",
+                                                     "Nombre": "sg"})}),
+                 Sigma(**{"destination": frozendict({"Cas": "m"}),
+                          "source":      frozendict({"Genre":  "m",
+                                                     "Nombre": "pl"})}),
+                 Sigma(**{"destination": frozendict({"Cas": "m"}),
+                          "source":      frozendict({"Genre":  "f",
+                                                     "Nombre": "sg"})}),
+                 Sigma(**{"destination": frozendict({"Cas": "m"}),
+                          "source":      frozendict({"Genre":  "f",
+                                                     "Nombre": "pl"})})])),
     ]
 )
 
@@ -496,23 +120,11 @@ def test__call__(params, expected) -> None:
 
 parametrize = pytest.mark.parametrize(
     "params, expected_type, expected_type_2", [
-        ({
-             "source":      {
-                 "N": {
-                     "Genre": ["m"]
-                 }
-             },
-             "destination": {
-                 "N": {
-                     "Genre": ["m"]
-                 }
-             }
-         },
+        ({"N": {"source":      {"Genre": ["m"]},
+                "destination": {"Genre": ["m"]}}},
          "Gloses",
          "Sigmas"),
-
-    ]
-)
+    ])
 
 
 @parametrize

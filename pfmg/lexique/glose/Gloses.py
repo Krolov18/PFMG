@@ -6,14 +6,11 @@
 """Implémente les cases des paradigmes par POS."""
 
 from dataclasses import dataclass
-from itertools import product
 from pathlib import Path
 
 import yaml
 
-from pfmg.lexique.glose.Sigma import Sigma
 from pfmg.lexique.glose.Sigmas import Sigmas
-from pfmg.lexique.utils import gridify
 
 
 @dataclass
@@ -58,15 +55,12 @@ class Gloses:
     def from_dict(cls, data: dict) -> "Gloses":
         """Construit un Gloses à partir d'un dictionnaire.
 
-        :param data: les données pour construire Gloses
-        :return: Un Gloses valide et prêt à l'emploi
+        :param data: doit contenir au deuxième niveau 'source' et 'destination'
+        :return: une instance de Gloses
         """
-        output = {}
-        source = data["source"]
-        dest = data["destination"]
-        pos_sd = zip(source.keys(), source.values(), dest.values(), strict=True)
-        for pos, *sd in pos_sd:
-            output[pos] = Sigmas(
-                [Sigma(x, y) for x, y in product(*gridify(list(sd)))]
-            )
-        return cls(data=output)
+        return cls(
+            data={
+                pos: Sigmas.from_dict(sigmas["source"], sigmas["destination"])
+                for pos, sigmas in data.items()
+            }
+        )

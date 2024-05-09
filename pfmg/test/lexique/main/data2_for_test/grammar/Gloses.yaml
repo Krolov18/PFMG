@@ -1,9 +1,8 @@
-source: # Français
-  NOM:
+NOM:
+  source: # Français
     Genre: [ m, f ]
     Nombre: [ sg, pl ]
-destination: # Kalaba
-  NOM:
+  destination: # Kalaba
     Cf: [ n1, n2 ]
     Genre: [ m, f, n ]
     Nombre: [ sg, pl ]

@@ -78,9 +78,9 @@ def phonology() -> dict:
 
 
 def test_from_disk(tmp_path):
-    gloses = {"source": {"N": {"Genre": ["m", "f"],
-                               "Nombre": ["sg", "pl"]}},
-              "destination": {"N": {"Genre": ["m"],
+    gloses = {"N": {"source": {"Genre":  ["m", "f"],
+                               "Nombre": ["sg", "pl"]},
+                    "destination": {"Genre":  ["m"],
                                     "Nombre": ["sg"]}}}
 
     blocks = {"source": {"N": [{"Nombre=pl": "X+s"}]},

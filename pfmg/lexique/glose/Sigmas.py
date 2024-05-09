@@ -5,10 +5,12 @@
 # LICENSE file in the root directory of this source tree.
 """Ensemble de Sigma."""
 
+import itertools as it
 from collections.abc import Iterator
 from dataclasses import dataclass
 
 from pfmg.lexique.glose.Sigma import Sigma
+from pfmg.lexique.utils import gridify
 
 
 @dataclass
@@ -34,3 +36,15 @@ class Sigmas:
         :return: un itérateur de Sigma
         """
         return iter(self.data)
+
+    @classmethod
+    def from_dict(cls, source: dict, destination: dict) -> "Sigmas":
+        """Construit un Sigmas à partir de deux dictionnaires.
+
+        :param source: la config de la langue source
+        :param destination: la config de la langue de destination
+        :return: Une instance de Sigmas
+        """
+        return cls(
+            [Sigma(*x) for x in it.product(*gridify([source, destination]))]
+        )
