@@ -41,7 +41,7 @@ parametrize = pytest.mark.parametrize(
          {
              "lhs":         "NP",
              "phrases":   ["N", "D"],
-             "percolations": "Genre"
+             "percolations": "Genre",
              "agreements":     "Genre",
          },
          ("NP[SGenre=?SGenre,translation=(?N1,?D0)] -> "
