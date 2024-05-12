@@ -124,12 +124,12 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 
-[tool.pytest.ini_options]
-testpaths = [
-    "pfmg/test"
-]
-# python_functions = "test_*"
-python_files = [
-    "test_*.py",
-    "__init__.py",
-]
+#[tool.pytest.ini_options]
+#testpaths = [
+#    "pfmg/test"
+#]
+## python_functions = "test_*"
+#python_files = [
+#    "test_*.py",
+#    "__init__.py",
+#]
