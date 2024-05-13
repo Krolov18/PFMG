@@ -24,4 +24,12 @@ class TokenizerReMixin(ABCTokenizer):
         :param sentence: Une chaine de caractères quelconque.
         :return: une liste de tokens
         """
-        return re.split(self.separator, sentence)
+        assert isinstance(sentence, str)
+        assert sentence
+
+        output = re.split(self.separator, sentence)
+
+        assert output
+        assert isinstance(output, list)
+
+        return output
