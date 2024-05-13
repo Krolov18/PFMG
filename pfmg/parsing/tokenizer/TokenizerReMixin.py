@@ -14,7 +14,7 @@ class TokenizerReMixin(ABCTokenizer):
 
     separator: str
 
-    def tokenize(self, sentence: str) -> list[str]:
+    def __call__(self, sentence: str) -> list[str]:
         """Découpe sentences en tokens.
 
         Le module re est utiliser ici pour découper.

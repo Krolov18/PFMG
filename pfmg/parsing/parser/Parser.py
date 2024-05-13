@@ -13,7 +13,7 @@ from nltk import FeatureEarleyChartParser, Tree
 from pfmg.lexique.lexicon import Lexicon
 from pfmg.parsing.grammar import Grammar
 from pfmg.parsing.parsable.MixinParseParsable import MixinParseParsable
-from pfmg.parsing.tokenizer.SpaceTokenizer import SpaceTokenizer
+from pfmg.parsing.tokenizer import ABCTokenizer, new_tokenizer
 
 
 @dataclass
@@ -31,7 +31,7 @@ class Parser(MixinParseParsable):
             "\n\n".join((g, getattr(self.lexique, f"to_{self.how}")()))
         )
 
-        self.tokenizer = SpaceTokenizer()
+        self.tokenizer: ABCTokenizer = new_tokenizer(id_tokenizer="Space")
         self.parserj = FeatureEarleyChartParser(grammar)
 
     def to_file(self, path: str | Path) -> None:
@@ -47,9 +47,9 @@ class Parser(MixinParseParsable):
         """Méthode temporaire pour tokéniser du texte."""
         match data:
             case str():
-                return self.tokenizer.tokenize(data)
+                return self.tokenizer(data)
             case list():
-                return [self.tokenizer.tokenize(d) for d in data]
+                return [self.tokenizer(d) for d in data]
 
     def _parse_str_first(self, data: str) -> Tree:
         """Retourne le premier arbre disponible.

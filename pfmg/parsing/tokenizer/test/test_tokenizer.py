@@ -26,5 +26,5 @@ from pfmg.parsing.tokenizer import new_tokenizer
 ])
 def test_tokenizer(id_tokenizer, data, expected) -> None:
     actual = (new_tokenizer(id_tokenizer=id_tokenizer)
-              .tokenize(sentence=data))
+              .__call__(sentence=data))
     assert actual == expected
