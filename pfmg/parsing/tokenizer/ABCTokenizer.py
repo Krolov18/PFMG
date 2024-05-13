@@ -13,7 +13,7 @@ class ABCTokenizer(ABC):
     """Interface pour ce qui est toknisable."""
 
     @abstractmethod
-    def tokenize(self, sentence: str) -> list[str]:
+    def __call__(self, sentence: str) -> list[str]:
         """Split some sentence into tokens.
 
         :param sentence:
