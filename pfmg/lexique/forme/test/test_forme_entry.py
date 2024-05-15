@@ -24,7 +24,8 @@ def test_to_string() -> None:
         consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
         voyelles=frozenset("iueoa"))
 
-    forme = FormeEntry(pos="N",
+    forme = FormeEntry(index=2,
+                       pos="N",
                        morphemes=Morphemes(radical=Radical(
                            stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
@@ -34,6 +35,7 @@ def test_to_string() -> None:
     assert actual == expected
 
     forme = FormeEntry(
+        index=2,
         pos="N",
         morphemes=Morphemes(
             radical=Radical(
@@ -60,7 +62,8 @@ def test_to_string() -> None:
 
 
 def test_get_sigma() -> None:
-    forme = FormeEntry(pos="N",
+    forme = FormeEntry(index=2,
+                       pos="N",
                        morphemes=Morphemes(radical=Radical(
                            stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
@@ -82,16 +85,18 @@ def test_to_nltk() -> None:
         voyelles=frozenset("iueoa")
     )
 
-    forme = FormeEntry(pos="N",
+    forme = FormeEntry(index=3,
+                       pos="N",
                        morphemes=Morphemes(radical=Radical(
                            stems=StemSpace(stems=("a", "b", "c"))),
                            others=[]),
                        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
     actual = forme.to_nltk()
-    expected = "N[Genre='m',Nombre='s'] -> 'a'"
+    expected = "N[Genre='m',Nombre='s'] -> '3'"
     assert actual == expected
 
     forme = FormeEntry(
+        index=4,
         pos="N",
         morphemes=Morphemes(
             radical=Radical(
@@ -108,5 +113,5 @@ def test_to_nltk() -> None:
     )
 
     actual = forme.to_nltk()
-    expected = "N[Genre='m',Nombre='s'] -> 'aa'"
+    expected = "N[Genre='m',Nombre='s'] -> '4'"
     assert actual == expected

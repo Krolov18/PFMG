@@ -48,7 +48,7 @@ class Forme(MixinDisplay):
         :param term:
         :return:
         """
-        return f"{self.source.to_string()}, {self.destination.to_string()}"
+        return self.source.to_string()
 
     def get_sigma(self) -> frozendict:
         """Récupère les propriétés d'une forme."""

@@ -19,6 +19,7 @@ class FormeEntry(MixinDisplay):
     pos: str
     morphemes: Morphemes
     sigma: frozendict[str, str]
+    index: int
 
     def _to_string__nonetype(self, term: None = None) -> str:
         result: str = ""
@@ -55,7 +56,7 @@ class FormeEntry(MixinDisplay):
             if key.istitle()
         }
         features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
-        return f"{self.pos}[{features}] -> '{self.to_string()}'"
+        return f"{self.pos}[{features}] -> '{self.index}'"
 
     def __to_nltk_dict(self, infos: dict) -> str:
         assert isinstance(infos, dict)
@@ -66,4 +67,4 @@ class FormeEntry(MixinDisplay):
         }
         sigma.update(infos)
         features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
-        return f"{self.pos}[{features}] -> '{self.to_string()}'"
+        return f"{self.pos}[{features}] -> '{self.index}'"
