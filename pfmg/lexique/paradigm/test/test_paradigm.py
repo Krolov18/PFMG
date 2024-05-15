@@ -118,6 +118,7 @@ def test_from_disk(tmp_path):
     expected = [
         Forme(
             source=FormeEntry(
+                index=1728,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(StemSpace(("tortue",))),
@@ -126,6 +127,7 @@ def test_from_disk(tmp_path):
                 sigma=frozendict(Genre="f", Nombre="sg")
             ),
             destination=FormeEntry(
+                index=1729,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(StemSpace(("turtle",))),
@@ -137,6 +139,7 @@ def test_from_disk(tmp_path):
 
         Forme(
             source=FormeEntry(
+                index=1730,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(StemSpace(("tortue",))),
@@ -150,6 +153,7 @@ def test_from_disk(tmp_path):
                 sigma=frozendict(Genre="f", Nombre="pl")
             ),
             destination=FormeEntry(
+                index=1731,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(StemSpace(("turtle",))),
