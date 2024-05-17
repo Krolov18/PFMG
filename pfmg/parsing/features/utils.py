@@ -85,7 +85,7 @@ class FeatureReader:
                 x,
                 target=target,
                 accumulator=accumulator,
-                separators=separators[2:],
+                separators=separators[1:],
             )
 
     @staticmethod
