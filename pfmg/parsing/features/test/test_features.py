@@ -10,9 +10,9 @@ from pfmg.parsing.features.utils import FeatureReader
 parametrize = pytest.mark.parametrize(
     "data, target, expected",
     [
-        # ("Genre",
-        #  "s",
-        #  [{"sGenre": "?sGenre"}]),
+        ("Genre",
+         "s",
+         [{"sGenre": "?sGenre"}]),
 
         ("Genre,Nombre",
          "s",
@@ -48,6 +48,15 @@ parametrize = pytest.mark.parametrize(
         ("Genre=m,Nombre",
          "s",
          [{"sGenre":  "m", "sNombre": "?sNombre"}]),
+
+        ("Genre=m,Nombre=pl",
+         "s",
+         [{"sGenre":  "m", "sNombre": "pl"}]),
+
+        ("Genre,Nombre=du;Genre,Nombre=du",
+         "s",
+         [{"sGenre": "?sGenre", "sNombre": "du"},
+          {"sGenre": "?sGenre", "sNombre": "du"}])
     ]
 )
 
