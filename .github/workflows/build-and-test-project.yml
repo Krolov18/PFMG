@@ -30,11 +30,11 @@ jobs:
           poetry install
       - name: Linter
         run: |
-          poetry ruff check
+          ruff check
       - name: Type Checker
         run: |
-          poetry pyright
+          pyright
       - name: Test with pytest
         run: |
-          poetry pytest --cov
+          pytest --cov
         shell: bash
