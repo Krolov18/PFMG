@@ -132,6 +132,10 @@ license = "bsd"
 readme = "README.md"
 package-mode = false
 
+[tool.poetry.virtualenvs]
+create = true
+in-project = true
+
 [tool.poetry.dependencies]
 python = "3.12"
 frozendict = "2.4.4"
