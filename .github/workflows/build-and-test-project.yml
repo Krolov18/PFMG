@@ -27,7 +27,7 @@ jobs:
           key: "${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}"
       - name: Configure poetry
         run: |
-          poetry config virtualenvs.in-project true
+          poetry install
       - name: Linter
         run: |
           poetry ruff check
