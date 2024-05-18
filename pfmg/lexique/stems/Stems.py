@@ -16,6 +16,7 @@ from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.utils import dictify
+from pfmg.parsing.features.utils import FeatureReader
 
 
 @dataclass
@@ -34,50 +35,39 @@ class Stems(ABCReader, Iterable):
         assert path.name.endswith("Stems.yaml")
         with open(path, encoding="utf8") as file_handler:
             data = yaml.safe_load(file_handler)
-            return cls(data=iter(Stems.__read_stems(data, data.keys())))
+            return cls(data=iter(Stems.__read_stems(data)))
 
     @staticmethod
-    def __read_stems(
-        data: dict,
-        posses: set,
-        accumulator: dict | None = None,
-    ) -> Iterator[Lexeme]:
-        """Parse le fichiers stems.
-
-        Fonction récursive.
-
-        :param data: Contenu du fichier YAML en dictionnaire
-        :param posses: Ensemble des POS de la Grammaire
-        :param accumulator: Structure interne pour gérer les POS et les sigmas
-        :return: Itérateur de Lexèmes
-        """
+    def __read_stems(data: dict[str, str | dict], accumulator: str = ""):
         for key, value in data.items():
             match value:
                 case str():
-                    assert accumulator is not None
-                    _acc = accumulator.copy()
-                    accumulator = {"pos": _acc.pop("pos")}
-                    pos = key if accumulator is None else accumulator["pos"]
-                    t_stems, t_sigma = Stems.__parse_translation(value)
+                    pos_inherence = accumulator.split(";", maxsplit=1)
+                    if len(pos_inherence) == 2:
+                        pos, inherence = pos_inherence
+                        d_sigma = FeatureReader().parse(
+                            inherence.replace(";", ",")
+                        )
+                    else:
+                        pos, inherence = pos_inherence[0], ""
+                        d_sigma = [{}]
+                    stems, s_sigma = Stems.__parse_translation(value)
                     yield Lexeme(
                         source=LexemeEntry(
-                            stems=t_stems,
+                            stems=stems,
                             pos=pos,
-                            sigma=t_sigma,
+                            sigma=s_sigma,
                         ),
                         destination=LexemeEntry(
                             stems=StemSpace(stems=tuple(key.split(","))),
                             pos=pos,
-                            sigma=frozendict(_acc),
+                            sigma=frozendict(d_sigma[0]),
                         ),
                     )
                 case dict():
-                    if key in posses:
-                        accumulator = {"pos": key}
-                    else:
-                        assert accumulator is not None
-                        accumulator.__setitem__(*key.split("="))
-                    yield from Stems.__read_stems(value, posses, accumulator)
+                    yield from Stems.__read_stems(
+                        value, f"{accumulator};{key}" if accumulator else key
+                    )
 
     @staticmethod
     def __parse_translation(token: str) -> tuple[StemSpace, frozendict]:
