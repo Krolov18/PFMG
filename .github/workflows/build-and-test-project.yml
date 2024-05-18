@@ -25,9 +25,10 @@ jobs:
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: "${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}"
+      - name: Install dependencies
+        run: poetry install
       - name: Configure poetry
-        run: |
-          poetry install
+        run: poetry config virtualenvs.in-project true
       - name: Linter
         run: |
           ruff check
