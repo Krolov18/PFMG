@@ -3,16 +3,23 @@ NP:
   Source:
     phrases:
       - [ "D", "'deux'", "NOM" ]
+      - [ "D", "NOM" ]
     agreements:
       - "Genre,Nombre"
+      - "Genre,Nombre"
     percolations:
+      - "Genre,Nombre"
       - "Genre,Nombre"
     translations:
       - [ 2, 0 ]
+      - [ 1, 0 ]
   Destination:
     phrases:
       - [ "NOM", "D" ]
+      - [ "NOM", "D" ]
     agreements:
       - "Genre,Nombre=du"
+      - "Genre,Nombre"
     percolations:
       - "Nombre=du"
+      - "Nombre"
