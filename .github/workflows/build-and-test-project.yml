@@ -21,10 +21,10 @@ jobs:
         with:
           python-version: "3.12.0"
       - uses: abatilo/actions-poetry@v2
-      - name: Setup a local virtual environment (if no poetry.toml file)
-        run: |
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
+      # - name: Setup a local virtual environment (if no poetry.toml file)
+        # run: |
+          # poetry config virtualenvs.create true --local
+          # poetry config virtualenvs.in-project true --local
       - uses: actions/cache@v3
         with:
           path: ./.venv
@@ -36,4 +36,4 @@ jobs:
       - name: Type Checker
         run: poetry run pyright
       - name: Test with pytest
-        run: poetry run pytest -v
+        run: poetry run pytest
