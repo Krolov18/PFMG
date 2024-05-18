@@ -24,10 +24,12 @@ jobs:
     - name: Install dependencies
       uses: snok/install-poetry@v1
     - name: Linter
-      uses: chartboost/ruff-action@v1
+      run: |
+        poetry ruff check
     - name: Type Checker
-      uses: jakebailey/pyright-action@v2
+      run: |
+        poetry pyright
     - name: Test with pytest
       run: |
-        pytest --cov
+        poetry pytest --cov
       shell: bash
