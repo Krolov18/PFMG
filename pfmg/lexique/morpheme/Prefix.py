@@ -18,7 +18,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
-    """Un préfixe encode une règle affixale ajoutant un élément à la gauche du Radical."""
+    """Encode une règle affixale ajoutant un élément avant le Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^(.*)\+X$",
@@ -43,6 +43,7 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
         _rule = Prefix.__PATTERN(rule)
         if _rule is None:
             raise TypeError
+        assert sigma
         self.__rule = _rule
         self.__sigma = sigma
         self.__phonology = phonology
@@ -57,6 +58,16 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
 
     def _to_string__str(self, term: str) -> str:
         return f"{self.__rule.group(1)}{term}"
+
+    def _to_decoupe__stemspace(
+        self, term: StemSpace | str | None = None
+    ) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{self.__rule.group(1)}-{term.stems[0]}"
+
+    def _to_decoupe__str(self, term: StemSpace | str | None = None) -> str:
+        assert isinstance(term, str)
+        return f"{self.__rule.group(1)}-{term}"
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'un préfixe.

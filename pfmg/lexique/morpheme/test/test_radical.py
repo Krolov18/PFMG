@@ -16,7 +16,11 @@ def test_radical_assertions() -> None:
             stems=StemSpace(
                 stems=()
             ),
-            sigma=frozendict({"Genre": "m"})
+            sigma=frozendict(
+                {
+                    "Genre": "m"
+                }
+            )
         )
 
     # empty lemma
@@ -25,14 +29,22 @@ def test_radical_assertions() -> None:
             stems=StemSpace(
                 stems=("", "rad2", "rad3")
             ),
-            sigma=frozendict({"Genre": "m"})
+            sigma=frozendict(
+                {
+                    "Genre": "m"
+                }
+            )
         )
 
     actual = Radical(
-            stems=StemSpace(
-                stems=("rad1", "rad2", "rad3")
-            ),
-            sigma=frozendict({"Genre": "m"})
+        stems=StemSpace(
+            stems=("rad1", "rad2", "rad3")
+        ),
+        sigma=frozendict(
+            {
+                "Genre": "m"
+            }
         )
+    )
 
     assert str(actual) == "Radical(rad1::rad2::rad3,Genre=m)"

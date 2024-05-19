@@ -30,25 +30,5 @@ class ABCDisplay(ABC):
         """
 
     @abstractmethod
-    def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Inner function quand term est un stem_space.
-
-        :param term:
-        :return:
-        """
-
-    @abstractmethod
-    def _to_string__str(self, term: str) -> str:
-        """Inner function quand term est un string.
-
-        :param term:
-        :return:
-        """
-
-    @abstractmethod
-    def _to_string__nonetype(self, term: None = None) -> str:
-        """Inner function quand term est None.
-
-        :param term:
-        :return:
-        """
+    def to_decoupe(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""

@@ -43,14 +43,15 @@ class Stems(ABCReader, Iterable):
             match value:
                 case str():
                     pos_inherence = accumulator.split(";", maxsplit=1)
+                    pos, inherence = pos_inherence[0], ""
+                    d_sigma = [{}]
+
                     if len(pos_inherence) == 2:
                         pos, inherence = pos_inherence
                         d_sigma = FeatureReader().parse(
                             inherence.replace(";", ",")
                         )
-                    else:
-                        pos, inherence = pos_inherence[0], ""
-                        d_sigma = [{}]
+
                     stems, s_sigma = Stems.__parse_translation(value)
                     yield Lexeme(
                         source=LexemeEntry(
@@ -59,7 +60,7 @@ class Stems(ABCReader, Iterable):
                             sigma=s_sigma,
                         ),
                         destination=LexemeEntry(
-                            stems=StemSpace(stems=tuple(key.split(","))),
+                            stems=StemSpace.from_string(key),
                             pos=pos,
                             sigma=frozendict(d_sigma[0]),
                         ),

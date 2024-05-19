@@ -6,51 +6,29 @@ import pytest
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Circumfix import Circumfix
-from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-@pytest.mark.parametrize("rule, expected, sigma", [
+@pytest.mark.parametrize("rule, sigma", [
     # test avec un rule vide
-    ("", frozendict(Genre="m"), None),
+    ("", frozendict(Genre="m")),
     # test avec un rule qui ne contient pas de +X+
-    ("hHPJLK", frozendict(Genre="m"), None),
+    ("hHPJLK", frozendict(Genre="m")),
 ])
-def test_circumfix_error(rule, expected, sigma) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
-
+def test_circumfix_error(fx_df_phonology, rule, sigma) -> None:
     with pytest.raises(TypeError):
         _ = Circumfix(
             rule=rule,
             sigma=sigma,
-            phonology=phonology
+            phonology=fx_df_phonology
         )
 
 
-def test_get_rule() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_get_rule(fx_df_phonology) -> None:
     circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
     assert circumfix.get_rule().string == "a+X+d"
@@ -59,61 +37,33 @@ def test_get_rule() -> None:
     assert circumfix.get_rule().group(2) == "d"
 
 
-def test_get_sigma() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_get_sigma(fx_df_phonology) -> None:
     circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
     assert circumfix.get_sigma() == frozendict(Genre="m")
 
 
-def test_repr() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_repr(fx_df_phonology) -> None:
     circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
-    assert str(circumfix) == "Circumfix(rule=a+X+d, sigma=frozendict({'Genre': 'm'}))"
+    actual = str(circumfix)
+    expected = "Circumfix(rule=a+X+d, sigma=frozendict({'Genre': 'm'}))"
+    assert actual == expected
 
 
-def test_to_string() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_to_string(fx_df_phonology) -> None:
     circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
     assert circumfix.to_string("toto") == "atotod"
@@ -125,40 +75,44 @@ def test_to_string() -> None:
     assert actual == "atotod"
 
 
-def test_equal() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
-
+def test_equal(fx_df_phonology) -> None:
     circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     other_circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert circumfix == other_circumfix
 
     other_circumfix = Circumfix(
         rule="a+X+d",
         sigma=frozendict(Genre="f"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert circumfix != other_circumfix
 
     other_circumfix = Circumfix(
         rule="a+X+t",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert circumfix != other_circumfix
+
+
+def test_to_decoupe(fx_df_phonology) -> None:
+    prefix = Circumfix(
+        rule="a+X+i",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = prefix.to_decoupe(None)
+
+    assert prefix.to_decoupe(StemSpace(("toto",))) == "a+toto+i"
+
+    assert prefix.to_decoupe("toto") == "a+toto+i"
