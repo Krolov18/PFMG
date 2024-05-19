@@ -1,0 +1,18 @@
+Start: "NP"
+NP:
+  Source:
+    phrases:
+      - [ "D", "NOM" ]
+    agreements:
+      - "Genre,Nombre"
+    percolations:
+      - "Genre,Nombre"
+    translations:
+      - [ 1, 0 ]
+  Destination:
+    phrases:
+      - [ "NOM", "D" ]
+    agreements:
+      - "Nombre"
+    percolations:
+      - "Nombre"
