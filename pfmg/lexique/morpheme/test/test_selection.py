@@ -9,9 +9,11 @@ from pfmg.lexique.morpheme.Selection import Selection
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-@pytest.mark.parametrize("rule, expected, sigma", [
-    ("X1", ("1",), frozendict(Genre="m")),
-])
+@pytest.mark.parametrize(
+    "rule, expected, sigma", [
+        ("X1", ("1",), frozendict(Genre="m")),
+    ]
+)
 def test_selection(fx_df_phonology, rule, expected, sigma) -> None:
     selection = Selection(
         rule=rule,
@@ -88,16 +90,23 @@ def test_selection_to_string_not_implemented_error(fx_df_phonology) -> None:
         )
 
 
-@pytest.mark.parametrize("rule, stem_space, expected", [
-    ("X1", ("X1", "X2"), "X1"),
-    ("X2", ("X1", "X2"), "X2"),
-    ("X2", ("X1", "X2", "X3"), "X2"),
-    ("X15", ("X1", "X2", "X3", "X4",
-             "X5", "X6", "X7", "X8",
-             "X9", "X10", "X11", "X12",
-             "X13", "X14", "X15"), "X15"),
-])
-def test_selection_to_string(fx_df_phonology, rule, stem_space, expected) -> None:
+@pytest.mark.parametrize(
+    "rule, stem_space, expected", [
+        ("X1", ("X1", "X2"), "X1"),
+        ("X2", ("X1", "X2"), "X2"),
+        ("X2", ("X1", "X2", "X3"), "X2"),
+        ("X15", ("X1", "X2", "X3", "X4",
+                 "X5", "X6", "X7", "X8",
+                 "X9", "X10", "X11", "X12",
+                 "X13", "X14", "X15"), "X15"),
+    ]
+)
+def test_selection_to_string(
+    fx_df_phonology,
+    rule,
+    stem_space,
+    expected
+) -> None:
     selection = Selection(
         rule=rule,
         sigma=frozendict(),
@@ -159,11 +168,19 @@ def test_get_rule(fx_df_phonology) -> None:
     assert selection.get_rule().string == rule
 
 
-@pytest.mark.parametrize("rule, sigma, stems, expected", [
-    ("X1", {"Genre": "m"}, ("toto",), "toto"),
-    ("X1", {"Genre": "m"}, ("toto", "tutu"), "toto"),
-    ("X2", {"Genre": "m"}, ("toto", "tutu"), "tutu"),
-])
+@pytest.mark.parametrize(
+    "rule, sigma, stems, expected", [
+        ("X1", {
+            "Genre": "m"
+        }, ("toto",), "toto"),
+        ("X1", {
+            "Genre": "m"
+        }, ("toto", "tutu"), "toto"),
+        ("X2", {
+            "Genre": "m"
+        }, ("toto", "tutu"), "tutu"),
+    ]
+)
 def test_to_decoupe(fx_df_phonology, rule, sigma, stems, expected) -> None:
     selection = Selection(
         rule=rule,
@@ -178,11 +195,19 @@ def test_to_decoupe(fx_df_phonology, rule, sigma, stems, expected) -> None:
 
 
 # TODO : peut-être qu'il faudrait raise un NotImplementedError pour ce cas
-@pytest.mark.parametrize("rule, sigma, stems, expected", [
-    ("X1", {"Genre": "m"}, "toto", "toto"),
-    ("X1", {"Genre": "m"}, "toto", "toto"),
-    ("X2", {"Genre": "m"}, "toto", "toto"),
-])
+@pytest.mark.parametrize(
+    "rule, sigma, stems, expected", [
+        ("X1", {
+            "Genre": "m"
+        }, "toto", "toto"),
+        ("X1", {
+            "Genre": "m"
+        }, "toto", "toto"),
+        ("X2", {
+            "Genre": "m"
+        }, "toto", "toto"),
+    ]
+)
 def test_to_decoupe_str(fx_df_phonology, rule, sigma, stems, expected):
     selection = Selection(
         rule=rule,

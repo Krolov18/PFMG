@@ -42,7 +42,10 @@ class FormeEntry(MixinDisplay):
 
         :return: une production lexicale
         """
-        name = f"_{self.__class__.__name__}__to_nltk_{type(infos).__name__.lower()}"
+        name = (
+            f"_{self.__class__.__name__}__to_nltk_"
+            f"{type(infos).__name__.lower()}"
+        )
         return getattr(self, name)(infos)
 
     def __to_nltk_nonetype(self, infos: None = None) -> str:

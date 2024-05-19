@@ -14,33 +14,57 @@ def test_morpheme(fx_df_phonology) -> None:
     morpheme = Morphemes(
         radical=Radical(
             stems=StemSpace(("radical",)),
-            sigma=frozendict({"Genre": "m"})
+            sigma=frozendict(
+                {
+                    "Genre": "m"
+                }
+            )
         ),
         others=[
             create_morpheme(
                 rule="a+X",
-                sigma=frozendict({"Genre": "m"}),
+                sigma=frozendict(
+                    {
+                        "Genre": "m"
+                    }
+                ),
                 phonology=fx_df_phonology
             ),
             create_morpheme(
                 rule="b+X",
-                sigma=frozendict({"Nombre": "s"}),
-                phonology=fx_df_phonology)]
+                sigma=frozendict(
+                    {
+                        "Nombre": "s"
+                    }
+                ),
+                phonology=fx_df_phonology
+            )]
     )
     assert morpheme.radical == Radical(
         stems=StemSpace(("radical",)),
-        sigma=frozendict({"Genre": "m"})
+        sigma=frozendict(
+            {
+                "Genre": "m"
+            }
+        )
     )
     expected_morphemes = [
         create_morpheme(
             rule="a+X",
-            sigma=frozendict({"Genre": "m"}),
+            sigma=frozendict(
+                {
+                    "Genre": "m"
+                }
+            ),
             phonology=fx_df_phonology
         ),
         create_morpheme(
             rule="b+X",
             sigma=frozendict(
-                {"Nombre": "s"}),
+                {
+                    "Nombre": "s"
+                }
+            ),
             phonology=fx_df_phonology
         )
     ]

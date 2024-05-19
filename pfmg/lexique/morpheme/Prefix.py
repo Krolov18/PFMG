@@ -18,7 +18,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
-    """Un préfixe encode une règle affixale ajoutant un élément à la gauche du Radical."""
+    """Encode une règle affixale ajoutant un élément avant le Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^(.*)\+X$",

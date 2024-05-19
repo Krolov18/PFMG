@@ -54,7 +54,9 @@ def test_repr(fx_df_phonology) -> None:
         phonology=fx_df_phonology
     )
 
-    assert str(circumfix) == "Circumfix(rule=a+X+d, sigma=frozendict({'Genre': 'm'}))"
+    actual = str(circumfix)
+    expected = "Circumfix(rule=a+X+d, sigma=frozendict({'Genre': 'm'}))"
+    assert actual == expected
 
 
 def test_to_string(fx_df_phonology) -> None:

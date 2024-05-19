@@ -14,12 +14,28 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 def test_to_string(fx_df_phonology) -> None:
 
-    forme = FormeEntry(index=2,
-                       pos="N",
-                       morphemes=Morphemes(radical=Radical(
-                           stems=StemSpace(stems=("a", "b", "c")), sigma=frozendict({"Genre": "m", "Nombre": "s"})),
-                           others=[]),
-                       sigma=frozendict({"Genre": "m", "Nombre": "s"}))
+    forme = FormeEntry(
+        index=2,
+        pos="N",
+        morphemes=Morphemes(
+            radical=Radical(
+                stems=StemSpace(stems=("a", "b", "c")),
+                sigma=frozendict(
+                    {
+                        "Genre":  "a",
+                        "Nombre": "b"
+                    }
+                )
+            ),
+            others=[]
+        ),
+        sigma=frozendict(
+            {
+                "Genre":  "m",
+                "Nombre": "s"
+            }
+        )
+    )
     actual = forme.to_string(None)
     expected = "a"
     assert actual == expected
@@ -30,17 +46,33 @@ def test_to_string(fx_df_phonology) -> None:
         morphemes=Morphemes(
             radical=Radical(
                 stems=StemSpace(stems=("a", "b", "c")),
-                sigma=frozendict({"Genre": "m", "Nombre": "s"})
+                sigma=frozendict(
+                    {
+                        "Genre":  "m",
+                        "Nombre": "s"
+                    }
+                )
             ),
             others=[
                 create_morpheme(
                     rule="a+X",
-                    sigma=frozendict({"Genre": "m", "Nombre": "s"}),
+                    sigma=frozendict(
+                        {
+                            "Genre":  "m",
+                            "Nombre": "s"
+                        }
+                    ),
                     phonology=fx_df_phonology
                 )
             ]
         ),
-        sigma=frozendict({"Genre": "m", "Nombre": "s"}))
+        sigma=frozendict(
+            {
+                "Genre":  "m",
+                "Nombre": "s"
+            }
+        )
+    )
 
     actual = forme.to_string(None)
     expected = "aa"
@@ -54,28 +86,61 @@ def test_to_string(fx_df_phonology) -> None:
 
 
 def test_get_sigma() -> None:
-    forme = FormeEntry(index=2,
-                       pos="N",
-                       morphemes=Morphemes(radical=Radical(
-                           stems=StemSpace(stems=("a", "b", "c")),
-                           sigma=frozendict({"Genre": "m", "Nombre": "s"})
-                       ),
-                           others=[]),
-                       sigma=frozendict({"Genre": "m", "Nombre": "s"}))
+    forme = FormeEntry(
+        index=2,
+        pos="N",
+        morphemes=Morphemes(
+            radical=Radical(
+                stems=StemSpace(stems=("a", "b", "c")),
+                sigma=frozendict(
+                    {
+                        "Genre":  "m",
+                        "Nombre": "s"
+                    }
+                )
+            ),
+            others=[]
+        ),
+        sigma=frozendict(
+            {
+                "Genre":  "m",
+                "Nombre": "s"
+            }
+        )
+    )
     actual = forme.get_sigma()
-    expected = frozendict({"Genre": "m", "Nombre": "s"})
+    expected = frozendict(
+        {
+            "Genre":  "m",
+            "Nombre": "s"
+        }
+    )
     assert actual == expected
 
 
 def test_to_nltk(fx_df_phonology) -> None:
-    forme = FormeEntry(index=3,
-                       pos="N",
-                       morphemes=Morphemes(radical=Radical(
-                           stems=StemSpace(stems=("a", "b", "c")),
-                           sigma=frozendict({"Genre": "m", "Nombre": "s"})
-                       ),
-                           others=[]),
-                       sigma=frozendict({"Genre": "m", "Nombre": "s"}))
+    forme = FormeEntry(
+        index=3,
+        pos="N",
+        morphemes=Morphemes(
+            radical=Radical(
+                stems=StemSpace(stems=("a", "b", "c")),
+                sigma=frozendict(
+                    {
+                        "Genre":  "m",
+                        "Nombre": "s"
+                    }
+                )
+            ),
+            others=[]
+        ),
+        sigma=frozendict(
+            {
+                "Genre":  "m",
+                "Nombre": "s"
+            }
+        )
+    )
     actual = forme.to_nltk()
     expected = "N[Genre='m',Nombre='s'] -> '3'"
     assert actual == expected
@@ -88,16 +153,32 @@ def test_to_nltk(fx_df_phonology) -> None:
                 stems=StemSpace(
                     stems=("a", "b", "c")
                 ),
-                sigma=frozendict({"Genre": "m", "Nombre": "s"})
+                sigma=frozendict(
+                    {
+                        "Genre":  "m",
+                        "Nombre": "s"
+                    }
+                )
             ),
             others=[
                 create_morpheme(
                     rule="a+X",
-                    sigma=frozendict({"Genre": "m", "Nombre": "s"}),
-                    phonology=fx_df_phonology)
+                    sigma=frozendict(
+                        {
+                            "Genre":  "m",
+                            "Nombre": "s"
+                        }
+                    ),
+                    phonology=fx_df_phonology
+                )
             ]
         ),
-        sigma=frozendict({"Genre": "m", "Nombre": "s"})
+        sigma=frozendict(
+            {
+                "Genre":  "m",
+                "Nombre": "s"
+            }
+        )
     )
 
     actual = forme.to_nltk()

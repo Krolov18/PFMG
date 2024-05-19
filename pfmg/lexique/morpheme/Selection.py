@@ -18,7 +18,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class Selection(MixinDisplay, MixinEquality, MixinRepresentor):
-    """Pseudo-Morpheme qui permet de construire une règle de sélection de radical."""
+    """Construit une règle de sélection de radical parmi un StemSpace."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^X(\d+)$",

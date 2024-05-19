@@ -10,10 +10,17 @@ from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.morpheme.Suffix import Suffix
 
 
-@pytest.mark.parametrize("blocks", [[{"CF=N1,Nombre=Sg": "X+v"}]])
+@pytest.mark.parametrize(
+    "blocks",
+    [[{
+        "CF=N1,Nombre=Sg": "X+v"
+    }]]
+)
 def test_from_dict(fx_df_phonology, blocks) -> None:
-    expected = [[Suffix(rule="X+v", sigma=frozendict(CF="N1", Nombre="Sg"),
-                        phonology=fx_df_phonology)]]
+    expected = [[Suffix(
+        rule="X+v", sigma=frozendict(CF="N1", Nombre="Sg"),
+        phonology=fx_df_phonology
+    )]]
     actual = Blocks.from_list(blocks, fx_df_phonology)
     assert isinstance(actual, Blocks)
     assert actual.data == expected
@@ -21,8 +28,11 @@ def test_from_dict(fx_df_phonology, blocks) -> None:
 
 def test___call__(fx_df_phonology) -> None:
     blocks = Blocks(
-        data=[[Suffix(rule="X+v", sigma=frozendict(Genre="m", Nombre="sg"),
-                      phonology=fx_df_phonology)]])
+        data=[[Suffix(
+            rule="X+v", sigma=frozendict(Genre="m", Nombre="sg"),
+            phonology=fx_df_phonology
+        )]]
+    )
 
     actual = blocks(sigma=frozendict(Genre="f", Nombre="sg"))
     expected = []
@@ -63,7 +73,7 @@ def test_raise_errors(fx_df_phonology):
                 phonology=fx_df_phonology
             )]]
         )(sigma=frozendict())
-        
+
     with pytest.raises(AssertionError):
         _ = Blocks.from_list(data=[], phonology=fx_df_phonology)
 
@@ -130,7 +140,14 @@ def test_raise_errors(fx_df_phonology):
 #
 #     ]
 # )
-# def test_select_morphemes(fx_df_phonology, tmp_path, blocks, pos, sigma, expected) -> None:
+# def test_select_morphemes(
+#     fx_df_phonology,
+#     tmp_path,
+#     blocks,
+#     pos,
+#     sigma,
+#     expected
+# ) -> None:
 #     blocks_path = tmp_path / "Blocks.yaml"
 #     with open(blocks_path, mode="w", encoding="utf8") as file_handler:
 #         yaml.dump(blocks, file_handler)

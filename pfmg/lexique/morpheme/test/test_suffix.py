@@ -9,10 +9,15 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.morpheme.Suffix import Suffix
 
 
-@pytest.mark.parametrize("rule, expected_groups, sigma", [
-    ("X+d", ("d",), frozendict(Genre="m")),
-])
-def test_suffix(fx_df_phonology, rule, expected_groups, sigma) -> None:
+parametrize = pytest.mark.parametrize(
+    "rule, sigma", [
+        ("X+d", frozendict(Genre="m")),
+    ]
+)
+
+
+@parametrize
+def test_suffix(fx_df_phonology, rule, sigma) -> None:
     suffix = Suffix(
         rule=rule,
         sigma=sigma,

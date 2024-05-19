@@ -10,9 +10,11 @@ from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-@pytest.mark.parametrize("rule, expected, sigma", [
-    ("d+X", ("d",), frozendict(Genre="m")),
-])
+@pytest.mark.parametrize(
+    "rule, expected, sigma", [
+        ("d+X", ("d",), frozendict(Genre="m")),
+    ]
+)
 def test_prefix(fx_df_phonology, rule, expected, sigma) -> None:
     prefix = Prefix(
         rule=rule,
