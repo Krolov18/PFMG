@@ -22,8 +22,8 @@ def fx_lexicon():
         marks=pytest.mark.xfail(raises=AssertionError)),
 
     (["le", "bruit"],
-     [['6376', '6378', '6380'],
-      ['6598', '6600', '6602', '6604', '6606', '6608']]),
+     [['760', '762', '764'],
+      ['862']]),
 ])
 def test_indexer(fx_lexicon, tokens, expected) -> None:
     indexer = new_indexer(id_indexer="Desamb", lexicon=fx_lexicon)
