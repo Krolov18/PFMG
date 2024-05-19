@@ -171,7 +171,7 @@ def test_selection_to_string_index_error() -> None:
         phonology=phonology
     )
 
-    with pytest.raises(IndexError):
+    with pytest.raises(AssertionError):
         selection.to_string(StemSpace(()))
 
     with pytest.raises(IndexError):

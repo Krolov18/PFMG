@@ -8,7 +8,9 @@ import functools
 import itertools
 
 import pytest
+from frozendict import frozendict
 
+from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.utils.abstract_factory import factory_function, factory_method
 
 params_factory_method_concrete_product: list[str] = ["ConcreteProduct"]
@@ -114,4 +116,36 @@ def fx_factory_function(request) -> functools.partial:  # noqa
         concrete_product=concrete_product,
         package=package,
         **kwargs,
+    )
+
+
+@pytest.fixture
+def fx_df_phonology():
+    """Fixture qui construit un Phonology avec des données "standards"."""
+    return Phonology(
+        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
+        mutations=frozendict(
+            p="p",
+            t="p",
+            k="t",
+            b="p",
+            d="b",
+            g="d",
+            m="m",
+            n="m",
+            N="n",
+            f="f",
+            s="f",
+            S="s",
+            v="f",
+            z="v",
+            Z="z",
+            r="w",
+            l="r",
+            j="w",
+            w="w",
+        ),
+        derives=frozendict(A="V", D="C"),
+        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
+        voyelles=frozenset("iueoa"),
     )
