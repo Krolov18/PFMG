@@ -58,8 +58,8 @@ class Production:
         :param indices:
         """
         # Ajoute les accords de destination
-        for i_idx in indices:
-            self.agreements[i_idx].update(production.agreements[i_idx])
+        for i_idx, value in enumerate(indices):
+            self.agreements[value].update(production.agreements[i_idx])
         # Ajoute la percolation de destination
         self.percolation.update(production.percolation)
 
