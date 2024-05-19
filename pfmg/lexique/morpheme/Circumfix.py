@@ -57,6 +57,7 @@ class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
         :param term:
         :return: Application de larègle sur un radical StemSpace
         """
+        assert isinstance(term, StemSpace)
         return f"{self.__rule.group(1)}{term.stems[0]}{self.__rule.group(2)}"
 
     def _to_string__str(self, term: str) -> str:
@@ -65,7 +66,16 @@ class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
         :param term: radical
         :return: application de la règle sur un radical string
         """
+        assert isinstance(term, str)
         return f"{self.__rule.group(1)}{term}{self.__rule.group(2)}"
+
+    def _to_decoupe__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{self.__rule.group(1)}+{term.stems[0]}+{self.__rule.group(2)}"
+
+    def _to_decoupe__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return f"{self.__rule.group(1)}+{term}+{self.__rule.group(2)}"
 
     def get_sigma(self) -> frozendict:
         """Récupère les propriétés du circonfixe."""
