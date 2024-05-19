@@ -36,7 +36,7 @@ class Morphemes(ABCDisplay):
 
     def to_decoupe(self, term: StemSpace | str | None = None) -> str:
         """TODO : Doc à écrire."""
-        assert term is not None
+        assert term is None
         result: str = ""
 
         for morpheme in self.others:

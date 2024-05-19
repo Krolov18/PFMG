@@ -184,3 +184,111 @@ def test_to_nltk(fx_df_phonology) -> None:
     actual = forme.to_nltk()
     expected = "N[Genre='m',Nombre='s'] -> '4'"
     assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "radical, sigma, morphemes, expected", [
+        (
+            (
+                "jardin,jardins",
+                {
+                    "Genre": "m"
+                }
+            ),
+            {
+                "Genre":  "m",
+                "Nombre": "sg"
+            },
+            [],
+            "jardin"
+        ),
+
+        (
+            (
+                "jardin,jardins",
+                {
+                    "Genre": "m"
+                }
+            ),
+            {
+                "Genre":  "m",
+                "Nombre": "pl"
+            },
+            [
+                (
+                    "X2?X2:X1",
+                    {
+                        "Nombre": "pl"
+                    }
+                )
+            ],
+            "jardins"
+        ),
+
+        (
+            (
+                "jardin",
+                {
+                    "Genre": "m"
+                }
+            ),
+            {
+                "Genre":  "m",
+                "Nombre": "pl"
+            },
+            [
+                (
+                    "X+s",
+                    {
+                        "Nombre": "pl"
+                    }
+                )
+            ],
+            "jardin-s"
+        ),
+
+        (
+            (
+                "jardin",
+                {
+                    "Genre": "m"
+                }
+            ),
+            {
+                "Genre":  "m",
+                "Nombre": "pl"
+            },
+            [
+                (
+                    "s+X+k",
+                    {
+                        "Nombre": "pl"
+                    }
+                )
+            ],
+            "s+jardin+k"
+        ),
+
+    ]
+)
+def test_decoupe(fx_df_phonology, radical, sigma, morphemes, expected):
+    forme_entry = FormeEntry(
+        pos="N",
+        sigma=frozendict(sigma),
+        index=4,
+        morphemes=Morphemes(
+            radical=Radical(
+                stems=StemSpace.from_string(radical[0]),
+                sigma=frozendict(radical[1])
+            ),
+            others=[
+                create_morpheme(
+                    rule=rule,
+                    sigma=frozendict(sigma),
+                    phonology=fx_df_phonology
+                ) for rule, sigma in morphemes
+            ]
+        )
+    )
+    actual = forme_entry.to_decoupe()
+    assert actual == expected
