@@ -6,6 +6,8 @@
 
 from dataclasses import dataclass
 
+from frozendict import frozendict
+
 from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
@@ -15,10 +17,17 @@ class Radical(MixinRepresentor):
     """Represente le radical d'une Forme."""
 
     stems: StemSpace
+    sigma: frozendict
+
+    def __post_init__(self):
+        """Initialise lemma à partir du premier stem dans stems."""
+        self.lemma = self.stems.lemma
 
     def _repr_params(self) -> str:
         """Représente les params d'un radical.
 
         :return: les params d'un radical
         """
-        return "::".join(self.stems.stems)
+        stems = "::".join(self.stems.stems)
+        sigma = ",".join([f"{k}={v}" for k, v in self.sigma.items()])
+        return f"{stems},{sigma}"

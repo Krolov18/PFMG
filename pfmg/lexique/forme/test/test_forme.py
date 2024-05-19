@@ -24,7 +24,8 @@ def test_forme(source, destination):
         pos=source[0],
         morphemes=Morphemes(
             radical=Radical(
-                stems=StemSpace(stems=("source",))
+                stems=StemSpace(stems=("source",)),
+                sigma=source[2]
             ),
             others=source[1]
         ),
@@ -35,7 +36,8 @@ def test_forme(source, destination):
         pos=source[0],
         morphemes=Morphemes(
             radical=Radical(
-                stems=StemSpace(stems=("destination",))
+                stems=StemSpace(stems=("destination",)),
+                sigma=source[2]
             ),
             others=source[1]
         ),
