@@ -7,27 +7,16 @@ from frozendict import frozendict
 
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.morpheme.Suffix import Suffix
-from pfmg.lexique.phonology.Phonology import Phonology
 
 
 @pytest.mark.parametrize("rule, expected_groups, sigma", [
     ("X+d", ("d",), frozendict(Genre="m")),
 ])
-def test_suffix(rule, expected_groups, sigma) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_suffix(fx_df_phonology, rule, expected_groups, sigma) -> None:
     suffix = Suffix(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
     # test d'identité
@@ -37,7 +26,7 @@ def test_suffix(rule, expected_groups, sigma) -> None:
     other_suffix = Suffix(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert suffix == other_suffix
 
@@ -45,7 +34,7 @@ def test_suffix(rule, expected_groups, sigma) -> None:
     other_suffix = Suffix(
         rule=rule,
         sigma=frozendict(Genre="f"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert suffix != other_suffix
 
@@ -53,59 +42,39 @@ def test_suffix(rule, expected_groups, sigma) -> None:
     other_suffix = Suffix(
         rule="X+a",
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert suffix != other_suffix
 
     # test avec rule et sigma qui diffèrent
     other_suffix = Suffix(
         rule="X+a", sigma=frozendict(Genre="f"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert suffix != other_suffix
 
 
-def test_suffix_type_error() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_suffix_type_error(fx_df_phonology) -> None:
     with pytest.raises(TypeError):
         Suffix(
             rule="",
             sigma=frozendict(),
-            phonology=phonology
+            phonology=fx_df_phonology
         )
 
     with pytest.raises(TypeError):
         Suffix(
             rule="hHPJLK",
             sigma=frozendict(),
-            phonology=phonology
+            phonology=fx_df_phonology
         )
 
 
-def test_to_string() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_to_string(fx_df_phonology) -> None:
     suffix = Suffix(
         rule="X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     with pytest.raises(NotImplementedError):
         _ = suffix.to_string(None)
@@ -113,20 +82,25 @@ def test_to_string() -> None:
     assert suffix.to_string(StemSpace(("toto",))) == "totod"
 
 
-def test_repr() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_repr(fx_df_phonology) -> None:
     suffix = Suffix(
         rule="X+d",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert repr(suffix) == "Suffix(rule=X+d, sigma=frozendict({'Genre': 'm'}))"
+
+
+def test_to_decoupe(fx_df_phonology) -> None:
+    suffix = Suffix(
+        rule="X+i",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = suffix.to_decoupe(None)
+
+    assert suffix.to_decoupe(StemSpace(("toto",))) == "toto-i"
+
+    assert suffix.to_decoupe("toto") == "toto-i"

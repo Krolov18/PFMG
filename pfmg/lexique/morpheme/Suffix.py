@@ -63,6 +63,16 @@ class Suffix(MixinDisplay, MixinEquality, MixinRepresentor):
         """
         return f"{term}{self.__rule.group(1)}"
 
+    def _to_decoupe__stemspace(
+        self, term: StemSpace | str | None = None
+    ) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{term.stems[0]}-{self.__rule.group(1)}"
+
+    def _to_decoupe__str(self, term: StemSpace | str | None = None) -> str:
+        assert isinstance(term, str)
+        return f"{term}-{self.__rule.group(1)}"
+
     def _repr_params(self) -> str:
         """Pré-forme les attribut du suffixe.
 

@@ -12,32 +12,22 @@ from pfmg.lexique.morpheme.Condition import Condition
 from pfmg.lexique.morpheme.Selection import Selection
 from pfmg.lexique.morpheme.Gabarit import Gabarit
 from pfmg.lexique.morpheme.Factory import create_morpheme
-from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @pytest.mark.parametrize("rule, sigma, expected_type", [
-    ("a+X", frozendict(), Prefix),
+    ("a+X", frozendict({"Genre": "m"}), Prefix),
     ("X+a", frozendict(), Suffix),
     ("s+X+a", frozendict(), Circumfix),
     ("4U55e6V6", frozendict(), Gabarit),
     ("X1", frozendict(), Selection),
     ("X2?X2:X1", frozendict(), Condition),
 ])
-def test_prefix(rule, sigma, expected_type) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa"))
+def test_prefix(fx_df_phonology, rule, sigma, expected_type) -> None:
     actual = create_morpheme(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert isinstance(actual, expected_type)
 
@@ -46,103 +36,62 @@ def test_prefix(rule, sigma, expected_type) -> None:
     ("", frozendict(), None),
     ("REGLE_INCOMPRISE", frozendict(), None),
 ])
-def test_prefix_error(rule, sigma, expected_type) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa"))
+def test_prefix_error(fx_df_phonology, rule, sigma, expected_type) -> None:
     with pytest.raises(TypeError):
         _ = create_morpheme(
             rule=rule,
             sigma=sigma,
-            phonology=phonology
+            phonology=fx_df_phonology
         )
 
 
 @pytest.mark.parametrize("rule, sigma, stems, expected", [
-    ("a+X", frozendict(), ("truc",), "atruc"),
-    ("X+a", frozendict(), ("truc",), "truca"),
-    ("s+X+a", frozendict(), ("truc",), "struca"),
-    ("4U55e6V6", frozendict(), ("trup",), "puwwepup"),
-    ("4U55Ae6V6", frozendict(), ("lvup",), "ruffuepup"),
-    ("7U88e9V9", frozendict(), ("tvup",), "puffepup"),
-    ("X1", frozendict(), ("truc",), "truc"),
-    ("X2?X2:X1", frozendict(), ("truc",), "truc"),
-    ("X2?X2:X1", frozendict(), ("truc", "machin"), "machin"),
+    ("a+X", frozendict(Genre="m"), ("truc",), "atruc"),
+    ("X+a", frozendict(Genre="m"), ("truc",), "truca"),
+    ("s+X+a", frozendict(Genre="m"), ("truc",), "struca"),
+    ("4U55e6V6", frozendict(Genre="m"), ("trup",), "puwwepup"),
+    ("4U55Ae6V6", frozendict(Genre="m"), ("lvup",), "ruffuepup"),
+    ("7U88e9V9", frozendict(Genre="m"), ("tvup",), "puffepup"),
+    ("X1", frozendict(Genre="m"), ("truc",), "truc"),
+    ("X2?X2:X1", frozendict(Genre="m"), ("truc",), "truc"),
+    ("X2?X2:X1", frozendict(Genre="m"), ("truc", "machin"), "machin"),
 ])
-def test_to_string_stemspace(rule, sigma, stems, expected) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa"))
+def test_to_string_stemspace(fx_df_phonology, rule, sigma, stems, expected) -> None:
     actual = create_morpheme(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert actual.to_string(StemSpace(stems=stems)) == expected
 
 
 @pytest.mark.parametrize("rule, sigma, stems, expected", [
-    ("a+X", frozendict(), "truc", "atruc"),
-    ("X+a", frozendict(), "truc", "truca"),
-    ("s+X+a", frozendict(), "truc", "struca")
+    ("a+X", frozendict(Genre="m"), "truc", "atruc"),
+    ("X+a", frozendict(Genre="m"), "truc", "truca"),
+    ("s+X+a", frozendict(Genre="m"), "truc", "struca")
 ])
-def test_to_string_str(rule, sigma, stems, expected) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa"))
+def test_to_string_str(fx_df_phonology, rule, sigma, stems, expected) -> None:
     actual = create_morpheme(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert actual.to_string(stems) == expected
 
 
 @pytest.mark.parametrize("rule, sigma, stems, expected", [
-    ("a+X", frozendict(), None, "atruc"),
-    ("X+a", frozendict(), None, "truca"),
-    ("s+X+a", frozendict(), None, "struca"),
-    ("4U55e6V6", frozendict(), None, "puwwepup"),
-    ("X1", frozendict(), None, "truc"),
-    ("X2?X2:X1", frozendict(), None, "truc"),
+    ("a+X", frozendict(Genre="m"), None, "atruc"),
+    ("X+a", frozendict(Genre="m"), None, "truca"),
+    ("s+X+a", frozendict(Genre="m"), None, "struca"),
+    ("4U55e6V6", frozendict(Genre="m"), None, "puwwepup"),
+    ("X1", frozendict(Genre="m"), None, "truc"),
+    ("X2?X2:X1", frozendict(Genre="m"), None, "truc"),
 ])
-def test_to_string_none_not_implemented_error(
-        rule,
-        sigma,
-        stems,
-        expected
-) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa"))
+def test_to_string_none_not_implemented_error(fx_df_phonology, rule, sigma, stems, expected) -> None:
     actual = create_morpheme(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     with pytest.raises(NotImplementedError):
         _ = actual.to_string(stems)

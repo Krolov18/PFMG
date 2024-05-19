@@ -46,10 +46,10 @@ def test_to_string(fx_df_phonology) -> None:
     expected = "aa"
     assert actual == expected
 
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(AssertionError):
         _ = forme.to_string("")
 
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(AssertionError):
         _ = forme.to_string(StemSpace(stems=("a", "b", "c")))
 
 

@@ -13,24 +13,14 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 @pytest.mark.parametrize("rule, expected, sigma", [
     ("X2?X1:X1", ("X2", "X1", "X1"), frozendict(Genre="m")),
 ])
-def test_condition(rule, expected, sigma) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_condition(fx_df_phonology, rule, expected, sigma) -> None:
     condition = Condition(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
-    assert condition.phonology is phonology
+    assert condition.phonology is fx_df_phonology
 
     assert condition.rule.groups() == expected
 
@@ -45,7 +35,7 @@ def test_condition(rule, expected, sigma) -> None:
     other_condition = Condition(
         rule=rule,
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert condition == other_condition
 
@@ -53,7 +43,7 @@ def test_condition(rule, expected, sigma) -> None:
     other_condition = Condition(
         rule=rule,
         sigma=frozendict(Genre="f"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert condition != other_condition
 
@@ -61,7 +51,7 @@ def test_condition(rule, expected, sigma) -> None:
     other_condition = Condition(
         rule="X3?X2:X1",
         sigma=sigma,
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert condition != other_condition
 
@@ -69,55 +59,34 @@ def test_condition(rule, expected, sigma) -> None:
     other_condition = Condition(
         rule="X3?X2:X1",
         sigma=frozendict(),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
     assert condition != other_condition
 
 
-@pytest.mark.parametrize("rule, expected, sigma", [
-    ("", frozendict(Genre="m"), None),
-    ("hHPJLK", frozendict(Genre="m"), None),
-    ("X2X1:X1", frozendict(Genre="m"), None),
-    ("X2?X1X1", frozendict(Genre="m"), None),
-    ("X2X1X1", frozendict(Genre="m"), None),
-    ("X2?X1:XD", frozendict(Genre="m"), None),
-    ("X2?X2:X1+s", frozendict(Genre="m"), None),  # TODO: C'est une règle qu'on voudrait licite
+@pytest.mark.parametrize("rule, sigma", [
+    ("", frozendict(Genre="m")),
+    ("hHPJLK", frozendict(Genre="m")),
+    ("X2X1:X1", frozendict(Genre="m")),
+    ("X2?X1X1", frozendict(Genre="m")),
+    ("X2X1X1", frozendict(Genre="m")),
+    ("X2?X1:XD", frozendict(Genre="m")),
+    ("X2?X2:X1+s", frozendict(Genre="m")),  # TODO: C'est une règle qu'on voudrait licite
 ])
-def test_suffix_error(rule, expected, sigma) -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
-
+def test_suffix_error(fx_df_phonology, rule, sigma) -> None:
     with pytest.raises(TypeError):
         _ = Condition(
             rule=rule,
             sigma=sigma,
-            phonology=phonology
+            phonology=fx_df_phonology
         )
 
 
-def test_to_string_with_none() -> None:
-    phonology = Phonology(
-        apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=frozendict(p="p", t="p", k="t", b="p", d="b",
-                             g="d", m="m", n="m", N="n", f="f",
-                             s="f", S="s", v="f", z="v", Z="z",
-                             r="w", l="r", j="w", w="w"),
-        derives=frozendict(A="V", D="C"),
-        consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
-        voyelles=frozenset("iueoa")
-    )
+def test_to_string_with_none(fx_df_phonology) -> None:
     condition = Condition(
         rule="X2?X1:X1",
         sigma=frozendict(Genre="m"),
-        phonology=phonology
+        phonology=fx_df_phonology
     )
 
     with pytest.raises(NotImplementedError):
@@ -128,3 +97,19 @@ def test_to_string_with_none() -> None:
 
     with pytest.raises(NotImplementedError):
         _ = condition.to_string("toto")
+
+
+def test_to_decoupe(fx_df_phonology) -> None:
+    condition = Condition(
+        rule="X2?X2:X1",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = condition.to_decoupe(None)
+
+    assert condition.to_decoupe(StemSpace(("toto",))) == "toto"
+    assert condition.to_decoupe(StemSpace(("toto", "tutu"))) == "tutu"
+
+    assert condition.to_decoupe("toto") == "toto"

@@ -10,6 +10,7 @@ from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.lexique.morpheme.Morphemes import Morphemes
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass
@@ -21,16 +22,13 @@ class FormeEntry(MixinDisplay):
     sigma: frozendict[str, str]
     index: int
 
-    def _to_string__nonetype(self, term: None = None) -> str:
-        result: str = ""
-        for morpheme in self.morphemes.others:
-            m_sigma = dict(self.sigma)
-            m_sigma.update(morpheme.get_sigma())
-            self.sigma = frozendict(m_sigma)
-            result = morpheme.to_string(
-                result or self.morphemes.radical.stems,
-            )
-        return result or self.morphemes.radical.stems.stems[0]
+    def to_string(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        return self.morphemes.to_string(term)
+
+    def to_decoupe(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        return self.morphemes.to_decoupe(term)
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'une Forme.

@@ -75,6 +75,14 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
             return self.__false.to_string(term)
         return self.__true.to_string(term)
 
+    def to_decoupe(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        try:
+            self.__cond.to_string(term)
+        except IndexError:
+            return self.__false.to_decoupe(term)
+        return self.__true.to_decoupe(term)
+
     def get_sigma(self) -> frozendict:
         """Récupère le sigma.
 

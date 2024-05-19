@@ -56,6 +56,20 @@ class Selection(MixinDisplay, MixinEquality, MixinRepresentor):
         """
         return term.stems[int(self.__rule.group(1)) - 1]
 
+    def _to_string__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return term
+
+    def _to_decoupe__stemspace(
+        self, term: StemSpace | str | None = None
+    ) -> str:
+        assert isinstance(term, StemSpace)
+        return term.stems[int(self.__rule.group(1)) - 1]
+
+    def _to_decoupe__str(self, term: StemSpace | str | None = None) -> str:
+        assert isinstance(term, str)
+        return term
+
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'un Selection.
 
