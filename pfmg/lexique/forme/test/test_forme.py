@@ -20,20 +20,24 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 )
 def test_forme(source, destination):
     source_forme = FormeEntry(
+        index=4,
         pos=source[0],
         morphemes=Morphemes(
             radical=Radical(
-                stems=StemSpace(stems=("source",))
+                stems=StemSpace(stems=("source",)),
+                sigma=source[2]
             ),
             others=source[1]
         ),
         sigma=source[2]
     )
     dest_forme = FormeEntry(
+        index=4,
         pos=source[0],
         morphemes=Morphemes(
             radical=Radical(
-                stems=StemSpace(stems=("destination",))
+                stems=StemSpace(stems=("destination",)),
+                sigma=source[2]
             ),
             others=source[1]
         ),
@@ -49,4 +53,4 @@ def test_forme(source, destination):
     with pytest.raises(NotImplementedError):
         _ = actual.get_sigma()
 
-    assert actual.to_string() == "source, destination"
+    assert actual.to_string() == "source"

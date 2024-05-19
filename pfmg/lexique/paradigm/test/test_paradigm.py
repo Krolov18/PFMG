@@ -17,21 +17,6 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.morpheme.Suffix import Suffix
 
 
-def phonology() -> dict:
-    return dict(
-        apophonies=dict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
-        mutations=dict(
-            p="p", t="p", k="t", b="p", d="b",
-            g="d", m="m", n="m", N="n", f="f",
-            s="f", S="s", v="f", z="v", Z="z",
-            r="w", l="r", j="w", w="w"
-        ),
-        derives=dict(A="V", D="C"),
-        consonnes=list("ptkbdgmnNfsSvzZrljw"),
-        voyelles=list("iueoa")
-    )
-
-
 # @pytest.mark.parametrize("lexeme, formes", [
 #     (Lexeme(stem=StemSpace(stems=("manie",)),
 #             pos="N",
@@ -76,7 +61,7 @@ def phonology() -> dict:
 #     assert actual_formes == formes
 
 
-def test_from_disk(tmp_path):
+def test_from_disk(tmp_path, fx_df_phonology):
     gloses = {"N": {"source": {"Genre":  ["m", "f"],
                                "Nombre": ["sg", "pl"]},
                     "destination": {"Genre":  ["m"],
@@ -95,7 +80,7 @@ def test_from_disk(tmp_path):
 
     _path = tmp_path / "Phonology.yaml"
     with open(_path, mode="w", encoding="utf8") as file_handler:
-        yaml.safe_dump(phonology(), file_handler)
+        yaml.safe_dump(fx_df_phonology.to_dict(), file_handler)
 
     paradigm = Paradigm.from_yaml(path=tmp_path)
 
@@ -118,17 +103,25 @@ def test_from_disk(tmp_path):
     expected = [
         Forme(
             source=FormeEntry(
+                index=0,
                 pos="N",
                 morphemes=Morphemes(
-                    radical=Radical(StemSpace(("tortue",))),
+                    radical=Radical(
+                        stems=StemSpace(("tortue",)),
+                        sigma=frozendict(Genre="f")
+                    ),
                     others=[]
                     ),
                 sigma=frozendict(Genre="f", Nombre="sg")
             ),
             destination=FormeEntry(
+                index=1,
                 pos="N",
                 morphemes=Morphemes(
-                    radical=Radical(StemSpace(("turtle",))),
+                    radical=Radical(
+                        stems=StemSpace(("turtle",)),
+                        sigma=frozendict()
+                    ),
                     others=[]
                     ),
                 sigma=frozendict(Genre="m", Nombre="sg")
@@ -137,22 +130,30 @@ def test_from_disk(tmp_path):
 
         Forme(
             source=FormeEntry(
+                index=2,
                 pos="N",
                 morphemes=Morphemes(
-                    radical=Radical(StemSpace(("tortue",))),
+                    radical=Radical(
+                        stems=StemSpace(("tortue",)),
+                        sigma=frozendict(Genre="f")
+                    ),
                     others=[
                         Suffix(
                             rule="X+s",
                             sigma=frozendict({'Nombre': 'pl'}),
-                            phonology=Phonology(**phonology())
+                            phonology=fx_df_phonology
                         )]
                     ),
                 sigma=frozendict(Genre="f", Nombre="pl")
             ),
             destination=FormeEntry(
+                index=3,
                 pos="N",
                 morphemes=Morphemes(
-                    radical=Radical(StemSpace(("turtle",))),
+                    radical=Radical(
+                        stems=StemSpace(("turtle",)),
+                        sigma=frozendict()
+                    ),
                     others=[]
                     ),
                 sigma=frozendict(Genre="m", Nombre="sg")

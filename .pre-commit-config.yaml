@@ -29,6 +29,9 @@ repos:
   - id: pytest
     name: pytest
     entry: /home/koko/.pyenv/versions/3.12.0/envs/PFMG/bin/pytest
+    args:
+      - -vv
+      - --showlocals
     language: python
     pass_filenames: false
     always_run: true

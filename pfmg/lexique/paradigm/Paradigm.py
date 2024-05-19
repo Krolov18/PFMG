@@ -4,9 +4,11 @@
 # LICENSE file in the root directory of this source tree.
 """Réalise les léxèmes."""
 
-from collections.abc import Generator
+import itertools
+from collections.abc import Generator, Iterator
 from dataclasses import dataclass
 from pathlib import Path
+from typing import ClassVar
 
 from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.block.BlockEntry import BlockEntry
@@ -20,12 +22,13 @@ from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.realizable.ABCRealizable import ABCRealizable
 
 
-@dataclass
+@dataclass(repr=False)
 class Paradigm(ABCRealizable, ABCReader):
     """Réalise les Lexeme en Forme."""
 
     gloses: Gloses
     blocks: BlockEntry
+    counter: ClassVar[Iterator[int]] = itertools.count()
 
     def realize(self, lexeme: Lexeme) -> Generator[Forme, None, None]:
         """Méthode qui permet de réaliser un lexème donné.
@@ -40,6 +43,7 @@ class Paradigm(ABCRealizable, ABCReader):
                 desinence = self.blocks(lexeme_pos, i_sigma)
                 yield Forme(
                     source=FormeEntry(
+                        index=next(self.counter),
                         pos=lexeme_pos,
                         sigma=i_sigma.source,
                         morphemes=Morphemes(
@@ -48,6 +52,7 @@ class Paradigm(ABCRealizable, ABCReader):
                         ),
                     ),
                     destination=FormeEntry(
+                        index=next(self.counter),
                         pos=lexeme_pos,
                         sigma=i_sigma.destination,
                         morphemes=Morphemes(
