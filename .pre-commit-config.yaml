@@ -1,43 +1,41 @@
 repos:
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  # Ruff version.
-  rev: "v0.4.4"
-  hooks:
-  # Run the linter.
-  - id: ruff
-    always_run: true
-    stages: [pre-commit]
-  # Run the formatter.
-  - id: ruff-format
-    always_run: true
-    stages: [pre-commit]
-- repo: https://github.com/RobertCraigie/pyright-python
-  rev: v1.1.362
-  hooks:
-  - id: pyright
-    always_run: true
-    # Need to add those three lines because pyright is buggy at config point Oo
-    additional_dependencies:
-    - -r
-    - /home/koko/projects/PFMG/requirements-dev.txt
-    stages: [pre-commit]
-# Same thing that for pyright...
-# all this section is wordy because
-# they did not provide a simplest way to do it.
-- repo: local
-  hooks:
-  - id: pytest
-    name: pytest
-    entry: /home/koko/.pyenv/versions/3.12.0/envs/PFMG/bin/pytest
-    args:
-      - -vv
-      - --showlocals
-    language: python
-    pass_filenames: false
-    always_run: true
-    stages: [pre-commit]
-- repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-  rev: v9.16.0
-  hooks:
-  - id: commitlint
-    stages: [commit-msg]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.4.4"
+    hooks:
+      - id: ruff
+        always_run: true
+        stages:
+          - pre-commit
+      - id: ruff-format
+        always_run: true
+        stages:
+          - pre-commit
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright
+        language: python
+        always_run: true
+        entry: poetry run pyright
+        stages:
+          - pre-commit
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest
+        language: python
+        pass_filenames: false
+        always_run: true
+        stages:
+          - pre-commit
+      - id: copyright
+        name: copyright
+        language: script
+        entry: ./bin/apply_licence.sh
+        stages:
+          - pre-commit
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.16.0
+    hooks:
+      - id: commitlint
+        stages:
+          - commit-msg
