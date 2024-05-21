@@ -27,9 +27,12 @@ repos:
         always_run: true
         stages:
           - pre-commit
+  - repo: local
+    hooks:
       - id: copyright
         name: copyright
         language: script
+        always_run: true
         entry: ./bin/apply_licence.sh
         stages:
           - pre-commit
