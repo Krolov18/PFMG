@@ -26,3 +26,5 @@ node_modules/
 
 # useless CUE files... maybe to delete
 /projects/
+
+.vscode/
