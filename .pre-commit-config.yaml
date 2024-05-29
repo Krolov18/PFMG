@@ -1,7 +1,7 @@
 repos:
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-  rev: "v0.4.4"
+  rev: "v0.4.6"
   hooks:
   # Run the linter.
   - id: ruff
@@ -12,14 +12,10 @@ repos:
     always_run: true
     stages: [pre-commit]
 - repo: https://github.com/RobertCraigie/pyright-python
-  rev: v1.1.362
+  rev: v1.1.364
   hooks:
   - id: pyright
     always_run: true
-    # Need to add those three lines because pyright is buggy at config point Oo
-    additional_dependencies:
-    - -r
-    - /home/koko/projects/PFMG/requirements-dev.txt
     stages: [pre-commit]
 # Same thing that for pyright...
 # all this section is wordy because
