@@ -14,19 +14,19 @@ from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.block.BlockEntry import BlockEntry
 from pfmg.lexique.forme.Forme import Forme
 from pfmg.lexique.forme.FormeEntry import FormeEntry
-from pfmg.lexique.glose import new_gloses
-from pfmg.lexique.glose.Gloses import Gloses
-from pfmg.lexique.glose.Sigma import Sigma
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.realizable.ABCRealizable import ABCRealizable
+from pfmg.lexique.sigma import new_gloses
+from pfmg.lexique.sigma.Sigma import Sigma
+from pfmg.lexique.sigma.StraightPos2Sigmas import StraightPos2Sigmas
 
 
 @dataclass(repr=False)
 class Paradigm(ABCRealizable, ABCReader):
     """Réalise les Lexeme en Forme."""
 
-    gloses: Gloses
+    gloses: StraightPos2Sigmas
     blocks: BlockEntry
     counter: ClassVar[Iterator[int]] = itertools.count()
 

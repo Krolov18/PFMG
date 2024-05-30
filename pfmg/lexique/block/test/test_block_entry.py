@@ -9,7 +9,7 @@ from frozendict import frozendict
 from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.block.BlockEntry import BlockEntry
 from pfmg.lexique.block.Desinence import Desinence
-from pfmg.lexique.glose.Sigma import Sigma
+from pfmg.lexique.sigma.Sigma import Sigma
 from pfmg.lexique.morpheme.Circumfix import Circumfix
 from pfmg.lexique.morpheme.Suffix import Suffix
 from pfmg.conftest import fx_df_phonology

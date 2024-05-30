@@ -16,10 +16,10 @@ def new_gloses(path: Path):
     """
     assert __package__ is not None
 
-    for name in ("CGloses", "Gloses"):
+    for name in ("Constrained", "Straight"):
         try:
             result = factory_class(
-                concrete_product=name,
+                concrete_product=f"{name}Pos2Sigmas",
                 package=__package__
             ).from_yaml(
                 path=path
