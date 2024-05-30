@@ -8,7 +8,7 @@ from dataclasses import dataclass
 
 from frozendict import frozendict
 
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 

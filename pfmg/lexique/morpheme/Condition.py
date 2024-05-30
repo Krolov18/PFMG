@@ -13,10 +13,10 @@ from frozendict import frozendict
 
 from pfmg.external.display import ABCDisplay
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 

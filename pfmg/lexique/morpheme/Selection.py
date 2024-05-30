@@ -11,9 +11,9 @@ from re import Match
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
