@@ -24,12 +24,14 @@ def test_blocks(fx_df_phonology, tmp_path, blocks):
         {"N": Blocks([[Suffix(rule="X+s", sigma=frozendict(genre="m"), phonology=fx_df_phonology)]])},
         {"N": Blocks([[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=fx_df_phonology)]])},)
 
-    with open(tmp_path / "Phonology.yaml", mode="w", encoding="utf8") as file_handler:
+    path = tmp_path / "Phonology.yaml"
+    with open(path, mode="w", encoding="utf8") as file_handler:
         yaml.safe_dump(fx_df_phonology.to_dict(), file_handler)
 
-    with open(tmp_path / "Blocks.yaml", mode="w", encoding="utf8") as file_handler:
+    path = tmp_path / "Blocks.yaml"
+    with open(path, mode="w", encoding="utf8") as file_handler:
         yaml.safe_dump(blocks, file_handler)
-    blocks = BlockEntry.from_yaml(tmp_path / "Blocks.yaml")
+    blocks = BlockEntry.from_yaml(path)
     assert blocks.source == expected[0]
     assert blocks.destination == expected[1]
 
@@ -43,15 +45,19 @@ def test_blocks(fx_df_phonology, tmp_path, blocks):
 ])
 def test___call__(fx_df_phonology, tmp_path, blocks, pos, sigma):
     expected = Desinence(
-        source=[Suffix(rule="X+s", sigma=frozendict(genre="m"), phonology=fx_df_phonology)],
-        destination=[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=fx_df_phonology)])
+        source=[Suffix(rule="X+s", sigma=frozendict(genre="m"),
+                       phonology=fx_df_phonology)],
+        destination=[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"),
+                               phonology=fx_df_phonology)])
 
-    with open(tmp_path / "Phonology.yaml", mode="w", encoding="utf8") as file_handler:
+    path = tmp_path / "Phonology.yaml"
+    with open(path, mode="w", encoding="utf8") as file_handler:
         yaml.safe_dump(fx_df_phonology.to_dict(), file_handler)
 
-    with open(tmp_path / "Blocks.yaml", mode="w", encoding="utf8") as file_handler:
+    path = tmp_path / "Blocks.yaml"
+    with open(path, mode="w", encoding="utf8") as file_handler:
         yaml.safe_dump(blocks, file_handler)
-    blocks = BlockEntry.from_yaml(tmp_path / "Blocks.yaml")
+    blocks = BlockEntry.from_yaml(path)
     assert blocks(pos, Sigma(**sigma)) == expected
 
 
