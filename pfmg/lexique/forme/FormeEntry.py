@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.ABCDecoupeur import ABCDecoupeur
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.morpheme.Morphemes import Morphemes
@@ -15,7 +16,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass
-class FormeEntry(MixinDisplay, ABCGloser):
+class FormeEntry(MixinDisplay, ABCGloser, ABCDecoupeur):
     """La forme est la réalisation d'un lexème."""
 
     pos: str

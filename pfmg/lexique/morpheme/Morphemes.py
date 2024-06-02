@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.ABCDecoupeur import ABCDecoupeur
 from pfmg.external.display import ABCDisplay
 from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.morpheme.Radical import Radical
@@ -15,7 +16,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass
-class Morphemes(ABCDisplay, ABCGloser):
+class Morphemes(ABCDisplay, ABCGloser, ABCDecoupeur):
     """Structure qui rassemble un radical et ses morphèmes.
 
     radical: StemSpace d'un léxème
@@ -41,7 +42,7 @@ class Morphemes(ABCDisplay, ABCGloser):
         result: str = ""
 
         for morpheme in self.others:
-            result += morpheme.to_decoupe(
+            result += morpheme.to_decoupe(  # type: ignore
                 result or self.radical.stems,
             )
 

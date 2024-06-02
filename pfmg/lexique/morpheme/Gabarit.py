@@ -10,6 +10,7 @@ from re import Match
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.equality.MixinEquality import MixinEquality
 from pfmg.external.gloser.MixinGloser import MixinGloser
@@ -18,7 +19,9 @@ from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
+class Gabarit(
+    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
+):
     """Le gabarit encode une règle affixale qui touche la structure du Radical.
 
     Dans la règle gabaritique, les consonnes comme les voyelles
@@ -56,7 +59,9 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
         self.phonology = phonology
 
     def __verify(self, char: str, stem: frozendict) -> str:
-        """TODO: Pourquoi pas considérer cette fonction comme méthode à Phonology.
+        """Applique la règle phonologique suivant le caractère rencontré.
+
+        TODO: considérer cette fonction comme méthode à Phonology.
 
         :param char: Un caractère compris
                      dans l'union [consonnes|voyelles|UAV1-9]
@@ -99,15 +104,14 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
             )
         return result
 
+    def _to_decoupe__stemspace(self, term: StemSpace) -> str:
+        return self._to_string__stemspace(term)
+
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
         return f"X({term.lemma}).{"".join(self.sigma.values())}"
 
-    def _to_glose__str(self, term: str) -> str:
-        assert isinstance(term, str)
-        return f"X({term}).{"".join(self.sigma.values())}"
-
-    def _to_glose__nonetype(self, term: None) -> str:
+    def _to_glose__nonetype(self, term: None = None) -> str:
         raise NotImplementedError
 
     @staticmethod
