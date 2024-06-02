@@ -116,3 +116,18 @@ def test_to_decoupe(fx_df_phonology) -> None:
     assert prefix.to_decoupe(StemSpace(("toto",))) == "a+toto+i"
 
     assert prefix.to_decoupe("toto") == "a+toto+i"
+
+
+def test_to_glose(fx_df_phonology) -> None:
+    prefix = Circumfix(
+        rule="a+X+i",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = prefix.to_decoupe(None)
+
+    assert prefix.to_glose(StemSpace(("toto",))) == "m+toto+m"
+
+    assert prefix.to_glose("toto") == "m+toto+m"

@@ -109,3 +109,18 @@ def test_to_decoupe(fx_df_phonology) -> None:
     assert suffix.to_decoupe(StemSpace(("toto",))) == "toto-i"
 
     assert suffix.to_decoupe("toto") == "toto-i"
+
+
+def test_to_glose(fx_df_phonology) -> None:
+    suffix = Suffix(
+        rule="X+d",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = suffix.to_glose(None)
+
+    assert suffix.to_glose(StemSpace(("toto",))) == "toto-m"
+
+    assert suffix.to_glose("toto") == "toto-m"

@@ -7,17 +7,19 @@
 import re
 from collections.abc import Callable
 from re import Match
+from typing import NoReturn
 
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.gloser.MixinGloser import MixinGloser
 from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
+class Prefix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
     """Encode une règle affixale ajoutant un élément avant le Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
@@ -59,15 +61,24 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
     def _to_string__str(self, term: str) -> str:
         return f"{self.__rule.group(1)}{term}"
 
-    def _to_decoupe__stemspace(
-        self, term: StemSpace | str | None = None
-    ) -> str:
+    def _to_decoupe__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
         return f"{self.__rule.group(1)}-{term.stems[0]}"
 
-    def _to_decoupe__str(self, term: StemSpace | str | None = None) -> str:
+    def _to_decoupe__str(self, term: str) -> str:
         assert isinstance(term, str)
         return f"{self.__rule.group(1)}-{term}"
+
+    def _to_glose__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{".".join(self.__sigma.values())}-{term.lemma}"
+
+    def _to_glose__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return f"{".".join(self.__sigma.values())}-{term}"
+
+    def _to_glose__nonetype(self, term: None) -> NoReturn:
+        raise NotImplementedError
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'un préfixe.
