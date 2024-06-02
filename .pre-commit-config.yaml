@@ -1,39 +1,48 @@
 repos:
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  # Ruff version.
-  rev: "v0.4.6"
-  hooks:
-  # Run the linter.
-  - id: ruff
-    always_run: true
-    stages: [pre-commit]
-  # Run the formatter.
-  - id: ruff-format
-    always_run: true
-    stages: [pre-commit]
-- repo: https://github.com/RobertCraigie/pyright-python
-  rev: v1.1.364
-  hooks:
-  - id: pyright
-    always_run: true
-    stages: [pre-commit]
-# Same thing that for pyright...
-# all this section is wordy because
-# they did not provide a simplest way to do it.
-- repo: local
-  hooks:
-  - id: pytest
-    name: pytest
-    entry: /home/koko/.pyenv/versions/3.12.0/envs/PFMG/bin/pytest
-    args:
-      - -vv
-      - --showlocals
-    language: python
-    pass_filenames: false
-    always_run: true
-    stages: [pre-commit]
-- repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-  rev: v9.16.0
-  hooks:
-  - id: commitlint
-    stages: [commit-msg]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: "v0.4.6"
+    hooks:
+      # Run the linter.
+      - id: ruff
+        always_run: true
+        stages: [ pre-commit ]
+      # Run the formatter.
+      - id: ruff-format
+        always_run: true
+        stages: [ pre-commit ]
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.364
+    hooks:
+      - id: pyright
+        always_run: true
+        stages: [ pre-commit ]
+  # Same thing that for pyright...
+  # all this section is wordy because
+  # they did not provide a simplest way to do it.
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: /home/koko/.pyenv/versions/3.12.0/envs/PFMG/bin/pytest
+        args:
+          - -vv
+          - --showlocals
+        language: python
+        pass_filenames: false
+        always_run: true
+        stages: [ pre-commit ]
+  - repo: local
+    hooks:
+      - id: copyright
+        name: copyright
+        language: script
+        always_run: true
+        entry: ./bin/apply_licence.sh
+        stages:
+          - pre-commit
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.16.0
+    hooks:
+      - id: commitlint
+        stages: [ commit-msg ]
