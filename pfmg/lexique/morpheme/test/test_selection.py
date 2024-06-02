@@ -194,7 +194,6 @@ def test_to_decoupe(fx_df_phonology, rule, sigma, stems, expected) -> None:
     assert selection.to_decoupe(StemSpace(stems)) == expected
 
 
-# TODO : peut-être qu'il faudrait raise un NotImplementedError pour ce cas
 @pytest.mark.parametrize(
     "rule, sigma, stems, expected", [
         ("X1", {
@@ -219,3 +218,30 @@ def test_to_decoupe_str(fx_df_phonology, rule, sigma, stems, expected):
         _ = selection.to_decoupe(None)
 
     assert selection.to_decoupe(stems) == expected
+
+
+@pytest.mark.parametrize(
+    "rule, sigma, stems, expected", [
+        ("X1", {
+            "Genre": "m"
+        }, ("toto",), "toto.m"),
+        ("X1", {
+            "Genre": "m"
+        }, ("toto", "tutu"), "toto.m"),
+        ("X2", {
+            "Genre": "m"
+        }, ("toto", "tutu"), "toto.m"),
+    ]
+)
+def test_to_glose(fx_df_phonology, rule, sigma, stems, expected) -> None:
+    selection = Selection(
+        rule=rule,
+        sigma=frozendict(sigma),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = selection.to_glose(None)
+
+    actual = selection.to_glose(StemSpace(stems))
+    assert actual == expected

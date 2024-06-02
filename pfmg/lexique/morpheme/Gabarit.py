@@ -11,13 +11,14 @@ from re import Match
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.gloser.MixinGloser import MixinGloser
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
+class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
     """Le gabarit encode une règle affixale qui touche la structure du Radical.
 
     Dans la règle gabaritique, les consonnes comme les voyelles
@@ -54,19 +55,6 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
         self.sigma = sigma
         self.phonology = phonology
 
-    def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Stringify avec StemSpace.
-
-        :param term:
-        :return:
-        """
-        result = ""
-        for char in self.rule.string:
-            result += self.__verify(
-                char, Gabarit.__format_default_stem(term.stems[0])
-            )
-        return result
-
     def __verify(self, char: str, stem: frozendict) -> str:
         """TODO: Pourquoi pas considérer cette fonction comme méthode à Phonology.
 
@@ -97,6 +85,30 @@ class Gabarit(MixinDisplay, MixinEquality, MixinRepresentor):
                 ]
             case _:
                 return char
+
+    def _to_string__stemspace(self, term: StemSpace) -> str:
+        """Stringify avec StemSpace.
+
+        :param term:
+        :return:
+        """
+        result = ""
+        for char in self.rule.string:
+            result += self.__verify(
+                char, Gabarit.__format_default_stem(term.stems[0])
+            )
+        return result
+
+    def _to_glose__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return f"X({term.lemma}).{"".join(self.sigma.values())}"
+
+    def _to_glose__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return f"X({term}).{"".join(self.sigma.values())}"
+
+    def _to_glose__nonetype(self, term: None) -> str:
+        raise NotImplementedError
 
     @staticmethod
     def __format_default_stem(stem: str) -> frozendict:

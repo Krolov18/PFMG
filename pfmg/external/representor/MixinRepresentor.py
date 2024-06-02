@@ -4,7 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 """Mixin implémentant le comportement par défaut de __str__ et __repr__."""
 
-from pfmg.lexique.representor.ABCRepresentor import ABCRepresentor
+from pfmg.external.representor.ABCRepresentor import ABCRepresentor
 
 
 class MixinRepresentor(ABCRepresentor):

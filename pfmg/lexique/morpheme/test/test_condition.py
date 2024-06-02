@@ -113,3 +113,19 @@ def test_to_decoupe(fx_df_phonology) -> None:
     assert condition.to_decoupe(StemSpace(("toto", "tutu"))) == "tutu"
 
     assert condition.to_decoupe("toto") == "toto"
+
+
+def test_to_glose(fx_df_phonology) -> None:
+    condition = Condition(
+        rule="X2?X2:X1",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = condition.to_glose(None)
+
+    assert condition.to_glose(StemSpace(("toto",))) == "toto.m"
+    assert condition.to_glose(StemSpace(("toto", "tutu"))) == "toto.m"
+
+    assert condition.to_glose("toto") == "toto.m"

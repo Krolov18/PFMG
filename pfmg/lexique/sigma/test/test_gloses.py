@@ -7,10 +7,10 @@ import pytest
 import yaml
 from frozendict import frozendict
 
-from pfmg.lexique.glose import new_gloses
-from pfmg.lexique.glose.Gloses import Gloses
-from pfmg.lexique.glose.Sigma import Sigma
-from pfmg.lexique.glose.Sigmas import Sigmas
+from pfmg.lexique.sigma import new_gloses
+from pfmg.lexique.sigma.StraightPos2Sigmas import StraightPos2Sigmas
+from pfmg.lexique.sigma.Sigma import Sigma
+from pfmg.lexique.sigma.Sigmas import Sigmas
 
 parametrize = pytest.mark.parametrize(
     "gloses, expected_data", [
@@ -66,8 +66,8 @@ def test_gloses_from_disk(tmp_path, gloses, expected_data) -> None:
     gloses_path = tmp_path / "Gloses.yaml"
     with open(gloses_path, mode="w", encoding="utf8") as file_handler:
         yaml.safe_dump(gloses, file_handler)
-    actual = Gloses.from_yaml(gloses_path)
-    expected = Gloses(expected_data)
+    actual = StraightPos2Sigmas.from_yaml(gloses_path)
+    expected = StraightPos2Sigmas(expected_data)
 
     assert actual == expected
 
@@ -112,7 +112,7 @@ parametrize = pytest.mark.parametrize(
 
 @parametrize
 def test__call__(params, expected) -> None:
-    gloses = Gloses.from_dict(params)
+    gloses = StraightPos2Sigmas.from_dict(params)
     actual = gloses(pos="N")
     assert actual == expected
 
@@ -121,7 +121,7 @@ parametrize = pytest.mark.parametrize(
     "params, expected_type, expected_type_2", [
         ({"N": {"source":      {"Genre": ["m"]},
                 "destination": {"Genre": ["m"]}}},
-         "Gloses",
+         "StraightPos2Sigmas",
          "Sigmas"),
     ])
 

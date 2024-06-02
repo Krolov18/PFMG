@@ -11,14 +11,14 @@ import yaml
 from frozendict import frozendict
 
 from pfmg.external.reader.ABCReader import ABCReader
-from pfmg.lexique.glose.Gloses import Gloses
-from pfmg.lexique.glose.Sigma import Sigma
-from pfmg.lexique.glose.Sigmas import Sigmas
+from pfmg.lexique.sigma.Sigma import Sigma
+from pfmg.lexique.sigma.Sigmas import Sigmas
+from pfmg.lexique.sigma.StraightPos2Sigmas import StraightPos2Sigmas
 from pfmg.parsing.features.utils import FeatureReader
 
 
 @dataclass
-class CGloses(ABCReader):
+class ConstrainedPos2Sigmas(ABCReader):
     """Gloses avec contraintes.
 
     Args:
@@ -37,23 +37,25 @@ class CGloses(ABCReader):
 
     """
 
-    gloses: Gloses
-    alignments: Gloses
+    gloses: StraightPos2Sigmas
+    alignments: StraightPos2Sigmas
 
-    def __call__(self, pos: str) -> list:
+    def __call__(self, pos: str) -> Sigmas:
         """Apply the normal Gloses and filter it with alignments.
 
         :param pos: Some POS value
         :return: the filtered list of sigmas
         """
-        result = []
-        for x in self.gloses(pos):
-            if x in self.alignments(pos):
-                result.append(x)
-        return result
+        return Sigmas(
+            [
+                sigma
+                for sigma in self.gloses(pos)
+                if sigma in self.alignments(pos)
+            ]
+        )
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "CGloses":
+    def from_yaml(cls, path: Path) -> "ConstrainedPos2Sigmas":
         """Construit un CGloses depuis un fichier YAML.
 
         :param path: Chemin vers le fichier YAML
@@ -61,8 +63,8 @@ class CGloses(ABCReader):
         """
         with open(path, encoding="utf8") as fh:
             data = yaml.safe_load(fh)
-        gloses = Gloses.from_dict(data)
-        alignments = Gloses(cls.__read_alignments(data))
+        gloses = StraightPos2Sigmas.from_dict(data)
+        alignments = StraightPos2Sigmas(cls.__read_alignments(data))
         return cls(gloses=gloses, alignments=alignments)
 
     @staticmethod

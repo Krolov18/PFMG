@@ -9,12 +9,13 @@ from dataclasses import dataclass
 from frozendict import frozendict
 
 from pfmg.external.display import ABCDisplay
+from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.morpheme.Radical import Radical
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass
-class Morphemes(ABCDisplay):
+class Morphemes(ABCDisplay, ABCGloser):
     """Structure qui rassemble un radical et ses morphèmes.
 
     radical: StemSpace d'un léxème
@@ -43,6 +44,14 @@ class Morphemes(ABCDisplay):
             result += morpheme.to_decoupe(
                 result or self.radical.stems,
             )
+
+        return result or self.radical.lemma
+
+    def to_glose(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        result = self.radical.to_glose()
+        for morpheme in self.others:
+            result = morpheme.to_glose(result)  # type: ignore
 
         return result or self.radical.lemma
 

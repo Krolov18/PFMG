@@ -122,3 +122,18 @@ def test_to_decoupe(fx_df_phonology) -> None:
     assert prefix.to_decoupe(StemSpace(("toto",))) == "d-toto"
 
     assert prefix.to_decoupe("toto") == "d-toto"
+
+
+def test_to_glose(fx_df_phonology) -> None:
+    prefix = Prefix(
+        rule="d+X",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = prefix.to_glose(None)
+
+    assert prefix.to_glose(StemSpace(("toto",))) == "m-toto"
+
+    assert prefix.to_glose("toto") == "m-toto"

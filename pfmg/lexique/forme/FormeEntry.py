@@ -9,12 +9,13 @@ from dataclasses import dataclass
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
+from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass
-class FormeEntry(MixinDisplay):
+class FormeEntry(MixinDisplay, ABCGloser):
     """La forme est la réalisation d'un lexème."""
 
     pos: str
@@ -29,6 +30,10 @@ class FormeEntry(MixinDisplay):
     def to_decoupe(self, term: StemSpace | str | None = None) -> str:
         """TODO : Doc à écrire."""
         return self.morphemes.to_decoupe(term)
+
+    def to_glose(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        return self.morphemes.to_glose(term)
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'une Forme.

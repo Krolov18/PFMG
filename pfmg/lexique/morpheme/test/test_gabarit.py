@@ -178,3 +178,19 @@ def test_repr(fx_df_phonology) -> None:
     )
     actual = repr(gabarit)
     assert actual == "Gabarit(5A44aV66)"
+
+
+def test_to_glose(fx_df_phonology) -> None:
+    condition = Gabarit(
+        rule="5A44aV66",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = condition.to_glose(None)
+
+    assert condition.to_glose(StemSpace(("toto",))) == "X(toto).m"
+    assert condition.to_glose(StemSpace(("toto", "tutu"))) == "X(toto).m"
+
+    assert condition.to_glose("toto") == "X(toto).m"

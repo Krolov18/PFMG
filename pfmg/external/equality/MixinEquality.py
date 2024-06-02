@@ -2,13 +2,13 @@
 # All rights reserved.
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
-"""Mixin définissant l'agalité par défaut."""
+"""Mixin définissant l'égalité par défaut."""
 
-from pfmg.lexique.equality.ABCEquality import ABCEquality
+from pfmg.external.equality.ABCEquality import ABCEquality
 
 
 class MixinEquality(ABCEquality):
-    """Mixin définissant l'agalité par défaut."""
+    """Mixin définissant l'égalité par défaut."""
 
     def __eq__(self, other: ABCEquality):
         """Vérifie l'égalité entre deux objets.

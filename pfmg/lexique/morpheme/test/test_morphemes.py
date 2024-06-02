@@ -186,6 +186,40 @@ def test_to_decoupe(fx_df_phonology, radical, morphemes, expected):
     assert actual == expected
 
 
+parametrize = pytest.mark.parametrize(
+    "radical, morphemes, expected", [
+        (("jardin,jardins", {"Genre": "m"}), [], "jardin.m"),
+
+        (("jardin,jardins", {"Genre": "m"}), [("X2?X2:X1", {"Nombre": "pl"})], "jardin.m.pl"),
+
+        (("jardin,jardins", {"Genre": "m"}), [("X2", {"Nombre": "pl"})], "jardin.m.pl"),
+
+        (("jardin", {"Genre": "m"}), [("X+s", {"Nombre": "pl"})], "jardin.m-pl"),
+
+        (("jardin", {"Genre": "m"}), [("s+X", {"Nombre": "pl"})], "pl-jardin.m"),
+
+        (("jardin", {"Genre": "m"}), [("s+X+k", {"Nombre": "pl"})], "pl+jardin.m+pl"),
+    ])
+
+
+@parametrize
+def test_to_glose(fx_df_phonology, radical, morphemes, expected):
+    morphemes = Morphemes(
+        radical=Radical(
+            stems=StemSpace.from_string(radical[0]),
+            sigma=frozendict(radical[1])
+        ),
+        others=[create_morpheme(
+            rule=rule, sigma=frozendict(sigma),
+            phonology=fx_df_phonology
+        )
+            for rule, sigma in morphemes]
+
+    )
+    actual = morphemes.to_glose()
+    assert actual == expected
+
+
 def test_get_sigma():
     morphemes = Morphemes(
         radical=Radical(
