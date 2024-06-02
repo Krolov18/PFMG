@@ -7,18 +7,20 @@
 import re
 from collections.abc import Callable
 from re import Match
+from typing import NoReturn
 
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.gloser.MixinGloser import MixinGloser
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Selection(MixinDisplay, MixinEquality, MixinRepresentor):
-    """Pseudo-Morpheme qui permet de construire une règle de sélection de radical."""
+class Selection(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
+    """Construit une règle de sélection de radical parmi un StemSpace."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^X(\d+)$",
@@ -55,6 +57,29 @@ class Selection(MixinDisplay, MixinEquality, MixinRepresentor):
         :return: un des thèmes de l'espace thématique
         """
         return term.stems[int(self.__rule.group(1)) - 1]
+
+    def _to_string__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return term
+
+    def _to_decoupe__stemspace(
+        self, term: StemSpace | str | None = None
+    ) -> str:
+        assert isinstance(term, StemSpace)
+        return term.stems[int(self.__rule.group(1)) - 1]
+
+    def _to_decoupe__str(self, term: StemSpace | str | None = None) -> str:
+        assert isinstance(term, str)
+        return term
+
+    def _to_glose__nonetype(self, term: None) -> NoReturn:
+        raise NotImplementedError
+
+    def _to_glose__stemspace(self, term: StemSpace) -> str:
+        return f"{term.lemma}.{".".join(self.__sigma.values())}"
+
+    def _to_glose__str(self, term: str) -> str:
+        return f"{term}.{".".join(self.__sigma.values())}"
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'un Selection.

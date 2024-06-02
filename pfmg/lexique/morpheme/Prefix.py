@@ -7,18 +7,20 @@
 import re
 from collections.abc import Callable
 from re import Match
+from typing import NoReturn
 
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.gloser.MixinGloser import MixinGloser
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
-    """Un préfixe encode une règle affixale ajoutant un élément à la gauche du Radical."""
+class Prefix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
+    """Encode une règle affixale ajoutant un élément avant le Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^(.*)\+X$",
@@ -43,6 +45,7 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
         _rule = Prefix.__PATTERN(rule)
         if _rule is None:
             raise TypeError
+        assert sigma
         self.__rule = _rule
         self.__sigma = sigma
         self.__phonology = phonology
@@ -57,6 +60,25 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor):
 
     def _to_string__str(self, term: str) -> str:
         return f"{self.__rule.group(1)}{term}"
+
+    def _to_decoupe__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{self.__rule.group(1)}-{term.stems[0]}"
+
+    def _to_decoupe__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return f"{self.__rule.group(1)}-{term}"
+
+    def _to_glose__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{".".join(self.__sigma.values())}-{term.lemma}"
+
+    def _to_glose__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return f"{".".join(self.__sigma.values())}-{term}"
+
+    def _to_glose__nonetype(self, term: None) -> NoReturn:
+        raise NotImplementedError
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'un préfixe.

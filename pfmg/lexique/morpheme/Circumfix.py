@@ -11,13 +11,14 @@ from re import Match
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.gloser.MixinGloser import MixinGloser
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
+class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
     """Structurte représentant un Circonfixe.
 
     Un circonfixe encode une règle affixale
@@ -57,6 +58,7 @@ class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
         :param term:
         :return: Application de larègle sur un radical StemSpace
         """
+        assert isinstance(term, StemSpace)
         return f"{self.__rule.group(1)}{term.stems[0]}{self.__rule.group(2)}"
 
     def _to_string__str(self, term: str) -> str:
@@ -65,7 +67,32 @@ class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor):
         :param term: radical
         :return: application de la règle sur un radical string
         """
+        assert isinstance(term, str)
         return f"{self.__rule.group(1)}{term}{self.__rule.group(2)}"
+
+    def _to_decoupe__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return f"{self.__rule.group(1)}+{term.stems[0]}+{self.__rule.group(2)}"
+
+    def _to_decoupe__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return f"{self.__rule.group(1)}+{term}+{self.__rule.group(2)}"
+
+    def _to_glose__stemspace(self, term: StemSpace) -> str:
+        assert isinstance(term, StemSpace)
+        return (
+            f"{".".join(self.__sigma.values())}"
+            f"+{term.lemma}"
+            f"+{".".join(self.__sigma.values())}"
+        )
+
+    def _to_glose__str(self, term: str) -> str:
+        assert isinstance(term, str)
+        return (
+            f"{".".join(self.__sigma.values())}"
+            f"+{term}"
+            f"+{".".join(self.__sigma.values())}"
+        )
 
     def get_sigma(self) -> frozendict:
         """Récupère les propriétés du circonfixe."""

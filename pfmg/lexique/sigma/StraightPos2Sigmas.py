@@ -9,11 +9,12 @@ from pathlib import Path
 
 import yaml
 
-from pfmg.lexique.glose.Sigmas import Sigmas
+from pfmg.external.reader import ABCReader
+from pfmg.lexique.sigma.Sigmas import Sigmas
 
 
 @dataclass
-class Gloses:
+class StraightPos2Sigmas(ABCReader):
     """Structure simulant les cases des paradigmes d'une langue.
 
     Un ensemble de case représente un paradigme.
@@ -38,7 +39,7 @@ class Gloses:
         return self.data[pos]
 
     @classmethod
-    def from_yaml(cls, path: Path | str) -> "Gloses":
+    def from_yaml(cls, path: Path | str) -> "StraightPos2Sigmas":
         """Construit un Gloses à partir d'un fichier YAML.
 
         :param path: Chemin vers le fichier YAML.
@@ -51,7 +52,7 @@ class Gloses:
         return cls.from_dict(data)
 
     @classmethod
-    def from_dict(cls, data: dict) -> "Gloses":
+    def from_dict(cls, data: dict) -> "StraightPos2Sigmas":
         """Construit un Gloses à partir d'un dictionnaire.
 
         :param data: doit contenir au deuxième niveau 'source' et 'destination'

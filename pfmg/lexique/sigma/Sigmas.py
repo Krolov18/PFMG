@@ -8,7 +8,7 @@ import itertools as it
 from collections.abc import Iterator
 from dataclasses import dataclass
 
-from pfmg.lexique.glose.Sigma import Sigma
+from pfmg.lexique.sigma.Sigma import Sigma
 from pfmg.lexique.utils import gridify
 
 

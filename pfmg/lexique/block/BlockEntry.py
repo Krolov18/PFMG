@@ -11,8 +11,8 @@ import yaml
 
 from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.block.Desinence import Desinence
-from pfmg.lexique.glose.Sigma import Sigma
 from pfmg.lexique.phonology.Phonology import Phonology
+from pfmg.lexique.sigma.Sigma import Sigma
 
 
 @dataclass

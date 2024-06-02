@@ -13,14 +13,15 @@ from frozendict import frozendict
 
 from pfmg.external.display import ABCDisplay
 from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.lexique.equality.MixinEquality import MixinEquality
+from pfmg.external.equality.MixinEquality import MixinEquality
+from pfmg.external.gloser.ABCGloser import ABCGloser
+from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
+class Condition(MixinDisplay, MixinEquality, MixinRepresentor, ABCGloser):
     """Règle ternaire au sein des règles morphologiques.
 
     :param cond : Construction du morphème
@@ -75,6 +76,22 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
             return self.__false.to_string(term)
         return self.__true.to_string(term)
 
+    def to_decoupe(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        try:
+            self.__cond.to_string(term)
+        except IndexError:
+            return self.__false.to_decoupe(term)
+        return self.__true.to_decoupe(term)
+
+    def to_glose(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        try:
+            self.__cond.to_string(term)
+        except IndexError:
+            return self.__false.to_glose(term)  # type: ignore
+        return self.__true.to_glose(term)  # type: ignore
+
     def get_sigma(self) -> frozendict:
         """Récupère le sigma.
 
@@ -83,6 +100,7 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor):
         return self.sigma
 
     def _repr_params(self) -> str:
+        """TODO : Doc à écrire."""
         return self.rule.string
 
     def get_rule(self) -> Match:
