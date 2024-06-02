@@ -28,7 +28,3 @@ class ABCDisplay(ABC):
 
         :return:
         """
-
-    @abstractmethod
-    def to_decoupe(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""

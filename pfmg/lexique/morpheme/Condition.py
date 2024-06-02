@@ -11,6 +11,7 @@ from typing import ClassVar
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
 from pfmg.external.display import ABCDisplay
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.equality.MixinEquality import MixinEquality
@@ -21,7 +22,9 @@ from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Condition(MixinDisplay, MixinEquality, MixinRepresentor, ABCGloser):
+class Condition(
+    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, ABCGloser
+):
     """Règle ternaire au sein des règles morphologiques.
 
     :param cond : Construction du morphème
@@ -81,8 +84,8 @@ class Condition(MixinDisplay, MixinEquality, MixinRepresentor, ABCGloser):
         try:
             self.__cond.to_string(term)
         except IndexError:
-            return self.__false.to_decoupe(term)
-        return self.__true.to_decoupe(term)
+            return self.__false.to_decoupe(term)  # type: ignore
+        return self.__true.to_decoupe(term)  # type: ignore
 
     def to_glose(self, term: StemSpace | str | None = None) -> str:
         """TODO : Doc à écrire."""

@@ -11,6 +11,7 @@ from typing import NoReturn
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.equality.MixinEquality import MixinEquality
 from pfmg.external.gloser.MixinGloser import MixinGloser
@@ -19,7 +20,9 @@ from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Suffix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
+class Suffix(
+    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
+):
     """Un suffixe encode une règle affixale succédant le Radical."""
 
     __PATTERN: Callable[[str], Match[str] | None] = re.compile(
@@ -83,7 +86,7 @@ class Suffix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
         assert isinstance(term, str)
         return f"{term}-{".".join(self.__sigma.values())}"
 
-    def _to_glose__nonetype(self, term: None) -> NoReturn:
+    def _to_glose__nonetype(self, term: None = None) -> NoReturn:
         assert term is None
         raise NotImplementedError
 

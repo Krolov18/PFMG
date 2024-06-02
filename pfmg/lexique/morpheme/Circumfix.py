@@ -10,6 +10,7 @@ from re import Match
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.equality.MixinEquality import MixinEquality
 from pfmg.external.gloser.MixinGloser import MixinGloser
@@ -18,7 +19,9 @@ from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Circumfix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
+class Circumfix(
+    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
+):
     """Structurte représentant un Circonfixe.
 
     Un circonfixe encode une règle affixale

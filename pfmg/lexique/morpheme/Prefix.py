@@ -11,6 +11,7 @@ from typing import NoReturn
 
 from frozendict import frozendict
 
+from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.equality.MixinEquality import MixinEquality
 from pfmg.external.gloser.MixinGloser import MixinGloser
@@ -19,7 +20,9 @@ from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
-class Prefix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
+class Prefix(
+    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
+):
     """Encode une règle affixale ajoutant un élément avant le Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
@@ -77,7 +80,7 @@ class Prefix(MixinDisplay, MixinEquality, MixinRepresentor, MixinGloser):
         assert isinstance(term, str)
         return f"{".".join(self.__sigma.values())}-{term}"
 
-    def _to_glose__nonetype(self, term: None) -> NoReturn:
+    def _to_glose__nonetype(self, term: None = None) -> NoReturn:
         raise NotImplementedError
 
     def get_sigma(self) -> frozendict:

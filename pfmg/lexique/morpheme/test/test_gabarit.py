@@ -180,17 +180,35 @@ def test_repr(fx_df_phonology) -> None:
     assert actual == "Gabarit(5A44aV66)"
 
 
-def test_to_glose(fx_df_phonology) -> None:
-    condition = Gabarit(
+def test_to_decoupe(fx_df_phonology) -> None:
+    gabarit = Gabarit(
         rule="5A44aV66",
         sigma=frozendict(Genre="m"),
         phonology=fx_df_phonology
     )
 
     with pytest.raises(NotImplementedError):
-        _ = condition.to_glose(None)
+        _ = gabarit.to_decoupe(None)
 
-    assert condition.to_glose(StemSpace(("toto",))) == "X(toto).m"
-    assert condition.to_glose(StemSpace(("toto", "tutu"))) == "X(toto).m"
+    with pytest.raises(NotImplementedError):
+        _ = gabarit.to_glose("msdofjsdf")
 
-    assert condition.to_glose("toto") == "X(toto).m"
+    assert gabarit.to_decoupe(StemSpace(("truk",))) == "wuppautt"
+    assert gabarit.to_decoupe(StemSpace(("truk", "trok"))) == "wuppautt"
+
+
+def test_to_glose(fx_df_phonology) -> None:
+    gabarit = Gabarit(
+        rule="5A44aV66",
+        sigma=frozendict(Genre="m"),
+        phonology=fx_df_phonology
+    )
+
+    with pytest.raises(NotImplementedError):
+        _ = gabarit.to_glose(None)
+
+    with pytest.raises(NotImplementedError):
+        _ = gabarit.to_glose("msdofjsdf")
+
+    assert gabarit.to_glose(StemSpace(("truk",))) == "X(truk).m"
+    assert gabarit.to_glose(StemSpace(("truk", "trok"))) == "X(truk).m"

@@ -5,7 +5,6 @@
 """Radical."""
 
 from dataclasses import dataclass
-from typing import NoReturn
 
 from frozendict import frozendict
 
@@ -34,14 +33,6 @@ class Radical(MixinRepresentor, MixinGloser):
         sigma = ",".join([f"{k}={v}" for k, v in self.sigma.items()])
         return f"{stems},{sigma}"
 
-    def _to_glose__stemspace(self, term: StemSpace) -> NoReturn:
-        assert isinstance(term, StemSpace)
-        raise NotImplementedError
-
-    def _to_glose__str(self, term: str) -> NoReturn:
-        assert isinstance(term, str)
-        raise NotImplementedError
-
-    def _to_glose__nonetype(self, term: None) -> str:
+    def _to_glose__nonetype(self, term: None = None) -> str:
         assert term is None
         return f"{self.lemma}.{".".join(self.sigma.values())}".rstrip(".")
