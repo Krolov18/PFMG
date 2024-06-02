@@ -9,11 +9,13 @@ from dataclasses import dataclass
 from frozendict import frozendict
 
 from pfmg.external.display.MixinDisplay import MixinDisplay
+from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.forme.FormeEntry import FormeEntry
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 @dataclass
-class Forme(MixinDisplay):
+class Forme(MixinDisplay, ABCGloser):
     """Réalsation d'un Léxème."""
 
     source: FormeEntry
@@ -53,3 +55,11 @@ class Forme(MixinDisplay):
     def get_sigma(self) -> frozendict:
         """Récupère les propriétés d'une forme."""
         raise NotImplementedError
+
+    def to_glose(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        return self.source.to_glose()
+
+    def to_decoupe(self, term: StemSpace | str | None = None) -> str:
+        """TODO : Doc à écrire."""
+        return self.source.to_decoupe()

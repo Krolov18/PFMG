@@ -119,9 +119,8 @@ def fx_factory_function(request) -> functools.partial:  # noqa
     )
 
 
-@pytest.fixture
-def fx_df_phonology():
-    """Fixture qui construit un Phonology avec des données "standards"."""
+def get_default_phonology() -> Phonology:
+    """Construit un Phonology avec des données "standards"."""
     return Phonology(
         apophonies=frozendict(Ø="i", i="a", a="u", u="u", e="o", o="o"),
         mutations=frozendict(
@@ -149,3 +148,9 @@ def fx_df_phonology():
         consonnes=frozenset("ptkbdgmnNfsSvzZrljw"),
         voyelles=frozenset("iueoa"),
     )
+
+
+@pytest.fixture
+def fx_df_phonology():
+    """Fixture qui construit un Phonology avec des données "standards"."""
+    return get_default_phonology()
