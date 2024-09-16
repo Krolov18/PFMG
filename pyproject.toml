@@ -135,7 +135,7 @@ package-mode = false
 [tool.poetry.dependencies]
 frozendict = "^2.4.4"
 more-itertools = "^10.2.0"
-nltk = "^3.8.1"
+nltk = "^3.9"
 numpy = "^1.26.4"
 pandas = "^2.2.2"
 pip = "^24.0"
