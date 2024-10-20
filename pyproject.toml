@@ -178,5 +178,3 @@ exclude = [
     "**/*.rc",
     "**/*.ini"
 ]
-venvPath = "/home/koko/.pyenv/versions"
-venv = "PFMG"
