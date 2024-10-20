@@ -26,7 +26,7 @@ jobs:
           path: ./.venv
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
-        run: poetry install && python -m nltk.downloader wordnet
+        run: poetry install && poetry run python -m nltk.downloader wordnet
       - name: Linter
         run: poetry run ruff check
       - name: Type Checker
