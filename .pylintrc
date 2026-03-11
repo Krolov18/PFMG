@@ -1,7 +1,7 @@
 [MAIN]
 ignore-patterns=(^\.|test_.*?py)
 limit-inference-results=30
-py-version=3.12
+py-version=3.14
 
 [REPORTS]
 reports=no
