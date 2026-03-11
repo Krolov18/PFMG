@@ -1,0 +1,70 @@
+# Bump version and regenerate lockfile on push to dev (patch) or main (minor).
+# Skips when the head commit message starts with "chore: update" to avoid loops.
+
+name: Bump version
+
+on:
+  push:
+    branches: ["dev", "main"]
+
+permissions:
+  contents: read
+
+jobs:
+  bump-patch-on-dev:
+    if: "github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Bump patch version (dev), regenerate lockfile, commit and push
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          set -e
+          export PATH="$HOME/.local/bin:$PATH"
+          OLD=$(uv version --short)
+          uv version --bump patch
+          NEW=$(uv version --short)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml uv.lock
+          git diff --staged --quiet || git commit -m "chore: update $OLD to $NEW"
+          git push
+
+  bump-minor-on-main:
+    if: "github.ref == 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Bump minor version (dev → main), regenerate lockfile, commit and push
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          set -e
+          export PATH="$HOME/.local/bin:$PATH"
+          OLD=$(uv version --short)
+          uv version --bump minor
+          NEW=$(uv version --short)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml uv.lock
+          git diff --staged --quiet || git commit -m "chore: update $OLD to $NEW"
+          git push
