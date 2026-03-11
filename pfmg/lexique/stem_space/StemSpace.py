@@ -15,7 +15,7 @@ class StemSpace:
         assert self.lemma
 
     @classmethod
-    def from_string(cls, key: str) -> "StemSpace":
+    def from_string(cls, key: str) -> StemSpace:
         """Construit un StemSpace à partir d'une chaine de caractères."""
         assert key
         return cls(stems=tuple(key.split(",")))

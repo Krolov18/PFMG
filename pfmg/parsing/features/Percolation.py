@@ -27,7 +27,7 @@ class Percolation(FeatureMixin):
     @classmethod
     def from_string(
         cls, data: str, target: str, phrase_len: int
-    ) -> "Percolation":
+    ) -> Percolation:
         """TODO : Write some doc."""
         data = Percolation.broadcast(data, phrase_len)
         features = FeatureReader().parse(data=data, target=target)
@@ -38,7 +38,7 @@ class Percolation(FeatureMixin):
         values = ",".join(translations)
         self.data["translation"] = f"({values})"
 
-    def update(self, other: "Percolation") -> None:
+    def update(self, other: Percolation) -> None:
         """TODO : Write some doc.
 
         :param other:

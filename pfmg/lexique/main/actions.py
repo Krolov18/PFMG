@@ -107,7 +107,7 @@ def lexicon_action(
 
     réalisation
     règles lexicales
-    DataFrame contenant toutes les infos
+    Polars DataFrame contenant toutes les infos
 
     :param namespace: namespace généré par ArgumentParser.parse_args()
     """

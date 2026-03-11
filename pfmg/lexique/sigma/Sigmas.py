@@ -32,7 +32,7 @@ class Sigmas:
         return iter(self.data)
 
     @classmethod
-    def from_dict(cls, source: dict, destination: dict) -> "Sigmas":
+    def from_dict(cls, source: dict, destination: dict) -> Sigmas:
         """Construit un Sigmas à partir de deux dictionnaires.
 
         :param source: la config de la langue source

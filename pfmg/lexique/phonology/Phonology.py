@@ -31,7 +31,7 @@ class Phonology(ABCReader):
     voyelles: frozenset
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "Phonology":
+    def from_yaml(cls, path: Path) -> Phonology:
         """Construit un Phonology à partir d'un Fichier YAML.
 
         :param path: Chemin vers le fichier YAML

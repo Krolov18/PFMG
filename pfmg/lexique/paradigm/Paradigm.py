@@ -25,7 +25,7 @@ class Paradigm(ABCRealizable, ABCReader):
     blocks: BlockEntry
     counter: ClassVar[Iterator[int]] = itertools.count()
 
-    def realize(self, lexeme: Lexeme) -> Generator[Forme, None, None]:
+    def realize(self, lexeme: Lexeme) -> Generator[Forme]:
         """Méthode qui permet de réaliser un lexème donné.
 
         :param lexeme: Lexème à réaliser.
@@ -58,7 +58,7 @@ class Paradigm(ABCRealizable, ABCReader):
                 )
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "Paradigm":
+    def from_yaml(cls, path: Path) -> Paradigm:
         """Charge un paradigme à partir d'un chemin donné.
 
         :param path: Chemin à partir duquel charger le paradigme.

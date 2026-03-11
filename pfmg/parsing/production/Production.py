@@ -46,7 +46,7 @@ class Production:
         trads = self.agreements.get_translations()
         self.percolation.add_translation([trads[x] for x in indices])
 
-    def update(self, production: "Production", indices: list[int]) -> None:
+    def update(self, production: Production, indices: list[int]) -> None:
         """Ajoute les infos morphosyntaxique destination à source.
 
         :param production: une production de destination

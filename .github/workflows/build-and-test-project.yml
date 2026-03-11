@@ -16,20 +16,28 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12.0"
-      - uses: abatilo/actions-poetry@v2
-      - uses: actions/cache@v3
-        with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
-      - name: Install dependencies
-        run: poetry install && poetry run python -m nltk.downloader wordnet
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Sync dependencies
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv sync --all-extras --dev
+          uv run python -m nltk.downloader wordnet
       - name: Linter
-        run: poetry run ruff check
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run ruff check
       - name: Type Checker
-        run: poetry run pyright
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run ty check
       - name: Test with pytest
-        run: poetry run pytest
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run pytest

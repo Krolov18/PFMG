@@ -1,0 +1,29 @@
+[MAIN]
+ignore-patterns=(^\.|test_.*?py)
+limit-inference-results=30
+py-version=3.12
+
+[REPORTS]
+reports=no
+
+[MESSAGES CONTROL]
+confidence=HIGH,CONTROL_FLOW,INFERENCE,INFERENCE_FAILURE,UNDEFINED
+# Disabled: handled by Ruff (format, naming, complexity, variables, exceptions)
+disable=raw-checker-failed,bad-inline-option,locally-disabled,file-ignored,suppressed-message,useless-suppression,deprecated-pragma,use-symbolic-message-instead,missing-module-docstring,function-redefined,format,invalid-name,missing-docstring,too-many-arguments,too-many-branches,too-many-locals,too-many-returns,too-many-statements,too-few-public-methods,too-many-instance-attributes,unused-variable,unused-argument
+enable=c-extension-no-member
+
+[TYPECHECK]
+ignored-checks-for-mixins=no-member,not-async-context-manager,not-context-manager,attribute-defined-outside-init
+ignored-classes=optparse.Values,thread._local,_thread._local,argparse.Namespace
+generated-members=
+
+[CLASSES]
+valid-metaclass-classmethod-first-arg=cls
+
+[SIMILARITIES]
+min-similarity-lines=4
+
+[SPELLING]
+max-spelling-suggestions=4
+spelling-private-dict-file=
+spelling-ignore-comment-directives=fmt: on,fmt: off,noqa:,noqa,nosec,isort:skip,mypy:

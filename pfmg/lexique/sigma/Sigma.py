@@ -18,7 +18,7 @@ class Sigma:
     source: frozendict[str, str]
     destination: frozendict[str, str]
 
-    def __le__(self, other: "Sigma") -> bool:
+    def __le__(self, other: Sigma) -> bool:
         """Vérifie si les clés/valeurs de other.source sont dans self.source.
 
         :param other: un autre Sigma
