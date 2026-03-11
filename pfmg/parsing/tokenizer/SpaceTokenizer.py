@@ -1,4 +1,5 @@
 """Tokenizer sur les espaces."""
+
 from pfmg.parsing.tokenizer.TokenizerReMixin import TokenizerReMixin
 
 

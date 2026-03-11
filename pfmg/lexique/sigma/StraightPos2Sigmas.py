@@ -1,4 +1,5 @@
 """Implémente les cases des paradigmes par POS."""
+
 from dataclasses import dataclass
 from pathlib import Path
 

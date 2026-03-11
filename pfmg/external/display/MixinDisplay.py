@@ -1,4 +1,5 @@
 """Mixin pour la représentation des objects."""
+
 from pfmg.external.display.ABCDisplay import ABCDisplay
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 

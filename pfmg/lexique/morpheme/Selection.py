@@ -1,4 +1,5 @@
 """Selection."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -60,9 +61,7 @@ class Selection(
         assert isinstance(term, str)
         return term
 
-    def _to_decoupe__stemspace(
-        self, term: StemSpace | str | None = None
-    ) -> str:
+    def _to_decoupe__stemspace(self, term: StemSpace | str | None = None) -> str:
         assert isinstance(term, StemSpace)
         return term.stems[int(self.__rule.group(1)) - 1]
 
@@ -74,10 +73,10 @@ class Selection(
         raise NotImplementedError
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
-        return f"{term.lemma}.{".".join(self.__sigma.values())}"
+        return f"{term.lemma}.{'.'.join(self.__sigma.values())}"
 
     def _to_glose__str(self, term: str) -> str:
-        return f"{term}.{".".join(self.__sigma.values())}"
+        return f"{term}.{'.'.join(self.__sigma.values())}"
 
     def get_sigma(self) -> frozendict:
         """Récupère le sigma d'un Selection.

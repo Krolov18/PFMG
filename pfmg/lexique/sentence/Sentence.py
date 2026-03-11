@@ -1,4 +1,5 @@
 """Sentence."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict

@@ -1,4 +1,5 @@
 """Doc."""
+
 from abc import ABC, abstractmethod
 
 from pfmg.lexique.lexicon import Lexicon

@@ -1,4 +1,5 @@
 """Suffix."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -63,9 +64,7 @@ class Suffix(
         """
         return f"{term}{self.__rule.group(1)}"
 
-    def _to_decoupe__stemspace(
-        self, term: StemSpace | str | None = None
-    ) -> str:
+    def _to_decoupe__stemspace(self, term: StemSpace | str | None = None) -> str:
         assert isinstance(term, StemSpace)
         return f"{term.stems[0]}-{self.__rule.group(1)}"
 
@@ -75,11 +74,11 @@ class Suffix(
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
-        return f"{term.lemma}-{".".join(self.__sigma.values())}"
+        return f"{term.lemma}-{'.'.join(self.__sigma.values())}"
 
     def _to_glose__str(self, term: str) -> str:
         assert isinstance(term, str)
-        return f"{term}-{".".join(self.__sigma.values())}"
+        return f"{term}-{'.'.join(self.__sigma.values())}"
 
     def _to_glose__nonetype(self, term: None = None) -> NoReturn:
         assert term is None

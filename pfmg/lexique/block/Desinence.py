@@ -1,4 +1,5 @@
 """Désinence."""
+
 from dataclasses import dataclass
 
 

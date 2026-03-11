@@ -1,4 +1,5 @@
 """Ensemble de Sigma."""
+
 import itertools as it
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -39,6 +40,4 @@ class Sigmas:
         :param destination: la config de la langue de destination
         :return: Une instance de Sigmas
         """
-        return cls(
-            [Sigma(*x) for x in it.product(*gridify([source, destination]))]
-        )
+        return cls([Sigma(*x) for x in it.product(*gridify([source, destination]))])

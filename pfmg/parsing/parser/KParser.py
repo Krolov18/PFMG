@@ -1,6 +1,7 @@
-"""TODO : Write some doc.
-TODO : Tree ne doit pas être un type de sortie.
- Il faut implémenter Sentence!
+"""TODO: Write some doc.
+
+TODO: Tree ne doit pas être un type de sortie.
+Il faut implémenter Sentence!
 """
 
 from collections.abc import Iterator
@@ -60,14 +61,10 @@ class KParser(ABCReader, MixinParseParsable):
     def parse(self, data: str, keep: Literal["first"]) -> str: ...
 
     @overload
-    def parse(
-        self, data: str | list[str], keep: Literal["all"]
-    ) -> list[str]: ...
+    def parse(self, data: str | list[str], keep: Literal["all"]) -> list[str]: ...
 
     @overload
-    def parse(
-        self, data: list[str], keep: Literal["first", "all"]
-    ) -> list[str]: ...
+    def parse(self, data: list[str], keep: Literal["first", "all"]) -> list[str]: ...
 
     def parse(self, data, keep) -> str | list[str]:
         """TODO : Write some doc.
@@ -88,9 +85,7 @@ class KParser(ABCReader, MixinParseParsable):
                 case Tree():
                     translation = " ".join(tree.label()["translation"])
                 case Iterator() | list():
-                    translation = [
-                        " ".join(x.label()["translation"]) for x in tree
-                    ]
+                    translation = [" ".join(x.label()["translation"]) for x in tree]
                 case _:
                     raise TypeError
         except Exception:  # noqa BLE001

@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   bump-version-and-lock:
-    if: github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')
+    if: "github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')"
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,7 +24,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12.0"
+          python-version: "3.14"
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Bump minor version, regenerate lockfile, commit and push
@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12.0"
+          python-version: "3.14"
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - name: Sync dependencies

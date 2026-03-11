@@ -1,4 +1,5 @@
 """TODO : Doc à écrire."""
+
 from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 

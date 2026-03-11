@@ -1,4 +1,5 @@
 """Structure de données pour représenter la réalisation d'un Léxème."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict

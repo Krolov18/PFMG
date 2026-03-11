@@ -1,4 +1,5 @@
 from frozendict import frozendict
+
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 from pfmg.lexique.stem_space.StemSpace import StemSpace

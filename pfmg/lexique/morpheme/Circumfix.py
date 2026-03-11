@@ -1,4 +1,5 @@
 """Circonfixe."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -79,17 +80,17 @@ class Circumfix(
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
         return (
-            f"{".".join(self.__sigma.values())}"
+            f"{'.'.join(self.__sigma.values())}"
             f"+{term.lemma}"
-            f"+{".".join(self.__sigma.values())}"
+            f"+{'.'.join(self.__sigma.values())}"
         )
 
     def _to_glose__str(self, term: str) -> str:
         assert isinstance(term, str)
         return (
-            f"{".".join(self.__sigma.values())}"
+            f"{'.'.join(self.__sigma.values())}"
             f"+{term}"
-            f"+{".".join(self.__sigma.values())}"
+            f"+{'.'.join(self.__sigma.values())}"
         )
 
     def get_sigma(self) -> frozendict:

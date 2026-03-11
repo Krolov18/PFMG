@@ -1,16 +1,19 @@
 """Mixin définissant l'égalité par défaut."""
+
 from pfmg.external.equality.ABCEquality import ABCEquality
 
 
 class MixinEquality(ABCEquality):
     """Mixin définissant l'égalité par défaut."""
 
-    def __eq__(self, other: ABCEquality):
+    def __eq__(self, other: object) -> bool:
         """Vérifie l'égalité entre deux objets.
 
         :param other: un autre object
         :return: bool
         """
+        if not isinstance(other, ABCEquality):
+            return False
         eq_rules = self.get_rule().string == other.get_rule().string
         return eq_rules and (
             (self.get_sigma().items() <= other.get_sigma().items())

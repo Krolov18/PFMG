@@ -37,7 +37,7 @@ exclude = [
 line-length = 88
 indent-width = 4
 
-# Assume Python 3.12
+# Assume Python 3.14
 target-version = "py314"
 
 output-format = "grouped"
@@ -118,8 +118,11 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 [lint.flake8-builtins]
 builtins-ignorelist = ["object"]
 
-# Ignore `F401` (import violations) in all `__init__.py` files, and in select subdirectories.
+# Ignore `F401` (import violations) in all `__init__.py` files.
+# In test files: ignore D100 (missing docstring in public module),
+# D103 (missing docstring in public method), ANN001 (missing type annotation for arg).
 [lint.per-file-ignores]
 "__init__.py" = ["F401"]
-#"**/{tests,docs,tools}/*" = ["F401"]
+"**/test_*.py" = ["D100", "D103", "ANN001"]
+"**/test/**/*.py" = ["D100", "D103", "ANN001"]
 

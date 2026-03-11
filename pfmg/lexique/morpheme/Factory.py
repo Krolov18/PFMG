@@ -1,4 +1,5 @@
 """Méthode de construction d'un morphème."""
+
 from enum import Enum
 
 from frozendict import frozendict

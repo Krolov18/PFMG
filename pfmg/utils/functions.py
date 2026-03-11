@@ -1,4 +1,5 @@
 """Helper functions."""
+
 import functools
 from collections.abc import Callable
 

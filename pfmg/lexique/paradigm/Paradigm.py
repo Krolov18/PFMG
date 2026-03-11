@@ -1,4 +1,5 @@
 """Réalise les léxèmes."""
+
 import itertools
 from collections.abc import Generator, Iterator
 from dataclasses import dataclass

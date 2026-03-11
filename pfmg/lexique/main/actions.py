@@ -1,4 +1,5 @@
 """Actions du main du package lexique."""
+
 import argparse
 import os.path
 from pathlib import Path

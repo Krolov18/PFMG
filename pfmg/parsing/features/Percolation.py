@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 
 from pfmg.parsing.features.FeatureMixin import FeatureMixin
@@ -18,16 +19,14 @@ class Percolation(FeatureMixin):
 
         import nltk
 
-        return ft.reduce(nltk.unify, data)  # type: ignore
+        return ft.reduce(nltk.unify, data)
 
     def to_nltk(self) -> str:
         """TODO : Write some doc."""
         return ",".join(f"{key}={value}" for key, value in self.data.items())
 
     @classmethod
-    def from_string(
-        cls, data: str, target: str, phrase_len: int
-    ) -> Percolation:
+    def from_string(cls, data: str, target: str, phrase_len: int) -> Percolation:
         """TODO : Write some doc."""
         data = Percolation.broadcast(data, phrase_len)
         features = FeatureReader().parse(data=data, target=target)

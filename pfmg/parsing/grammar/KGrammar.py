@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -65,9 +66,7 @@ class KGrammar(ABCReader):
                     target="S",
                 )
 
-                s_production.update(
-                    production=d_production, indices=s_translation
-                )
+                s_production.update(production=d_production, indices=s_translation)
                 sources.append(s_production)
                 destinations.append(d_production)
 

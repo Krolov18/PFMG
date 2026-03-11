@@ -1,4 +1,5 @@
 """Doc."""
+
 from dataclasses import dataclass
 
 from pfmg.lexique.lexicon import Lexicon

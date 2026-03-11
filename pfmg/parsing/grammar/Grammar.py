@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 
 from pfmg.lexique.stem_space.StemSpace import StemSpace

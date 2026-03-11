@@ -1,4 +1,5 @@
 """Différents utilitaires."""
+
 from ast import literal_eval
 from itertools import product
 from typing import overload

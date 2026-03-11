@@ -1,4 +1,5 @@
 """TODO : Doc à écrire."""
+
 from pfmg.external.decoupeur.ABCDecoupeur import ABCDecoupeur
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 

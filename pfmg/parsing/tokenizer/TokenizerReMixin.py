@@ -1,4 +1,5 @@
 """Mixin utilisant re découper en tokens."""
+
 import re
 
 from pfmg.parsing.tokenizer.ABCTokenizer import ABCTokenizer
