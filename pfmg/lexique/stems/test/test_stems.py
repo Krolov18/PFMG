@@ -1,3 +1,4 @@
+import pytest
 import yaml
 from frozendict import frozendict
 from pfmg.lexique.lexeme.Lexeme import Lexeme

@@ -1,3 +1,4 @@
+import pytest
 from frozendict import frozendict
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 from pfmg.lexique.morpheme.Radical import Radical

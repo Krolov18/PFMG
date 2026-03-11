@@ -1,3 +1,4 @@
+import pytest
 from frozendict import frozendict
 
 from pfmg.conftest import get_default_phonology

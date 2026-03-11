@@ -1,1 +1,2 @@
+class ConcreteProduct:
     pass

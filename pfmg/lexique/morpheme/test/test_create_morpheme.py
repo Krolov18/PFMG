@@ -1,3 +1,4 @@
+import pytest
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Prefix import Prefix

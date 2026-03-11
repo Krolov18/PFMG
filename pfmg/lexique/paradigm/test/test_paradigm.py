@@ -1,3 +1,4 @@
+import yaml
 from frozendict import frozendict
 
 from pfmg.lexique.forme.Forme import Forme

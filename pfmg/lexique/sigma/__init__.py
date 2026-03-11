@@ -1,3 +1,4 @@
+"""Default Factory de Gloses."""
 from pathlib import Path
 
 from pfmg.utils.abstract_factory import factory_class

@@ -1,3 +1,4 @@
+"""Main pour le package parsing."""
 import argparse
 import pathlib
 
