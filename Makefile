@@ -19,7 +19,7 @@ install:
 	uv sync --all-groups
 
 lint:
-	$(UV) pylint
+	$(UV) pylint pfmg
 	$(UV) ruff check
 
 format:
