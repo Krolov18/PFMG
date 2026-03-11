@@ -69,6 +69,7 @@ jobs:
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           uv run ruff check
+          uv run pylint
       - name: Type Checker
         run: |
           export PATH="$HOME/.local/bin:$PATH"
