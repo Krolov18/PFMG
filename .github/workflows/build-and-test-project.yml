@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   bump-version-and-lock:
-    if: github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')
+    if: "github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')"
     runs-on: ubuntu-latest
     permissions:
       contents: write
