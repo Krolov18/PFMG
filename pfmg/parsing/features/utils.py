@@ -1,11 +1,20 @@
-"""TODO : Write some doc."""
+"""Parser for feature strings (semicolon/comma/equal-separated) into dict(s)."""
 
 
 class FeatureReader:
-    """TODO : Write some doc."""
+    """Parses feature specification strings into a list of feature dicts."""
 
     def parse(self, data: str, target: str = "") -> list[dict]:
-        """TODO : Write some doc."""
+        """Parse data into feature dict(s); target prefixes feature names (e.g. S/D).
+
+        Args:
+            data: Feature specification string (semicolon/comma/equal-separated).
+            target: Prefix for feature names (e.g. "S" or "D"). Defaults to "".
+
+        Returns:
+            list[dict]: One or more feature dicts.
+
+        """
         assert data
 
         nb_c = data.count(";") + 1 if data.count(";") > 0 else 1
@@ -26,7 +35,7 @@ class FeatureReader:
         accumulator: list[dict] | dict,
         separators: tuple[str, ...],
     ) -> None:
-        """TODO : Write some doc."""
+        """Recursively parse using the first matching separator (scolon, comma, equal, char)."""
         for name in separators:
             try:
                 name = f"_{self.__class__.__name__}__read_{name}"
@@ -50,7 +59,7 @@ class FeatureReader:
         accumulator: list[dict],
         separators: tuple[str, ...],
     ) -> None:
-        """TODO : Write some doc."""
+        """Split on ';' and parse each segment into the corresponding accumulator slot."""
         assert ";" in data
 
         tmp_ = data.split(";")
@@ -71,7 +80,7 @@ class FeatureReader:
         accumulator: dict,
         separators: tuple[str, ...],
     ) -> None:
-        """TODO : Write some doc."""
+        """Split on ',' and parse each segment into the same accumulator."""
         assert "," in data
         assert isinstance(accumulator, dict)
 
@@ -86,7 +95,7 @@ class FeatureReader:
 
     @staticmethod
     def __read_equal(data: str, *, target: str, accumulator: dict, **_kwargs) -> None:
-        """TODO : Write some doc."""
+        """Parse key=value and store in accumulator with target-prefixed key."""
         assert "=" in data
 
         if not all(lhs_rhs := data.partition("=")):
@@ -100,7 +109,7 @@ class FeatureReader:
 
     @staticmethod
     def __read_char(data: str, target: str, accumulator: dict, **_kwargs) -> None:
-        """TODO : Write some doc."""
+        """Store a single feature name as key with a variable placeholder as value."""
         assert ";" not in data
         assert "," not in data
         assert "=" not in data

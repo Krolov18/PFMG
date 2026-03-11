@@ -1,4 +1,4 @@
-"""Actions du main du package lexique."""
+"""CLI actions for the lexique package main."""
 
 import argparse
 import os.path
@@ -11,9 +11,11 @@ from pfmg.utils.paths import get_validation_file_path
 def action(
     namespace: argparse.Namespace,
 ) -> None:
-    """Factory qui lance n'importe quelle action disponible.
+    """Dispatch to the requested action (namespace.name and args).
 
-    :param namespace: namespace généré par ArgumentParser.parse_args()
+    Args:
+        namespace: Result of ArgumentParser.parse_args() (must have "name").
+
     """
     factory_function(
         concrete_product=f"{namespace.name}_action",
@@ -25,9 +27,11 @@ def action(
 def check_if_datapath_exists(
     namespace: argparse.Namespace,
 ) -> None:
-    """Valide l'existence du répertoire de configuration de la grammaire.
+    """Validate that the grammar config directory exists.
 
-    :param namespace: namespace généré par ArgumentParser.parse_args()
+    Args:
+        namespace: Must have "datapath" attribute (path to config directory).
+
     """
     path = Path(namespace.datapath)
     if not (path.exists() and path.is_dir()):
@@ -37,15 +41,14 @@ def check_if_datapath_exists(
 def check_if_datapath_contains_all_files(
     namespace: argparse.Namespace,
 ) -> None:
-    """Vérifie si tous les fichiers de config sont présents dans le répertoire.
+    """Check that all required config files are present in the directory.
 
-    Fichiers attendus dans l'archive:
-        - Gloses.yaml
-        - Blocks.yaml
-        - Stems.yaml
-        - Phonology.yaml
-        - MorphoSyntax.yaml
-    :param namespace: namespace généré par ArgumentParser.parse_args()
+    Required files: Gloses.yaml, Blocks.yaml, Stems.yaml, Phonology.yaml,
+    MorphoSyntax.yaml.
+
+    Args:
+        namespace: Must have "datapath" attribute pointing to the config directory.
+
     """
     message = f"{namespace.datapath} does not contain Gloses.yaml"
     if not (namespace.datapath / "Gloses.yaml").exists():
@@ -69,10 +72,11 @@ def check_if_datapath_contains_all_files(
 
 
 def check_yaml_files_with_cue(namespace: argparse.Namespace) -> None:
-    """Valide les fichiers YAML avec avec CUE.
+    """Validate YAML files with CUE (cwd is temporarily changed during validation).
 
-    On change temporairement le cwd, le temps de la validation.
-    :param namespace: namespace généré par ArgumentParser.parse_args()
+    Args:
+        namespace: Must have "datapath" (unused in current implementation).
+
     """
     path = os.getcwd()
     os.chdir(get_validation_file_path())
@@ -104,13 +108,11 @@ def check_yaml_files_with_cue(namespace: argparse.Namespace) -> None:
 def lexicon_action(
     namespace: argparse.Namespace,
 ) -> None:
-    """Action qui gère le lexique.
+    """Run lexicon action: realization, lexical rules, and Polars DataFrame output.
 
-    réalisation
-    règles lexicales
-    Polars DataFrame contenant toutes les infos
+    Args:
+        namespace: Must have "datapath" (path to lexicon config directory).
 
-    :param namespace: namespace généré par ArgumentParser.parse_args()
     """
     import sys
 

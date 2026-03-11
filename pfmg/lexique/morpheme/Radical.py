@@ -1,4 +1,4 @@
-"""Radical."""
+"""Radical: stem space and sigma for the root of a form."""
 
 from dataclasses import dataclass
 
@@ -11,20 +11,17 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 @dataclass(repr=False)
 class Radical(MixinRepresentor, MixinGloser):
-    """Represente le radical d'une Forme."""
+    """The radical (root) of a Forme: StemSpace and sigma."""
 
     stems: StemSpace
     sigma: frozendict
 
-    def __post_init__(self):
-        """Initialise lemma à partir du premier stem dans stems."""
+    def __post_init__(self) -> None:
+        """Set lemma from the first stem in the stem space."""
         self.lemma = self.stems.lemma
 
     def _repr_params(self) -> str:
-        """Représente les params d'un radical.
-
-        :return: les params d'un radical
-        """
+        """Return stems and sigma string for repr."""
         stems = "::".join(self.stems.stems)
         sigma = ",".join([f"{k}={v}" for k, v in self.sigma.items()])
         return f"{stems},{sigma}"

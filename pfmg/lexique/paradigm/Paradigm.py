@@ -1,4 +1,4 @@
-"""Réalise les léxèmes."""
+"""Realizes Lexemes as Forme (paradigm: gloses + blocks)."""
 
 import itertools
 from collections.abc import Generator, Iterator
@@ -20,18 +20,14 @@ from pfmg.lexique.sigma.StraightPos2Sigmas import StraightPos2Sigmas
 
 @dataclass(repr=False)
 class Paradigm(ABCRealizable, ABCReader):
-    """Réalise les Lexeme en Forme."""
+    """Realizes Lexemes as Forme using gloses (POS -> Sigmas) and blocks (Desinence)."""
 
     gloses: StraightPos2Sigmas
     blocks: BlockEntry
     counter: ClassVar[Iterator[int]] = itertools.count()
 
     def realize(self, lexeme: Lexeme) -> Generator[Forme]:
-        """Méthode qui permet de réaliser un lexème donné.
-
-        :param lexeme: Lexème à réaliser.
-        :return: Liste des réalisations du lexème.
-        """
+        """Yield all Forme realizations of the given lexeme (matching sigma and desinence)."""
         gloses = self.gloses(lexeme.source.pos)
         lexeme_pos = lexeme.source.pos
         for i_sigma in gloses:
@@ -60,11 +56,7 @@ class Paradigm(ABCRealizable, ABCReader):
 
     @classmethod
     def from_yaml(cls, path: Path) -> Paradigm:
-        """Charge un paradigme à partir d'un chemin donné.
-
-        :param path: Chemin à partir duquel charger le paradigme.
-        :return: Instance de Paradigm.
-        """
+        """Load Paradigm from a directory (Gloses.yaml, Blocks.yaml, etc.)."""
         assert (path / "Gloses.yaml").exists()
         return cls(
             gloses=new_gloses(path=path / "Gloses.yaml"),

@@ -1,33 +1,35 @@
-"""Mixin pour la représentation des objects."""
+"""Mixin for string representation of objects (to_string)."""
 
 from pfmg.external.display.ABCDisplay import ABCDisplay
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class MixinDisplay(ABCDisplay):
-    """Mixin qui implémente la factory to_string."""
+    """Mixin that implements the to_string factory by dispatching on term type."""
 
     def to_string(self, term: StemSpace | str | None = None) -> str:
-        """Transforme un objet en un string le décrivant.
+        """Return a string describing this object.
 
-        :param term: radical utiliser pour représenter un objet
-            StemSpace: objet avec plusieurs radicaux
-            str: objet avec un seul radical
-            None: objet sans radical
-        :return: une string décrivant l'objet
+        Args:
+            term: Stem used to represent the object: StemSpace (multiple stems),
+                str (single stem), or None (no stem).
+
+        Returns:
+            str: String describing the object.
+
         """
         return getattr(self, f"_to_string__{term.__class__.__name__.lower()}")(
             term=term,
         )
 
     def _to_string__str(self, term: str) -> str:
-        """TODO : Doc à écrire."""
+        """Return string representation for a single str term. Override in subclasses."""
         raise NotImplementedError
 
     def _to_string__nonetype(self, term: None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return string representation when term is None. Override in subclasses."""
         raise NotImplementedError
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
-        """TODO : Doc à écrire."""
+        """Return string representation for a StemSpace term. Override in subclasses."""
         raise NotImplementedError

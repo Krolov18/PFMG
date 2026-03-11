@@ -5,20 +5,25 @@ from collections.abc import Callable
 
 
 def static_vars(**kwargs):
-    """Stocke des variables statiques.
+    """Decorator that attaches static variables to a function (via attributes).
 
-    Façon détournée pour stocker des variables statiques
-    dans une fonction.
+    Args:
+        **kwargs: Attribute names and values to set on the wrapped function.
 
-    :param kwargs:
-    :return:
+    Returns:
+        Callable: A decorator that sets those attributes on the wrapped function.
+
     """
 
     def _(func: Callable):
-        """Inner function stockant les variables.
+        """Attach kwargs as attributes on func and return func.
 
-        :param func:
-        :return:
+        Args:
+            func: Function to attach attributes to.
+
+        Returns:
+            Callable: The same function with attributes set.
+
         """
         for key, value in kwargs.items():
             setattr(func, key, value)
@@ -28,21 +33,28 @@ def static_vars(**kwargs):
 
 
 def compose(*functions: Callable) -> Callable:
-    """Implémente la fonction de composition de fonction.
+    """Return a single callable that applies the given callables left to right.
 
-    À l'image des angage fonctionnels :
-    compose(f, g, h) équivaut à dans certains langage (f . g . h).
+    For example, the result of compose(f, g, h) applied to x yields f(g(h(x))).
 
-    :param functions: Callable chaînables
-    :return:
+    Args:
+        *functions: Callables to compose (left to right).
+
+    Returns:
+        Callable: Single callable that applies the composition.
+
     """
 
     def __compose(f: Callable, g: Callable):
-        """Construit une lambda effectuant l'opération de base de la composition.
+        """Return a callable that applies the first callable to the result of the second.
 
-        :param f: fonction quelconque
-        :param g: fonction quelconque
-        :return: le résultat de f appliqué au résultat de g appliqué aux args
+        Args:
+            f: Outer callable.
+            g: Inner callable.
+
+        Returns:
+            Callable: Composed callable f(g(*args)).
+
         """
         return lambda *args: f(g(*args))
 

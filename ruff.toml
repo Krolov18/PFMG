@@ -64,7 +64,6 @@ select = [
     "BLE",
     "C901",
     "COM",
-    #    "CPY",
     "C4",
     "D",
     "DTZ",
@@ -76,7 +75,7 @@ select = [
     "F",
     "FA",
     "FBT",
-    #    "FIX",
+    "FIX",
     "I",
     "ICN",
     "INP",
@@ -98,15 +97,14 @@ select = [
 ]
 ignore = [
     "COM812",
-    "D203",
-    "D213",
-    "D401",
     "ISC001",
     "N803",
     "N999",
     "S101",
     "S506",
 ]
+# Re-enable D413 (blank line after last section) despite convention = "google".
+extend-select = ["D413"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 #fixable = ["ALL"]
@@ -114,6 +112,9 @@ unfixable = ["B"]
 
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[lint.pydocstyle]
+convention = "google"
 
 [lint.flake8-builtins]
 builtins-ignorelist = ["object"]

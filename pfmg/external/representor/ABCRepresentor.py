@@ -1,28 +1,19 @@
-"""ABCRepresentor."""
+"""Abstract base for objects with string representation (repr/str)."""
 
 from abc import ABC, abstractmethod
 
 
 class ABCRepresentor(ABC):
-    """ABCRepresentor."""
+    """Abstract base for objects that can be represented as strings (repr, str, _repr_params)."""
 
     @abstractmethod
     def __repr__(self) -> str:
-        """Représente un object en string.
-
-        :return: la représentation d'un objet
-        """
+        """Return a string representation of the object."""
 
     @abstractmethod
     def __str__(self) -> str:
-        """Convertit un objet en string.
-
-        :return: le string d'un objet
-        """
+        """Return a string form of the object."""
 
     @abstractmethod
     def _repr_params(self) -> str:
-        """Représente les params d'un objet.
-
-        :return: la string des params d'un objet
-        """
+        """Return the parameter part used in repr (e.g. for ClassName(params))."""

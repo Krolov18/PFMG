@@ -1,4 +1,4 @@
-"""Morpheme quiu permet de faire une règle conditionnelle."""
+"""Conditional morpheme rule: cond ? true : false."""
 
 import re
 from collections.abc import Callable
@@ -21,12 +21,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Condition(
     MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, ABCGloser
 ):
-    """Règle ternaire au sein des règles morphologiques.
-
-    :param cond : Construction du morphème
-    :param true : Si la construction de la condition réussie, on récupère true.
-    :param false : Si la construction de la condition échoue, on récupère false.
-    """
+    """Ternary rule in morphological rules: if cond then true else false."""
 
     __PATTERN: ClassVar[Callable[[str], Match | None]] = re.compile(
         r"^(.*)\?(.*):(.*)$",
@@ -46,12 +41,7 @@ class Condition(
         sigma: frozendict,
         phonology: Phonology,
     ) -> None:
-        """Initialise la règle, le sigma et la phonologie.
-
-        :param rule:
-        :param sigma:
-        :param phonology:
-        """
+        """Initialize condition rule (cond?true:false), sigma, and phonology."""
         _rule = Condition.__PATTERN(rule)
         if _rule is None:
             raise TypeError
@@ -76,7 +66,7 @@ class Condition(
         return self.__true.to_string(term)
 
     def to_decoupe(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return segmentation from cond branch; on IndexError use false branch."""
         try:
             self.__cond.to_string(term)
         except IndexError:
@@ -84,7 +74,7 @@ class Condition(
         return self.__true.to_decoupe(term)  # type: ignore
 
     def to_glose(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return glose from cond branch; on IndexError use false branch."""
         try:
             self.__cond.to_string(term)
         except IndexError:
@@ -92,19 +82,13 @@ class Condition(
         return self.__true.to_glose(term)  # type: ignore
 
     def get_sigma(self) -> frozendict:
-        """Récupère le sigma.
-
-        :return: le sigma
-        """
+        """Return this condition's sigma (feature dict)."""
         return self.sigma
 
     def _repr_params(self) -> str:
-        """TODO : Doc à écrire."""
-        return self.rule.string
+        """Return the original rule string for representation."""
+        return self.rule.string  # type: ignore[attr-defined]
 
     def get_rule(self) -> Match:
-        """Récupère la règle.
-
-        :return: la règle
-        """
+        """Return the compiled rule match object."""
         return self.rule
