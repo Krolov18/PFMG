@@ -12,7 +12,7 @@ help:
 	@echo "  format      Run Ruff formatter"
 	@echo "  format-check Run Ruff formatter in check-only mode"
 	@echo "  type       Run ty type checker"
-	@echo "  test       Run pytest"
+	@echo "  test       Run pytest with coverage"
 	@echo "  check      Run lint + format-check + type + test"
 
 install:
@@ -32,7 +32,7 @@ type:
 	$(UV) ty check
 
 test:
-	$(UV) pytest
+	$(UV) pytest --cov=pfmg --cov-report=term-missing
 
 check: lint format-check type test
 
