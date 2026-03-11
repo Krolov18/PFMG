@@ -39,7 +39,7 @@ class BlockEntry:
         )
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "BlockEntry":
+    def from_yaml(cls, path: Path) -> BlockEntry:
         """Construit un BlockEntry depuis un fichier yaml.
 
         :param path: Chemin vers le fichier yaml

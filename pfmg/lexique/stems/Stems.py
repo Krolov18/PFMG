@@ -21,7 +21,7 @@ class Stems(ABCReader, Iterable):
     data: Iterator[Lexeme]
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "Stems":
+    def from_yaml(cls, path: Path) -> Stems:
         """Construit l'Itérateur à partir d'un fichier YAML.
 
         :param path: Chemin vers le fichier YAML.

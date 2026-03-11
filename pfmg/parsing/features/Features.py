@@ -24,7 +24,7 @@ class Features(FeatureMixin):
         return iter(self.data)
 
     @classmethod
-    def from_string(cls, data: str, target: str, phrase_len: int) -> "Features":
+    def from_string(cls, data: str, target: str, phrase_len: int) -> Features:
         """TODO : Write some doc."""
         data = Features.broadcast(data, phrase_len)
         return cls(data=FeatureReader().parse(data=data, target=target))

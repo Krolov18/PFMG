@@ -1,16 +1,14 @@
 """Implementation of a Trie."""
 from collections.abc import Callable
-from typing import TypeVar
 
 _special_chars_map = {
     i: "\\" + chr(i) for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"
 }
 
-T = TypeVar("T")
 # type_memory = dict[str, "type_memory | Literal[1] | str"]
 
 
-def identity(param: T) -> T:
+def identity[T](param: T) -> T:
     """Fonction d'identité.
 
     :param param: n'importe quoi
@@ -136,4 +134,4 @@ def to_pattern(words: list[str]) -> str:
     return dict_str
 
 
-__all__ = ["add_word", "add_words", "to_pattern", "dict2str"]
+__all__ = ["add_word", "add_words", "dict2str", "to_pattern"]

@@ -5,31 +5,75 @@ name: Build and Test PFMG
 
 on:
   push:
-    branches: [ "**" ]
+    branches: [ "dev", "main" ]
   pull_request:
-    branches: [ "**" ]
+    branches: [ "dev", "main" ]
 
 permissions:
   contents: read
 
 jobs:
-  ci:
+  bump-version-and-lock:
+    if: github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12.0"
-      - uses: abatilo/actions-poetry@v2
-      - uses: actions/cache@v3
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Bump minor version, regenerate lockfile, commit and push
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          set -e
+          # Only run on merge commits (PR merged into dev)
+          PARENTS=$(git rev-list --parents -n 1 HEAD | wc -w)
+          [ "$PARENTS" -eq 2 ] || { echo "Not a merge commit, skipping bump"; exit 0; }
+          export PATH="$HOME/.local/bin:$PATH"
+          OLD=$(grep -E '^version\s*=' pyproject.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+          MAJOR=$(echo "$OLD" | cut -d. -f1)
+          MINOR=$(echo "$OLD" | cut -d. -f2)
+          NEW="${MAJOR}.$((MINOR + 1)).0"
+          sed -i "s/^version = .*/version = \"$NEW\"/" pyproject.toml
+          rm -f uv.lock
+          uv lock
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml uv.lock
+          git diff --staged --quiet || git commit -m "chore: update $OLD to $NEW"
+          git push
+
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
-      - name: Install dependencies
-        run: poetry install && poetry run python -m nltk.downloader wordnet
+          python-version: "3.12.0"
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Sync dependencies
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv sync --all-extras --dev
+          uv run python -m nltk.downloader wordnet
       - name: Linter
-        run: poetry run ruff check
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run ruff check
       - name: Type Checker
-        run: poetry run pyright
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run ty check
       - name: Test with pytest
-        run: poetry run pytest
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run pytest

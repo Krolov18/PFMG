@@ -34,7 +34,7 @@ class StraightPos2Sigmas(ABCReader):
         return self.data[pos]
 
     @classmethod
-    def from_yaml(cls, path: Path | str) -> "StraightPos2Sigmas":
+    def from_yaml(cls, path: Path | str) -> StraightPos2Sigmas:
         """Construit un Gloses à partir d'un fichier YAML.
 
         :param path: Chemin vers le fichier YAML.
@@ -47,7 +47,7 @@ class StraightPos2Sigmas(ABCReader):
         return cls.from_dict(data)
 
     @classmethod
-    def from_dict(cls, data: dict) -> "StraightPos2Sigmas":
+    def from_dict(cls, data: dict) -> StraightPos2Sigmas:
         """Construit un Gloses à partir d'un dictionnaire.
 
         :param data: doit contenir au deuxième niveau 'source' et 'destination'

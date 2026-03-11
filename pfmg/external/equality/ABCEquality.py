@@ -9,7 +9,7 @@ class ABCEquality(ABC):
     """Interface définissant l'égalité."""
 
     @abstractmethod
-    def __eq__(self, other: "ABCEquality") -> bool:  # type: ignore reportIncompatibleMethodOverride
+    def __eq__(self, other: ABCEquality) -> bool:
         """Calcule l'égalité entre deux objets.
 
         :param other: un autre objet pouvant être comparé

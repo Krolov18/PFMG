@@ -50,7 +50,7 @@ class ConstrainedPos2Sigmas(ABCReader):
         )
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "ConstrainedPos2Sigmas":
+    def from_yaml(cls, path: Path) -> ConstrainedPos2Sigmas:
         """Construit un CGloses depuis un fichier YAML.
 
         :param path: Chemin vers le fichier YAML
