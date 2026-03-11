@@ -1,4 +1,5 @@
 """Lexeme."""
+
 from dataclasses import dataclass
 
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry

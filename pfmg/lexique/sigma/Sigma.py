@@ -1,4 +1,5 @@
 """Informations morphosyntaxiques d'une Forme."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict

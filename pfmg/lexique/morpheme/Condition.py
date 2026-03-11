@@ -1,4 +1,5 @@
 """Morpheme quiu permet de faire une règle conditionnelle."""
+
 import re
 from collections.abc import Callable
 from re import Match

@@ -1,4 +1,5 @@
 """Configuration des fixtures."""
+
 import functools
 import itertools
 
@@ -22,9 +23,7 @@ params_factory_method_concrete_product_kwargs = list(
     )
 )
 params_factory_method_package_kwargs = list(
-    itertools.product(
-        params_factory_method_package, params_factory_method_kwargs
-    )
+    itertools.product(params_factory_method_package, params_factory_method_kwargs)
 )
 params_factory_method_concrete_product_package_kwargs = list(
     itertools.product(
@@ -44,9 +43,7 @@ def fx_partial_factory_method_missing_concrete_product(
     return functools.partial(factory_method, package=package, **kwargs)
 
 
-@pytest.fixture(
-    scope="function", params=params_factory_method_concrete_product_kwargs
-)
+@pytest.fixture(scope="function", params=params_factory_method_concrete_product_kwargs)
 def fx_partial_factory_method_missing_package(request) -> functools.partial:  # noqa
     """Fixture à documenter."""
     (concrete_product, kwargs) = request.param
@@ -88,9 +85,7 @@ def fx_partial_factory_function_missing_concrete_product(
     return functools.partial(factory_function, package=package, **kwargs)
 
 
-@pytest.fixture(
-    scope="function", params=params_factory_method_concrete_product_kwargs
-)
+@pytest.fixture(scope="function", params=params_factory_method_concrete_product_kwargs)
 def fx_partial_factory_function_missing_package(request) -> functools.partial:  # noqa
     """Fixture à documenter."""
     (concrete_product, kwargs) = request.param

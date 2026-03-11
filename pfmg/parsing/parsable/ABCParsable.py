@@ -1,4 +1,5 @@
 """Interface d'un Parseur de strings.
+
 On dévie légèrement de la logique de NLTK pour manipuler nos propres structures.
 Un parseur renverra donc des Sentences et non des Trees.
 """
@@ -23,15 +24,11 @@ class ABCParsable(ABC):
 
     @overload
     @abstractmethod
-    def parse(
-        self, data: str | list[str], keep: Literal["all"]
-    ) -> list[str]: ...
+    def parse(self, data: str | list[str], keep: Literal["all"]) -> list[str]: ...
 
     @overload
     @abstractmethod
-    def parse(
-        self, data: list[str], keep: Literal["first", "all"]
-    ) -> list[str]: ...
+    def parse(self, data: list[str], keep: Literal["first", "all"]) -> list[str]: ...
 
     @abstractmethod
     def parse(self, data, keep):

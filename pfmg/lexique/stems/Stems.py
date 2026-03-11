@@ -1,4 +1,5 @@
 """Itérateur de Lexèmes."""
+
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
@@ -43,9 +44,7 @@ class Stems(ABCReader, Iterable):
 
                     if len(pos_inherence) == 2:
                         pos, inherence = pos_inherence
-                        d_sigma = FeatureReader().parse(
-                            inherence.replace(";", ",")
-                        )
+                        d_sigma = FeatureReader().parse(inherence.replace(";", ","))
 
                     stems, s_sigma = Stems.__parse_translation(value)
                     yield Lexeme(

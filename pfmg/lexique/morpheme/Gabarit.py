@@ -1,4 +1,5 @@
 """Gabarit."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -68,13 +69,9 @@ class Gabarit(
         assert char
         match char:
             case "U":
-                return self.phonology.apophonies[
-                    self.phonology.apophonies[stem["V"]]
-                ]
+                return self.phonology.apophonies[self.phonology.apophonies[stem["V"]]]
             case "A":
-                return self.phonology.apophonies[
-                    stem[self.phonology.derives[char]]
-                ]
+                return self.phonology.apophonies[stem[self.phonology.derives[char]]]
             case "1" | "2" | "3" | "V":
                 return stem[char]
             case "4" | "5" | "6":
@@ -94,9 +91,7 @@ class Gabarit(
         """
         result = ""
         for char in self.rule.string:
-            result += self.__verify(
-                char, Gabarit.__format_default_stem(term.stems[0])
-            )
+            result += self.__verify(char, Gabarit.__format_default_stem(term.stems[0]))
         return result
 
     def _to_decoupe__stemspace(self, term: StemSpace) -> str:
@@ -104,7 +99,7 @@ class Gabarit(
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
-        return f"X({term.lemma}).{"".join(self.sigma.values())}"
+        return f"X({term.lemma}).{''.join(self.sigma.values())}"
 
     def _to_glose__nonetype(self, term: None = None) -> str:
         raise NotImplementedError

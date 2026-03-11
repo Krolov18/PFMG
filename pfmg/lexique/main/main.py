@@ -1,4 +1,5 @@
 """Main du lexique."""
+
 import argparse
 import pathlib
 

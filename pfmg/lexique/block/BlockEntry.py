@@ -1,4 +1,5 @@
 """Structure qui génère des Desinence."""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -58,7 +59,5 @@ class BlockEntry:
         destinations = {}
         for pos, blocks in data.items():
             sources[pos] = Blocks.from_list(blocks["source"], phonology)
-            destinations[pos] = Blocks.from_list(
-                blocks["destination"], phonology
-            )
+            destinations[pos] = Blocks.from_list(blocks["destination"], phonology)
         return cls(sources, destinations)

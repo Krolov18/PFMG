@@ -1,4 +1,5 @@
 """Prefix."""
+
 import re
 from collections.abc import Callable
 from re import Match
@@ -69,11 +70,11 @@ class Prefix(
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
-        return f"{".".join(self.__sigma.values())}-{term.lemma}"
+        return f"{'.'.join(self.__sigma.values())}-{term.lemma}"
 
     def _to_glose__str(self, term: str) -> str:
         assert isinstance(term, str)
-        return f"{".".join(self.__sigma.values())}-{term}"
+        return f"{'.'.join(self.__sigma.values())}-{term}"
 
     def _to_glose__nonetype(self, term: None = None) -> NoReturn:
         raise NotImplementedError

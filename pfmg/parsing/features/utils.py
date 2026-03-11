@@ -1,5 +1,6 @@
 """TODO : Write some doc."""
 
+
 class FeatureReader:
     """TODO : Write some doc."""
 
@@ -84,9 +85,7 @@ class FeatureReader:
             )
 
     @staticmethod
-    def __read_equal(
-        data: str, *, target: str, accumulator: dict, **_kwargs
-    ) -> None:
+    def __read_equal(data: str, *, target: str, accumulator: dict, **_kwargs) -> None:
         """TODO : Write some doc."""
         assert "=" in data
 
@@ -100,9 +99,7 @@ class FeatureReader:
                 accumulator[f"{target}{lhs_rhs[0]}"] = lhs_rhs[2]
 
     @staticmethod
-    def __read_char(
-        data: str, target: str, accumulator: dict, **_kwargs
-    ) -> None:
+    def __read_char(data: str, target: str, accumulator: dict, **_kwargs) -> None:
         """TODO : Write some doc."""
         assert ";" not in data
         assert "," not in data

@@ -9,7 +9,8 @@ reports=no
 [MESSAGES CONTROL]
 confidence=HIGH,CONTROL_FLOW,INFERENCE,INFERENCE_FAILURE,UNDEFINED
 # Disabled: handled by Ruff (format, naming, complexity, variables, exceptions)
-disable=raw-checker-failed,bad-inline-option,locally-disabled,file-ignored,suppressed-message,useless-suppression,deprecated-pragma,use-symbolic-message-instead,missing-module-docstring,function-redefined,format,invalid-name,missing-docstring,too-many-arguments,too-many-branches,too-many-locals,too-many-returns,too-many-statements,too-few-public-methods,too-many-instance-attributes,unused-variable,unused-argument
+# Plus: forward refs (E0602), design choices (R0901, R0801), style (C0415, W0238, etc.)
+disable=raw-checker-failed,bad-inline-option,locally-disabled,file-ignored,suppressed-message,useless-suppression,deprecated-pragma,use-symbolic-message-instead,missing-module-docstring,function-redefined,format,invalid-name,missing-docstring,too-many-arguments,too-many-branches,too-many-locals,too-many-statements,too-few-public-methods,too-many-instance-attributes,unused-variable,unused-argument,undefined-variable,too-many-ancestors,unused-private-member,import-outside-toplevel,duplicate-code,consider-using-enumerate,non-ascii-name,unspecified-encoding,useless-else-on-loop,no-else-raise
 enable=c-extension-no-member
 
 [TYPECHECK]

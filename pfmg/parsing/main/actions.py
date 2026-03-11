@@ -1,4 +1,5 @@
 """Actions du main du package parsing."""
+
 import sys
 
 from pfmg.parsing.parser import KParser

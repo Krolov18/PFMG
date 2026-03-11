@@ -1,4 +1,5 @@
 """ABCRepresentor."""
+
 from abc import ABC, abstractmethod
 
 

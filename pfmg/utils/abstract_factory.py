@@ -1,4 +1,5 @@
 """Implémentation de l'abstract factory avec import_module et getattr."""
+
 from collections.abc import Callable
 from importlib import import_module
 from typing import TypeVar

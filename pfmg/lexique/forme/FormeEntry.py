@@ -1,4 +1,5 @@
 """Entry d'une Forme."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict
@@ -43,29 +44,20 @@ class FormeEntry(MixinDisplay, ABCGloser, ABCDecoupeur):
 
         :return: une production lexicale
         """
-        name = (
-            f"_{self.__class__.__name__}__to_nltk_"
-            f"{type(infos).__name__.lower()}"
-        )
+        name = f"_{self.__class__.__name__}__to_nltk_{type(infos).__name__.lower()}"
         return getattr(self, name)(infos)
 
     def __to_nltk_nonetype(self, infos: None = None) -> str:
         assert infos is None
 
-        sigma = {
-            key: value
-            for key, value in self.get_sigma().items()
-            if key.istitle()
-        }
+        sigma = {key: value for key, value in self.get_sigma().items() if key.istitle()}
         features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
         return f"{self.pos}[{features}] -> '{self.index}'"
 
     def __to_nltk_dict(self, infos: dict) -> str:
         assert isinstance(infos, dict)
         sigma = {
-            f"S{key}": value
-            for key, value in self.get_sigma().items()
-            if key.istitle()
+            f"S{key}": value for key, value in self.get_sigma().items() if key.istitle()
         }
         sigma.update(infos)
         features = ",".join(f"{key}='{value}'" for key, value in sigma.items())

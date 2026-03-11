@@ -1,4 +1,5 @@
 """Interface pour les objets qui doivent renvoyer une glose formatée."""
+
 from abc import ABC, abstractmethod
 
 from pfmg.lexique.stem_space.StemSpace import StemSpace

@@ -1,4 +1,5 @@
 """Radical."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict
@@ -30,4 +31,4 @@ class Radical(MixinRepresentor, MixinGloser):
 
     def _to_glose__nonetype(self, term: None = None) -> str:
         assert term is None
-        return f"{self.lemma}.{".".join(self.sigma.values())}".rstrip(".")
+        return f"{self.lemma}.{'.'.join(self.sigma.values())}".rstrip(".")

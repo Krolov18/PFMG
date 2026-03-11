@@ -1,4 +1,5 @@
 """Interface pour les tokenizers."""
+
 from abc import ABC, abstractmethod
 
 from pfmg.utils.abstract_factory import factory_method

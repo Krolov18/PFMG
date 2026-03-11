@@ -1,4 +1,5 @@
 """Blocks."""
+
 from dataclasses import dataclass
 
 from frozendict import frozendict
@@ -42,7 +43,7 @@ class Blocks:
         return output
 
     @classmethod
-    def from_list(cls, data: list[dict], phonology: Phonology) -> Blocks:  # type: ignore
+    def from_list(cls, data: list[dict], phonology: Phonology) -> Blocks:
         """Construit un Blocks à partir d'une liste de blocs.
 
         :param data: listes de bloc pour un pos donné

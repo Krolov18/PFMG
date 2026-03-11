@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 from typing import Literal
 
@@ -29,13 +30,9 @@ class Production:
         features = self.percolation.to_nltk()
         rhs = [
             f"{nt}[{feats}]" if nt.isupper() else nt
-            for nt, feats in zip(
-                self.phrases, self.agreements.to_nltk(), strict=True
-            )
+            for nt, feats in zip(self.phrases, self.agreements.to_nltk(), strict=True)
         ]
-        return template.format(
-            lhs=self.lhs, features=features, rhs=" ".join(rhs)
-        )
+        return template.format(lhs=self.lhs, features=features, rhs=" ".join(rhs))
 
     def add_translation(self, indices: list[int]) -> None:
         """TODO : Write some doc."""

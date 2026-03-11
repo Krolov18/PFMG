@@ -1,4 +1,5 @@
 """TODO : Write some doc."""
+
 from dataclasses import dataclass
 
 from pfmg.parsing.features.FeatureMixin import FeatureMixin
@@ -34,9 +35,7 @@ class Features(FeatureMixin):
         result: list[str] = []
 
         for i_x in self.data:
-            result.append(
-                ",".join([f"{key}={value}" for key, value in i_x.items()])
-            )
+            result.append(",".join([f"{key}={value}" for key, value in i_x.items()]))
 
         return result
 

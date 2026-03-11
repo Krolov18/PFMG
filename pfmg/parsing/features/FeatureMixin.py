@@ -1,5 +1,6 @@
 """TODO : Write some doc."""
 
+
 class FeatureMixin:
     """TODO : Write some doc."""
 

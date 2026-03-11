@@ -1,9 +1,8 @@
 """Implementation of a Trie."""
+
 from collections.abc import Callable
 
-_special_chars_map = {
-    i: "\\" + chr(i) for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"
-}
+_special_chars_map = {i: "\\" + chr(i) for i in b"()[]{}?*+-|^$\\.&~#\t\n\r\v\f"}
 
 # type_memory = dict[str, "type_memory | Literal[1] | str"]
 
@@ -86,15 +85,11 @@ def __build_pattern(
 
     if len(characters) > 0:
         alternatives.append(
-            characters[0]
-            if len(characters) == 1
-            else f"[{''.join(characters)}]",
+            characters[0] if len(characters) == 1 else f"[{''.join(characters)}]",
         )
 
     result = (
-        alternatives[0]
-        if len(alternatives) == 1
-        else f"(?:{'|'.join(alternatives)})"
+        alternatives[0] if len(alternatives) == 1 else f"(?:{'|'.join(alternatives)})"
     )
 
     if has_quantifier:

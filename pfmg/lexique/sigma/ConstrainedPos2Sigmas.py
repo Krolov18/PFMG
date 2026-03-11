@@ -1,4 +1,5 @@
 """Gloses avec contraintes."""
+
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -42,11 +43,7 @@ class ConstrainedPos2Sigmas(ABCReader):
         :return: the filtered list of sigmas
         """
         return Sigmas(
-            [
-                sigma
-                for sigma in self.gloses(pos)
-                if sigma in self.alignments(pos)
-            ]
+            [sigma for sigma in self.gloses(pos) if sigma in self.alignments(pos)]
         )
 
     @classmethod
