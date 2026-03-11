@@ -1,4 +1,4 @@
-"""Phonology."""
+"""Phonological data: apophonies, derives, mutations, consonants, vowels."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -11,19 +11,7 @@ from pfmg.external.reader.ABCReader import ABCReader
 
 @dataclass
 class Phonology(ABCReader):
-    """DataClass encodant les informations phonologiques.
-
-    TODO : transformer cette classe en Singleton.
-    Ce changement demandera de retirer tous les endroits
-    où il existe des paramètres phonology.
-    Il suffira de faire Phonology() partout où c'est utile.
-
-    :param apophonies : Modifications phonétiques des voyelles.
-    :param derives : ...
-    :param mutations : Modifications phonétiques des consonnes.
-    :param consonnes : Ensemble des consonnes.
-    :param voyelles : Ensemble des voyelles.
-    """
+    """Encodes phonological information: apophonies (vowel changes), derives, mutations (consonant changes), consonants and vowels sets."""
 
     apophonies: frozendict
     derives: frozendict
@@ -33,11 +21,7 @@ class Phonology(ABCReader):
 
     @classmethod
     def from_yaml(cls, path: Path) -> Phonology:
-        """Construit un Phonology à partir d'un Fichier YAML.
-
-        :param path: Chemin vers le fichier YAML
-        :return: une instance de Phonology
-        """
+        """Build a Phonology from a Phonology.yaml file."""
         assert path.name.endswith("Phonology.yaml")
 
         with open(path, encoding="utf8") as file_handler:
@@ -46,10 +30,7 @@ class Phonology(ABCReader):
         return cls(**Phonology.from_dict(data))
 
     def to_dict(self) -> dict:
-        """Convertit la structure interne en JSON-compatible.
-
-        :return: un dictionnaire sérialisable par JSON
-        """
+        """Return internal structure as a JSON-serializable dict."""
         return {
             "apophonies": dict(self.apophonies),
             "derives": dict(self.derives),
@@ -60,11 +41,7 @@ class Phonology(ABCReader):
 
     @staticmethod
     def from_dict(data: dict) -> dict:
-        """Construit la strcture interne depuis un dict JSON.
-
-        :param data: un dict provenant d'un fichier JSON
-        :return: un dictionnaire formatté pour la structure interne à Phonology
-        """
+        """Build internal structure from a dict (e.g. from JSON/YAML)."""
         return {
             "apophonies": frozendict(data["apophonies"]),
             "derives": frozendict(data["derives"]),

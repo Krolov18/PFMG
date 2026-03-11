@@ -1,4 +1,4 @@
-"""Blocks."""
+"""Blocks: list of morpheme groups, one of which is chosen per sigma."""
 
 from dataclasses import dataclass
 
@@ -11,25 +11,17 @@ from pfmg.parsing.features.utils import FeatureReader
 
 @dataclass
 class Blocks:
-    """Blocks."""
+    """List of morpheme lists (blocks); __call__(sigma) returns matching morphemes."""
 
     data: list[list["Morpheme"]]  # noqa # type: ignore
 
-    def __post_init__(self):
-        """Vérifie les structures d'entrées.
-
-        Pour garder les structures le plus propre possible,
-        Toute entrée vide est refusée.
-        """
+    def __post_init__(self) -> None:
+        """Ensure all blocks are non-empty."""
         assert self.data
         assert all(x for x in self.data)
 
     def __call__(self, sigma: frozendict) -> list["Morpheme"]:  # noqa # type: ignore
-        """Récupère la liste de morphèmes valides pour le sigma donné.
-
-        :param sigma: le sigma d'une forme
-        :return: une liste de morphème valide pour ce sigma
-        """
+        """Return the list of morphemes that match the given sigma (one per block)."""
         assert sigma
 
         output: list["Morpheme"] = []  # noqa # type: ignore
@@ -44,12 +36,7 @@ class Blocks:
 
     @classmethod
     def from_list(cls, data: list[dict], phonology: Phonology) -> Blocks:
-        """Construit un Blocks à partir d'une liste de blocs.
-
-        :param data: listes de bloc pour un pos donné
-        :param phonology: Instance de Phonology
-        :return: un Blocks prêt à l'emploi
-        """
+        """Build Blocks from a list of block dicts (sigma spec -> rule) and a Phonology."""
         output: list[list["Morpheme"]] = []  # noqa # type: ignore
 
         fr = FeatureReader()

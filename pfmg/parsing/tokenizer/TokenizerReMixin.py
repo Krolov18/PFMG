@@ -1,4 +1,4 @@
-"""Mixin utilisant re découper en tokens."""
+"""Mixin that tokenizes strings using a regex separator."""
 
 import re
 
@@ -6,20 +6,12 @@ from pfmg.parsing.tokenizer.ABCTokenizer import ABCTokenizer
 
 
 class TokenizerReMixin(ABCTokenizer):
-    """Mixin pour découper des chaines de caractères avec le module re."""
+    """Mixin that splits strings into tokens using re and a separator pattern."""
 
     separator: str
 
     def __call__(self, sentence: str) -> list[str]:
-        """Découpe sentences en tokens.
-
-        Le module re est utiliser ici pour découper.
-        `separator` est donc un pattern indiquant le séparateur entre les
-        tokens.
-
-        :param sentence: Une chaine de caractères quelconque.
-        :return: une liste de tokens
-        """
+        """Split sentence into tokens using the separator regex pattern."""
         assert isinstance(sentence, str)
         assert sentence
 

@@ -30,7 +30,6 @@ exclude = [
     "venv",
     "test",
     "tests",
-    "__init__.py",
 ]
 
 # Same as Black.
@@ -64,7 +63,6 @@ select = [
     "BLE",
     "C901",
     "COM",
-    #    "CPY",
     "C4",
     "D",
     "DTZ",
@@ -76,7 +74,7 @@ select = [
     "F",
     "FA",
     "FBT",
-    #    "FIX",
+    "FIX",
     "I",
     "ICN",
     "INP",
@@ -98,15 +96,14 @@ select = [
 ]
 ignore = [
     "COM812",
-    "D203",
-    "D213",
-    "D401",
     "ISC001",
     "N803",
     "N999",
     "S101",
     "S506",
 ]
+# Re-enable D413 (blank line after last section) despite convention = "google".
+extend-select = ["D413"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 #fixable = ["ALL"]
@@ -115,6 +112,9 @@ unfixable = ["B"]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
+[lint.pydocstyle]
+convention = "google"
+
 [lint.flake8-builtins]
 builtins-ignorelist = ["object"]
 
@@ -122,7 +122,7 @@ builtins-ignorelist = ["object"]
 # In test files: ignore D100 (missing docstring in public module),
 # D103 (missing docstring in public method), ANN001 (missing type annotation for arg).
 [lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"__init__.py" = ["F401", "D104"]
 "**/test_*.py" = ["D100", "D103", "ANN001"]
 "**/test/**/*.py" = ["D100", "D103", "ANN001"]
 

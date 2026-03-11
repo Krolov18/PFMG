@@ -11,14 +11,15 @@ help:
 	@echo "  lint        Run Ruff linter"
 	@echo "  format      Run Ruff formatter"
 	@echo "  format-check Run Ruff formatter in check-only mode"
-	@echo "  type       Run Pyright type checker"
-	@echo "  test       Run pytest"
+	@echo "  type       Run ty type checker"
+	@echo "  test       Run pytest with coverage"
 	@echo "  check      Run lint + format-check + type + test"
 
 install:
 	uv sync --all-groups
 
 lint:
+	$(UV) pylint pfmg
 	$(UV) ruff check
 
 format:
@@ -31,7 +32,7 @@ type:
 	$(UV) ty check
 
 test:
-	$(UV) pytest
+	$(UV) pytest --cov=pfmg --cov-report=term-missing
 
 check: lint format-check type test
 

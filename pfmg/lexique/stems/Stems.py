@@ -1,4 +1,4 @@
-"""Itérateur de Lexèmes."""
+"""Iterator of Lexemes loaded from Stems.yaml."""
 
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
@@ -17,17 +17,13 @@ from pfmg.parsing.features.utils import FeatureReader
 
 @dataclass
 class Stems(ABCReader, Iterable):
-    """Itérateur de Lexèmes."""
+    """Iterator of Lexemes built from a Stems.yaml file."""
 
     data: Iterator[Lexeme]
 
     @classmethod
     def from_yaml(cls, path: Path) -> Stems:
-        """Construit l'Itérateur à partir d'un fichier YAML.
-
-        :param path: Chemin vers le fichier YAML.
-        :return: Objet Stems
-        """
+        """Load Stems (Lexeme iterator) from a Stems.yaml file."""
         assert path.name.endswith("Stems.yaml")
         with open(path, encoding="utf8") as file_handler:
             data = yaml.safe_load(file_handler)
@@ -66,14 +62,10 @@ class Stems(ABCReader, Iterable):
 
     @staticmethod
     def __parse_translation(token: str) -> tuple[StemSpace, frozendict]:
-        """Méthode privée qui parse la traduction.
-
-        :param token: string + POS + inhérence
-        :return: un StemSpace et ses traits inhérents (sigma)
-        """
+        """Parse translation token (stems + optional sigma) into StemSpace and sigma."""
         str_stems, str_sigma = token.split(".") if "." in token else (token, "")
         return StemSpace(stems=tuple(str_stems.split(","))), dictify(str_sigma)
 
     def __iter__(self):
-        """Récupère l'itérateur de Lexèmes."""
+        """Return the Lexeme iterator."""
         return self.data

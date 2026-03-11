@@ -1,4 +1,4 @@
-"""Suffix."""
+"""Suffix: affixal rule that adds a segment after the Radical."""
 
 import re
 from collections.abc import Callable
@@ -19,7 +19,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Suffix(
     MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
 ):
-    """Un suffixe encode une règle affixale succédant le Radical."""
+    """Affixal rule that adds a suffix after the Radical (X+suffix)."""
 
     __PATTERN: Callable[[str], Match[str] | None] = re.compile(
         r"^X\+(.*)$",
@@ -35,12 +35,7 @@ class Suffix(
         sigma: frozendict,
         phonology: Phonology,
     ) -> None:
-        """Initialialise rule, sigma et phonology.
-
-        :param rule: une règle suffixale valide.
-        :param sigma: un sigma pour cette règle
-        :param phonology: instance de Phonology
-        """
+        """Initialize suffix rule (X+suffix), sigma, and phonology."""
         _rule = Suffix.__PATTERN(rule)
         if _rule is None:
             raise TypeError
@@ -49,19 +44,11 @@ class Suffix(
         self.__phonology = phonology
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Applique la concaténation du radical et du suffixe.
-
-        :param term: Un espace thématique
-        :return: la forme réalisée en string
-        """
+        """Return stem + suffix (first stem from StemSpace)."""
         return f"{term.stems[0]}{self.__rule.group(1)}"
 
     def _to_string__str(self, term: str) -> str:
-        """Applique la concaténation du radical et du suffixe.
-
-        :param term: Le radical est une simple chaine de caractères
-        :return: La forme réalisée en string
-        """
+        """Return radical string + suffix."""
         return f"{term}{self.__rule.group(1)}"
 
     def _to_decoupe__stemspace(self, term: StemSpace | str | None = None) -> str:
@@ -85,24 +72,15 @@ class Suffix(
         raise NotImplementedError
 
     def _repr_params(self) -> str:
-        """Pré-forme les attribut du suffixe.
-
-        :return: représentation de la rule et du sigma ensemble
-        """
+        """Return rule and sigma for repr."""
         sigma = f"sigma=frozendict({dict(self.__sigma)})"
         rule = f"rule={self.__rule.string}"
         return f"{rule}, {sigma}"
 
     def get_sigma(self) -> frozendict:
-        """Récupère le sigma.
-
-        :return: le sigma
-        """
+        """Return this suffix's sigma (feature dict)."""
         return self.__sigma
 
     def get_rule(self) -> Match:
-        """Récupère la règle.
-
-        :return: la rule
-        """
+        """Return the compiled rule match object."""
         return self.__rule

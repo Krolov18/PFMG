@@ -1,7 +1,7 @@
-"""Interface d'un Parseur de strings.
+"""Interface for parsers that consume strings.
 
-On dévie légèrement de la logique de NLTK pour manipuler nos propres structures.
-Un parseur renverra donc des Sentences et non des Trees.
+Slightly diverges from NLTK's flow to work with our own structures;
+a parser will eventually return Sentence instances rather than Trees.
 """
 
 import enum
@@ -12,10 +12,9 @@ from pfmg.utils.abstract_factory import factory_method
 
 
 class ABCParsable(ABC):
-    """Interface pour les objects parsable.
+    """Interface for parsable objects.
 
-    Chacune des méthode ce-dessous va parser une ou plusieurs phrases
-    afin de calculer une structure Sentence sous-jacente.
+    Implementations parse one or more sentences and produce an underlying Sentence structure.
     """
 
     @overload
@@ -32,25 +31,32 @@ class ABCParsable(ABC):
 
     @abstractmethod
     def parse(self, data, keep):
-        """TODO : Write some doc.
+        """Parse input; return first or all results according to keep.
 
-        :param data:
-        :param keep:
-        :return:
+        Args:
+            data: String or list of strings to parse.
+            keep: "first" for one result, "all" for all parses.
+
+        Returns:
+            str | list[str]: Parsed result(s).
+
         """
         raise NotImplementedError
 
 
 class IdParsableEnum(enum.Enum):
-    """Tous les identifiants possibles pour les objects parsables."""
+    """All possible identifiers for parsable implementations."""
 
 
 def create_parsable(id_parsable: IdParsableEnum) -> ABCParsable:
-    """Factory pour construire un object parsable.
+    """Factory to build a parsable instance constrained by IdParsableEnum.
 
-    Contraint par IdParserEnum.
+    Args:
+        id_parsable: Which parser variant to create.
 
-    :return: instance d'un object parsable
+    Returns:
+        ABCParsable: A parsable instance.
+
     """
     assert __package__ is not None
     return factory_method(

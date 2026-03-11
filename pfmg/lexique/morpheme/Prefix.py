@@ -1,4 +1,4 @@
-"""Prefix."""
+"""Prefix: affixal rule that adds an element before the Radical."""
 
 import re
 from collections.abc import Callable
@@ -19,7 +19,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Prefix(
     MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
 ):
-    """Encode une règle affixale ajoutant un élément avant le Radical."""
+    """Encodes an affixal rule that adds an element before the Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^(.*)\+X$",
@@ -35,12 +35,7 @@ class Prefix(
         sigma: frozendict,
         phonology: Phonology,
     ) -> None:
-        """Initialise rule, sigma et phonology.
-
-        :param rule:
-        :param sigma:
-        :param phonology:
-        """
+        """Initialize prefix rule, sigma, and phonology."""
         _rule = Prefix.__PATTERN(rule)
         if _rule is None:
             raise TypeError
@@ -50,11 +45,7 @@ class Prefix(
         self.__phonology = phonology
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Représente un Préfix sur un StemSpace.
-
-        :param term: un espace thématique
-        :return: la réalisation d'un Prefix
-        """
+        """Return the prefix realization for a StemSpace (prefix + first stem)."""
         return f"{self.__rule.group(1)}{term.stems[0]}"
 
     def _to_string__str(self, term: str) -> str:
@@ -80,19 +71,13 @@ class Prefix(
         raise NotImplementedError
 
     def get_sigma(self) -> frozendict:
-        """Récupère le sigma d'un préfixe.
-
-        :return: le sigma d'un préfixe
-        """
+        """Return this prefix's sigma (feature dict)."""
         return self.__sigma
 
     def _repr_params(self) -> str:
-        """Write some doc."""
+        """Return the original rule string for representation."""
         return self.__rule.string
 
     def get_rule(self) -> Match:
-        """Récupère la règle.
-
-        :return: le Match de la rule
-        """
+        """Return the compiled rule match object."""
         return self.__rule

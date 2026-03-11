@@ -1,4 +1,4 @@
-"""TODO : Write some doc."""
+"""Context-free grammar with a start symbol and a list of productions."""
 
 from dataclasses import dataclass
 
@@ -8,16 +8,26 @@ from pfmg.parsing.production import Production
 
 @dataclass
 class Grammar:
-    """TODO : Write some doc."""
+    """A grammar: start symbol and list of Production rules.
+
+    Attributes:
+        start: Start symbol of the grammar.
+        productions: List of Production rules.
+
+    """
 
     start: str
     productions: list[Production]
 
     def to_nltk(self, term: StemSpace | str | None = None) -> str:
-        """Convertit la Grammar en une chaîne de caractère pour NLTK.
+        """Return this grammar as a string parseable by NLTK FeatureGrammar.fromstring.
 
-        :param term: inutile pour cette implémentation
-        :return: Une grammaire parsable par FeatureGrammar.fromstring
+        Args:
+            term: Unused in this implementation.
+
+        Returns:
+            str: Grammar string for NLTK.
+
         """
         return "\n\n".join(
             (

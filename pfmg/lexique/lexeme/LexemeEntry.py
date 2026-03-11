@@ -1,4 +1,4 @@
-"""LexemeEntry."""
+"""Single side of a Lexeme: stems, POS, and sigma (inherent features)."""
 
 from dataclasses import dataclass
 
@@ -10,25 +10,16 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 @dataclass
 class LexemeEntry:
-    """Léxème d'une source ou d'une destination.
-
-    :param stems: Espace thématique d'un lexème
-    :param pos: Catégorie morpho-syntaxique d'un léxème
-    :param sigma: Dictionnaire figé représentation
-                  les informations inhérentes d'un léxème
-    """
+    """One side of a lexeme: stem space, part-of-speech, and inherent sigma."""
 
     stems: StemSpace
     pos: str
-    sigma: frozendict  # inhérence
+    sigma: frozendict  # inherent features
 
-    def __post_init__(self):
-        """Vérifie que pos n'est pas vide."""
+    def __post_init__(self) -> None:
+        """Ensure pos is non-empty."""
         assert self.pos
 
     def to_radical(self) -> Radical:
-        """Convertir un Lexeme en un Radical.
-
-        :return: un radical
-        """
+        """Return a Radical built from this entry's stems and sigma."""
         return Radical(stems=self.stems, sigma=self.sigma)

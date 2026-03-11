@@ -1,4 +1,4 @@
-"""Informations morphosyntaxiques d'une Forme."""
+"""Morphosyntactic feature structure for a Forme (source + destination)."""
 
 from dataclasses import dataclass
 
@@ -7,12 +7,11 @@ from frozendict import frozendict
 
 @dataclass
 class Sigma:
-    """Informations morphosyntaxiques d'une Forme.
+    """Morphosyntactic information for a Forme: source and destination feature dicts.
 
-    Args:
-    ----
-        source: Dictionnaire non éditable
-        destination: Dictionnaire non éditable
+    Attributes:
+        source: Source-language feature dict.
+        destination: Destination-language feature dict.
 
     """
 
@@ -20,10 +19,14 @@ class Sigma:
     destination: frozendict[str, str]
 
     def __le__(self, other: Sigma) -> bool:
-        """Vérifie si les clés/valeurs de other.source sont dans self.source.
+        """Return True if other's source/destination items are subsets of this one's.
 
-        :param other: un autre Sigma
-        :return: True si les clés/valeurs de other.source sont dans self.source
+        Args:
+            other: Another Sigma to compare.
+
+        Returns:
+            bool: True if other is a subset (more specific) of self.
+
         """
         return (self.source.items() <= other.source.items()) and (
             self.destination.items() <= other.destination.items()

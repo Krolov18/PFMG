@@ -1,4 +1,4 @@
-"""Doc."""
+"""Indexer that disambiguates token sequences using a lexicon."""
 
 from dataclasses import dataclass
 
@@ -8,16 +8,12 @@ from pfmg.parsing.indexer import ABCindexer
 
 @dataclass
 class DesambIndexer(ABCindexer):
-    """DesambIndexer."""
+    """Resolves each token to a list of possible indices via the lexicon."""
 
     lexicon: Lexicon
 
     def __call__(self, tokens: list[str]) -> list[list[str]]:
-        """À l'aide d'un lexique indéxé, on checher tous les tokens.
-
-        :param tokens: phrase utilisateur découpée en tokens
-        :return: les séquences désambiguisées
-        """
+        """Return disambiguated sequences: for each token, list of lexicon indices."""
         assert tokens
 
         output = [list(map(str, self.lexicon[token])) for token in tokens]
