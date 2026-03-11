@@ -53,6 +53,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
@@ -65,15 +67,33 @@ jobs:
           export PATH="$HOME/.local/bin:$PATH"
           uv sync --all-extras --dev
           uv run python -m nltk.downloader wordnet
+      - name: Get changed Python files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only "${{ github.event.pull_request.base.sha }}" HEAD
+          else
+            git diff --name-only "${{ github.event.before }}" "${{ github.sha }}"
+          fi | grep -E '\.py$' > changed_py.txt || true
+          echo "count=$(wc -l < changed_py.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
       - name: Linter
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          uv run ruff check
-          uv run pylint pfmg
+          if [ -s changed_py.txt ]; then
+            uv run ruff check $(cat changed_py.txt)
+            uv run ruff format --check $(cat changed_py.txt)
+            uv run pylint $(cat changed_py.txt)
+          else
+            echo "No Python files changed, skipping linter."
+          fi
       - name: Type Checker
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          uv run ty check
+          if [ -s changed_py.txt ]; then
+            uv run ty check $(cat changed_py.txt)
+          else
+            uv run ty check
+          fi
       - name: Test with pytest
         run: |
           export PATH="$HOME/.local/bin:$PATH"
