@@ -1,6 +1,8 @@
 # Bump version and regenerate lockfile on push to dev (patch) or main (minor).
 # Skips when the head commit message starts with "chore: update" to avoid loops.
-
+#
+# For protected branches (dev/main): create a repo secret PAT_ADMIN (Personal Access
+# Token of a user with admin rights) so the workflow can push. See .github/BRANCH_PROTECTION.md.
 name: Bump version
 
 on:
@@ -19,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_ADMIN }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
@@ -48,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_ADMIN }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
