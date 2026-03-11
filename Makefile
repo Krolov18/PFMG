@@ -11,7 +11,7 @@ help:
 	@echo "  lint        Run Ruff linter"
 	@echo "  format      Run Ruff formatter"
 	@echo "  format-check Run Ruff formatter in check-only mode"
-	@echo "  type       Run Pyright type checker"
+	@echo "  type       Run ty type checker"
 	@echo "  test       Run pytest"
 	@echo "  check      Run lint + format-check + type + test"
 

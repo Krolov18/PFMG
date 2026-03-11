@@ -117,7 +117,7 @@ class Gabarit(
 
     def _repr_params(self) -> str:
         """Return the rule string for representation."""
-        return self.rule.string  # type: ignore[attr-defined]
+        return self.rule.string
 
     def get_rule(self) -> Match:
         """Return the compiled rule match object."""

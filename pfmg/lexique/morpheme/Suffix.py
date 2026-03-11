@@ -74,7 +74,7 @@ class Suffix(
     def _repr_params(self) -> str:
         """Return rule and sigma for repr."""
         sigma = f"sigma=frozendict({dict(self.__sigma)})"
-        rule = f"rule={self.__rule.string}"  # type: ignore[attr-defined]
+        rule = f"rule={self.__rule.string}"
         return f"{rule}, {sigma}"
 
     def get_sigma(self) -> frozendict:

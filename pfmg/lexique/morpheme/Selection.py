@@ -76,7 +76,7 @@ class Selection(
 
     def _repr_params(self) -> str:
         """Return the rule match string for representation."""
-        return self.__rule.string  # type: ignore[attr-defined]
+        return self.__rule.string
 
     def get_rule(self) -> Match:
         """Return the compiled rule match object."""
