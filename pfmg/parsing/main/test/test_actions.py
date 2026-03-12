@@ -1,6 +1,7 @@
 """Tests for parsing.main.actions."""
 
-import sys
+from io import StringIO
+from contextlib import redirect_stdout
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -25,48 +26,30 @@ def test_parsing_action_stdout(tmp_path: pytest.TempPathFactory) -> None:
     mock_parser = MagicMock()
     mock_parser.parse.return_value = "result1"
 
-    with patch("pfmg.parsing.main.actions.KParser") as MockKParser:
-        MockKParser.from_yaml.return_value = mock_parser
+    with patch("pfmg.parsing.main.actions.KParser") as mock_kparser:
+        mock_kparser.from_yaml.return_value = mock_parser
         namespace = {"path": tmp_path, "data": ["sentence"], "keep": "first"}
 
-        capture = []
-        original_write = sys.stdout.write
-
-        def capture_write(s: str) -> None:
-            capture.append(s)
-            original_write(s)
-
-        sys.stdout.write = capture_write
-        try:
+        buf = StringIO()
+        with redirect_stdout(buf):
             parsing_action(namespace=namespace)
-        finally:
-            sys.stdout.write = original_write
 
-        MockKParser.from_yaml.assert_called_once_with(tmp_path)
+        mock_kparser.from_yaml.assert_called_once_with(tmp_path)
         mock_parser.parse.assert_called_once_with(data=["sentence"], keep="first")
-        assert "result1" in "".join(capture)
+        assert "result1" in buf.getvalue()
 
 
 def test_parsing_action_stdout_list_result(tmp_path: pytest.TempPathFactory) -> None:
     mock_parser = MagicMock()
     mock_parser.parse.return_value = ["a", "b"]
 
-    with patch("pfmg.parsing.main.actions.KParser") as MockKParser:
-        MockKParser.from_yaml.return_value = mock_parser
+    with patch("pfmg.parsing.main.actions.KParser") as mock_kparser:
+        mock_kparser.from_yaml.return_value = mock_parser
         namespace = {"path": tmp_path, "data": ["x"], "keep": "all"}
 
-        capture = []
-        original_write = sys.stdout.write
-
-        def capture_write(s: str) -> None:
-            capture.append(s)
-            original_write(s)
-
-        sys.stdout.write = capture_write
-        try:
+        buf = StringIO()
+        with redirect_stdout(buf):
             parsing_action(namespace=namespace)
-        finally:
-            sys.stdout.write = original_write
 
-        out = "".join(capture)
+        out = buf.getvalue()
         assert "a" in out and "b" in out

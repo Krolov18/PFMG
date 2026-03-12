@@ -1,9 +1,8 @@
 """Pytest fixture configuration for tests."""
 
-from typing import Any
-
 import functools
 import itertools
+from typing import Any
 
 import pytest
 from frozendict import frozendict
@@ -169,4 +168,5 @@ def _assert_compare(result: Any, expected: Any, op: str = "==") -> None:
     elif op == "not":
         assert (not result) == expected
     else:
-        raise ValueError(f"Unsupported operator: {op}")
+        message = f"Unsupported operator: {op}"
+        raise ValueError(message)

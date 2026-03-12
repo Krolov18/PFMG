@@ -1,7 +1,5 @@
 """Tests for MixinParseParsable dispatch and ABCParsable."""
 
-from unittest.mock import MagicMock
-
 import pytest
 
 from pfmg.parsing.parsable.ABCParsable import ABCParsable

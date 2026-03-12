@@ -1,6 +1,6 @@
 """Tests for factory_function (invalid params raise, valid returns callable)."""
 
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 
