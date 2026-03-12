@@ -22,12 +22,6 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Configure git merge drivers
-        run: |
-          set -e
-          ROOT="${GITHUB_WORKSPACE}"
-          git config merge.ourslock.driver true
-          git config merge.pyprojectversion.driver "python3 $ROOT/scripts/merge-drivers/pyproject_version.py %O %A %B %P"
       - uses: actions/setup-python@v6
         with:
           python-version: "3.14"
