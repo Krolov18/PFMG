@@ -1,9 +1,12 @@
-# Create or reuse a PR dev → main for release. Trigger manually from the Actions tab.
+# Create or reuse a PR dev → main for release.
+# Runs on every push to dev (or manually via workflow_dispatch).
 # Merge is done manually (and can be protected by required reviewers on main).
 
 name: Release PR (dev → main)
 
 on:
+  push:
+    branches: [dev]
   workflow_dispatch:
 
 permissions:
