@@ -12,7 +12,7 @@ from pfmg.conftest import _assert_compare
     [
         ({"concrete_product": []}, AssertionError),
         ({"concrete_product": set()}, AssertionError),
-        ({"concrete_product": int()}, AssertionError),
+        ({"concrete_product": 0}, AssertionError),
         ({"concrete_product": complex()}, AssertionError),
         ({"concrete_product": frozenset()}, AssertionError),
         ({"concrete_product": bytearray()}, AssertionError),
@@ -33,7 +33,7 @@ def test_factory_function_concrete_product_raises(
     [
         ({"package": []}, AssertionError),
         ({"package": set()}, AssertionError),
-        ({"package": int()}, AssertionError),
+        ({"package": 0}, AssertionError),
         ({"package": complex()}, AssertionError),
         ({"package": frozenset()}, AssertionError),
         ({"package": bytearray()}, AssertionError),
@@ -59,4 +59,4 @@ def test_factory_function_package_raises(
 )
 def test_factory_function(fx_factory_function, params, expected) -> None:
     result = fx_factory_function
-    _assert_compare(isinstance(result, expected), True)
+    _assert_compare(result=isinstance(result, expected), expected=True)

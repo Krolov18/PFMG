@@ -2,7 +2,6 @@ import pytest
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Condition import Condition
-from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
@@ -67,7 +66,7 @@ def test_condition(fx_df_phonology, rule, expected, sigma) -> None:
     ("X2?X1X1", frozendict(Genre="m")),
     ("X2X1X1", frozendict(Genre="m")),
     ("X2?X1:XD", frozendict(Genre="m")),
-    ("X2?X2:X1+s", frozendict(Genre="m")),  # TODO: C'est une règle qu'on voudrait licite
+    ("X2?X2:X1+s", frozendict(Genre="m")),
 ])
 def test_suffix_error(fx_df_phonology, rule, sigma) -> None:
     with pytest.raises(TypeError):

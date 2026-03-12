@@ -11,7 +11,7 @@ from pfmg.utils.test.data_for_test.ConcreteProduct import ConcreteProduct
     [
         ({"concrete_product": []}, AssertionError),
         ({"concrete_product": set()}, AssertionError),
-        ({"concrete_product": int()}, AssertionError),
+        ({"concrete_product": 0}, AssertionError),
         ({"concrete_product": complex()}, AssertionError),
         ({"concrete_product": frozenset()}, AssertionError),
         ({"concrete_product": bytearray()}, AssertionError),
@@ -32,7 +32,7 @@ def test_factory_method_concrete_product_raises(
     [
         ({"package": []}, AssertionError),
         ({"package": set()}, AssertionError),
-        ({"package": int()}, AssertionError),
+        ({"package": 0}, AssertionError),
         ({"package": complex()}, AssertionError),
         ({"package": frozenset()}, AssertionError),
         ({"package": bytearray()}, AssertionError),
@@ -96,4 +96,4 @@ def test_factory_method_concrete_product_not_found_raises(
 )
 def test_factory_method_return_value(fx_factory_method, params, expected) -> None:
     result = fx_factory_method()
-    _assert_compare(isinstance(result, expected), True)
+    _assert_compare(result=isinstance(result, expected), expected=True)

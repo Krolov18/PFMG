@@ -1,2 +1,2 @@
 class ConcreteProduct:
-    pass
+    """Simple concrete product used for factory tests."""

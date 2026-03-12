@@ -1,6 +1,5 @@
 """Tests for pfmg.utils.functions."""
 
-import pytest
 
 from pfmg.utils.functions import compose, static_vars
 
@@ -13,7 +12,7 @@ def test_static_vars_attaches_attributes() -> None:
 
     assert counter() == 1
     assert counter() == 2
-    assert getattr(counter, "counter") == 2
+    assert counter.counter == 2
 
 
 def test_static_vars_multiple_attrs() -> None:

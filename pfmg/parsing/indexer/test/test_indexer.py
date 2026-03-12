@@ -1,4 +1,5 @@
 import pytest
+
 from pfmg.lexique.lexicon import Lexicon
 from pfmg.parsing.indexer import new_indexer
 from pfmg.utils.paths import get_project_path
