@@ -21,3 +21,4 @@ sudo cp <download_location>/cue_v0.6.0_linux_amd64/cue /usr/local/bin
 Test by typing `cue`: if the command is found, you are good to go.
 
 test bis
+test ter
