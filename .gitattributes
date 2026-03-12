@@ -1,0 +1,3 @@
+# Merge drivers: keep current branch version for lockfile and project.version on dev>main merges
+uv.lock merge=ourslock
+pyproject.toml merge=pyprojectversion
