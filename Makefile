@@ -1,7 +1,8 @@
 # PFMG – targets run via uv (lint, format, type-check, test)
 UV ?= uv run
+export PYTHONDONTWRITEBYTECODE := 1
 
-.PHONY: install lint format format-check type test check help
+.PHONY: install lint format format-check type test check clean help
 
 help:
 	@echo "Usage: make [target]"
@@ -14,6 +15,7 @@ help:
 	@echo "  type       Run ty type checker"
 	@echo "  test       Run pytest with coverage"
 	@echo "  check      Run lint + format-check + type + test"
+	@echo "  clean      Remove __pycache__ dirs and .pyc files"
 
 install:
 	uv sync --all-groups
@@ -35,5 +37,10 @@ test:
 	$(UV) pytest --cov=pfmg --cov-report=term-missing
 
 check: lint format-check type test
+
+clean:
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name '*.pyc' -delete 2>/dev/null || true
+	find . -type f -name '*.pyo' -delete 2>/dev/null || true
 
 .DEFAULT_GOAL := help
