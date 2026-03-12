@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Renovate config for PFMG (Python/uv)",
+  "extends": ["config:recommended"],
+  "enabledManagers": ["pep621", "uv"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "lockFileMaintenanceBranchName": "renovate/uv-lockfile-maintenance"
+  },
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Group minor and patch Python dependency updates",
+      "matchManagers": ["pep621"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "python dependencies (non-major)"
+    }
+  ]
+}
