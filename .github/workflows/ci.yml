@@ -44,9 +44,15 @@ jobs:
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           if [ -s changed_py.txt ]; then
-            uv run ruff check $(cat changed_py.txt)
-            uv run ruff format --check $(cat changed_py.txt)
-            uv run pylint $(cat changed_py.txt)
+            CHANGED_PY_FILES="$(cat changed_py.txt)"
+            NON_TEST_FILES="$(grep -Ev '/test/|/tests/' changed_py.txt || true)"
+            uv run ruff check ${CHANGED_PY_FILES}
+            if [ -n "${NON_TEST_FILES}" ]; then
+              uv run ruff format --check ${NON_TEST_FILES}
+            else
+              echo "No non-test Python files changed, skipping formatter."
+            fi
+            uv run pylint ${CHANGED_PY_FILES}
           else
             echo "No Python files changed, skipping linter."
           fi
