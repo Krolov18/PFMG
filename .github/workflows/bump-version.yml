@@ -1,0 +1,89 @@
+# Bump version and regenerate lockfile on push to dev (patch) or main (minor).
+# Skips when the head commit message starts with "chore: update" to avoid loops.
+#
+# For protected branches (dev/main):
+# - PAT_ADMIN: Personal Access Token of a user with admin rights (to bypass "Require PR").
+# - GPG_PRIVATE_KEY: ASCII-armored GPG private key (gpg --armor --export-secret-keys KEY_ID).
+# - GPG_PASSPHRASE: Passphrase of the key. If the key has no passphrase, do not create this secret (GitHub rejects empty values).
+# - COMMITTER_NAME, COMMITTER_EMAIL: Repository variables; must match the GitHub account that has the GPG key (verified commits).
+name: Bump version
+
+on:
+  push:
+    branches: ["dev", "main"]
+
+permissions:
+  contents: read
+
+jobs:
+  bump-patch-on-dev:
+    if: "github.ref == 'refs/heads/dev' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.PAT_ADMIN }}
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_committer_name: ${{ vars.COMMITTER_NAME }}
+          git_committer_email: ${{ vars.COMMITTER_EMAIL }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Bump patch version (dev), regenerate lockfile, commit and push
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          set -e
+          export PATH="$HOME/.local/bin:$PATH"
+          OLD=$(uv version --short)
+          uv version --bump patch
+          NEW=$(uv version --short)
+          git add pyproject.toml uv.lock
+          git diff --staged --quiet || git commit -m "chore: update $OLD to $NEW"
+          git push
+
+  bump-minor-on-main:
+    if: "github.ref == 'refs/heads/main' && github.event_name == 'push' && !startsWith(github.event.head_commit.message, 'chore: update')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.PAT_ADMIN }}
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_committer_name: ${{ vars.COMMITTER_NAME }}
+          git_committer_email: ${{ vars.COMMITTER_EMAIL }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Bump minor version (dev → main), regenerate lockfile, commit and push
+        env:
+          UV_SYSTEM_PYTHON: "1"
+        run: |
+          set -e
+          export PATH="$HOME/.local/bin:$PATH"
+          OLD=$(uv version --short)
+          uv version --bump minor
+          NEW=$(uv version --short)
+          git add pyproject.toml uv.lock
+          git diff --staged --quiet || git commit -m "chore: update $OLD to $NEW"
+          git push

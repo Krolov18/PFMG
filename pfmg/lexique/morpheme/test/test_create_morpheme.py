@@ -1,17 +1,13 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
 import pytest
 from frozendict import frozendict
 
-from pfmg.lexique.morpheme.Prefix import Prefix
-from pfmg.lexique.morpheme.Suffix import Suffix
 from pfmg.lexique.morpheme.Circumfix import Circumfix
 from pfmg.lexique.morpheme.Condition import Condition
-from pfmg.lexique.morpheme.Selection import Selection
-from pfmg.lexique.morpheme.Gabarit import Gabarit
 from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.morpheme.Gabarit import Gabarit
+from pfmg.lexique.morpheme.Prefix import Prefix
+from pfmg.lexique.morpheme.Selection import Selection
+from pfmg.lexique.morpheme.Suffix import Suffix
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 parametrize = pytest.mark.parametrize(

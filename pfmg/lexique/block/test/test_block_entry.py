@@ -1,18 +1,13 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
 import pytest
 import yaml
 from frozendict import frozendict
 
-from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.block.BlockEntry import BlockEntry
+from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.block.Desinence import Desinence
-from pfmg.lexique.sigma.Sigma import Sigma
 from pfmg.lexique.morpheme.Circumfix import Circumfix
 from pfmg.lexique.morpheme.Suffix import Suffix
-from pfmg.conftest import fx_df_phonology
+from pfmg.lexique.sigma.Sigma import Sigma
 
 
 @pytest.mark.parametrize("blocks", [
@@ -22,7 +17,7 @@ from pfmg.conftest import fx_df_phonology
 def test_blocks(fx_df_phonology, tmp_path, blocks):
     expected = (
         {"N": Blocks([[Suffix(rule="X+s", sigma=frozendict(genre="m"), phonology=fx_df_phonology)]])},
-        {"N": Blocks([[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=fx_df_phonology)]])},)
+        {"N": Blocks([[Circumfix(rule="a+X+s", sigma=frozendict(cas="erg"), phonology=fx_df_phonology)]])})
 
     path = tmp_path / "Phonology.yaml"
     with open(path, mode="w", encoding="utf8") as file_handler:

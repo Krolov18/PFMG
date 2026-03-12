@@ -1,26 +1,21 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
 import pytest
-
 from frozendict import frozendict
 
 from pfmg.lexique.block.Blocks import Blocks
 from pfmg.lexique.morpheme.Suffix import Suffix
 
 
-@pytest.mark.parametrize(
-    "blocks",
-    [[{
-        "CF=N1,Nombre=Sg": "X+v"
-    }]]
-)
+@pytest.mark.parametrize("blocks", [[{"CF=N1,Nombre=Sg": "X+v"}]])
 def test_from_dict(fx_df_phonology, blocks) -> None:
-    expected = [[Suffix(
-        rule="X+v", sigma=frozendict(CF="N1", Nombre="Sg"),
-        phonology=fx_df_phonology
-    )]]
+    expected = [
+        [
+            Suffix(
+                rule="X+v",
+                sigma=frozendict(CF="N1", Nombre="Sg"),
+                phonology=fx_df_phonology,
+            )
+        ]
+    ]
     actual = Blocks.from_list(blocks, fx_df_phonology)
     assert isinstance(actual, Blocks)
     assert actual.data == expected
@@ -28,10 +23,15 @@ def test_from_dict(fx_df_phonology, blocks) -> None:
 
 def test___call__(fx_df_phonology) -> None:
     blocks = Blocks(
-        data=[[Suffix(
-            rule="X+v", sigma=frozendict(Genre="m", Nombre="sg"),
-            phonology=fx_df_phonology
-        )]]
+        data=[
+            [
+                Suffix(
+                    rule="X+v",
+                    sigma=frozendict(Genre="m", Nombre="sg"),
+                    phonology=fx_df_phonology,
+                )
+            ]
+        ]
     )
 
     actual = blocks(sigma=frozendict(Genre="f", Nombre="sg"))
@@ -39,19 +39,23 @@ def test___call__(fx_df_phonology) -> None:
     assert actual == expected
 
     actual = blocks(sigma=frozendict(Genre="m", Nombre="sg"))
-    expected = [Suffix(
-        rule="X+v",
-        sigma=frozendict(Genre="m", Nombre="sg"),
-        phonology=fx_df_phonology
-    )]
+    expected = [
+        Suffix(
+            rule="X+v",
+            sigma=frozendict(Genre="m", Nombre="sg"),
+            phonology=fx_df_phonology,
+        )
+    ]
     assert actual == expected
 
     actual = blocks(sigma=frozendict(Genre="m", Nombre="sg", Cas="erg"))
-    expected = [Suffix(
-        rule="X+v",
-        sigma=frozendict(Genre="m", Nombre="sg"),
-        phonology=fx_df_phonology
-    )]
+    expected = [
+        Suffix(
+            rule="X+v",
+            sigma=frozendict(Genre="m", Nombre="sg"),
+            phonology=fx_df_phonology,
+        )
+    ]
     assert actual == expected
 
 
@@ -63,15 +67,19 @@ def test_raise_errors(fx_df_phonology):
         _ = Blocks(data=[[]])
 
     with pytest.raises(AssertionError):
-        _ = Blocks(data=[[], [{"qqch"}]])  # type: ignore
+        _ = Blocks(data=[[], [{"qqch"}]])
 
     with pytest.raises(AssertionError):
         _ = Blocks(
-            data=[[Suffix(
-                rule="X+v",
-                sigma=frozendict(Genre="m", Nombre="sg"),
-                phonology=fx_df_phonology
-            )]]
+            data=[
+                [
+                    Suffix(
+                        rule="X+v",
+                        sigma=frozendict(Genre="m", Nombre="sg"),
+                        phonology=fx_df_phonology,
+                    )
+                ]
+            ]
         )(sigma=frozendict())
 
     with pytest.raises(AssertionError):

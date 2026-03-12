@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""TODO : Doc à écrire."""
+"""Abstract interface for objects that produce a segmentation (decoupe) string."""
 
 from abc import ABC, abstractmethod
 
@@ -10,8 +6,16 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class ABCDecoupeur(ABC):
-    """TODO : Doc à écrire."""
+    """Abstract base for objects that can produce a segmentation string from a term."""
 
     @abstractmethod
     def to_decoupe(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return the segmentation string for the given term (StemSpace, str, or None).
+
+        Args:
+            term: StemSpace, str, or None to get segmentation for.
+
+        Returns:
+            str: Segmentation string.
+
+        """

@@ -1,12 +1,8 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
 import pytest
 from frozendict import frozendict
 
-from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.forme.FormeEntry import FormeEntry
+from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.morpheme.Radical import Radical
 from pfmg.lexique.stem_space.StemSpace import StemSpace

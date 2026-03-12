@@ -1,7 +1,3 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
 import argparse
 from argparse import Namespace
 from pathlib import Path
@@ -30,8 +26,10 @@ def test_no_gloses_grammar(tmp_path) -> None:
     morpho = datapath / "Morphosyntax.yaml"
     morpho.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
-    with pytest.raises(argparse.ArgumentTypeError,
-                       match=".*does not contain Gloses.*"):
+    with pytest.raises(
+        argparse.ArgumentTypeError,
+        match=r".*does not contain Gloses.*",
+    ):
         action(namespace=namespace)
 
 
@@ -47,8 +45,10 @@ def test_no_blocks_grammar(tmp_path) -> None:
     morpho = datapath / "Morphosyntax.yaml"
     morpho.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
-    with pytest.raises(argparse.ArgumentTypeError,
-                       match=".*does not contain Blocks.*"):
+    with pytest.raises(
+        argparse.ArgumentTypeError,
+        match=r".*does not contain Blocks.*",
+    ):
         action(namespace=namespace)
 
 
@@ -64,8 +64,10 @@ def test_no_phonology_grammar(tmp_path) -> None:
     phonology = datapath / "Morphosyntax.yaml"
     phonology.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
-    with pytest.raises(argparse.ArgumentTypeError,
-                       match=".*does not contain Phonology.*"):
+    with pytest.raises(
+        argparse.ArgumentTypeError,
+        match=r".*does not contain Phonology.*",
+    ):
         action(namespace=namespace)
 
 
@@ -81,8 +83,10 @@ def test_no_stems_grammar(tmp_path) -> None:
     morpho = datapath / "Morphosyntax.yaml"
     morpho.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
-    with pytest.raises(argparse.ArgumentTypeError,
-                       match=".*does not contain Stems.*"):
+    with pytest.raises(
+        argparse.ArgumentTypeError,
+        match=r".*does not contain Stems.*",
+    ):
         action(namespace=namespace)
 
 
@@ -98,8 +102,10 @@ def test_no_morphosyntax_grammar(tmp_path) -> None:
     phonology = datapath / "Phonology.yaml"
     phonology.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
-    with pytest.raises(argparse.ArgumentTypeError,
-                       match=".*does not contain MorphoSyntax.*"):
+    with pytest.raises(
+        argparse.ArgumentTypeError,
+        match=r".*does not contain MorphoSyntax.*",
+    ):
         action(namespace=namespace)
 
 
@@ -117,8 +123,10 @@ def test_validate_gloses(tmp_path):
     # morpho = datapath / "MorphoSyntax.yaml"
     # morpho.write_text("")
     namespace = Namespace(name="lexicon", datapath=datapath)
-    with pytest.raises(argparse.ArgumentTypeError,
-                       match=".*does not contain MorphoSyntax.*"):
+    with pytest.raises(
+        argparse.ArgumentTypeError,
+        match=r".*does not contain MorphoSyntax.*",
+    ):
         action(namespace=namespace)
 
 

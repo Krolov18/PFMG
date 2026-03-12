@@ -1,180 +1,54 @@
-[tool.ruff]
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".coverage",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".ipynb_checkpoints",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pyenv",
-    ".pytest_cache",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    ".vscode",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "site-packages",
-    "venv",
-    "test",
-    "tests",
-    "__init__.py"
-]
-
-# Same as Black.
-line-length = 80
-indent-width = 4
-
-# Assume Python 3.12
-target-version = "py312"
-
-output-format = "grouped"
-
-[tool.ruff.lint]
-select = [
-    "A",
-    "ANN001",
-    "ASYNC",
-    "B",
-    "BLE",
-    "C901",
-    "COM",
-    #    "CPY",
-    "C4",
-    "D",
-    "DTZ",
-    "E4", "E7", "E9",
-    "EM",
-    "EXE",
-    "F",
-    "FA",
-    "FBT",
-    #    "FIX",
-    "I",
-    "ICN",
-    "INP",
-    "ISC",
-    "N",
-    "PIE",
-    "PYI",
-    "Q",
-    "RET",
-    "RSE",
-    "RUF",
-    "S",
-    "SLF",
-    "TRIO",
-    "T20",
-    "UP",
-    "W292",
-    "YTT",
-]
-ignore = [
-    "COM812",
-    "D203",
-    "D213",
-    "D401",
-    "ISC001",
-    "N803",
-    "N999",
-    "ANN101", # Deprecated rule
-    "ANN102", # Deprecated rule
-    "S101",
-    "S506"
-]
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-#fixable = ["ALL"]
-unfixable = ["B"]
-
-# Allow unused variables when underscore-prefixed.
-dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-# Ignore `F401` (import violations) in all `__init__.py` files, and in select subdirectories.
-[tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
-#"**/{tests,docs,tools}/*" = ["F401"]
-
-[tool.ruff.lint.flake8-builtins]
-builtins-ignorelist = ["object"]
-
-[tool.ruff.format]
-# Like Black, use double quotes for strings.
-quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
-indent-style = "space"
-
-# Like Black, respect magic trailing commas.
-skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
-line-ending = "auto"
-
-[tool.poetry]
-name = "pfmg"
-version = "0.1.0"
-description = ""
-authors = ["Korantin Lévêque <korantin.leveque@protonmail.com>"]
-license = "bsd"
-readme = "README.md"
-package-mode = false
-
-[tool.poetry.dependencies]
-frozendict = "^2.4.4"
-more-itertools = "^10.2.0"
-nltk = "^3.9"
-numpy = "^1.26.4"
-pandas = "^2.2.2"
-pip = "^26.0"
-pycue = "^0.1.3"
-python = "^3.12"
-pyyaml = "^6.0.1"
-
-[tool.poetry.group.dev.dependencies]
-coverage = { version = "^7.5.1", extras = ["toml"] }
-jedi = "^0.19.1"
-jupyterlab = "^4.2.5"
-mypy = "^1.10.0"
-pandas-stubs = "^2.2.1.240316"
-pipdeptree = "^2.21.0"
-pre-commit = "^3.7.0"
-pyright = "^1.1.364"
-pytest = "^8.2.1"
-pytest-cov = "^5.0.0"
-pytest-xdist = "^3.6.1"
-ruff = "^0.4.5"
-types-frozendict = "^2.0.9"
-types-PyYAML = "^6.0.12.20240311"
-typing_extensions = "^4.11.0"
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-
-[tool.pyright]
-exclude = [
-    "**/*.lock",
-    "**/*.json",
-    "**/*.yml",
-    "**/*.yaml",
-    "**/*.sh",
-    "**/*.toml",
-    "**/*.js",
-    "**/*.ts",
-    "**/*.rc",
-    "**/*.ini"
+[dependency-groups]
+lint = [
+    "pylint",
+    "ruff",
 ]
+test = [
+    "pytest",
+    "pytest-cov",
+    "coverage[toml]",
+    "pytest-xdist",
+]
+typing = [
+    "ty",
+    "types-frozendict",
+    "types-PyYAML",
+]
+dev = [
+    { include-group = "lint" },
+    { include-group = "test" },
+    { include-group = "typing" },
+    "pre-commit",
+]
+
+[project]
+name = "pfmg"
+version = "0.1.8"
+description = ""
+authors = [
+    { name = "Korantin Lévêque", email = "korantin.leveque@protonmail.com" },
+]
+license = { text = "bsd" }
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+
+dependencies = [
+    "frozendict",
+    "more-itertools",
+    "nltk",
+    "numpy",
+    "polars",
+    "pycue",
+    "pyyaml",
+]
+
+[tool.coverage.run]
+source = ["pfmg"]
+omit = ["*/test/*", "*/conftest.py"]
+
+[tool.coverage.report]
+exclude_lines = []

@@ -1,0 +1,38 @@
+# Create or reuse a PR dev → main for release.
+# Runs on every push to dev (or manually via workflow_dispatch).
+# Merge is done manually (and can be protected by required reviewers on main).
+
+name: Release PR (dev → main)
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  create-release-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Create or get release PR (dev → main)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          git fetch origin dev main 2>/dev/null || true
+          EXISTING=$(gh pr list --base main --head dev --state open --json number,url -q '.[0].url' 2>/dev/null || true)
+          if [ -n "$EXISTING" ]; then
+            echo "Release PR already exists: $EXISTING"
+            echo "pr_url=$EXISTING" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          gh pr create --base main --head dev \
+            --title "Release: merge dev into main" \
+            --body "PR created by the Release PR workflow. Review and merge manually when ready."
+          echo "Release PR created. Merge it manually from the GitHub PR page."

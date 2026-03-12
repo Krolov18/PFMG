@@ -1,29 +1,27 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Default Factory de Gloses."""
+"""Factory for Gloses (StraightPos2Sigmas or ConstrainedPos2Sigmas)."""
+
 from pathlib import Path
 
 from pfmg.utils.abstract_factory import factory_class
 
 
 def new_gloses(path: Path):
-    """Constructeur de Gloses.
+    """Load Gloses from YAML; returns StraightPos2Sigmas or ConstrainedPos2Sigmas.
 
-    :param path: Chemin du fichier YAML
-    :return: Gloses ou CGloses
+    Args:
+        path: Path to the Gloses YAML file.
+
+    Returns:
+        StraightPos2Sigmas | ConstrainedPos2Sigmas: Gloses instance.
+
     """
     assert __package__ is not None
 
     for name in ("Constrained", "Straight"):
         try:
             result = factory_class(
-                concrete_product=f"{name}Pos2Sigmas",
-                package=__package__
-            ).from_yaml(
-                path=path
-            )
+                concrete_product=f"{name}Pos2Sigmas", package=__package__
+            ).from_yaml(path=path)
         except KeyError:
             continue
         else:

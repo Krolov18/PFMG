@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Structure qui génère des Desinence."""
+"""Structure that yields Desinence (source/destination morpheme lists) per POS and Sigma."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,26 +13,32 @@ from pfmg.lexique.sigma.Sigma import Sigma
 
 @dataclass
 class BlockEntry:
-    """Structure qui génère des Desinence."""
+    """Maps POS to source/destination Blocks; (pos, sigma) -> Desinence.
+
+    Attributes:
+        source: POS -> Blocks for source language.
+        destination: POS -> Blocks for destination language.
+
+    """
 
     source: dict[str, Blocks]
     destination: dict[str, Blocks]
 
-    def __post_init__(self):
-        """Vérifie les structures d'entrées.
-
-        Pour garder les structures le plus propre possible,
-        Toute entrée vide est refusée.
-        """
+    def __post_init__(self) -> None:
+        """Ensure source and destination are non-empty."""
         assert self.source
         assert self.destination
 
     def __call__(self, pos: str, sigma: Sigma) -> Desinence:
-        """Construit un Desinence si le couple pos/sigma le permet.
+        """Build a Desinence for the given pos and sigma if the pair is valid.
 
-        :param pos: un POS disponible dans source et destination
-        :param sigma: un Sigma valide
-        :return: Instance de Desinence
+        Args:
+            pos: A POS present in both source and destination Blocks.
+            sigma: A valid Sigma instance.
+
+        Returns:
+            Desinence: Source and destination morpheme lists for that pos/sigma.
+
         """
         return Desinence(
             source=self.source[pos](sigma.source),
@@ -44,11 +46,15 @@ class BlockEntry:
         )
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "BlockEntry":
-        """Construit un BlockEntry depuis un fichier yaml.
+    def from_yaml(cls, path: Path) -> BlockEntry:
+        """Load BlockEntry from a Blocks.yaml file.
 
-        :param path: Chemin vers le fichier yaml
-        :return: un BlockEntry prêt à l'emploi
+        Args:
+            path: Path to Blocks.yaml (Phonology.yaml must be in same parent dir).
+
+        Returns:
+            BlockEntry: New BlockEntry instance.
+
         """
         assert path.name.endswith("Blocks.yaml")
 
@@ -63,7 +69,5 @@ class BlockEntry:
         destinations = {}
         for pos, blocks in data.items():
             sources[pos] = Blocks.from_list(blocks["source"], phonology)
-            destinations[pos] = Blocks.from_list(
-                blocks["destination"], phonology
-            )
+            destinations[pos] = Blocks.from_list(blocks["destination"], phonology)
         return cls(sources, destinations)

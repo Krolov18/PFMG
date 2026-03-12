@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""TODO : Write some doc."""
+"""Parser combining a lexicon, grammar and tokenizer (NLTK FeatureEarleyChartParser)."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -18,14 +14,21 @@ from pfmg.parsing.tokenizer import ABCTokenizer, new_tokenizer
 
 @dataclass
 class Parser(MixinParseParsable):
-    """TODO : Write some doc."""
+    """Parses input using a lexicon, a grammar and a tokenizer (NLTK-based).
+
+    Attributes:
+        lexique: Lexicon for lexical rules.
+        grammar: Grammar for parsing.
+        how: Mode name ("translation" or "validation") for lexicon export.
+
+    """
 
     lexique: Lexicon
     grammar: Grammar
     how: str
 
-    def __post_init__(self):
-        """TODO : Write some doc."""
+    def __post_init__(self) -> None:
+        """Build NLTK FeatureGrammar and parser from grammar and lexicon."""
         g = self.grammar.to_nltk()
         grammar = nltk.grammar.FeatureGrammar.fromstring(
             "\n\n".join((g, getattr(self.lexique, f"to_{self.how}")()))
@@ -35,16 +38,26 @@ class Parser(MixinParseParsable):
         self.parserj = FeatureEarleyChartParser(grammar)
 
     def to_file(self, path: str | Path) -> None:
-        """Enregistre le contenu de la grammaire dans un fichier texte.
+        """Write the grammar content to a text file.
 
-        :param path: Chemin de sortie pour la grammaire.
+        Args:
+            path: Output path for the grammar file.
+
         """
         path = Path(path)
         with open(path, mode="w") as fh:
             fh.write(str(self.parserj.grammar()))
 
     def __tokenize(self, data: str | list[str]) -> list[str] | list[list[str]]:
-        """Méthode temporaire pour tokéniser du texte."""
+        """Tokenize text (string or list of strings) using the configured tokenizer.
+
+        Args:
+            data: A single sentence or list of sentences.
+
+        Returns:
+            list[str] | list[list[str]]: Tokens for one sentence or list of token lists.
+
+        """
         match data:
             case str():
                 return self.tokenizer(data)
@@ -52,18 +65,26 @@ class Parser(MixinParseParsable):
                 return [self.tokenizer(d) for d in data]
 
     def _parse_str_first(self, data: str) -> Tree:
-        """Retourne le premier arbre disponible.
+        """Return the first parse tree for the given string.
 
-        :param data: Une phrase
-        :return: Une Sentence
+        Args:
+            data: Input sentence.
+
+        Returns:
+            Tree: First NLTK parse tree.
+
         """
         return self._parse_str_all(data)[0]
 
     def _parse_list_first(self, data: list[str]) -> list[Tree]:
-        """Pour chaque phrase de data, retourne le premier arbre disponible.
+        """Return the first parse tree for each sentence in data.
 
-        :param data: une liste de phrases
-        :return: Une liste de Sentence
+        Args:
+            data: List of sentences.
+
+        Returns:
+            list[Tree]: First NLTK tree per sentence.
+
         """
         return [
             result
@@ -72,18 +93,26 @@ class Parser(MixinParseParsable):
         ]
 
     def _parse_str_all(self, data: str) -> list[Tree]:
-        """Retourne tous les arbres disponibles de data.
+        """Return all parse trees for the given string.
 
-        :param data: Une phrase
-        :return: une Sentence
+        Args:
+            data: Input sentence.
+
+        Returns:
+            list[Tree]: All NLTK parse trees for the sentence.
+
         """
         return list(self.parserj.parse_all(self.__tokenize(data)))
 
     def _parse_list_all(self, data: list[str]) -> list[Tree]:
-        """Pour chaque phrase, retourne tous les arbres disponibles.
+        """Return all parse trees for each sentence in data.
 
-        :param data: liste de phrases
-        :return: liste de Sentence
+        Args:
+            data: List of sentences.
+
+        Returns:
+            list[Tree]: All parse trees for all sentences (flattened).
+
         """
         output = []
         for parsing in self.parserj.parse_sents(self.__tokenize(data)):

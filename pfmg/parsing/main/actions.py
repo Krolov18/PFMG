@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Actions du main du package parsing."""
+"""CLI actions for the parsing package main."""
 
 import sys
 
@@ -13,9 +9,11 @@ from pfmg.utils.abstract_factory import factory_function
 def action(
     namespace: dict,
 ) -> None:
-    """Factory qui lance n'importe quelle action disponible.
+    """Dispatch to the requested action (name and args taken from namespace).
 
-    :param namespace: namespace généré par ArgumentParser.parse_args()
+    Args:
+        namespace: Dict from ArgumentParser.parse_args() (must contain "name").
+
     """
     name = namespace.pop("name")
     assert name is not None
@@ -28,9 +26,11 @@ def action(
 
 
 def parsing_action(namespace: dict) -> None:
-    """Construit un KParser et parse des data.
+    """Build a KParser from path in namespace and parse; write results to stdout.
 
-    :param namespace: paramètres de KParser et de parse
+    Args:
+        namespace: Must contain "path" and parse options (e.g. data, keep).
+
     """
     parser = KParser.from_yaml(namespace.pop("path"))
 

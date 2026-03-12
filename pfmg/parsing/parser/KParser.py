@@ -1,12 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""TODO : Write some doc.
-
-TODO : Tree ne doit pas être un type de sortie.
- Il faut implémenter Sentence!
-"""
+"""Two-phase parser: translate then validate (KParser loads from YAML and holds translator + validator)."""
 
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -22,10 +14,12 @@ from pfmg.parsing.parser import Parser
 
 @dataclass
 class KParser(ABCReader, MixinParseParsable):
-    """Parser bipartite.
+    """Two-phase parser: parses once to translate, then again to validate the translation.
 
-    Le KParser va parser une première pour traduire
-    puis une seconde fois pour valider la traduction.
+    Attributes:
+        translator: Parser for the translation phase.
+        validator: Parser for the validation phase.
+
     """
 
     translator: Parser
@@ -33,7 +27,15 @@ class KParser(ABCReader, MixinParseParsable):
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> Self:
-        """TODO : Write some doc."""
+        """Load lexicon and grammars from a directory containing MorphoSyntax.yaml and lexicon data.
+
+        Args:
+            path: Path to the directory (must contain MorphoSyntax.yaml and lexicon data).
+
+        Returns:
+            KParser: Instance with translator and validator parsers.
+
+        """
         path = Path(path)
         from pfmg.lexique.lexicon import Lexicon
         from pfmg.parsing.grammar import KGrammar
@@ -54,10 +56,12 @@ class KParser(ABCReader, MixinParseParsable):
     def to_file(
         self, path: str | Path, id_grammar: Literal["validator", "translator"]
     ) -> None:
-        """Enregistre le contenu de la grammaire dans un fichier txt.
+        """Write the chosen grammar to a text file.
 
-        :param path: Chemin de sortie où stocker le fichier
-        :param id_grammar: Identifiant de la grammaire à exporter
+        Args:
+            path: Output path for the file.
+            id_grammar: Which grammar to export ("validator" or "translator").
+
         """
         getattr(self, id_grammar).to_file(path)
 
@@ -65,26 +69,21 @@ class KParser(ABCReader, MixinParseParsable):
     def parse(self, data: str, keep: Literal["first"]) -> str: ...
 
     @overload
-    def parse(
-        self, data: str | list[str], keep: Literal["all"]
-    ) -> list[str]: ...
+    def parse(self, data: str | list[str], keep: Literal["all"]) -> list[str]: ...
 
     @overload
-    def parse(
-        self, data: list[str], keep: Literal["first", "all"]
-    ) -> list[str]: ...
+    def parse(self, data: list[str], keep: Literal["first", "all"]) -> list[str]: ...
 
     def parse(self, data, keep) -> str | list[str]:
-        """TODO : Write some doc.
+        """Parse input: translate then validate; return first or all results.
 
-        TODO : Tree -> Sentence
-         Sentence doit être une structure de données qui contient
-         toutes les infos de source et de destination.
-         Simplifier cette méthode.
+        Args:
+            data: String or list of strings to parse.
+            keep: "first" for one result per input, "all" for all parses.
 
-        :param data: data à parser
-        :param keep: Récupérer la première valeur trouvée ou toutes les valeurs
-        :return: une Sentence ou un itérateur de Sentence
+        Returns:
+            str | list[str]: Parsed result(s) (string or list of strings).
+
         """
         translation: str | list[str]
         try:
@@ -93,9 +92,7 @@ class KParser(ABCReader, MixinParseParsable):
                 case Tree():
                     translation = " ".join(tree.label()["translation"])
                 case Iterator() | list():
-                    translation = [
-                        " ".join(x.label()["translation"]) for x in tree
-                    ]
+                    translation = [" ".join(x.label()["translation"]) for x in tree]
                 case _:
                     raise TypeError
         except Exception:  # noqa BLE001

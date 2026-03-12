@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Suffix."""
+"""Suffix: affixal rule that adds a segment after the Radical."""
 
 import re
 from collections.abc import Callable
@@ -23,7 +19,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Suffix(
     MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
 ):
-    """Un suffixe encode une règle affixale succédant le Radical."""
+    """Affixal rule that adds a suffix after the Radical (X+suffix)."""
 
     __PATTERN: Callable[[str], Match[str] | None] = re.compile(
         r"^X\+(.*)$",
@@ -39,12 +35,7 @@ class Suffix(
         sigma: frozendict,
         phonology: Phonology,
     ) -> None:
-        """Initialialise rule, sigma et phonology.
-
-        :param rule: une règle suffixale valide.
-        :param sigma: un sigma pour cette règle
-        :param phonology: instance de Phonology
-        """
+        """Initialize suffix rule (X+suffix), sigma, and phonology."""
         _rule = Suffix.__PATTERN(rule)
         if _rule is None:
             raise TypeError
@@ -53,24 +44,14 @@ class Suffix(
         self.__phonology = phonology
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Applique la concaténation du radical et du suffixe.
-
-        :param term: Un espace thématique
-        :return: la forme réalisée en string
-        """
+        """Return stem + suffix (first stem from StemSpace)."""
         return f"{term.stems[0]}{self.__rule.group(1)}"
 
     def _to_string__str(self, term: str) -> str:
-        """Applique la concaténation du radical et du suffixe.
-
-        :param term: Le radical est une simple chaine de caractères
-        :return: La forme réalisée en string
-        """
+        """Return radical string + suffix."""
         return f"{term}{self.__rule.group(1)}"
 
-    def _to_decoupe__stemspace(
-        self, term: StemSpace | str | None = None
-    ) -> str:
+    def _to_decoupe__stemspace(self, term: StemSpace | str | None = None) -> str:
         assert isinstance(term, StemSpace)
         return f"{term.stems[0]}-{self.__rule.group(1)}"
 
@@ -80,35 +61,26 @@ class Suffix(
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
-        return f"{term.lemma}-{".".join(self.__sigma.values())}"
+        return f"{term.lemma}-{'.'.join(self.__sigma.values())}"
 
     def _to_glose__str(self, term: str) -> str:
         assert isinstance(term, str)
-        return f"{term}-{".".join(self.__sigma.values())}"
+        return f"{term}-{'.'.join(self.__sigma.values())}"
 
     def _to_glose__nonetype(self, term: None = None) -> NoReturn:
         assert term is None
         raise NotImplementedError
 
     def _repr_params(self) -> str:
-        """Pré-forme les attribut du suffixe.
-
-        :return: représentation de la rule et du sigma ensemble
-        """
+        """Return rule and sigma for repr."""
         sigma = f"sigma=frozendict({dict(self.__sigma)})"
         rule = f"rule={self.__rule.string}"
         return f"{rule}, {sigma}"
 
     def get_sigma(self) -> frozendict:
-        """Récupère le sigma.
-
-        :return: le sigma
-        """
+        """Return this suffix's sigma (feature dict)."""
         return self.__sigma
 
     def get_rule(self) -> Match:
-        """Récupère la règle.
-
-        :return: la rule
-        """
+        """Return the compiled rule match object."""
         return self.__rule

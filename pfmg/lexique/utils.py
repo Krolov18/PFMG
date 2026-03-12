@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Différents utilitaires."""
+"""Lexicon utilities: dictify, gridify (cartesian product of traits)."""
 
 from ast import literal_eval
 from itertools import product
@@ -14,12 +10,7 @@ from pfmg.utils.abstract_factory import factory_function
 
 
 def dictify(chars: str) -> frozendict:
-    """Transforme une chaine de caractères en un frozendict.
-
-    :param chars: Une chaine de caractère prête
-                  à être parsée et convertie en frozendict.
-    :return: un frozendict
-    """
+    """Parse a key=value,key=value string into a frozendict."""
     return frozendict(
         (
             {}
@@ -32,11 +23,7 @@ def dictify(chars: str) -> frozendict:
 
 
 def gridify_dict(grid: dict[str, list[str]]) -> list[frozendict]:
-    """Produit cartésien sur les Traits d'une langue.
-
-    :param grid: Grille de paramètres
-    :return: liste de sigmas
-    """
+    """Cartesian product of trait values; returns a list of frozendict (sigmas)."""
     assert isinstance(grid, dict)
     assert grid
 
@@ -52,11 +39,7 @@ def gridify_dict(grid: dict[str, list[str]]) -> list[frozendict]:
 
 
 def gridify_list(grid: list) -> list[list[frozendict]]:
-    """Produit cartésien sur les Traits d'une langue.
-
-    :param grid: Grille de paramètres
-    :return: liste imbriquée de sigmas
-    """
+    """Cartesian product per grid element; returns nested list of sigmas."""
     assert isinstance(grid, list)
     assert grid
 
@@ -77,10 +60,6 @@ def gridify(grid: list) -> list[list[frozendict]]: ...
 
 
 def gridify(grid):
-    """Factory qui construit les Sigmas.
-
-    :param grid: une grilles de paramètres
-    :return: Une liste de sigmas
-    """
+    """Build sigmas from a parameter grid (dict or list); dispatches to gridify_dict or gridify_list."""
     name = f"gridify_{type(grid).__name__}"
     return factory_function(concrete_product=name, package=__name__, grid=grid)

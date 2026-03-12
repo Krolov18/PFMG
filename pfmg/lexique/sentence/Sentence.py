@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Sentence."""
+"""Sentence: sequence of Forme (word forms) with display and glose."""
 
 from dataclasses import dataclass
 
@@ -16,28 +12,59 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 @dataclass
 class Sentence(ABCDisplay, ABCGloser):
-    """Représente une phrase dans notre système.
+    """A sentence in the system: a list of word forms (Forme).
 
-    :param words: une liste de formes
+    Attributes:
+        words: List of Forme (word forms).
+
     """
 
     words: list[Forme]
 
     def to_string(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return space-joined string representation of all words.
+
+        Args:
+            term: Optional stem (unused for Sentence; delegates to words).
+
+        Returns:
+            str: Space-joined string of all word forms.
+
+        """
         return " ".join(x.to_string() for x in self.words)
 
     def get_sigma(self) -> frozendict:
-        """TODO : Doc à écrire."""
+        """Return merged sigma (feature dict) from all words.
+
+        Returns:
+            frozendict: Merged feature dict from all words.
+
+        """
         sigma = {}
         for w in self.words:
             sigma.update(w.get_sigma())
         return frozendict(sigma)
 
     def to_decoupe(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return space-joined segmentation (decoupe) of all words.
+
+        Args:
+            term: Optional stem (delegates to words).
+
+        Returns:
+            str: Space-joined segmentation string.
+
+        """
         return " ".join(x.to_decoupe() for x in self.words)
 
     def to_glose(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return space-joined glose of all words.
+
+        Args:
+            term: Optional stem (delegates to words).
+
+        Returns:
+            str: Space-joined glose string.
+
+        """
         return " ".join(x.to_glose() for x in self.words)

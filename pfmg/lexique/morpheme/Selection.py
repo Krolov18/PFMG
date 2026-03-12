@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Selection."""
+"""Selection: morpheme that selects one stem from a StemSpace by index (e.g. X1, X2)."""
 
 import re
 from collections.abc import Callable
@@ -23,7 +19,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Selection(
     MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
 ):
-    """Construit une règle de sélection de radical parmi un StemSpace."""
+    """Rule that selects one stem from a StemSpace by index (e.g. X1, X2)."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(
         r"^X(\d+)$",
@@ -39,12 +35,7 @@ class Selection(
         sigma: frozendict,
         phonology: Phonology,
     ) -> None:
-        """Initialise rule, sigma et phonology.
-
-        :param rule:
-        :param sigma:
-        :param phonology:
-        """
+        """Initialize selection rule (X<n>), sigma, and phonology."""
         _rule = Selection.__PATTERN(rule)
 
         if _rule is None:
@@ -55,19 +46,14 @@ class Selection(
         self.__phonology = phonology
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Sélectionne le bon thème dans l'espace thématique.
-
-        :return: un des thèmes de l'espace thématique
-        """
+        """Return the selected stem from the StemSpace (by rule index)."""
         return term.stems[int(self.__rule.group(1)) - 1]
 
     def _to_string__str(self, term: str) -> str:
         assert isinstance(term, str)
         return term
 
-    def _to_decoupe__stemspace(
-        self, term: StemSpace | str | None = None
-    ) -> str:
+    def _to_decoupe__stemspace(self, term: StemSpace | str | None = None) -> str:
         assert isinstance(term, StemSpace)
         return term.stems[int(self.__rule.group(1)) - 1]
 
@@ -79,28 +65,19 @@ class Selection(
         raise NotImplementedError
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
-        return f"{term.lemma}.{".".join(self.__sigma.values())}"
+        return f"{term.lemma}.{'.'.join(self.__sigma.values())}"
 
     def _to_glose__str(self, term: str) -> str:
-        return f"{term}.{".".join(self.__sigma.values())}"
+        return f"{term}.{'.'.join(self.__sigma.values())}"
 
     def get_sigma(self) -> frozendict:
-        """Récupère le sigma d'un Selection.
-
-        :return: le sigma d'un Selection
-        """
+        """Return this Selection's sigma (feature dict)."""
         return self.__sigma
 
     def _repr_params(self) -> str:
-        """Récupère la string du matche de la règle.
-
-        :return:
-        """
+        """Return the rule match string for representation."""
         return self.__rule.string
 
     def get_rule(self) -> Match:
-        """Récupère la règle d'un Selection.
-
-        :return: l'objet Match qui correspond à la règle de sélection
-        """
+        """Return the compiled rule match object."""
         return self.__rule

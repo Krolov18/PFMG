@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Interface pour les tokenizers."""
+"""Abstract base for tokenizers (sentence -> list of tokens)."""
 
 from abc import ABC, abstractmethod
 
@@ -10,30 +6,15 @@ from pfmg.utils.abstract_factory import factory_method
 
 
 class ABCTokenizer(ABC):
-    """Interface pour ce qui est toknisable."""
+    """Abstract base for tokenizers: __call__(sentence) -> list of tokens."""
 
     @abstractmethod
     def __call__(self, sentence: str) -> list[str]:
-        """Split some sentence into tokens.
-
-        :param sentence:
-        :return:
-        """
+        """Split sentence into tokens."""
 
 
 def new_tokenizer(id_tokenizer: str) -> ABCTokenizer:
-    """Factory qui construit n'importe quel tokenizer.
-
-    Args:
-    ----
-        id_tokenizer: Identifiant unique d'un tokenizer
-                      présent dans le même package
-
-    Returns:
-    -------
-        ABCTokenizer: Une instance de tokenizer
-
-    """
+    """Factory to build a tokenizer by id (e.g. Space -> SpaceTokenizer)."""
     assert __package__ is not None
 
     return factory_method(

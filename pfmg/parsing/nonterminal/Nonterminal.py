@@ -1,14 +1,15 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""TODO : Write some doc."""
+"""Nonterminal symbol for grammar rules."""
 
 from dataclasses import dataclass
 
 
 @dataclass
 class Nonterminal[T]:
-    """TODO : Write some doc."""
+    """A nonterminal symbol (generic type T, e.g. str).
+
+    Attributes:
+        symbol: The nonterminal symbol (e.g. str).
+
+    """
 
     symbol: T

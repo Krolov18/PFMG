@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Gabarit."""
+"""Template (gabarit) for affixal rules that apply to the Radical structure."""
 
 import re
 from collections.abc import Callable
@@ -22,11 +18,7 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 class Gabarit(
     MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
 ):
-    """Le gabarit encode une règle affixale qui touche la structure du Radical.
-
-    Dans la règle gabaritique, les consonnes comme les voyelles
-    peuvent subir des modifications phonologiques.
-    """
+    """Template encoding an affixal rule that applies to the Radical; consonants and vowels may undergo phonological changes."""
 
     __PATTERN: Callable[[str], Match | None]
     rule: Match
@@ -39,12 +31,7 @@ class Gabarit(
         sigma: frozendict,
         phonology: Phonology,
     ) -> None:
-        """Initialise la règle, le sigma et la phono d'un Gabarit.
-
-        :param rule:
-        :param sigma:
-        :param phonology:
-        """
+        """Initialize template rule, sigma, and phonology."""
         if not hasattr(Gabarit, "_Gabarit__PATTERN"):
             Gabarit.__PATTERN = re.compile(
                 rf"^([{''.join(phonology.voyelles)}AUV1-9]{{4,9}})$",
@@ -59,27 +46,22 @@ class Gabarit(
         self.phonology = phonology
 
     def __verify(self, char: str, stem: frozendict) -> str:
-        """Applique la règle phonologique suivant le caractère rencontré.
+        """Apply the phonological rule for the given character (consonant, vowel, or U/A/V/1-9).
 
-        TODO: considérer cette fonction comme méthode à Phonology.
+        Args:
+            char: A character from the template (consonants, vowels, or U/A/V/1-9).
+            stem: Root as a single frozen dict.
 
-        :param char: Un caractère compris
-                     dans l'union [consonnes|voyelles|UAV1-9]
-        :param stem: une racine au format
-                     d'un dictionnaire unique et figé
-        :return: la réalisation du caractère d'une règle gabaritique
-                 appliquée à un stem (racine)
+        Returns:
+            str: Surface realization of that character for the template applied to the stem.
+
         """
         assert char
         match char:
             case "U":
-                return self.phonology.apophonies[
-                    self.phonology.apophonies[stem["V"]]
-                ]
+                return self.phonology.apophonies[self.phonology.apophonies[stem["V"]]]
             case "A":
-                return self.phonology.apophonies[
-                    stem[self.phonology.derives[char]]
-                ]
+                return self.phonology.apophonies[stem[self.phonology.derives[char]]]
             case "1" | "2" | "3" | "V":
                 return stem[char]
             case "4" | "5" | "6":
@@ -92,16 +74,18 @@ class Gabarit(
                 return char
 
     def _to_string__stemspace(self, term: StemSpace) -> str:
-        """Stringify avec StemSpace.
+        """Return surface string for this template applied to a StemSpace (first stem).
 
-        :param term:
-        :return:
+        Args:
+            term: StemSpace whose first stem is used.
+
+        Returns:
+            str: Result of applying the template to the stem.
+
         """
         result = ""
         for char in self.rule.string:
-            result += self.__verify(
-                char, Gabarit.__format_default_stem(term.stems[0])
-            )
+            result += self.__verify(char, Gabarit.__format_default_stem(term.stems[0]))
         return result
 
     def _to_decoupe__stemspace(self, term: StemSpace) -> str:
@@ -109,37 +93,32 @@ class Gabarit(
 
     def _to_glose__stemspace(self, term: StemSpace) -> str:
         assert isinstance(term, StemSpace)
-        return f"X({term.lemma}).{"".join(self.sigma.values())}"
+        return f"X({term.lemma}).{''.join(self.sigma.values())}"
 
     def _to_glose__nonetype(self, term: None = None) -> str:
         raise NotImplementedError
 
     @staticmethod
     def __format_default_stem(stem: str) -> frozendict:
-        """Force un stem à avoir la structure 12V3.
+        """Force a stem to have structure 12V3 (consonant-vowel-consonant slots).
 
-        :param stem: CCVC
-        :return: frozendict indiquant la voyelle thématique et les consonnes
+        Args:
+            stem: e.g. CCVC string.
+
+        Returns:
+            frozendict: Mapping of "1", "2", "V", "3" to stem characters.
+
         """
         return frozendict(zip("12V3", stem, strict=True))
 
     def get_sigma(self) -> frozendict:
-        """Récupère le sigma d'un Gabarit.
-
-        :return: le sigma
-        """
+        """Return this template's sigma (feature dict)."""
         return self.sigma
 
     def _repr_params(self) -> str:
-        """Façon de représenter un Gabarit.
-
-        :return: les paramètres prêt pour être affichés.
-        """
+        """Return the rule string for representation."""
         return self.rule.string
 
     def get_rule(self) -> Match:
-        """Récupère la règle.
-
-        :return: la règle sous forme de chaine de caractère
-        """
+        """Return the compiled rule match object."""
         return self.rule

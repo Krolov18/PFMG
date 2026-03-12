@@ -1,48 +1,49 @@
+# Ensure uv is on PATH when hooks run (e.g. from GUI or minimal git env).
+# Pre-commit runs with a minimal env; uv is often in ~/.local/bin or ~/.cargo/bin.
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: "v0.7.0"
+  - repo: local
     hooks:
-      # Run the linter.
-      - id: ruff
-        always_run: true
+      - id: ruff-check
+        name: ruff check
+        entry: bash -c 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH" && uv run ruff check'
+        language: system
+        types: [ python ]
         stages: [ pre-commit ]
-      # Run the formatter.
       - id: ruff-format
-        always_run: true
+        name: ruff format
+        entry: bash -c 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH" && uv run ruff format'
+        language: system
+        types: [ python ]
         stages: [ pre-commit ]
-  - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.385
+  - repo: local
     hooks:
-      - id: pyright
-        always_run: true
+      - id: ty
+        name: ty
+        entry: bash -c 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH" && uv run ty check'
+        language: system
+        pass_filenames: false
+        files: \.py$
         stages: [ pre-commit ]
-  # Same thing that for pyright...
-  # all this section is wordy because
-  # they did not provide a simplest way to do it.
   - repo: local
     hooks:
       - id: pytest
         name: pytest
-        entry: ~/.pyenv/versions/3.12.0/envs/PFMG/bin/pytest
-        args:
-          - -vv
-          - --showlocals
-        language: python
+        entry: bash -c 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH" && uv run pytest -vv --showlocals'
+        language: system
         pass_filenames: false
-        always_run: true
+        files: \.py$
         stages: [ pre-commit ]
   - repo: local
     hooks:
-      - id: copyright
-        name: copyright
-        language: script
-        always_run: true
-        entry: ./bin/apply_licence.sh
-        stages:
-          - pre-commit
+      - id: pylint
+        name: pylint
+        entry: bash -c 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH" && uv run pylint "$@"' bash
+        language: system
+        types: [ python ]
+        stages: [ pre-commit ]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.18.0
+    rev: v9.24.0
     hooks:
       - id: commitlint
         stages: [ commit-msg ]
+        additional_dependencies: ["@commitlint/config-conventional"]

@@ -1,4 +1,12 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
+def _ensure_nltk_data() -> None:
+    """Download required NLTK data if missing (e.g. wordnet for parsing)."""
+    import nltk
+
+    for resource in ("wordnet",):
+        try:
+            nltk.data.find(f"corpora/{resource}")
+        except LookupError:
+            nltk.download(resource, quiet=True)
+
+
+_ensure_nltk_data()

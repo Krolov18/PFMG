@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Gloses avec contraintes."""
+"""Gloses with constraints (filter paradigm by source/destination alignments)."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -19,21 +15,15 @@ from pfmg.parsing.features.utils import FeatureReader
 
 @dataclass
 class ConstrainedPos2Sigmas(ABCReader):
-    """Gloses avec contraintes.
+    """Paradigm gloses filtered by alignments (e.g. source Number 'sg' -> destination 'sg').
 
-    Args:
-    ----
-        gloses: Les gloses standards d'un paradigme
-        alignments: Contraintes appliquées sur le paradigme
-                    entre source et destination
+    Attributes:
+        gloses: Standard paradigm gloses (POS -> Sigmas).
+        alignments: Constraints between source and destination (filters valid Sigma pairs).
 
     Examples:
-    --------
-        Les contraintes permettent de valider l'exemple suivant.
-        si le Nombre de source est 'sg' alors le Nombre de destination est 'sg'.
-        De ce fait,
-        si le Nombre de source est 'sg' et que le Nombre de destination est 'pl'
-        alors cette configuration de Sigma ne sera pas retenue.
+        If source Number is 'sg' then destination Number must be 'sg'; a pair
+        (sg, pl) is filtered out.
 
     """
 
@@ -41,25 +31,29 @@ class ConstrainedPos2Sigmas(ABCReader):
     alignments: StraightPos2Sigmas
 
     def __call__(self, pos: str) -> Sigmas:
-        """Apply the normal Gloses and filter it with alignments.
+        """Return gloses for pos filtered by alignments.
 
-        :param pos: Some POS value
-        :return: the filtered list of sigmas
+        Args:
+            pos: Part-of-speech key.
+
+        Returns:
+            Sigmas: Filtered list of Sigma instances.
+
         """
         return Sigmas(
-            [
-                sigma
-                for sigma in self.gloses(pos)
-                if sigma in self.alignments(pos)
-            ]
+            [sigma for sigma in self.gloses(pos) if sigma in self.alignments(pos)]
         )
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "ConstrainedPos2Sigmas":
-        """Construit un CGloses depuis un fichier YAML.
+    def from_yaml(cls, path: Path) -> ConstrainedPos2Sigmas:
+        """Load ConstrainedPos2Sigmas from a YAML file.
 
-        :param path: Chemin vers le fichier YAML
-        :return: Une CGloses valide prête à l'emploi
+        Args:
+            path: Path to the YAML file.
+
+        Returns:
+            ConstrainedPos2Sigmas: New instance with gloses and alignments.
+
         """
         with open(path, encoding="utf8") as fh:
             data = yaml.safe_load(fh)

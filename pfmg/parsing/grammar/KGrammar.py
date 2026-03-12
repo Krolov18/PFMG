@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""TODO : Write some doc."""
+"""Grammar loader from MorphoSyntax YAML; holds translator and validator grammars."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,14 +13,28 @@ from pfmg.parsing.production import Production
 
 @dataclass
 class KGrammar(ABCReader):
-    """TODO : Write some doc."""
+    """Pair of grammars (translator and validator) loaded from a MorphoSyntax YAML file.
+
+    Attributes:
+        translator: Grammar for translation phase.
+        validator: Grammar for validation phase.
+
+    """
 
     translator: Grammar
     validator: Grammar
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> Self:
-        """TODO : Write some doc."""
+        """Load translator and validator grammars from a MorphoSyntax.yaml file.
+
+        Args:
+            path: Path to the MorphoSyntax.yaml file.
+
+        Returns:
+            KGrammar: Instance with translator and validator grammars.
+
+        """
         path = Path(path)
         assert path.name.endswith("MorphoSyntax.yaml")
 
@@ -70,9 +80,7 @@ class KGrammar(ABCReader):
                     target="S",
                 )
 
-                s_production.update(
-                    production=d_production, indices=s_translation
-                )
+                s_production.update(production=d_production, indices=s_translation)
                 sources.append(s_production)
                 destinations.append(d_production)
 
@@ -82,5 +90,10 @@ class KGrammar(ABCReader):
         )
 
     def to_validation(self) -> Grammar:
-        """TODO : Write some doc."""
+        """Return the validator grammar.
+
+        Returns:
+            Grammar: The validator grammar.
+
+        """
         return self.validator

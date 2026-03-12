@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Implémente les cases des paradigmes par POS."""
+"""Paradigm cells by POS: maps POS to Sigmas (paradigm labels)."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -15,36 +11,17 @@ from pfmg.lexique.sigma.Sigmas import Sigmas
 
 @dataclass
 class StraightPos2Sigmas(ABCReader):
-    """Structure simulant les cases des paradigmes d'une langue.
-
-    Un ensemble de case représente un paradigme.
-    Les Sigmas sont les étiquettes des cases.
-    Les cases d'un paradigmes sont dirigés par le POS.
-
-    Args:
-    ----
-        data: Structure interne contenant les différents paradigmes.
-
-    """
+    """Maps POS to Sigmas (paradigm cells / labels for a language)."""
 
     data: dict[str, Sigmas]
 
     def __call__(self, pos: str) -> Sigmas:
-        """Récupère le paradigme d'un 'pos' donné.
-
-        :param pos: un POS existant dans la structure interne
-        :return: les Sigmas pour le 'pos' donné
-        :raise KeyError: Si le 'pos' n'existe pas
-        """
+        """Return the Sigmas for the given POS (raises KeyError if pos missing)."""
         return self.data[pos]
 
     @classmethod
-    def from_yaml(cls, path: Path | str) -> "StraightPos2Sigmas":
-        """Construit un Gloses à partir d'un fichier YAML.
-
-        :param path: Chemin vers le fichier YAML.
-        :return: Un Gloses valide et prêt à l'emploi
-        """
+    def from_yaml(cls, path: Path | str) -> StraightPos2Sigmas:
+        """Load StraightPos2Sigmas from a Gloses.yaml file."""
         path = Path(path)
         assert path.name.endswith("Gloses.yaml")
         with open(path, encoding="utf8") as file_handler:
@@ -52,12 +29,8 @@ class StraightPos2Sigmas(ABCReader):
         return cls.from_dict(data)
 
     @classmethod
-    def from_dict(cls, data: dict) -> "StraightPos2Sigmas":
-        """Construit un Gloses à partir d'un dictionnaire.
-
-        :param data: doit contenir au deuxième niveau 'source' et 'destination'
-        :return: une instance de Gloses
-        """
+    def from_dict(cls, data: dict) -> StraightPos2Sigmas:
+        """Build from a dict (each value must have 'source' and 'destination' keys)."""
         return cls(
             data={
                 pos: Sigmas.from_dict(sigmas["source"], sigmas["destination"])

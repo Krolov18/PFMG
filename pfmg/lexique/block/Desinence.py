@@ -1,15 +1,11 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Désinence."""
+"""Desinence: source and destination morpheme lists for a word form."""
 
 from dataclasses import dataclass
 
 
 @dataclass
 class Desinence:
-    """Ensemble de morphèmes pour source/destination."""
+    """Pair of morpheme lists: one for source, one for destination."""
 
     source: list["Morpheme"]  # noqa # type: ignore
     destination: list["Morpheme"]  # noqa # type: ignore

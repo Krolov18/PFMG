@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Méthode de construction d'un morphème."""
+"""Factory to build morpheme instances from rule string, sigma, and phonology."""
 
 from enum import Enum
 
@@ -13,7 +9,7 @@ from pfmg.utils.abstract_factory import factory_method
 
 
 class Ruler(Enum):
-    """Structure pour les noms d'une règle."""
+    """Morpheme rule type names (Prefix, Suffix, Circumfix, Gabarit, Selection, Condition)."""
 
     PREFIX = "Prefix"
     SUFFIX = "Suffix"
@@ -28,13 +24,7 @@ def create_morpheme(
     sigma: frozendict,
     phonology: Phonology,
 ) -> "Morpheme":  # noqa # type: ignore
-    """Factory pour construire n'importe quel morphème.
-
-    :param rule: une règle valide
-    :param sigma: un ensemble de traits
-    :param phonology: une instance de Phonology
-    :return: quelque chose qui peut s'afficher
-    """
+    """Build a morpheme (Prefix, Suffix, Gabarit, etc.) from rule, sigma, and phonology."""
     assert __package__ is not None
 
     for id_ruler in Ruler:

@@ -1,0 +1,75 @@
+[MAIN]
+ignore-patterns=(^\.|test_.*?py)
+limit-inference-results=30
+py-version=3.14
+
+[REPORTS]
+reports=no
+
+[MESSAGES CONTROL]
+confidence=HIGH,CONTROL_FLOW,INFERENCE,INFERENCE_FAILURE,UNDEFINED
+# Redundant with Ruff (format, N, D, F841, ARG, F811):
+#   format, invalid-name, missing-docstring, missing-module-docstring,
+#   unused-variable, unused-argument, function-redefined
+# Other (Pylint internals, design, forward refs, style):
+#   raw-checker-failed, ..., too-many-ancestors, ...
+disable=format,
+    invalid-name,
+    missing-docstring,
+    missing-module-docstring,
+    unused-variable,
+    unused-argument,
+    function-redefined,
+    raw-checker-failed,
+    bad-inline-option,
+    locally-disabled,
+    file-ignored,
+    suppressed-message,
+    useless-suppression,
+    deprecated-pragma,
+    use-symbolic-message-instead,
+    too-many-arguments,
+    too-many-branches,
+    too-many-locals,
+    too-many-statements,
+    too-few-public-methods,
+    too-many-instance-attributes,
+    undefined-variable,
+    too-many-ancestors,
+    unused-private-member,
+    import-outside-toplevel,
+    duplicate-code,
+    consider-using-enumerate,
+    non-ascii-name,
+    unspecified-encoding,
+    useless-else-on-loop,
+    no-else-raise
+enable=c-extension-no-member
+
+[TYPECHECK]
+ignored-checks-for-mixins=no-member,
+    not-async-context-manager,
+    not-context-manager,
+    attribute-defined-outside-init
+ignored-classes=optparse.Values,
+    thread._local,
+    _thread._local,
+    argparse.Namespace
+generated-members=
+
+[CLASSES]
+valid-metaclass-classmethod-first-arg=cls
+
+[SIMILARITIES]
+min-similarity-lines=4
+
+[SPELLING]
+max-spelling-suggestions=4
+spelling-private-dict-file=
+spelling-ignore-comment-directives=fmt: on,
+    fmt: off,
+    noqa:,
+    noqa,
+    nosec,
+    isort:skip,
+    mypy:

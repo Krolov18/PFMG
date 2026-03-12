@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Interface pour la représentation des objets."""
+"""Interface for string representation of objects."""
 
 from abc import ABC, abstractmethod
 
@@ -12,19 +8,25 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class ABCDisplay(ABC):
-    """Interface pour la représentation des objets."""
+    """Abstract base for objects that can be represented as strings."""
 
     @abstractmethod
     def to_string(self, term: StemSpace | str | None = None) -> str:
-        """Convertit un objet en string.
+        """Return a string representation of this object.
 
-        :param term:
-        :return:
+        Args:
+            term: Optional stem (StemSpace, str, or None) for the representation.
+
+        Returns:
+            str: String representation of the object.
+
         """
 
     @abstractmethod
     def get_sigma(self) -> frozendict:
-        """Renvoie les propriété d'un objet.
+        """Return the object's sigma (feature/property) mapping.
 
-        :return:
+        Returns:
+            frozendict: Immutable dict of properties.
+
         """

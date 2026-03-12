@@ -1,21 +1,23 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Mixin définissant l'égalité par défaut."""
+"""Mixin providing default equality (same rule string and sigma subset)."""
 
 from pfmg.external.equality.ABCEquality import ABCEquality
 
 
 class MixinEquality(ABCEquality):
-    """Mixin définissant l'égalité par défaut."""
+    """Mixin that implements equality by comparing rule string and sigma items."""
 
-    def __eq__(self, other: ABCEquality):
-        """Vérifie l'égalité entre deux objets.
+    def __eq__(self, other: object) -> bool:
+        """Return True if other is same type, same rule string, and sigma items are compatible.
 
-        :param other: un autre object
-        :return: bool
+        Args:
+            other: Object to compare with.
+
+        Returns:
+            bool: True if equal (same rule string and compatible sigma).
+
         """
+        if not isinstance(other, ABCEquality):
+            return False
         eq_rules = self.get_rule().string == other.get_rule().string
         return eq_rules and (
             (self.get_sigma().items() <= other.get_sigma().items())

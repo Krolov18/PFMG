@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Implémentation de l'abstract factory avec import_module et getattr."""
+"""Abstract factory implementation using import_module and getattr."""
 
 from collections.abc import Callable
 from importlib import import_module
@@ -16,14 +12,17 @@ def factory_function(
     concrete_product: str,
     package: str,
     **kwargs,
-) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
-    """Appelle n'importe quel fonction concrète.
+) -> AbstractProduct:
+    """Call a concrete function or constructor from the given package.
 
-    :param concrete_product: nom de l'objet concret
-    :param package: string représentant la localisation du package
-    :param kwargs: arguments de la classe/fonction
-                   que l'on cherche à construire
-    :return: instance de la classe ou de la fonction voulue
+    Args:
+        concrete_product: Name of the concrete object (function or class).
+        package: Package path (module location).
+        **kwargs: Arguments to pass to the function/constructor.
+
+    Returns:
+        AbstractProduct: Instance or return value of the concrete product.
+
     """
     assert __validate_params(concrete_product, package)
 
@@ -44,13 +43,17 @@ def factory_method(
     concrete_product: str,
     package: str,
     **kwargs,
-) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
-    """Construit n'importe quelle classe concrète.
+) -> AbstractProduct:
+    """Build any concrete class from package; module path is package.concrete_product.
 
-    :param concrete_product:
-    :param package:
-    :param kwargs:
-    :return:
+    Args:
+        concrete_product: Name of the concrete class or function.
+        package: Base package path.
+        **kwargs: Arguments to pass to the constructor.
+
+    Returns:
+        AbstractProduct: Instance of the concrete product.
+
     """
     assert __validate_params(concrete_product, package)
 
@@ -63,11 +66,15 @@ def factory_method(
 
 
 def __validate_params(concrete_product: str, package: str) -> bool:
-    """Préconditions.
+    """Validate concrete_product and package (non-empty, no leading/trailing dots).
 
-    :param concrete_product:
-    :param package:
-    :return:
+    Args:
+        concrete_product: Name to validate.
+        package: Package path to validate.
+
+    Returns:
+        bool: True if valid (assertions run for side effects).
+
     """
     assert isinstance(concrete_product, str)
     assert concrete_product
@@ -80,14 +87,8 @@ def __validate_params(concrete_product: str, package: str) -> bool:
 def factory_type(
     concrete_product: str,
     package: str,
-) -> AbstractClass:  # type: ignore reportInvalidTypeVarUse
-    """Recherche et renvoie une classe concrète d'un package sans l'instantier.
-
-    :param concrete_product:
-    :param package:
-    :param getattr_:
-    :return:
-    """
+) -> AbstractClass:
+    """Look up and return a concrete class from a package without instantiating it."""
     return getattr(
         import_module(package),
         concrete_product,
@@ -97,14 +98,16 @@ def factory_type(
 def factory_class(
     concrete_product: str,
     package: str,
-) -> AbstractClass:  # type: ignore reportInvalidTypeVarUse
-    """Recherche et renvoie une classe concrète d'un package sans l'instantier.
+) -> AbstractClass:
+    """Look up and return a concrete class (module name must equal class name).
 
-    Contrainte: nom du module == nom de la classe qu'il contient
+    Args:
+        concrete_product: Name of the class (and module).
+        package: Base package path.
 
-    :param concrete_product:
-    :param package:
-    :return:
+    Returns:
+        AbstractClass: The class object.
+
     """
     assert package
     assert concrete_product
@@ -120,15 +123,17 @@ def factory_object(
     concrete_product: str,
     package: str,
     **kwargs,
-) -> AbstractProduct:  # type: ignore reportInvalidTypeVarUse
-    """Renvoie un object concret.
+) -> AbstractProduct:
+    """Return an instance of the concrete class (module name must equal class name).
 
-    Contrainte: nom du module == nom de la classe qu'il contient
+    Args:
+        concrete_product: Name of the class (and module).
+        package: Base package path.
+        **kwargs: Arguments to pass to the constructor.
 
-    :param concrete_product:
-    :param package:
-    :param kwargs:
-    :return:
+    Returns:
+        AbstractProduct: Instance of the concrete class.
+
     """
     return factory_class(
         concrete_product=concrete_product,

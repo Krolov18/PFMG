@@ -1,8 +1,4 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""Interface pour les objets qui doivent renvoyer une glose formatée."""
+"""Interface for objects that produce a formatted glose (gloss) string."""
 
 from abc import ABC, abstractmethod
 
@@ -10,8 +6,16 @@ from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 
 class ABCGloser(ABC):
-    """Contient les méthodes pour construire des gloses formatées."""
+    """Abstract base for objects that can produce formatted glose strings."""
 
     @abstractmethod
     def to_glose(self, term: StemSpace | str | None = None) -> str:
-        """TODO : Doc à écrire."""
+        """Return the formatted glose for the given term (StemSpace, str, or None).
+
+        Args:
+            term: StemSpace, str, or None to get glose for.
+
+        Returns:
+            str: Formatted glose string.
+
+        """

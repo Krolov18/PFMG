@@ -1,15 +1,17 @@
-# Copyright (c) 2024, Korantin Lévêque <korantin.leveque@protonmail.com>
-# All rights reserved.
-# This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
-"""TODO : Write some doc."""
+"""Feature-structure nonterminal: symbol plus feature dict."""
 
 from dataclasses import dataclass
 
 
 @dataclass
 class FSNonterminal[T]:
-    """TODO : Write some doc."""
+    """A nonterminal with an associated feature structure (dict).
+
+    Attributes:
+        symbol: The nonterminal symbol.
+        features: Feature structure (dict) attached to the symbol.
+
+    """
 
     symbol: T
     features: dict
