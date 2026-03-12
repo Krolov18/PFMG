@@ -1,152 +1,99 @@
+"""Tests for factory_method (invalid params raise, valid returns ConcreteProduct)."""
+
 import pytest
+
+from pfmg.conftest import _assert_compare
 from pfmg.utils.test.data_for_test.ConcreteProduct import ConcreteProduct
 
-parametrize = pytest.mark.parametrize(
-    "concrete_product", [
-        [],
-        set(),
-        int(),
-        complex(),
-        frozenset(),
-        bytearray()
-    ]
+
+@pytest.mark.parametrize(
+    "params, expected",
+    [
+        ({"concrete_product": []}, AssertionError),
+        ({"concrete_product": set()}, AssertionError),
+        ({"concrete_product": 0}, AssertionError),
+        ({"concrete_product": complex()}, AssertionError),
+        ({"concrete_product": frozenset()}, AssertionError),
+        ({"concrete_product": bytearray()}, AssertionError),
+        ({"concrete_product": ""}, AssertionError),
+    ],
 )
-
-
-@parametrize
-def test_param_concrete_product_type(
+def test_factory_method_concrete_product_raises(
     fx_partial_factory_method_missing_concrete_product,
-    concrete_product
+    params,
+    expected,
 ) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_method_missing_concrete_product(
-            concrete_product=concrete_product
-        )
+    with pytest.raises(expected):
+        fx_partial_factory_method_missing_concrete_product(**params)
 
 
 @pytest.mark.parametrize(
-    "concrete_product", [
-        ""
-    ]
+    "params, expected",
+    [
+        ({"package": []}, AssertionError),
+        ({"package": set()}, AssertionError),
+        ({"package": 0}, AssertionError),
+        ({"package": complex()}, AssertionError),
+        ({"package": frozenset()}, AssertionError),
+        ({"package": bytearray()}, AssertionError),
+        ({"package": ""}, AssertionError),
+        ({"package": ".path"}, AssertionError),
+        ({"package": "path."}, AssertionError),
+    ],
 )
-def test_param_concrete_product_empty(
-    fx_partial_factory_method_missing_concrete_product,
-    concrete_product
-) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_method_missing_concrete_product(
-            concrete_product=concrete_product
-        )
-
-
-parametrize = pytest.mark.parametrize(
-    "package", [
-        [],
-        set(),
-        int(),
-        complex(),
-        frozenset(),
-        bytearray()
-    ]
-)
-
-
-@parametrize
-def test_param_package_type(
+def test_factory_method_package_raises(
     fx_partial_factory_method_missing_package,
-    package
+    params,
+    expected,
 ) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_method_missing_package(
-            package=package
-        )
+    with pytest.raises(expected):
+        fx_partial_factory_method_missing_package(**params)
 
 
 @pytest.mark.parametrize(
-    "package", [
-        ""
-    ]
+    "params, expected",
+    [
+        ({"package": "unknown_package"}, NameError),
+        ({"package": "package_unknown"}, NameError),
+    ],
 )
-def test_param_package_empty(
+def test_factory_method_package_module_not_found(
     fx_partial_factory_method_missing_package,
-    package
+    params,
+    expected,
 ) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_method_missing_package(
-            package=package
-        )
+    with pytest.raises(expected):
+        fx_partial_factory_method_missing_package(**params)
 
 
-parametrize = pytest.mark.parametrize(
-    "package", [
-        ".path",
-        "path."
-    ]
+@pytest.mark.parametrize(
+    "params, expected",
+    [
+        (
+            {"concrete_product": "unknown_concrete_product", "package": "pfmg.test.utils.data_for_test"},
+            NameError,
+        ),
+        (
+            {"concrete_product": "concrete_product_unknown", "package": "pfmg.test.utils.data_for_test"},
+            NameError,
+        ),
+    ],
 )
-
-
-@parametrize
-def test_param_package_relative_path(
-    fx_partial_factory_method_missing_package,
-    package
-) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_method_missing_package(
-            package=package
-        )
-
-
-parametrize = pytest.mark.parametrize(
-    "package", [
-        "unknown_package",
-        "package_unknown"
-    ]
-)
-
-
-@parametrize
-def test_param_package_module_not_found(
-    fx_partial_factory_method_missing_package, package
-) -> None:
-    with pytest.raises(
-        NameError,
-    ):
-        fx_partial_factory_method_missing_package(
-            package=package
-        )
-
-
-parametrize = pytest.mark.parametrize(
-    "concrete_product, package", [
-        ("unknown_concrete_product", "pfmg.test.utils.data_for_test"),
-        ("concrete_product_unknown", "pfmg.test.utils.data_for_test")
-    ]
-)
-
-
-@parametrize
-def test_param_concrete_product_not_found_in_package(
+def test_factory_method_concrete_product_not_found_raises(
     fx_partial_factory_method_missing_concrete_product_package,
-    concrete_product, package
+    params,
+    expected,
 ) -> None:
-    with pytest.raises(
-        NameError,
-    ):
-        fx_partial_factory_method_missing_concrete_product_package(
-            concrete_product=concrete_product,
-            package=package
-        )
+    with pytest.raises(expected):
+        fx_partial_factory_method_missing_concrete_product_package(**params)
 
 
-def test_factory_method_return_value(fx_factory_method) -> None:
-    assert isinstance(fx_factory_method(), ConcreteProduct)
+@pytest.mark.parametrize(
+    "params, expected",
+    [
+        ((), ConcreteProduct),
+    ],
+)
+def test_factory_method_return_value(fx_factory_method, params, expected) -> None:
+    result = fx_factory_method()
+    _assert_compare(result=isinstance(result, expected), expected=True)

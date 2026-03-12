@@ -1,22 +1,30 @@
+"""Tests for Stems.from_yaml (load from disk and compare to expected lexemes)."""
+
 import pytest
 import yaml
 from frozendict import frozendict
+
+from pfmg.conftest import _assert_compare
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
-from pfmg.lexique.stems.Stems import Stems
 from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.lexique.stems.Stems import Stems
 
-parametrize = pytest.mark.parametrize(
-    "stems, expected", [
+
+@pytest.mark.parametrize(
+    "params, expected",
+    [
         (
             {
-                "N": {
-                    "pSit": "toto,tutu.Genre=m",
-                },
-                "A": {
-                    "Cas=erg": {
-                        "ksit": "kiki,koko",
-                    }
+                "stems": {
+                    "N": {
+                        "pSit": "toto,tutu.Genre=m",
+                    },
+                    "A": {
+                        "Cas=erg": {
+                            "ksit": "kiki,koko",
+                        }
+                    },
                 },
             },
             [
@@ -29,11 +37,7 @@ parametrize = pytest.mark.parametrize(
                     destination=LexemeEntry(
                         stems=StemSpace(stems=("ksit",)),
                         pos="A",
-                        sigma=frozendict(
-                            {
-                                "Cas": "erg"
-                            }
-                        ),
+                        sigma=frozendict({"Cas": "erg"}),
                     ),
                 ),
                 Lexeme(
@@ -47,115 +51,82 @@ parametrize = pytest.mark.parametrize(
                         pos="N",
                         sigma=frozendict(),
                     ),
-                )
-            ]
+                ),
+            ],
         ),
-
         (
             {
-                "N": {
-                    "Genre=f": {
-                        "pSit":      "toto,tutu.Genre=m",
-                        "pMat":      "karu,karo.Genre=m",
-                        "Nombre=pl": {
-                            "polk": "nunu"
+                "stems": {
+                    "N": {
+                        "Genre=f": {
+                            "pSit": "toto,tutu.Genre=m",
+                            "pMat": "karu,karo.Genre=m",
+                            "Nombre=pl": {
+                                "polk": "nunu"
+                            }
+                        },
+                        "Genre=m": {
+                            "pSif": "toto,tutu.Genre=f",
                         }
                     },
-                    "Genre=m": {
-                        "pSif": "toto,tutu.Genre=f",
-                    }
                 },
             },
             [
                 Lexeme(
                     source=LexemeEntry(
-                        stems=StemSpace(stems=('nunu',)),
-                        pos='N',
+                        stems=StemSpace(stems=("nunu",)),
+                        pos="N",
                         sigma=frozendict({})
                     ),
                     destination=LexemeEntry(
-                        stems=StemSpace(stems=('polk',)),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre':  'f',
-                                'Nombre': 'pl'
-                            }
-                        )
+                        stems=StemSpace(stems=("polk",)),
+                        pos="N",
+                        sigma=frozendict({"Genre": "f", "Nombre": "pl"})
                     )
                 ),
                 Lexeme(
                     source=LexemeEntry(
-                        stems=StemSpace(stems=('karu', 'karo')),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre': 'm'
-                            }
-                        )
+                        stems=StemSpace(stems=("karu", "karo")),
+                        pos="N",
+                        sigma=frozendict({"Genre": "m"})
                     ),
                     destination=LexemeEntry(
-                        stems=StemSpace(stems=('pMat',)),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre': 'f'
-                            }
-                        )
+                        stems=StemSpace(stems=("pMat",)),
+                        pos="N",
+                        sigma=frozendict({"Genre": "f"})
                     )
                 ),
                 Lexeme(
                     source=LexemeEntry(
-                        stems=StemSpace(stems=('toto', 'tutu')),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre': 'm'
-                            }
-                        )
+                        stems=StemSpace(stems=("toto", "tutu")),
+                        pos="N",
+                        sigma=frozendict({"Genre": "m"})
                     ),
                     destination=LexemeEntry(
-                        stems=StemSpace(stems=('pSit',)),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre': 'f'
-                            }
-                        )
+                        stems=StemSpace(stems=("pSit",)),
+                        pos="N",
+                        sigma=frozendict({"Genre": "f"})
                     )
                 ),
                 Lexeme(
                     source=LexemeEntry(
-                        stems=StemSpace(stems=('toto', 'tutu')),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre': 'f'
-                            }
-                        )
+                        stems=StemSpace(stems=("toto", "tutu")),
+                        pos="N",
+                        sigma=frozendict({"Genre": "f"})
                     ),
                     destination=LexemeEntry(
-                        stems=StemSpace(stems=('pSif',)),
-                        pos='N',
-                        sigma=frozendict(
-                            {
-                                'Genre': 'm'
-                            }
-                        )
+                        stems=StemSpace(stems=("pSif",)),
+                        pos="N",
+                        sigma=frozendict({"Genre": "m"})
                     )
-                )
-                ,
-            ]
+                ),
+            ],
         ),
     ],
 )
-
-
-@parametrize
-def test_from_disk(tmp_path, stems, expected):
+def test_from_disk(tmp_path, params, expected) -> None:
     stems_path = tmp_path / "Stems.yaml"
-    with open(stems_path, mode="w", encoding="utf8") as file_handler:
-        yaml.dump(stems, file_handler)
-
+    with open(stems_path, mode="w", encoding="utf8") as fh:
+        yaml.dump(params["stems"], fh)
     actual = list(Stems.from_yaml(stems_path))
-    assert actual == expected
+    _assert_compare(actual, expected)

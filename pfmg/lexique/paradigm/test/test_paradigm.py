@@ -6,12 +6,10 @@ from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 from pfmg.lexique.morpheme.Morphemes import Morphemes
-from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.paradigm.Paradigm import Paradigm
 from pfmg.lexique.morpheme.Radical import Radical
-from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.morpheme.Suffix import Suffix
-
+from pfmg.lexique.paradigm.Paradigm import Paradigm
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 # @pytest.mark.parametrize("lexeme, formes", [
 #     (Lexeme(stem=StemSpace(stems=("manie",)),
@@ -136,7 +134,7 @@ def test_from_disk(tmp_path, fx_df_phonology):
                     others=[
                         Suffix(
                             rule="X+s",
-                            sigma=frozendict({'Nombre': 'pl'}),
+                            sigma=frozendict({"Nombre": "pl"}),
                             phonology=fx_df_phonology
                         )]
                     ),

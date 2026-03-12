@@ -2,7 +2,6 @@ import pytest
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Prefix import Prefix
-from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 

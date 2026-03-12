@@ -1,9 +1,8 @@
 import pytest
 from frozendict import frozendict
 
-from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.morpheme.Suffix import Suffix
-
+from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 parametrize = pytest.mark.parametrize(
     "rule, sigma", [

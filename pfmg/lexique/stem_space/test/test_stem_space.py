@@ -1,4 +1,5 @@
 import pytest
+
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 

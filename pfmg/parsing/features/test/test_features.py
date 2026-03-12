@@ -1,6 +1,6 @@
 import pytest
-from pfmg.parsing.features.utils import FeatureReader
 
+from pfmg.parsing.features.utils import FeatureReader
 
 parametrize = pytest.mark.parametrize(
     "data, target, expected",

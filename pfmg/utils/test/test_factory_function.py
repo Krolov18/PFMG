@@ -1,105 +1,62 @@
-from typing import Callable
+"""Tests for factory_function (invalid params raise, valid returns callable)."""
+
+from collections.abc import Callable
+
 import pytest
 
-parametrize = pytest.mark.parametrize(
-    "concrete_product", [
-        [],
-        set(),
-        int(),
-        complex(),
-        frozenset(),
-        bytearray()
-    ]
+from pfmg.conftest import _assert_compare
+
+
+@pytest.mark.parametrize(
+    "params, expected",
+    [
+        ({"concrete_product": []}, AssertionError),
+        ({"concrete_product": set()}, AssertionError),
+        ({"concrete_product": 0}, AssertionError),
+        ({"concrete_product": complex()}, AssertionError),
+        ({"concrete_product": frozenset()}, AssertionError),
+        ({"concrete_product": bytearray()}, AssertionError),
+        ({"concrete_product": ""}, AssertionError),
+    ],
 )
-
-
-@parametrize
-def test_factory_function_concrete_product_type(
+def test_factory_function_concrete_product_raises(
     fx_partial_factory_function_missing_concrete_product,
-    concrete_product
+    params,
+    expected,
 ) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_function_missing_concrete_product(
-            concrete_product=concrete_product
-        )
+    with pytest.raises(expected):
+        fx_partial_factory_function_missing_concrete_product(**params)
 
 
 @pytest.mark.parametrize(
-    "concrete_product", [
-        ""
-    ]
+    "params, expected",
+    [
+        ({"package": []}, AssertionError),
+        ({"package": set()}, AssertionError),
+        ({"package": 0}, AssertionError),
+        ({"package": complex()}, AssertionError),
+        ({"package": frozenset()}, AssertionError),
+        ({"package": bytearray()}, AssertionError),
+        ({"package": ""}, AssertionError),
+        ({"package": ".path"}, AssertionError),
+        ({"package": "path."}, AssertionError),
+    ],
 )
-def test_factory_function_concrete_product_empty(
-    fx_partial_factory_function_missing_concrete_product,
-    concrete_product
-) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_function_missing_concrete_product(
-            concrete_product=concrete_product
-        )
-
-
-parametrize = pytest.mark.parametrize(
-    "package", [
-        [],
-        set(),
-        int(),
-        complex(),
-        frozenset(),
-        bytearray()
-    ]
-)
-
-
-@parametrize
-def test_factory_function_package_type(
+def test_factory_function_package_raises(
     fx_partial_factory_function_missing_package,
-    package
+    params,
+    expected,
 ) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_function_missing_package(package=package)
+    with pytest.raises(expected):
+        fx_partial_factory_function_missing_package(**params)
 
 
 @pytest.mark.parametrize(
-    "package", [
-        ""
-    ]
+    "params, expected",
+    [
+        ({}, Callable),
+    ],
 )
-def test_factory_function_package_empty(
-    fx_partial_factory_function_missing_package,
-    package
-) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_function_missing_package(
-            package=package
-        )
-
-
-@pytest.mark.parametrize(
-    "package", [
-        ".path",
-        "path."
-    ]
-)
-def test_factory_function_package_relative_path(
-    fx_partial_factory_function_missing_package,
-    package
-) -> None:
-    with pytest.raises(
-        AssertionError,
-    ):
-        fx_partial_factory_function_missing_package(
-            package=package
-        )
-
-
-def test_factory_function(fx_factory_function):
-    assert isinstance(fx_factory_function, Callable)
+def test_factory_function(fx_factory_function, params, expected) -> None:
+    result = fx_factory_function
+    _assert_compare(result=isinstance(result, expected), expected=True)
