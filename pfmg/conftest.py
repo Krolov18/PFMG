@@ -1,5 +1,7 @@
 """Pytest fixture configuration for tests."""
 
+from typing import Any
+
 import functools
 import itertools
 
@@ -144,3 +146,27 @@ def get_default_phonology() -> Phonology:
 def fx_df_phonology():
     """Fixture that provides a default Phonology for tests."""
     return get_default_phonology()
+
+
+def _assert_compare(result: Any, expected: Any, op: str = "==") -> None:
+    """Assert result vs expected using a comparison operator."""
+    if op == "==":
+        assert result == expected
+    elif op == "!=":
+        assert result != expected
+    elif op == ">":
+        assert result > expected
+    elif op == "<":
+        assert result < expected
+    elif op == ">=":
+        assert result >= expected
+    elif op == "<=":
+        assert result <= expected
+    elif op == "in":
+        assert result in expected
+    elif op == "not in":
+        assert result not in expected
+    elif op == "not":
+        assert (not result) == expected
+    else:
+        raise ValueError(f"Unsupported operator: {op}")

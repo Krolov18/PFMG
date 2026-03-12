@@ -45,3 +45,10 @@ dependencies = [
     "pycue",
     "pyyaml",
 ]
+
+[tool.coverage.run]
+source = ["pfmg"]
+omit = ["*/test/*", "*/conftest.py"]
+
+[tool.coverage.report]
+exclude_lines = []
