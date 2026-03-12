@@ -1,0 +1,46 @@
+# CodeQL: optional. Use this file to run CodeQL with Node 24 and checkout@v6.
+# If you see "Node.js 20 actions are deprecated" for Analyze jobs, they come from
+# GitHub's default CodeQL setup. Replace it with this workflow (Settings → Code security
+# → Code scanning → Edit configuration → Advanced) or ensure this file is the one used.
+
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  schedule:
+    - cron: "0 6 * * 1"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["actions", "javascript-typescript", "python"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"
