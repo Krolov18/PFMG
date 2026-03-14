@@ -2,10 +2,11 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Renovate config for PFMG (Python/uv)",
   "extends": ["config:recommended"],
-  "enabledManagers": ["pep621", "uv"],
+  "enabledManagers": ["pep621"],
+  "timezone": "Europe/Paris",
   "lockFileMaintenance": {
     "enabled": true,
-    "lockFileMaintenanceBranchName": "renovate/uv-lockfile-maintenance"
+    "branchTopic": "uv-lockfile-maintenance"
   },
   "schedule": ["before 6am on monday"],
   "labels": ["dependencies"],
