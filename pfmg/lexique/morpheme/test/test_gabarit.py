@@ -1,7 +1,10 @@
+from typing import cast
+
 import pytest
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Gabarit import Gabarit
+from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 
 parametrize = pytest.mark.parametrize(
@@ -47,7 +50,7 @@ def test_equal(fx_df_phonology, rule, expected, sigma) -> None:
 def test_suffix_typeerror(fx_df_phonology) -> None:
     with pytest.raises(TypeError):
         _ = Gabarit(
-            rule=1,  # type: ignore[arg-type]
+            rule=cast(str, 1),
             sigma=frozendict(),
             phonology=fx_df_phonology,
         )
@@ -55,7 +58,7 @@ def test_suffix_typeerror(fx_df_phonology) -> None:
     with pytest.raises(TypeError):
         _ = Gabarit(
             rule="1",
-            sigma=1,  # type: ignore[arg-type]
+            sigma=cast(frozendict, 1),
             phonology=fx_df_phonology,
         )
 
@@ -63,7 +66,7 @@ def test_suffix_typeerror(fx_df_phonology) -> None:
         _ = Gabarit(
             rule="1",
             sigma=frozendict(),
-            phonology=1,  # type: ignore[arg-type]
+            phonology=cast(Phonology, 1),
         )
 
     with pytest.raises(TypeError):
