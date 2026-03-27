@@ -65,7 +65,7 @@ jobs:
           if [ -s changed_py.txt ]; then
             uv run ty check $(cat changed_py.txt)
           else
-            uv run ty check
+            echo "No Python files changed, skipping type checker."
           fi
       - name: Test with pytest
         run: |
