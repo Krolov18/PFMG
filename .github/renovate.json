@@ -1,21 +1,58 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Renovate config for PFMG (Python/uv)",
+  "description": "Renovate config for PFMG (Python/uv + tooling)",
   "extends": ["config:recommended"],
-  "enabledManagers": ["pep621"],
+  "enabledManagers": ["uv", "github-actions", "npm"],
   "timezone": "Europe/Paris",
+  "baseBranches": ["dev"],
+  "branchPrefix": "renovate/",
+  "minimumReleaseAge": "30 days",
   "lockFileMaintenance": {
     "enabled": true,
     "branchTopic": "uv-lockfile-maintenance"
   },
   "schedule": ["before 6am on monday"],
   "labels": ["dependencies"],
+  "semanticCommits": "disabled",
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "{{currentVersion}} -> {{newVersion}}",
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "platformAutomerge": true,
   "packageRules": [
     {
-      "description": "Group minor and patch Python dependency updates",
-      "matchManagers": ["pep621"],
+      "description": "Group non-major Python (uv) dependency updates",
+      "matchManagers": ["uv"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "python dependencies (non-major)"
+      "groupName": "python dependencies (non-major)",
+      "automerge": true
+    },
+    {
+      "description": "Do not automerge major Python (uv) dependency updates",
+      "matchManagers": ["uv"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "Automerge patch/minor GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "github actions (non-major)",
+      "automerge": true
+    },
+    {
+      "description": "Automerge patch/minor npm (commitlint) updates",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "npm devDependencies (non-major)",
+      "automerge": true
+    },
+    {
+      "description": "Do not automerge major npm updates",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
   ]
 }
