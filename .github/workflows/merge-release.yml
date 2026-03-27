@@ -96,7 +96,7 @@ jobs:
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             PR="${{ github.event.pull_request.number }}"
           else
-            PR=$(gh pr list --base main --head dev --state open --json number -q '.[0].number' 2>/dev/null || true)
+            PR=$(gh pr list --base main --head release/merge-dev-to-main --state open --json number -q '.[0].number' 2>/dev/null || true)
           fi
           if [ -n "$PR" ]; then
             gh pr close "$PR" --comment "Merged via **Merge release (dev → main)** workflow. Merge drivers applied; version bumped on main; dev synced from main."

@@ -1,4 +1,5 @@
 # Create or reuse a PR dev → main for release.
+# Pushes an intermediate branch (release/merge-dev-to-main) that tracks dev, then opens main ← intermediate.
 # Runs on every push to dev (or manually via workflow_dispatch).
 # Merge is done manually (and can be protected by required reviewers on main).
 
@@ -10,11 +11,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  RELEASE_BRANCH: release/merge-dev-to-main
 
 jobs:
   create-release-pr:
@@ -23,19 +25,19 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Create or get release PR (dev → main)
+      - name: Sync intermediate branch and create or reuse release PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          git fetch origin dev main 2>/dev/null || true
-          EXISTING=$(gh pr list --base main --head dev --state open --json number,url -q '.[0].url' 2>/dev/null || true)
+          git fetch origin dev main
+          git checkout -B "${RELEASE_BRANCH}" origin/dev
+          git push origin "${RELEASE_BRANCH}" --force
+          EXISTING=$(gh pr list --base main --head "${RELEASE_BRANCH}" --state open --json number,url -q '.[0].url' 2>/dev/null || true)
           if [ -n "$EXISTING" ]; then
             echo "Release PR already exists: $EXISTING"
-            echo "pr_url=$EXISTING" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          gh pr create --base main --head dev \
+          gh pr create --base main --head "${RELEASE_BRANCH}" \
             --title "Release: merge dev into main" \
-            --body "PR created by the Release PR workflow. Review and merge manually when ready."
-          echo "Release PR created. Merge it manually from the GitHub PR page."
+            --body "PR created by the Release PR workflow. Branch \`${RELEASE_BRANCH}\` tracks \`dev\`; review and merge manually when ready."
