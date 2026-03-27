@@ -1,6 +1,6 @@
-# After every update to main (including manual merge of the release PR), merge main into dev
-# so dev contains the full history of main (release merge commits, version bumps, etc.).
-# Complements merge-release.yml, which also syncs dev when that workflow runs to completion.
+# After every push to main, rebase dev onto main and force-push dev (solo maintainer).
+# Keeps dev linear on top of main instead of accumulating merge commits from sync.
+# If rebase conflicts, fix locally and push dev, or resolve in a follow-up PR.
 
 name: Sync dev from main
 
@@ -38,12 +38,12 @@ jobs:
           git_committer_name: ${{ vars.COMMITTER_NAME }}
           git_committer_email: ${{ vars.COMMITTER_EMAIL }}
 
-      - name: Merge main into dev and push
+      - name: Rebase dev onto main and push
         env:
           GH_TOKEN: ${{ secrets.PAT_ADMIN }}
         run: |
           set -e
           git fetch origin main dev
           git checkout -B dev origin/dev
-          git merge origin/main -m "Sync dev with main after release"
-          git push origin dev
+          git rebase origin/main
+          git push origin dev --force-with-lease
