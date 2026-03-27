@@ -1,0 +1,49 @@
+# After every update to main (including manual merge of the release PR), merge main into dev
+# so dev contains the full history of main (release merge commits, version bumps, etc.).
+# Complements merge-release.yml, which also syncs dev when that workflow runs to completion.
+
+name: Sync dev from main
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: sync-dev-from-main
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  sync-dev:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_ADMIN }}
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_committer_name: ${{ vars.COMMITTER_NAME }}
+          git_committer_email: ${{ vars.COMMITTER_EMAIL }}
+
+      - name: Merge main into dev and push
+        env:
+          GH_TOKEN: ${{ secrets.PAT_ADMIN }}
+        run: |
+          set -e
+          git fetch origin main dev
+          git checkout -B dev origin/dev
+          git merge origin/main -m "Sync dev with main after release"
+          git push origin dev
