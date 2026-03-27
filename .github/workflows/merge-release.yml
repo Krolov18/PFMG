@@ -1,4 +1,5 @@
-# Release = merge dev → main (with merge drivers) + bump minor on main.
+# Release = squash-merge dev into main (one linear commit per release) + bump minor on main.
+# Prefer the same for manual merges: GitHub repo Settings → General → merge button → Squash merge.
 # Dev is synced from main by sync-dev-from-main.yml on every push to main.
 # Run manually (workflow_dispatch) or add label "release-merge" on the release PR.
 # Version is bumped only here; bump-version.yml no longer auto-bumps on push.
@@ -47,24 +48,35 @@ jobs:
           git_committer_name: ${{ vars.COMMITTER_NAME }}
           git_committer_email: ${{ vars.COMMITTER_EMAIL }}
 
-      - name: Merge dev into main and push
+      - name: Squash dev into main and push
+        id: squash
         env:
           GH_TOKEN: ${{ secrets.PAT_ADMIN }}
         run: |
           set -e
           git fetch origin main dev
           git checkout -B main origin/main
-          git merge origin/dev -m "Release: merge dev into main"
+          git merge --squash origin/dev
+          if git diff --cached --quiet; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Nothing to squash-release (main already matches dev tree)."
+            exit 0
+          fi
+          git commit -m "Release: merge dev into main"
           git push origin main
+          echo "skip=false" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-python@v6
+        if: steps.squash.outputs.skip != 'true'
         with:
           python-version: "3.14"
 
       - name: Install uv
+        if: steps.squash.outputs.skip != 'true'
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Bump minor version on main and push
+        if: steps.squash.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.PAT_ADMIN }}
           UV_SYSTEM_PYTHON: "1"
@@ -81,6 +93,7 @@ jobs:
           git push origin main
 
       - name: Close release PR
+        if: steps.squash.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.PAT_ADMIN }}
         run: |
@@ -90,5 +103,5 @@ jobs:
             PR=$(gh pr list --base main --head release/merge-dev-to-main --state open --json number -q '.[0].number' 2>/dev/null || true)
           fi
           if [ -n "$PR" ]; then
-            gh pr close "$PR" --comment "Merged via **Merge release (dev → main)** workflow. Merge drivers applied; version bumped on main; dev synced from main."
+            gh pr close "$PR" --comment "Merged via **Merge release (dev → main)** workflow (squash onto main). Version bumped on main; **sync-dev-from-main** updates dev after each push to main."
           fi
