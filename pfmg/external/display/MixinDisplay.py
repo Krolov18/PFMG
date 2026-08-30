@@ -1,7 +1,7 @@
 """Mixin for string representation of objects (to_string)."""
 
 from pfmg.external.display.ABCDisplay import ABCDisplay
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 class MixinDisplay(ABCDisplay):

@@ -1,0 +1,32 @@
+= Phonology.yaml
+
+`Phonology.yaml` fournit les données phonologiques pour les règles de type Gabarit
+et les transformations de chaînes.
+
+== Champs chargés par le runtime
+
+Seuls **cinq** champs sont lus par `Phonology.from_yaml()` dans
+`pfmg/lexique/phonology/Phonology.py` :
+
+include::partial$phonology/loaded-fields-block.adoc[]
+
+* `consonnes` / `voyelles` — inventaires de caractères licites
+* `apophonies` — alternances vocaliques (ex. `i` → `a`)
+* `derives` — classes de dérivation (`A` → `V`, …)
+* `mutations` — alternances consonantiques
+
+== Champs présents dans l'exemple mais ignorés
+
+Le fichier `examples/data/Phonology.yaml` contient aussi `translations`, `gabarits`,
+`nom_classe`, `syllabes`, `monogrammes`, `bigrammes`, etc. Ces clés ne sont **pas**
+chargées par la bibliothèque à ce jour — elles sont réservées à un usage futur ou à
+des outils externes.
+
+WARNING: Ne vous fiez pas à ces sections pour le comportement runtime actuel. Voir la
+section Roadmap du README racine.
+
+== Lien avec Blocks.yaml
+
+Les règles Gabarit (`1A2V3…`) combinent les classes de `derives`, `apophonies` et
+`mutations` avec les inventaires `consonnes` / `voyelles` lors de la réalisation
+morphologique.

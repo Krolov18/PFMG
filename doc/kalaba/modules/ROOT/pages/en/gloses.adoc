@@ -1,0 +1,32 @@
+= Gloses.yaml
+
+`Gloses.yaml` declares morphological features per syntactic category, separately for
+the source language (French) and the destination (invented language).
+
+Full reference: `examples/data/Gloses.yaml`.
+
+== Structure per category
+
+Each top-level key is a category (`D`, `NOM`, …) with:
+
+* `source` — licensed attribute values on the French side
+* `destination` — attribute values on the invented-language side
+* `alignments` — mapping between source and destination features
+
+=== Determiners (`D`)
+
+include::partial$gloses/d-glose-block.adoc[]
+
+* `source.Genre` / `Nombre` — French paradigm features
+* `destination` — may add values (e.g. neuter `n`)
+* `alignments` — maps `Nombre=pl` to `Nombre=du` or `Nombre=pl` on the destination side
+
+=== Nouns (`NOM`)
+
+include::partial$gloses/nom-glose-block.adoc[]
+
+* `destination.Cf` — inflection class (`n1`, `n2`) used in `Blocks.yaml` and
+  `Stems.yaml`
+
+NOTE: Alignments let you realize richer destination paradigms than the source without
+duplicating every form by hand.

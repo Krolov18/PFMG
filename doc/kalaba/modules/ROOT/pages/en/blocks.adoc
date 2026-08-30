@@ -1,0 +1,40 @@
+= Blocks.yaml
+
+`Blocks.yaml` defines morphological realization rules (morphemes) per category, for
+`source` and `destination`.
+
+Reference: `examples/data/Blocks.yaml`. Types implemented in
+`pfmg.lexique.morpheme.Factory`: Prefix, Suffix, Circumfix, Gabarit, Selection,
+Condition.
+
+== Determiners (`D`)
+
+include::partial$blocks/d-blocks-block.adoc[]
+
+Each list entry maps a sigma (features) to a rule:
+
+* `X+o`, `X+i`, `X+e` — suffixation (`X` = stem)
+* `X1`, `X2`, `X3` — variant selection (Selection)
+* Multiple `destination` lines — successive rules (gender then number)
+
+== Nouns (`NOM`)
+
+include::partial$blocks/nom-blocks-block.adoc[]
+
+* `X2?X2:X+s` — condition: keep the selected form if unchanged, else suffix `s`
+  (Condition)
+* `Cf=n1,Nombre=sg: X+v` — full sigma + suffix rule
+
+[cols="1,2"]
+|===
+| Pattern | Type
+
+| `X+suffix` | Suffix
+| `prefix+X` | Prefix
+| `pre+X+suf` | Circumfix
+| `X1`, `X2` | Selection
+| `cond?yes:no` | Condition
+| `1A2V3…` | Gabarit (phonological template)
+|===
+
+See also [`schemas/schemas/blocks.cue`](../../../../../../schemas/schemas/blocks.cue).

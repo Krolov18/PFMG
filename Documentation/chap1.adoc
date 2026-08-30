@@ -1,3 +1,0 @@
-== Chapitre 1
-
-include::grammar-structure.adoc[]

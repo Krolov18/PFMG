@@ -1,0 +1,53 @@
+= MorphoSyntax.yaml
+
+This chapter describes the **runtime** format loaded by `KGrammar.from_yaml()` (see
+[`examples/data/MorphoSyntax.yaml`](../../../../../../examples/data/MorphoSyntax.yaml)).
+Legacy root keys (`syntagmes`, `accords`, `traductions`, …) are no longer documented.
+
+== Start
+
+Root non-terminal for the FCFG grammar.
+
+include::partial$morphosyntax/start-block.adoc[]
+
+== Rules per category
+
+Each top-level key (e.g. `NP`) defines a rule with two sides:
+
+* `Source` — parse and translate from French
+* `Destination` — validate invented-language output
+
+=== Simple example (`examples/data/`)
+
+include::partial$morphosyntax/np-rule-block.adoc[]
+
+* `phrases` — sequences of lexical or non-terminal categories
+* `agreements` — feature constraints (`Genre,Nombre` or `Trait=value`)
+* `percolations` — features attached to the parent node
+* `translations` — 0-based constituent index order for translation output
+
+WARNING: Each list (`phrases`, `agreements`, `percolations`, `translations`) must have the same length for a given rule variant.
+
+=== Multiple rules and quoted literals (`examples/data2/`)
+
+The `examples/data2/` grammar shows several phrase variants and quoted literals
+(e.g. `"'deux'"`).
+
+include::partial$morphosyntax/np-rule-multi-block.adoc[]
+
+* `Genre,Nombre=du` pins a feature value in agreements or percolations
+* `translations` indices refer to positions in `phrases` (here `2, 0` for the
+  three-constituent variant)
+
+[TIP]
+Feature string syntax
+====
+* `Genre,Nombre` — propagate lexical features
+* `Nombre=du` — fixed value
+* `;` — alternatives in one feature string (see the parsing pipeline chapter)
+====
+
+== Destination
+
+The `Destination` side has no `translations` field. It is used in the parser
+validation phase (see xref:en/parsing-pipeline.adoc[]).

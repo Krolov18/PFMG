@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 class ABCGloser(ABC):

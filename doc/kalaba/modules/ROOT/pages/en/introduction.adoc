@@ -1,0 +1,37 @@
+= Introduction
+
+[#structure-kalaba]
+== {bookname} structure
+
+A {bookname} grammar consists of five YAML files in a single directory:
+
+Blocks.yaml:: Morphological realization rules.
+Gloses.yaml:: Attribute–value pairs used in the grammar.
+Stems.yaml:: Lexical stems and inheritance.
+MorphoSyntax.yaml:: Syntactic rules, translation, and validation.
+Phonology.yaml:: Phonological transformation data.
+
+This book documents the **runtime** format loaded by the `pfmg` library (same as
+`examples/data/`). Legacy French root keys (`syntagmes`, `accords`, `traductions`, …)
+are no longer documented.
+
+[#concepts-cles]
+== Key concepts
+
+* **Lexicon** — realizes surface forms from `Gloses`, `Blocks`, `Stems`, and
+  `Phonology`
+* **FCFG grammar** — `MorphoSyntax.yaml` defines syntactic rules and translation order
+* **Two phases** — the parser translates (`Source` side) then validates (`Destination`
+  side)
+
+See xref:en/overview.adoc[Overview] and xref:en/parsing-pipeline.adoc[Parsing pipeline].
+
+[#preprocessing-grammaire]
+== Grammar processing
+
+. Place all five YAML files in one directory (e.g. `examples/data/`)
+. Optionally check with `cue vet` (see `schemas/README.md`)
+. Run the lexicon: `uv run python -m pfmg.lexique.main.main lexicon <dir>`
+. Run parsing: `uv run python -m pfmg.parsing.main parsing <dir> "<sentence>"`
+
+Runtime CUE validation is not enabled in the library yet.

@@ -28,7 +28,7 @@ dev = [
 [project]
 name = "pfmg"
 version = "0.1.12"
-description = ""
+description = "Python library for morphological and grammatical processing, lexicon realization, and invented-language translation."
 authors = [
     { name = "Korantin Lévêque", email = "korantin.leveque@protonmail.com" },
 ]

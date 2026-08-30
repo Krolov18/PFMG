@@ -1,0 +1,40 @@
+= Introduction
+
+[#structure-kalaba]
+== Structure du {bookname}
+
+Une grammaire {bookname} se compose de 5 fichiers au format yaml dans un même
+répertoire :
+
+Blocks.yaml:: Description des règles morphologiques.
+Gloses.yaml:: Description des couples Attributs/valeurs utilisés dans la grammaire.
+Stems.yaml:: Inventaire des radicaux et héritage lexical.
+MorphoSyntax.yaml:: Description des règles syntaxiques, de traduction et validation.
+Phonology.yaml:: Description des règles de transformations phonologiques.
+
+Ce livre décrit le format **runtime** chargé par la bibliothèque `pfmg` (identique à
+`examples/data/`). Les anciennes clés françaises à la racine (`syntagmes`, `accords`,
+`traductions`, …) ne sont plus documentées.
+
+[#concepts-cles]
+== Concepts clés
+
+* **Lexique** — réalise les formes de surface à partir de `Gloses`, `Blocks`, `Stems`
+  et `Phonology`
+* **Grammaire FCFG** — `MorphoSyntax.yaml` définit les règles syntaxiques et l'ordre
+  de traduction
+* **Deux phases** — le parseur traduit (face `Source`) puis valide (face
+  `Destination`)
+
+Voir xref:fr/overview.adoc[Vue d'ensemble] et xref:fr/parsing-pipeline.adoc[Pipeline de
+parsing].
+
+[#preprocessing-grammaire]
+== Processing d'une grammaire
+
+. Placer les cinq fichiers YAML dans un répertoire (ex. `examples/data/`)
+. Vérifier optionnellement avec `cue vet` (voir `schemas/README.md`)
+. Lancer le lexique : `uv run python -m pfmg.lexique.main.main lexicon <dir>`
+. Lancer le parsing : `uv run python -m pfmg.parsing.main parsing <dir> "<phrase>"`
+
+La validation CUE à l'exécution n'est pas encore activée dans le code.

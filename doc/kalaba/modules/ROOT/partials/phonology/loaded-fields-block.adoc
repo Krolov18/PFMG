@@ -1,0 +1,4 @@
+[,yaml]
+----
+include::example$phonology-snippets.yaml[tag=phonology-loaded]
+----

@@ -1,5 +1,0 @@
-== Chapitre 2
-
-include::reusable.adoc[]
-
-.Toto Texte utilisé

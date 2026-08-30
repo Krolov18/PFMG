@@ -1,7 +1,7 @@
 """Mixin that dispatches to_decoupe to type-specific implementations."""
 
 from pfmg.external.decoupeur.ABCDecoupeur import ABCDecoupeur
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 class MixinDecoupeur(ABCDecoupeur):

@@ -1,0 +1,4 @@
+[,yaml]
+----
+include::example$blocks-snippets.yaml[tag=nom-blocks]
+----

@@ -1,0 +1,53 @@
+= Vue d'ensemble
+
+Une grammaire {bookname} complète relie cinq fichiers YAML à deux pipelines :
+
+. **Lexique** — `Gloses`, `Blocks`, `Stems`, `Phonology` → réalisation des formes
+. **Parsing** — `MorphoSyntax` + lexique → traduction puis validation
+
+== Fichiers et rôles
+
+[cols="1,3"]
+|===
+| Fichier | Rôle
+
+| `Gloses.yaml`
+| Paradigmes : traits source/destination et alignements (xref:fr/gloses.adoc[])
+
+| `Blocks.yaml`
+| Règles morphologiques : prefix, suffix, condition, … (xref:fr/blocks.adoc[])
+
+| `Stems.yaml`
+| Inventaire des radicaux et traductions (xref:fr/stems.adoc[])
+
+| `Phonology.yaml`
+| Données phonologiques pour Gabarit (xref:fr/phonology.adoc[])
+
+| `MorphoSyntax.yaml`
+| Grammaire FCFG : phrases, accords, traductions (xref:fr/morphosyntax.adoc[])
+|===
+
+== Flux de données
+
+[source,mermaid]
+----
+flowchart LR
+  subgraph lexique [Lexique]
+    Gloses --> Lexicon
+    Blocks --> Lexicon
+    Stems --> Lexicon
+    Phono[Phonology] --> Lexicon
+  end
+  subgraph parsing [Parsing]
+    Morpho[MorphoSyntax] --> KGrammar
+    Lexicon --> KParser
+    KGrammar --> KParser
+  end
+----
+
+== Exemples fournis
+
+* `examples/data/` — grammaire minimale (notebook, CLI)
+* `examples/data2/` — variante avec règles multiples et littéral `'deux'`
+
+Voir xref:fr/parsing-pipeline.adoc[] pour le détail du parseur à deux phases.

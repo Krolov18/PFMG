@@ -1,15 +1,19 @@
 """Two-phase parser: translate then validate (KParser loads from YAML and holds translator + validator)."""
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, Self, overload
-
-from nltk import Tree
+from typing import TYPE_CHECKING, Literal, Self, overload
 
 from pfmg.external.reader import ABCReader
+from pfmg.parsing.backends import is_parse_tree
 from pfmg.parsing.parsable.MixinParseParsable import MixinParseParsable
-from pfmg.parsing.parser import Parser
+from pfmg.parsing.parser.Parser import Parser
+
+if TYPE_CHECKING:
+    from pfmg.parsing.grammar_bundle import GrammarBundle
 
 
 @dataclass
@@ -26,6 +30,30 @@ class KParser(ABCReader, MixinParseParsable):
     validator: Parser
 
     @classmethod
+    def from_bundle(cls, bundle: GrammarBundle) -> Self:
+        """Build a KParser from a loaded :class:`GrammarBundle`.
+
+        Args:
+            bundle: Loaded lexicon and grammar pair.
+
+        Returns:
+            KParser: Instance with translator and validator parsers.
+
+        """
+        return cls(
+            translator=Parser(
+                lexique=bundle.lexicon,
+                grammar=bundle.grammar.translator,
+                how="translation",
+            ),
+            validator=Parser(
+                lexique=bundle.lexicon,
+                grammar=bundle.grammar.validator,
+                how="validation",
+            ),
+        )
+
+    @classmethod
     def from_yaml(cls, path: str | Path) -> Self:
         """Load lexicon and grammars from a directory containing MorphoSyntax.yaml and lexicon data.
 
@@ -36,22 +64,9 @@ class KParser(ABCReader, MixinParseParsable):
             KParser: Instance with translator and validator parsers.
 
         """
-        path = Path(path)
-        from pfmg.lexique.lexicon import Lexicon
-        from pfmg.parsing.grammar import KGrammar
+        from pfmg.parsing.grammar_bundle import GrammarBundle
 
-        assert path.exists() and path.is_dir()
-
-        lexicon = Lexicon.from_yaml(path)
-        grammar = KGrammar.from_yaml(path / "MorphoSyntax.yaml")
-        return cls(
-            translator=Parser(
-                lexique=lexicon, grammar=grammar.translator, how="translation"
-            ),
-            validator=Parser(
-                lexique=lexicon, grammar=grammar.validator, how="validation"
-            ),
-        )
+        return cls.from_bundle(GrammarBundle.from_directory(path))
 
     def to_file(
         self, path: str | Path, id_grammar: Literal["validator", "translator"]
@@ -89,7 +104,7 @@ class KParser(ABCReader, MixinParseParsable):
         try:
             tree = self.translator.parse(data, keep)
             match tree:
-                case Tree():
+                case _ if is_parse_tree(tree):
                     translation = " ".join(tree.label()["translation"])
                 case Iterator() | list():
                     translation = [" ".join(x.label()["translation"]) for x in tree]

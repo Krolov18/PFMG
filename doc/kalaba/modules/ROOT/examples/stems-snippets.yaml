@@ -1,0 +1,17 @@
+# tag::d-stems[]
+D:
+  z: un,une,des
+  r: le,la,les
+  t: ce,cette,ces
+# end::d-stems[]
+
+# tag::nom-stems[]
+NOM:
+  Cf=n1:
+    Genre=f:
+      di: jardin.Genre=m
+      do: princesse.Genre=f
+    Genre=m:
+      tulo: garçon.Genre=m
+      za: Hugo.Genre=m
+# end::nom-stems[]

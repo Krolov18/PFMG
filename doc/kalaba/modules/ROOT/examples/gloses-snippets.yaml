@@ -1,0 +1,26 @@
+# tag::d-glose[]
+D:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  destination:
+    Genre: [ m, f, n ]
+    Nombre: [ sg, du, pl ]
+  alignments:
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl ]
+# end::d-glose[]
+
+# tag::nom-glose[]
+NOM:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  destination:
+    Cf: [ n1, n2 ]
+    Genre: [ m, f, n ]
+    Nombre: [ sg, du, pl ]
+  alignments:
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl ]
+# end::nom-glose[]

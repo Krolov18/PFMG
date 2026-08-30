@@ -1,0 +1,53 @@
+= Overview
+
+A complete {bookname} grammar connects five YAML files to two pipelines:
+
+. **Lexicon** — `Gloses`, `Blocks`, `Stems`, `Phonology` → form realization
+. **Parsing** — `MorphoSyntax` + lexicon → translation then validation
+
+== Files and roles
+
+[cols="1,3"]
+|===
+| File | Role
+
+| `Gloses.yaml`
+| Paradigms: source/destination features and alignments (xref:en/gloses.adoc[])
+
+| `Blocks.yaml`
+| Morphological rules: prefix, suffix, condition, … (xref:en/blocks.adoc[])
+
+| `Stems.yaml`
+| Stem inventory and translations (xref:en/stems.adoc[])
+
+| `Phonology.yaml`
+| Phonological data for Gabarit (xref:en/phonology.adoc[])
+
+| `MorphoSyntax.yaml`
+| FCFG grammar: phrases, agreements, translations (xref:en/morphosyntax.adoc[])
+|===
+
+== Data flow
+
+[source,mermaid]
+----
+flowchart LR
+  subgraph lexique [Lexicon]
+    Gloses --> Lexicon
+    Blocks --> Lexicon
+    Stems --> Lexicon
+    Phono[Phonology] --> Lexicon
+  end
+  subgraph parsing [Parsing]
+    Morpho[MorphoSyntax] --> KGrammar
+    Lexicon --> KParser
+    KGrammar --> KParser
+  end
+----
+
+== Bundled examples
+
+* `examples/data/` — minimal grammar (notebook, CLI)
+* `examples/data2/` — variant with multiple rules and `'deux'` literal
+
+See xref:en/parsing-pipeline.adoc[] for the two-phase parser details.

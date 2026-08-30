@@ -1,0 +1,15 @@
+FROM node:22-alpine
+
+RUN apk add --no-cache git
+
+WORKDIR /antora
+
+COPY package.json package-lock.json ./
+
+RUN npm ci --ignore-scripts
+
+COPY antora-playbook.yml ./
+COPY doc ./doc
+
+# Antora content source uses git (url: .); mount the full repo at runtime.
+CMD ["npm", "run", "docs:build"]

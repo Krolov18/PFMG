@@ -1,8 +1,12 @@
 {
   "scripts": {
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "docs:build": "antora antora-playbook.yml",
+    "docs:preview": "antora antora-playbook.yml && npx --yes http-server doc/build/site -p 8787"
   },
   "devDependencies": {
+    "@antora/cli": "^3.1.10",
+    "@antora/site-generator-default": "^3.1.10",
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2"
   }

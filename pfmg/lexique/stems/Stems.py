@@ -12,7 +12,7 @@ from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.utils import dictify
-from pfmg.parsing.features.utils import FeatureReader
+from pfmg.utils.features import FeatureReader
 
 
 @dataclass

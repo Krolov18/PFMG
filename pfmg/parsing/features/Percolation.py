@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from pfmg.parsing.features.FeatureMixin import FeatureMixin
-from pfmg.parsing.features.utils import FeatureReader
+from pfmg.utils.features import FeatureReader
 
 
 @dataclass

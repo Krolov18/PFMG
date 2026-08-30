@@ -1,0 +1,50 @@
+# tag::start-np[]
+Start: "NP"
+# end::start-np[]
+
+# tag::np-rule[]
+NP:
+  Source:
+    phrases:
+      - [ "D", "NOM" ]
+    agreements:
+      - "Genre,Nombre"
+    percolations:
+      - "Genre,Nombre"
+    translations:
+      - [ 1, 0 ]
+  Destination:
+    phrases:
+      - [ "NOM", "D" ]
+    agreements:
+      - "Nombre"
+    percolations:
+      - "Nombre"
+# end::np-rule[]
+
+# tag::np-rule-multi[]
+NP:
+  Source:
+    phrases:
+      - [ "D", "'deux'", "NOM" ]
+      - [ "D", "NOM" ]
+    agreements:
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+    percolations:
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+    translations:
+      - [ 2, 0 ]
+      - [ 1, 0 ]
+  Destination:
+    phrases:
+      - [ "NOM", "D" ]
+      - [ "NOM", "D" ]
+    agreements:
+      - "Genre,Nombre=du"
+      - "Genre,Nombre"
+    percolations:
+      - "Nombre=du"
+      - "Nombre"
+# end::np-rule-multi[]

@@ -1,0 +1,10 @@
+= Documentation grammaticale {bookname}
+
+== À propos du {bookname}
+
+Le {bookname} ou kalabatiste est un générateur de langage inventé à base de syntaxe,
+morphologie et phonologie.
+
+Ce livre décrit le format des fichiers YAML qui définissent une grammaire {bookname}.
+
+Voir aussi la version anglaise : xref:en/index.adoc[English documentation].

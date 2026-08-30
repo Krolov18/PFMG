@@ -1,0 +1,76 @@
+= Parsing pipeline
+
+The `KParser` loads a grammar directory (all five YAML files) and runs two phases:
+translation then validation.
+
+== Loading
+
+[source,python]
+----
+from pfmg.parsing.parser import KParser
+
+parser = KParser.from_yaml("examples/data")
+----
+
+`KParser.from_yaml()`:
+
+. Builds a `Lexicon` from `Gloses`, `Blocks`, `Stems`, `Phonology`
+. Loads `KGrammar` from `MorphoSyntax.yaml` (translator and validator grammars)
+
+== Phase 1 — Translation
+
+The **translator** grammar uses `Source` rules and the `translations` field in
+`MorphoSyntax.yaml`. It produces invented-language strings from French input.
+
+== Phase 2 — Validation
+
+The **validator** grammar uses `Destination` rules (without `translations`) to keep
+valid analyses only.
+
+[source,mermaid]
+----
+sequenceDiagram
+  participant User
+  participant KParser
+  participant Translator
+  participant Validator
+  User->>KParser: parse("des garçons", keep)
+  KParser->>Translator: FCFG translation
+  Translator->>Validator: candidate strings
+  Validator-->>KParser: validated output
+  KParser-->>User: first or all results
+----
+
+== Command-line interface
+
+[source,bash]
+----
+uv run python -m pfmg.parsing.main parsing examples/data "des garçons"
+uv run python -m pfmg.parsing.main parsing examples/data "des garçons" -k all
+----
+
+* `-k first` (default) — keep the first analysis
+* `-k all` — all analyses (morphological and syntactic ambiguity; see
+  `examples/execution_grammaire.ipynb`)
+
+== Feature strings in MorphoSyntax
+
+`agreements` and `percolations` use feature strings:
+
+* `Genre,Nombre` — features propagated from the lexicon
+* `Nombre=du` — fixed value
+* `;` — alternatives in one specification (`FeatureReader` in
+  `pfmg/parsing/features/utils.py`)
+
+== Quoted literals
+
+In `examples/data2/MorphoSyntax.yaml`, a constituent can be a literal:
+
+[source,yaml]
+----
+phrases:
+  - [ "D", "'deux'", "NOM" ]
+----
+
+Single quotes inside double quotes are required so the tokenizer keeps the token
+as-is.

@@ -1,0 +1,4 @@
+[,yaml]
+----
+include::example$stems-snippets.yaml[tag=d-stems]
+----

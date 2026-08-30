@@ -1,0 +1,77 @@
+= Pipeline de parsing
+
+Le parseur `KParser` charge un répertoire de grammaire (les cinq fichiers YAML) et
+exécute deux phases : traduction puis validation.
+
+== Chargement
+
+[source,python]
+----
+from pfmg.parsing.parser import KParser
+
+parser = KParser.from_yaml("examples/data")
+----
+
+`KParser.from_yaml()` :
+
+. Construit un `Lexicon` depuis `Gloses`, `Blocks`, `Stems`, `Phonology`
+. Charge `KGrammar` depuis `MorphoSyntax.yaml` (grammaires translator et validator)
+
+== Phase 1 — Traduction
+
+La grammaire **translator** utilise les règles `Source` et le champ `translations`
+de `MorphoSyntax.yaml`. Elle produit des chaînes en langue inventée à partir du
+français.
+
+== Phase 2 — Validation
+
+La grammaire **validator** utilise les règles `Destination` (sans `translations`) pour
+filtrer les analyses valides.
+
+[source,mermaid]
+----
+sequenceDiagram
+  participant User
+  participant KParser
+  participant Translator
+  participant Validator
+  User->>KParser: parse("des garçons", keep)
+  KParser->>Translator: FCFG translation
+  Translator->>Validator: candidate strings
+  Validator-->>KParser: validated output
+  KParser-->>User: first or all results
+----
+
+== Interface en ligne de commande
+
+[source,bash]
+----
+uv run python -m pfmg.parsing.main parsing examples/data "des garçons"
+uv run python -m pfmg.parsing.main parsing examples/data "des garçons" -k all
+----
+
+* `-k first` (défaut) — première analyse retenue
+* `-k all` — toutes les analyses (ambiguïté morphologique et syntaxique ; voir
+  `examples/execution_grammaire.ipynb`)
+
+== Syntaxe des traits dans MorphoSyntax
+
+Les champs `agreements` et `percolations` utilisent des chaînes de traits :
+
+* `Genre,Nombre` — traits propagés depuis le lexique
+* `Nombre=du` — valeur fixe
+* `;` — alternatives dans une même spécification (`FeatureReader` dans
+  `pfmg/parsing/features/utils.py`)
+
+== Littéraux entre quotes
+
+Dans `examples/data2/MorphoSyntax.yaml`, un constituant peut être un littéral :
+
+[source,yaml]
+----
+phrases:
+  - [ "D", "'deux'", "NOM" ]
+----
+
+Les quotes simples à l'intérieur des doubles quotes sont requises pour que le token
+soit reconnu tel quel par le parseur.

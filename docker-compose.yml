@@ -1,0 +1,25 @@
+services:
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile.docs
+    volumes:
+      - .:/antora
+      - docs_node_modules:/antora/node_modules
+    command: npm run docs:build
+
+  docs-preview:
+    build:
+      context: .
+      dockerfile: Dockerfile.docs
+    ports:
+      - "8787:8787"
+    volumes:
+      - .:/antora
+      - docs_node_modules:/antora/node_modules
+    command: >-
+      sh -c "npm run docs:build &&
+      npx --yes http-server doc/build/site -p 8787"
+
+volumes:
+  docs_node_modules:

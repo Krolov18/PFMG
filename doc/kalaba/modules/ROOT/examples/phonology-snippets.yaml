@@ -1,0 +1,21 @@
+# tag::phonology-loaded[]
+consonnes: ptkbdgmnNfsSvzZrljw
+voyelles: iueoa
+apophonies:
+  Ø: i
+  i: a
+  a: u
+  u: u
+  e: o
+  o: o
+derives:
+  A: V
+  D: C
+mutations:
+  p: t
+  t: p
+  k: t
+  b: d
+  d: t
+  g: d
+# end::phonology-loaded[]

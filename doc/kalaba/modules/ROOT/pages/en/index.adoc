@@ -1,0 +1,10 @@
+= {bookname} Grammar Documentation
+
+== About {bookname}
+
+{bookname} (kalabatiste) is an invented-language generator built on syntax, morphology,
+and phonology.
+
+This book describes the YAML file format used to define a {bookname} grammar.
+
+See also the French version: xref:fr/index.adoc[Documentation française].

@@ -1,0 +1,32 @@
+= Gloses.yaml
+
+`Gloses.yaml` déclare les traits morphologiques par catégorie syntaxique, séparément
+pour la langue source (français) et la langue de destination (langue inventée).
+
+Référence complète : `examples/data/Gloses.yaml`.
+
+== Structure par catégorie
+
+Chaque clé de premier niveau est une catégorie (`D`, `NOM`, …) avec :
+
+* `source` — attributs et valeurs licites côté français
+* `destination` — attributs et valeurs côté langue inventée
+* `alignments` — correspondance entre traits source et destination
+
+=== Déterminants (`D`)
+
+include::partial$gloses/d-glose-block.adoc[]
+
+* `source.Genre` / `Nombre` — traits du paradigme français
+* `destination` — peut définir des valeurs supplémentaires (ex. `n` pour neutre)
+* `alignments` — mappe `Nombre=pl` vers `Nombre=du` ou `Nombre=pl` en destination
+
+=== Noms (`NOM`)
+
+include::partial$gloses/nom-glose-block.adoc[]
+
+* `destination.Cf` — classe flexionnelle (`n1`, `n2`) utilisée dans `Blocks.yaml` et
+  `Stems.yaml`
+
+NOTE: Les alignements permettent de réaliser des paradigmes destination plus riches que
+la source sans dupliquer manuellement chaque forme.

@@ -1,0 +1,54 @@
+= MorphoSyntax.yaml
+
+Ce chapitre décrit le format **runtime** chargé par `KGrammar.from_yaml()` (voir
+[`examples/data/MorphoSyntax.yaml`](../../../../../../examples/data/MorphoSyntax.yaml)).
+Les anciennes clés racine (`syntagmes`, `accords`, `traductions`, …) ne sont plus
+documentées.
+
+== Start
+
+Symbole de départ de la grammaire FCFG (catégorie non terminale racine).
+
+include::partial$morphosyntax/start-block.adoc[]
+
+== Règles par catégorie
+
+Chaque clé de premier niveau (ex. `NP`) définit une règle avec deux faces :
+
+* `Source` — analyse et traduction depuis le français
+* `Destination` — validation de la sortie en langue inventée
+
+=== Exemple simple (`examples/data/`)
+
+include::partial$morphosyntax/np-rule-block.adoc[]
+
+* `phrases` — liste de séquences de catégories lexicales ou non terminales
+* `agreements` — contraintes de traits (`Genre,Nombre` ou `Trait=valeur`)
+* `percolations` — traits propagés sur le nœud parent
+* `translations` — ordre des indices de constituants pour la traduction (0-based)
+
+WARNING: Chaque liste (`phrases`, `agreements`, `percolations`, `translations`) doit avoir le même nombre d'entrées pour une règle donnée.
+
+=== Règles multiples et littéraux (`examples/data2/`)
+
+La grammaire `examples/data2/` montre plusieurs variantes de phrase et des littéraux
+entre quotes (ex. `"'deux'"`).
+
+include::partial$morphosyntax/np-rule-multi-block.adoc[]
+
+* `Genre,Nombre=du` fixe une valeur de trait dans les accords ou percolations
+* Les indices de `translations` référencent les positions dans `phrases` (ici `2, 0`
+  pour la variante à trois constituants)
+
+[TIP]
+Syntaxe des traits
+====
+* `Genre,Nombre` — propagation des traits du lexique
+* `Nombre=du` — valeur fixe
+* `;` — alternatives dans une même chaîne de traits (voir le chapitre pipeline de parsing)
+====
+
+== Destination
+
+La face `Destination` n'a pas de champ `translations`. Elle sert à la phase de
+validation du parseur (voir xref:fr/parsing-pipeline.adoc[]).

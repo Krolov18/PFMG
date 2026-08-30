@@ -6,7 +6,7 @@ from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.parsing.features.utils import FeatureReader
+from pfmg.utils.features import FeatureReader
 
 
 @dataclass

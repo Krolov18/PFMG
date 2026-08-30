@@ -2,8 +2,8 @@
 
 from dataclasses import dataclass
 
-from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.parsing.production import Production
+from pfmg.utils.stem_space import StemSpace
 
 
 @dataclass

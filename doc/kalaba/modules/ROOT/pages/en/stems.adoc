@@ -1,0 +1,31 @@
+= Stems.yaml
+
+`Stems.yaml` lists surface stems organized by category and inherent features.
+
+Reference: `examples/data/Stems.yaml`.
+
+== Determiners (`D`)
+
+include::partial$stems/d-stems-block.adoc[]
+
+* Second-level keys (`z`, `r`, `t`) — sub-paradigms or themes
+* Values — comma-separated lists (`un,une,des`)
+
+== Nouns (`NOM`)
+
+include::partial$stems/nom-stems-block.adoc[]
+
+Typical hierarchy:
+
+. Category (`NOM`)
+. Inflection class (`Cf=n1`, `Cf=n2` — must match `Gloses.yaml`)
+. Features (`Genre=f`, `Genre=m`, …)
+. Invented form → French translation
+
+Translation formats:
+
+* `word` — French form without features
+* `word.Genre=m` — form with inherent features
+* `form1,form2` — multiple translations for one entry
+
+Traits after the dot are merged with the realization sigma.

@@ -10,7 +10,7 @@ from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.lexique.sigma.Sigma import Sigma
 from pfmg.lexique.sigma.Sigmas import Sigmas
 from pfmg.lexique.sigma.StraightPos2Sigmas import StraightPos2Sigmas
-from pfmg.parsing.features.utils import FeatureReader
+from pfmg.utils.features import FeatureReader
 
 
 @dataclass

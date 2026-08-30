@@ -1,0 +1,4 @@
+[,yaml]
+----
+include::example$morphosyntax-snippets.yaml[tag=np-rule]
+----

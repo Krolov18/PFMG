@@ -1,0 +1,32 @@
+= Stems.yaml
+
+`Stems.yaml` inventorie les radicaux (formes de surface) organisés par catégorie et
+traits inhérents.
+
+Référence : `examples/data/Stems.yaml`.
+
+== Déterminants (`D`)
+
+include::partial$stems/d-stems-block.adoc[]
+
+* Clés de second niveau (`z`, `r`, `t`) — sous-paradigmes ou thèmes
+* Valeurs — listes séparées par des virgules (`un,une,des`)
+
+== Noms (`NOM`)
+
+include::partial$stems/nom-stems-block.adoc[]
+
+Hiérarchie typique :
+
+. Catégorie (`NOM`)
+. Classe flexionnelle (`Cf=n1`, `Cf=n2` — doit correspondre à `Gloses.yaml`)
+. Traits (`Genre=f`, `Genre=m`, …)
+. Forme inventée → traduction française
+
+Formats de traduction :
+
+* `mot` — forme française sans traits
+* `mot.Genre=m` — forme avec traits inhérents
+* `forme1,forme2` — plusieurs traductions pour une même entrée
+
+Les traits après le point sont fusionnés avec le sigma de réalisation.

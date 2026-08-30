@@ -1,7 +1,7 @@
 """Mixin that dispatches to_glose to type-specific implementations."""
 
 from pfmg.external.gloser.ABCGloser import ABCGloser
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 class MixinGloser(ABCGloser):
