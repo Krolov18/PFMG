@@ -57,7 +57,7 @@ def __build_pattern(
 
     for char, value in sorted(memory_data.items()):
         if isinstance(value, dict):
-            dict_str = __build_pattern(value)
+            dict_str = __build_pattern(value, escape)
             match dict_str:
                 case str():
                     alternatives.append(escape(char) + dict_str)
@@ -105,6 +105,9 @@ def dict2str(
 def to_pattern(words: list[str]) -> str:
     """Build a trie from a list of words and return a regex pattern that matches exactly those words.
 
+    Regex metacharacters in the words are escaped, so a word is always matched
+    literally.
+
     Args:
         words: List of words to convert into an optimized pattern.
 
@@ -114,7 +117,7 @@ def to_pattern(words: list[str]) -> str:
     """
     memory = {}
     add_words(memory, words)
-    dict_str = dict2str(memory)
+    dict_str = dict2str(memory, __escape)
     assert dict_str is not None
     return dict_str
 

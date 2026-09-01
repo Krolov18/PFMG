@@ -5,14 +5,33 @@ import pathlib
 
 from pfmg.parsing.main.actions import action
 
-if __name__ == "__main__":
-    PARSER = argparse.ArgumentParser()
-    SUB_PARSERS = PARSER.add_subparsers(dest="name")
 
-    PARSING = SUB_PARSERS.add_parser(name="parsing")
-    PARSING.add_argument("path", type=pathlib.Path)
-    PARSING.add_argument("data", action="append")
-    PARSING.add_argument("-k", "--keep", choices=("first", "all"), default="first")
+def build_parser() -> argparse.ArgumentParser:
+    """Build the argument parser of the parsing CLI.
 
-    args = vars(PARSER.parse_args())
-    action(namespace=args)
+    Returns:
+        argparse.ArgumentParser: Parser exposing the "parsing" sub-command.
+
+    """
+    parser = argparse.ArgumentParser()
+    sub_parsers = parser.add_subparsers(dest="name")
+
+    parsing = sub_parsers.add_parser(name="parsing")
+    parsing.add_argument("path", type=pathlib.Path)
+    parsing.add_argument("data", action="append")
+    parsing.add_argument("-k", "--keep", choices=("first", "all"), default="first")
+
+    return parser
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Run the parsing CLI.
+
+    Args:
+        argv: Command-line arguments; defaults to sys.argv[1:].
+
+    """
+    action(namespace=vars(build_parser().parse_args(argv)))
+
+
+__all__ = ["build_parser", "main"]

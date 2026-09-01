@@ -23,9 +23,10 @@ def fx_lexicon():
         None,
         marks=pytest.mark.xfail(raises=AssertionError)),
 
+    # indexes of a lexicon realized with a fresh Paradigm.counter
     (["le", "bruit"],
-     [["106", "108", "110"],
-      ["124"]]),
+     [["18", "20", "22"],
+      ["36"]]),
 ])
 def test_indexer(fx_lexicon, tokens, expected) -> None:
     indexer = new_indexer(id_indexer="Desamb", lexicon=fx_lexicon)

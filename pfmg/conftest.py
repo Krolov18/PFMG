@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 from frozendict import frozendict
 
+from pfmg.lexique.paradigm.Paradigm import Paradigm
 from pfmg.lexique.phonology.Phonology import Phonology
 from pfmg.utils.abstract_factory import factory_function, factory_method
 
@@ -145,6 +146,17 @@ def get_default_phonology() -> Phonology:
 def fx_df_phonology():
     """Fixture that provides a default Phonology for tests."""
     return get_default_phonology()
+
+
+@pytest.fixture(autouse=True)
+def fx_reset_paradigm_counter():
+    """Reset the process-wide Forme index counter before each test.
+
+    Paradigm.counter is a ClassVar shared by every Paradigm instance, so any
+    test that realizes a lexeme shifts the indexes seen by the tests that run
+    after it. Resetting it keeps index assertions independent of test order.
+    """
+    Paradigm.counter = itertools.count()
 
 
 def _assert_compare(result: Any, expected: Any, op: str = "==") -> None:

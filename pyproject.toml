@@ -48,7 +48,11 @@ dependencies = [
 
 [tool.coverage.run]
 source = ["pfmg"]
-omit = ["*/test/*", "*/conftest.py"]
+omit = ["*/test/*", "*/conftest.py", "*/__main__.py"]
 
 [tool.coverage.report]
-exclude_lines = []
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
