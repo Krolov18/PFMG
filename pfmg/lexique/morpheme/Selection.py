@@ -7,18 +7,12 @@ from typing import NoReturn
 
 from frozendict import frozendict
 
-from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
-from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.external.equality.MixinEquality import MixinEquality
-from pfmg.external.gloser.MixinGloser import MixinGloser
-from pfmg.external.representor.MixinRepresentor import MixinRepresentor
+from pfmg.lexique.morpheme.PresentableRule import PresentableRule
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
-class Selection(
-    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
-):
+class Selection(PresentableRule):
     """Rule that selects one stem from a StemSpace by index (e.g. X1, X2)."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(

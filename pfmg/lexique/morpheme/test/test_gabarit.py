@@ -5,7 +5,7 @@ from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Gabarit import Gabarit
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 parametrize = pytest.mark.parametrize(
     "rule, expected, sigma",

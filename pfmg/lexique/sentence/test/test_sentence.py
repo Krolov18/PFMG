@@ -7,7 +7,7 @@ from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.morpheme.Radical import Radical
 from pfmg.lexique.sentence.Sentence import Sentence
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 @pytest.mark.parametrize(

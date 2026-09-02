@@ -21,6 +21,9 @@ def build_parser() -> argparse.ArgumentParser:
     parsing.add_argument("data", action="append")
     parsing.add_argument("-k", "--keep", choices=("first", "all"), default="first")
 
+    lexical_grammar = sub_parsers.add_parser(name="lexical_grammar")
+    lexical_grammar.add_argument("datapath", type=pathlib.Path)
+
     return parser
 
 

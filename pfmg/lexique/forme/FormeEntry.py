@@ -8,7 +8,7 @@ from pfmg.external.decoupeur.ABCDecoupeur import ABCDecoupeur
 from pfmg.external.display.MixinDisplay import MixinDisplay
 from pfmg.external.gloser.ABCGloser import ABCGloser
 from pfmg.lexique.morpheme.Morphemes import Morphemes
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 @dataclass
@@ -35,24 +35,3 @@ class FormeEntry(MixinDisplay, ABCGloser, ABCDecoupeur):
     def get_sigma(self) -> frozendict:
         """Return this entry's sigma (feature mapping)."""
         return self.sigma
-
-    def to_nltk(self, infos: dict | None = None) -> str:
-        """Return this FormeEntry as an NLTK lexical production string."""
-        name = f"_{self.__class__.__name__}__to_nltk_{type(infos).__name__.lower()}"
-        return getattr(self, name)(infos)
-
-    def __to_nltk_nonetype(self, infos: None = None) -> str:
-        assert infos is None
-
-        sigma = {key: value for key, value in self.get_sigma().items() if key.istitle()}
-        features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
-        return f"{self.pos}[{features}] -> '{self.index}'"
-
-    def __to_nltk_dict(self, infos: dict) -> str:
-        assert isinstance(infos, dict)
-        sigma = {
-            f"S{key}": value for key, value in self.get_sigma().items() if key.istitle()
-        }
-        sigma.update(infos)
-        features = ",".join(f"{key}='{value}'" for key, value in sigma.items())
-        return f"{self.pos}[{features}] -> '{self.index}'"

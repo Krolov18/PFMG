@@ -7,20 +7,14 @@ from typing import ClassVar
 
 from frozendict import frozendict
 
-from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
 from pfmg.external.display import ABCDisplay
-from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.external.equality.MixinEquality import MixinEquality
-from pfmg.external.gloser.ABCGloser import ABCGloser
-from pfmg.external.representor.MixinRepresentor import MixinRepresentor
 from pfmg.lexique.morpheme.Factory import create_morpheme
+from pfmg.lexique.morpheme.PresentableRule import PresentableRule
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
-class Condition(
-    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, ABCGloser
-):
+class Condition(PresentableRule):
     """Ternary rule in morphological rules: if cond then true else false."""
 
     __PATTERN: ClassVar[Callable[[str], Match | None]] = re.compile(

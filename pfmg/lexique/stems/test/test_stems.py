@@ -7,8 +7,8 @@ from frozendict import frozendict
 from pfmg.conftest import _assert_compare
 from pfmg.lexique.lexeme.Lexeme import Lexeme
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
-from pfmg.lexique.stem_space.StemSpace import StemSpace
 from pfmg.lexique.stems.Stems import Stems
+from pfmg.utils.stem_space import StemSpace
 
 
 @pytest.mark.parametrize(

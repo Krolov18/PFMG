@@ -2,7 +2,7 @@ import pytest
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Circumfix import Circumfix
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 @pytest.mark.parametrize("rule, sigma", [

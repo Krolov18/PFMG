@@ -3,7 +3,7 @@ from frozendict import frozendict
 
 from pfmg.lexique.lexeme.LexemeEntry import LexemeEntry
 from pfmg.lexique.morpheme.Radical import Radical
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 @pytest.mark.parametrize("stems, pos, sigma", [

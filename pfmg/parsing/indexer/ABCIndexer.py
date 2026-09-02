@@ -2,7 +2,6 @@
 
 from abc import ABC, abstractmethod
 
-from pfmg.lexique.lexicon import Lexicon
 from pfmg.utils.abstract_factory import factory_method
 
 
@@ -22,32 +21,33 @@ class ABCindexer(ABC):
         """
 
 
-def new_indexer(id_indexer: str, lexicon: Lexicon) -> ABCindexer:
+def new_indexer(id_indexer: str, **kwargs) -> ABCindexer:
     """Factory to build an indexer by id (e.g. Desamb -> DesambIndexer).
 
     Args:
         id_indexer: Unique identifier of the indexer implementation.
-        lexicon: Lexicon instance to use.
+        **kwargs: Arguments of the concrete indexer (e.g. ``lexicon`` and
+            ``how`` for ``Desamb``, none for ``Identity``).
 
     Returns:
         ABCindexer: An indexer instance.
 
     Examples:
         >>> from pfmg.lexique.lexicon import Lexicon
-        >>> from pfmg.lexique.sentence.Sentence import Sentence
         >>> from pfmg.utils.paths import get_project_path
         >>>
         >>> config_path = get_project_path() / "examples" / "data"
         >>> lexicon = Lexicon.from_yaml(config_path)
         >>> indexer = new_indexer("Desamb", lexicon=lexicon)
-        >>> actual = indexer(["le", "bruit"])
-        >>> assert isinstance(actual, Sentence)
-        >>> assert str(actual) == "Sentence([10, 12])"
+        >>> indexer(["le", "bruit"])
+        [['36', '38', '40'], ['138']]
+        >>> new_indexer("Identity")(["le", "bruit"])
+        [['le'], ['bruit']]
 
     """
     assert __package__ is not None
     return factory_method(
         concrete_product=f"{id_indexer}Indexer",
         package=__package__,
-        lexicon=lexicon,
+        **kwargs,
     )

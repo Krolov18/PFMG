@@ -34,16 +34,13 @@ def test_build_parser_rejects_unknown_list_option() -> None:
         build_parser().parse_args(["lexicon", "some/path", "-l", "unknown"])
 
 
-def test_main_writes_the_lexicon_to_stdout() -> None:
+def test_main_loads_the_lexicon_without_stdout() -> None:
+    """Lexicon subcommand validates config and loads without printing grammar."""
     buffer = StringIO()
     with redirect_stdout(buffer):
         main(["lexicon", str(get_example_grammar())])
 
-    lines = buffer.getvalue().splitlines()
-    assert lines
-    # one translation line and one validation line per forme
-    assert len(lines) % 2 == 0
-    assert all(" -> " in line for line in lines)
+    assert buffer.getvalue() == ""
 
 
 def test_main_rejects_an_unknown_datapath(tmp_path) -> None:

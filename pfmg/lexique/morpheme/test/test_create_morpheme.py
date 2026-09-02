@@ -8,7 +8,7 @@ from pfmg.lexique.morpheme.Gabarit import Gabarit
 from pfmg.lexique.morpheme.Prefix import Prefix
 from pfmg.lexique.morpheme.Selection import Selection
 from pfmg.lexique.morpheme.Suffix import Suffix
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 parametrize = pytest.mark.parametrize(
     "rule, sigma, expected_type", [

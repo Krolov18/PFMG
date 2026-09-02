@@ -38,8 +38,7 @@ def test_parser_creation_triggers_nltk_data_check() -> None:
     )
     grammar = Grammar(start="S", productions=[prod])
     lexicon = MagicMock()
-    lexicon.to_translation.return_value = ""
-    lexicon.to_validation.return_value = ""
+    lexicon.__iter__.return_value = iter([])
 
     with patch("pfmg.parsing.backends.nltk_backend.ensure_nltk_data") as mock_ensure:
         Parser(lexique=lexicon, grammar=grammar, how="translation")

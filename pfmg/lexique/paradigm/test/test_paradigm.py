@@ -9,7 +9,7 @@ from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.morpheme.Radical import Radical
 from pfmg.lexique.morpheme.Suffix import Suffix
 from pfmg.lexique.paradigm.Paradigm import Paradigm
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 # @pytest.mark.parametrize("lexeme, formes", [
 #     (Lexeme(stem=StemSpace(stems=("manie",)),

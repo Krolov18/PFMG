@@ -7,18 +7,12 @@ from typing import NoReturn
 
 from frozendict import frozendict
 
-from pfmg.external.decoupeur.MixinDecoupeur import MixinDecoupeur
-from pfmg.external.display.MixinDisplay import MixinDisplay
-from pfmg.external.equality.MixinEquality import MixinEquality
-from pfmg.external.gloser.MixinGloser import MixinGloser
-from pfmg.external.representor.MixinRepresentor import MixinRepresentor
+from pfmg.lexique.morpheme.PresentableRule import PresentableRule
 from pfmg.lexique.phonology.Phonology import Phonology
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
-class Prefix(
-    MixinDisplay, MixinEquality, MixinRepresentor, MixinDecoupeur, MixinGloser
-):
+class Prefix(PresentableRule):
     """Encodes an affixal rule that adds an element before the Radical."""
 
     __PATTERN: Callable[[str], Match | None] = re.compile(

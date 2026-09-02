@@ -8,15 +8,16 @@ import pytest
 from pfmg.parsing.features.Features import Features
 from pfmg.parsing.features.Percolation import Percolation
 from pfmg.parsing.grammar.Grammar import Grammar
+from pfmg.parsing.indexer import new_indexer
 from pfmg.parsing.parser.Parser import Parser
 from pfmg.parsing.production.Production import Production
+from pfmg.parsing.tokenizer import new_tokenizer
 
 
 def _make_mock_lexicon(lexicon_str: str = "") -> MagicMock:
-    """Return a mock Lexicon with to_translation and to_validation returning lexicon_str."""
+    """Return a mock realized lexicon for Parser construction."""
     mock = MagicMock()
-    mock.to_translation.return_value = lexicon_str
-    mock.to_validation.return_value = lexicon_str
+    mock.__iter__.return_value = iter([])
     return mock
 
 
@@ -49,6 +50,7 @@ def parser_single() -> Parser:
         lexique=_make_mock_lexicon(),
         grammar=_minimal_grammar_single_terminal(),
         how="translation",
+        indexer=new_indexer(id_indexer="Identity"),
     )
 
 
@@ -59,6 +61,7 @@ def parser_two_tokens() -> Parser:
         lexique=_make_mock_lexicon(),
         grammar=_minimal_grammar_two_terminals(),
         how="translation",
+        indexer=new_indexer(id_indexer="Identity"),
     )
 
 
@@ -110,6 +113,33 @@ def test_parser_parse_list(parser_single, params, expected) -> None:
     assert isinstance(result, list)
     if isinstance(expected, int):
         assert len(result) == expected
+
+
+def test_parser_parse_str_first_without_parse(parser_single) -> None:
+    """keep="first" reports when no candidate sequence yields a tree."""
+    with pytest.raises(ValueError, match="Aucune analyse"):
+        parser_single.parse(data="a a", keep="first")
+
+
+def test_parser_parse_list_first_skips_unparsable(parser_single) -> None:
+    """keep="first" on a list drops the sentences without any parse."""
+    result = parser_single.parse(data=["a", "a a"], keep="first")
+
+    assert len(result) == 1
+
+
+def test_parser_accepts_injected_tokenizer() -> None:
+    """An explicit tokenizer overrides the default Space tokenizer."""
+    tokenizer = new_tokenizer(id_tokenizer="Space")
+    parser = Parser(
+        lexique=_make_mock_lexicon(),
+        grammar=_minimal_grammar_single_terminal(),
+        how="translation",
+        tokenizer=tokenizer,
+        indexer=new_indexer(id_indexer="Identity"),
+    )
+
+    assert parser.tokenizer is tokenizer
 
 
 def test_parser_to_file(parser_single, tmp_path: Path) -> None:

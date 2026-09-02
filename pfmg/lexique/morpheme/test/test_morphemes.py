@@ -4,7 +4,7 @@ from frozendict import frozendict
 from pfmg.lexique.morpheme.Factory import create_morpheme
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.morpheme.Radical import Radical
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 parametrize = pytest.mark.parametrize(
     "radical, morphemes, expected", [

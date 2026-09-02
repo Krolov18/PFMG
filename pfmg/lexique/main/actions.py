@@ -114,8 +114,6 @@ def lexicon_action(
         namespace: Must have "datapath" (path to lexicon config directory).
 
     """
-    import sys
-
     from pfmg.lexique.lexicon import Lexicon
 
     path = Path(namespace.datapath)
@@ -129,6 +127,4 @@ def lexicon_action(
     check_if_datapath_contains_all_files(namespace)
     check_yaml_files_with_cue(namespace)
 
-    for forme in Lexicon.from_yaml(path):
-        sys.stdout.write(forme.to_translation() + "\n")
-        sys.stdout.write(forme.to_validation() + "\n")
+    Lexicon.from_yaml(path)

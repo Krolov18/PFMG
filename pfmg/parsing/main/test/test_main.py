@@ -31,6 +31,14 @@ def test_build_parser_rejects_unknown_keep() -> None:
         build_parser().parse_args(["parsing", "some/path", "x", "-k", "unknown"])
 
 
+def test_build_parser_lexical_grammar_subcommand() -> None:
+    namespace = build_parser().parse_args(
+        ["lexical_grammar", "examples/data"]
+    )
+    assert namespace.name == "lexical_grammar"
+    assert namespace.datapath == pathlib.Path("examples/data")
+
+
 def test_main_dispatches_the_namespace_as_a_dict() -> None:
     with patch("pfmg.parsing.main.action") as mock_action:
         main(["parsing", "some/path", "des garçons", "-k", "all"])

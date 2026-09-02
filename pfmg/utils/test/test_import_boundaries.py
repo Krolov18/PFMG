@@ -10,7 +10,13 @@ _PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 _BOUNDARIES: dict[str, tuple[str, ...]] = {
     "lexique": ("pfmg.parsing",),
     "external": ("pfmg.lexique",),
+    "utils": ("pfmg.lexique", "pfmg.parsing", "pfmg.external"),
 }
+
+_PARSING_LEXIQUE_ALLOWED: tuple[str, ...] = (
+    "pfmg.lexique.lexicon",
+    "pfmg.lexique.forme",
+)
 
 
 def _python_modules(package: str) -> list[Path]:
@@ -47,3 +53,23 @@ def test_package_import_boundaries(package: str, forbidden: tuple[str, ...]) -> 
             ):
                 violations.append(f"{module_name} imports {imported}")
     assert not violations, "Import boundary violations:\n" + "\n".join(violations)
+
+
+def test_parsing_imports_only_public_lexique_entry_points() -> None:
+    """Parsing may depend on lexicon and forme, not deeper lexique internals."""
+    violations: list[str] = []
+    prefix = "pfmg.lexique"
+    for module_path in _python_modules("parsing"):
+        if "/test/" in module_path.as_posix():
+            continue
+        module_name = _relative_module(module_path)
+        for imported in _imported_modules(module_path):
+            if imported == prefix or imported.startswith(f"{prefix}."):
+                if not any(
+                    imported == allowed or imported.startswith(f"{allowed}.")
+                    for allowed in _PARSING_LEXIQUE_ALLOWED
+                ):
+                    violations.append(f"{module_name} imports {imported}")
+    assert not violations, "Parsing lexique import violations:\n" + "\n".join(
+        violations
+    )

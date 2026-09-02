@@ -1,5 +1,6 @@
 """Tests for GrammarBundle (YAML directory loader)."""
 
+from pfmg.lexique.lexicon import Lexicon
 from pfmg.parsing.grammar_bundle import GrammarBundle
 from pfmg.parsing.parser import KParser
 from pfmg.utils.paths import get_project_path
@@ -27,4 +28,6 @@ def test_grammar_bundle_from_bundle_matches_from_yaml() -> None:
         from_bundle.translator.grammar.productions
         == from_yaml.translator.grammar.productions
     )
-    assert len(bundle.lexicon.lexemes) == len(from_yaml.translator.lexique.lexemes)
+    translator_lexique = from_yaml.translator.lexique
+    assert isinstance(translator_lexique, Lexicon)
+    assert len(bundle.lexicon.lexemes) == len(translator_lexique.lexemes)

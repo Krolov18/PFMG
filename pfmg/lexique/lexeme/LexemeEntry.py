@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from frozendict import frozendict
 
 from pfmg.lexique.morpheme.Radical import Radical
-from pfmg.lexique.stem_space.StemSpace import StemSpace
+from pfmg.utils.stem_space import StemSpace
 
 
 @dataclass

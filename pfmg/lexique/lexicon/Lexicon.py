@@ -1,4 +1,4 @@
-"""Lexicon: paradigm plus lexemes, with translation/validation grammar strings."""
+"""Lexicon: paradigm plus lexemes with realized-form index maps."""
 
 from collections import defaultdict
 from dataclasses import dataclass
@@ -26,12 +26,22 @@ class Lexicon(ABCReader):
     lexemes: list[Lexeme]
 
     def __post_init__(self) -> None:
-        """Build lexicon index (string -> list of indices) and flat list of Forme."""
-        self.lexicon = defaultdict(list)
+        """Realize every lexeme once and index the resulting Forme by string.
+
+        Realization happens exactly once: ``Paradigm.realize`` draws a fresh
+        index for each Forme it yields, so realizing twice would produce two
+        incompatible index spaces — one for the string -> index maps, another
+        for the grammars exported by the parsing layer.
+        """
+        self.lexicon: defaultdict[str, list[int]] = defaultdict(list)
+        self.lexicon_destination: defaultdict[str, list[int]] = defaultdict(list)
         self.lexicon2: list[Forme] = []
         for lexeme in self.lexemes:
             for forme in self.paradigm.realize(lexeme):
-                self.lexicon[forme.to_string()].append(forme.source.index)
+                self.lexicon[forme.source.to_string()].append(forme.source.index)
+                self.lexicon_destination[forme.destination.to_string()].append(
+                    forme.destination.index
+                )
                 self.lexicon2.append(forme)
 
     @classmethod
@@ -51,27 +61,6 @@ class Lexicon(ABCReader):
             lexemes=list(Stems.from_yaml(path / "Stems.yaml")),
         )
 
-    def to_validation(self) -> str:
-        """Return all realized forms as NLTK lexical productions (validation grammar)."""
-        result = []
-        for lexeme in self.lexemes:
-            for forme in self.paradigm.realize(lexeme):
-                result.append(forme.to_validation())
-        return "\n".join(result)
-
-    def to_translation(self) -> str:
-        """Return all realized forms as NLTK lexical productions (translation grammar).
-
-        Returns:
-            str: Newline-joined NLTK lexical production strings.
-
-        """
-        result = []
-        for lexeme in self.lexemes:
-            for forme in self.paradigm.realize(lexeme):
-                result.append(forme.to_translation())
-        return "\n".join(result)
-
     def __iter__(self):
         """Iterate over all realized Forme (one per lexeme per paradigm slot).
 
@@ -79,11 +68,10 @@ class Lexicon(ABCReader):
             Forme: Each realized form.
 
         """
-        for lexeme in self.lexemes:
-            yield from self.paradigm.realize(lexeme)
+        yield from self.lexicon2
 
     def __getitem__(self, item: str) -> list[int]:
-        """Return the list of form indices for the given string key.
+        """Return the list of source form indices for the given string key.
 
         Args:
             item: String key (e.g. word form string).
@@ -92,4 +80,28 @@ class Lexicon(ABCReader):
             list[int]: List of form indices for that key.
 
         """
-        return self.lexicon[item]
+        return self.get_indexes(item)
+
+    def get_indexes(self, item: str, how: str = "translation") -> list[int]:
+        """Return the form indexes of *item* on the side used by *how*.
+
+        The translation grammar has source indexes as terminals while the
+        validation grammar has destination ones, so a token must be looked up
+        on the matching side.
+
+        Args:
+            item: Word form to look up.
+            how: "translation" (source side) or "validation" (destination side).
+
+        Returns:
+            list[int]: Indexes of that form, empty when unknown.
+
+        """
+        match how:
+            case "translation":
+                return self.lexicon[item]
+            case "validation":
+                return self.lexicon_destination[item]
+            case _:
+                message = f"'{how}' n'est ni 'translation' ni 'validation'."
+                raise ValueError(message)

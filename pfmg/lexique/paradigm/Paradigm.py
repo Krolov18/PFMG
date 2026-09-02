@@ -2,9 +2,8 @@
 
 import itertools
 from collections.abc import Generator, Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import ClassVar
 
 from pfmg.external.reader.ABCReader import ABCReader
 from pfmg.external.realizable.ABCRealizable import ABCRealizable
@@ -20,11 +19,28 @@ from pfmg.lexique.sigma.StraightPos2Sigmas import StraightPos2Sigmas
 
 @dataclass(repr=False)
 class Paradigm(ABCRealizable, ABCReader):
-    """Realizes Lexemes as Forme using gloses (POS -> Sigmas) and blocks (Desinence)."""
+    """Realizes Lexemes as Forme using gloses (POS -> Sigmas) and blocks (Desinence).
+
+    Attributes:
+        gloses: POS -> Sigmas mapping.
+        blocks: Desinence blocks.
+        counter: Per-instance source of Forme indexes. It is deliberately *not*
+            shared between Paradigm instances: the indexes it produces are the
+            terminals of the generated NLTK grammars, so a counter shared
+            process-wide would make those terminals depend on how many
+            realizations happened earlier in the process.
+
+    """
 
     gloses: StraightPos2Sigmas
     blocks: BlockEntry
-    counter: ClassVar[Iterator[int]] = itertools.count()
+    counter: Iterator[int] = field(
+        default_factory=itertools.count, repr=False, compare=False
+    )
+
+    def _next_index(self) -> int:
+        """Return the next Forme index of this Paradigm."""
+        return next(self.counter)
 
     def realize(self, lexeme: Lexeme) -> Generator[Forme]:
         """Yield all Forme realizations of the given lexeme (matching sigma and desinence)."""
@@ -35,7 +51,7 @@ class Paradigm(ABCRealizable, ABCReader):
                 desinence = self.blocks(lexeme_pos, i_sigma)
                 yield Forme(
                     source=FormeEntry(
-                        index=next(self.counter),
+                        index=self._next_index(),
                         pos=lexeme_pos,
                         sigma=i_sigma.source,
                         morphemes=Morphemes(
@@ -44,7 +60,7 @@ class Paradigm(ABCRealizable, ABCReader):
                         ),
                     ),
                     destination=FormeEntry(
-                        index=next(self.counter),
+                        index=self._next_index(),
                         pos=lexeme_pos,
                         sigma=i_sigma.destination,
                         morphemes=Morphemes(
