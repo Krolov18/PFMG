@@ -97,7 +97,6 @@ def test_from_disk(tmp_path, fx_df_phonology):
     expected = [
         Forme(
             source=FormeEntry(
-                index=0,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(
@@ -109,7 +108,6 @@ def test_from_disk(tmp_path, fx_df_phonology):
                 sigma=frozendict(Genre="f", Nombre="sg")
             ),
             destination=FormeEntry(
-                index=1,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(
@@ -124,7 +122,6 @@ def test_from_disk(tmp_path, fx_df_phonology):
 
         Forme(
             source=FormeEntry(
-                index=2,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(
@@ -141,7 +138,6 @@ def test_from_disk(tmp_path, fx_df_phonology):
                 sigma=frozendict(Genre="f", Nombre="pl")
             ),
             destination=FormeEntry(
-                index=3,
                 pos="N",
                 morphemes=Morphemes(
                     radical=Radical(

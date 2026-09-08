@@ -1,0 +1,89 @@
+ADP:
+  source:
+    - Type=arg: X1
+      Type=circ: X1
+  destination:
+    - Inv=oui: X1
+D:
+  source:
+    - Genre=m,Nombre=sg: X1
+      Genre=f,Nombre=sg: X2
+      Nombre=pl: X3
+  # Le déterminant n'a pas de forme autonome dans la langue : sa réalisation
+  # est le circonfixe que le nom porte (voir le bloc NOM ci-dessous).
+  destination:
+    - Det=def: X1
+      Det=indef: X1
+      Det=dem: X1
+# Le numéral est invariable, et sa « forme » en langue inventée n'est jamais
+# réalisée : elle ne sert qu'à compléter le lexème.
+NUM:
+  source:
+    - Compte=deux: X1
+      Compte=trois: X1
+      Compte=quatre: X1
+  destination:
+    - Inv=oui: X1
+NOM:
+  source:
+    - Nombre=pl: X2?X2:X+s
+  destination:
+    # Bloc 1 — gabarit : la racine 1-2-V-3 est moulée dans un schéma vocalique.
+    # Première voyelle = nombre (sg a, duel o, pl i, triel u, quadriel e).
+    # Seconde voyelle = cas (nom i, acc u, dat e, erg o, abs a, gen ai).
+    - Nombre=sg,Cas=nom: 1a2i3
+      Nombre=sg,Cas=acc: 1a2u3
+      Nombre=sg,Cas=dat: 1a2e3
+      Nombre=sg,Cas=erg: 1a2o3
+      Nombre=sg,Cas=abs: 1a2a3
+      Nombre=sg,Cas=gen: 1a2ai3
+      Nombre=du,Cas=nom: 1o2i3
+      Nombre=du,Cas=acc: 1o2u3
+      Nombre=du,Cas=dat: 1o2e3
+      Nombre=du,Cas=erg: 1o2o3
+      Nombre=du,Cas=abs: 1o2a3
+      Nombre=du,Cas=gen: 1o2ai3
+      Nombre=pl,Cas=nom: 1i2i3
+      Nombre=pl,Cas=acc: 1i2u3
+      Nombre=pl,Cas=dat: 1i2e3
+      Nombre=pl,Cas=erg: 1i2o3
+      Nombre=pl,Cas=abs: 1i2a3
+      Nombre=pl,Cas=gen: 1i2ai3
+      Nombre=tri,Cas=nom: 1u2i3
+      Nombre=tri,Cas=acc: 1u2u3
+      Nombre=tri,Cas=dat: 1u2e3
+      Nombre=tri,Cas=erg: 1u2o3
+      Nombre=tri,Cas=abs: 1u2a3
+      Nombre=tri,Cas=gen: 1u2ai3
+      Nombre=quad,Cas=nom: 1e2i3
+      Nombre=quad,Cas=acc: 1e2u3
+      Nombre=quad,Cas=dat: 1e2e3
+      Nombre=quad,Cas=erg: 1e2o3
+      Nombre=quad,Cas=abs: 1e2a3
+      Nombre=quad,Cas=gen: 1e2ai3
+    # Bloc 2 — le déterminant, circonfixe autour du nom. Le préfixe porte la
+    # détermination, le suffixe la détermination et le genre inhérent.
+    - Det=def,Genre=g1: ta+X+an
+      Det=def,Genre=g2: ta+X+al
+      Det=def,Genre=g3: ta+X+ar
+      Det=def,Genre=g4: ta+X+as
+      Det=indef,Genre=g1: mu+X+un
+      Det=indef,Genre=g2: mu+X+ul
+      Det=indef,Genre=g3: mu+X+ur
+      Det=indef,Genre=g4: mu+X+us
+      Det=dem,Genre=g1: si+X+in
+      Det=dem,Genre=g2: si+X+il
+      Det=dem,Genre=g3: si+X+ir
+      Det=dem,Genre=g4: si+X+is
+V:
+  source:
+    - Nombre=pl: X2?X2:X+nt
+  destination:
+    - Cas=nom: X+ka
+      Cas=erg: X+ke
+      Cas=abs: X+ko
+    - Nombre=sg: X+t
+      Nombre=du: X+n
+      Nombre=pl: X+l
+      Nombre=tri: X+m
+      Nombre=quad: X+z

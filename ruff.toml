@@ -124,6 +124,8 @@ builtins-ignorelist = ["object"]
 # D103 (missing docstring in public method), ANN001 (missing type annotation for arg).
 [lint.per-file-ignores]
 "__init__.py" = ["F401", "D104"]
+# scripts/ holds standalone utilities, not an importable package.
+"scripts/*.py" = ["INP001"]
 "**/test_*.py" = ["D100", "D103", "ANN001"]
 "**/test/**/*.py" = ["D100", "D103", "ANN001"]
 

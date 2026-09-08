@@ -6,14 +6,14 @@ from unittest.mock import MagicMock
 import pytest
 from nltk import Tree
 
-from pfmg.parsing.parser.KParser import KParser
+from pfmg.parsing.parser.KParser import KParser, flatten_translation
 from pfmg.parsing.parser.Parser import Parser
 
 
-def _tree_with_translation(translation: list[str]) -> Tree:
+def _tree_with_translation(translation: list[str] | tuple) -> Tree:
     """Build an NLTK Tree subclass whose label() returns a dict with 'translation' (KParser expects this)."""
     class TreeWithTranslation(Tree):
-        def __init__(self, trans: list[str]) -> None:
+        def __init__(self, trans: list[str] | tuple) -> None:
             super().__init__("S", [])
             self._translation = trans
 
@@ -63,6 +63,30 @@ def test_kparser_parse_success_single_tree(kparser_mocked, params, expected) -> 
     """When translator returns one Tree and validator succeeds, parse returns translation."""
     result = kparser_mocked.parse(data=params["data"], keep=params["keep"])
     assert result == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        ("mot", ["mot"]),
+        (("a", "b"), ["a", "b"]),
+        ((("a", "b"), "c"), ["a", "b", "c"]),
+        ((("a", ("b", "c")), ("d",), "e"), ["a", "b", "c", "d", "e"]),
+    ],
+)
+def test_flatten_translation(value, expected) -> None:
+    """A translation keeps its word order however deeply its rules nest."""
+    assert list(flatten_translation(value)) == expected
+
+
+def test_kparser_parse_nested_translation() -> None:
+    """A rule whose constituent is a nonterminal still yields a flat string."""
+    translator = MagicMock(spec=Parser)
+    translator.parse.return_value = _tree_with_translation((("le", "chat"), "dort"))
+    validator = MagicMock(spec=Parser)
+    kparser = KParser(translator=translator, validator=validator)
+
+    assert kparser.parse(data="x", keep="first") == "le chat dort"
 
 
 def test_kparser_parse_success_list_of_trees() -> None:

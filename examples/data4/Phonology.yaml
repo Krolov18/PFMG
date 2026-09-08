@@ -1,0 +1,59 @@
+consonnes: ptkbdgmnNfsSvzZrljw
+voyelles: iueoa
+translations:
+  ipa:
+    in: SZNTD
+    out: ʃʒŋθð
+  grapho:
+    in: ptkbdgmnNfsSvzZrljwiueoa
+    out: kptgLTNmnSfsRjqlraAiIuOe
+  deaccent:
+    in: àâçéèêîùûôÀÂÇÉÈÊÎÙÔ
+    out: aaceeeiuuoAACEEEIUO
+  deligatures:
+    œ: oe
+  monogrammes:
+  bigrammes:
+gabarits: [ ]
+derives:
+  A: V
+  D: C
+nom_classe:
+  A: Ø
+  B: i
+  C: a
+  D: u
+apophonies:
+  Ø: i
+  i: a
+  a: u
+  u: u
+  e: o
+  o: o
+mutations:
+  p: t
+  t: p
+  k: t
+  b: d
+  d: t
+  g: d
+  m: n
+  n: n
+  N: n
+  f: s
+  s: s
+  S: s
+  v: z
+  z: z
+  Z: z
+  r: r
+  l: r
+  j: w
+  w: w
+syllabes: #ATTENTION no, No et NO sont interprété comme False
+  syllabePhon: syllabeGraph
+  Na: Nga
+  Ni: Ngi
+  Nu: Ngu
+  Ne: Nge
+  No: Ngo

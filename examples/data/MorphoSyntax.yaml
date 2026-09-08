@@ -2,17 +2,31 @@ Start: "NP"
 NP:
   Source:
     phrases:
+      - [ "D", "ADJ", "NOM" ]
+      - [ "D", "NOM", "ADJ" ]
       - [ "D", "NOM" ]
     agreements:
       - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
     percolations:
       - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
     translations:
+      - [ 2, 1, 0 ]
+      - [ 1, 2, 0 ]
       - [ 1, 0 ]
   Destination:
     phrases:
+      - [ "NOM", "ADJ", "D" ]
+      - [ "NOM", "ADJ", "D" ]
       - [ "NOM", "D" ]
     agreements:
-      - "Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
     percolations:
+      - "Nombre"
+      - "Nombre"
       - "Nombre"

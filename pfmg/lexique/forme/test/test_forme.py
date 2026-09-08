@@ -15,7 +15,6 @@ from pfmg.utils.stem_space import StemSpace
 )
 def test_forme(source, destination):
     source_forme = FormeEntry(
-        index=4,
         pos=source[0],
         morphemes=Morphemes(
             radical=Radical(
@@ -27,7 +26,6 @@ def test_forme(source, destination):
         sigma=source[2]
     )
     dest_forme = FormeEntry(
-        index=4,
         pos=source[0],
         morphemes=Morphemes(
             radical=Radical(

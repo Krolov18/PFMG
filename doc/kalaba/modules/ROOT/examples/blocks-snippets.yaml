@@ -22,3 +22,33 @@ NOM:
       Cf=n2,Nombre=sg: X+j
       Cf=n2,Nombre=pl: X+g
 # end::nom-blocks[]
+
+# tag::adj-blocks[]
+ADJ:
+  source:
+    - Genre=f: X2?X2:X+e
+    - Nombre=pl: X+s
+  destination:
+    - Genre=m: X+a
+      Genre=f: X+i
+      Genre=n: X+e
+    - Nombre=sg: X+r
+      Nombre=pl: X+n
+# end::adj-blocks[]
+
+# tag::gabarit-blocks[]
+NOM:
+  destination:
+    # Gabarit : la racine 1-2-V-3 est moulée dans un schéma vocalique.
+    - Nombre=sg,Cas=nom: 1a2i3
+      Nombre=sg,Cas=abs: 1a2a3
+      Nombre=sg,Cas=gen: 1a2ai3
+      Nombre=du,Cas=nom: 1o2i3
+      Nombre=pl,Cas=nom: 1i2i3
+      Nombre=tri,Cas=nom: 1u2i3
+      Nombre=quad,Cas=nom: 1e2i3
+    # Circonfixe : le déterminant entoure le nom, son suffixe marque le genre.
+    - Det=def,Genre=g1: ta+X+an
+      Det=indef,Genre=g1: mu+X+un
+      Det=dem,Genre=g1: si+X+in
+# end::gabarit-blocks[]

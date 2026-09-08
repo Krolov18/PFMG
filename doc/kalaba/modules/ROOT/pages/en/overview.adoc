@@ -47,7 +47,12 @@ flowchart LR
 
 == Bundled examples
 
-* `examples/data/` — minimal grammar (notebook, CLI)
-* `examples/data2/` — variant with multiple rules and `'deux'` literal
+* `examples/data/` — notebook and CLI grammar: `D NOM`, `D ADJ NOM` and `D NOM ADJ`
+  noun phrases
+* `examples/data2/` — variant with the `'deux'` literal and an explicit dual number
+* `examples/data3/` — full sentences: verbs with a valence (intransitive, direct
+  transitive, indirect transitive, ditransitive), prepositions and numerals
+* `examples/data4/` — templatic language: nouns poured into a vocalic scheme,
+  circumfixed determiners, 4 genders, 5 numbers, 6 cases assigned by valence
 
 See xref:en/parsing-pipeline.adoc[] for the two-phase parser details.

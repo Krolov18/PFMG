@@ -1,4 +1,4 @@
-"""Tests for Lexicon (realization and index maps)."""
+"""Tests for Lexicon (realization and surface-form lookup)."""
 
 import pytest
 
@@ -12,30 +12,30 @@ def fx_lexicon() -> Lexicon:
     return Lexicon.from_yaml(get_project_path() / "examples" / "data")
 
 
-def test_get_indexes_sides_are_distinct(fx_lexicon) -> None:
+def test_knows_sides_are_distinct(fx_lexicon) -> None:
     """A source form is unknown on the destination side, and vice versa."""
-    assert fx_lexicon.get_indexes("des", "translation")
-    assert not fx_lexicon.get_indexes("des", "validation")
-    assert fx_lexicon.get_indexes("tulol", "validation")
-    assert not fx_lexicon.get_indexes("tulol", "translation")
+    assert fx_lexicon.knows("des", "translation")
+    assert not fx_lexicon.knows("des", "validation")
+    assert fx_lexicon.knows("tulol", "validation")
+    assert not fx_lexicon.knows("tulol", "translation")
 
 
-def test_getitem_is_the_translation_side(fx_lexicon) -> None:
-    """Subscripting keeps looking tokens up among the source forms."""
-    assert fx_lexicon["des"] == fx_lexicon.get_indexes("des", "translation")
+def test_knows_defaults_to_the_translation_side(fx_lexicon) -> None:
+    """Without a side, lookup happens among the source forms."""
+    assert fx_lexicon.knows("des")
+    assert not fx_lexicon.knows("tulol")
 
 
-def test_get_indexes_rejects_unknown_side(fx_lexicon) -> None:
-    """An unknown *how* is a programming error, not an empty result."""
+def test_knows_rejects_unknown_side(fx_lexicon) -> None:
+    """An unknown *how* is a programming error, not a False."""
     with pytest.raises(ValueError, match="translation"):
-        fx_lexicon.get_indexes("des", "gibberish")
+        fx_lexicon.knows("des", "gibberish")
 
 
 def test_iter_yields_the_realized_formes(fx_lexicon) -> None:
-    """Iterating returns the very Forme the index maps were built from."""
+    """Iterating returns the very Forme the lookup sets were built from."""
     formes = list(fx_lexicon)
 
     assert formes
-    assert [f.source.index for f in formes] == [
-        f.source.index for f in fx_lexicon.lexicon2
-    ]
+    assert formes == fx_lexicon.formes
+    assert {f.source.to_string() for f in formes} == fx_lexicon.source_forms

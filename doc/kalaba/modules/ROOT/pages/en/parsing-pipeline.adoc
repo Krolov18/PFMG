@@ -27,6 +27,23 @@ The **translator** grammar uses `Source` rules and the `translations` field in
 The **validator** grammar uses `Destination` rules (without `translations`) to keep
 valid analyses only.
 
+== Terminals and lexical ambiguity
+
+The terminals of the generated grammars are the **surface forms**: the translator
+grammar is keyed on French, the validator one on the invented language
+(`LexicalGrammarExporter`). A spelling shared by several paradigm cells therefore
+yields several lexical productions, and the chart parser explores them together: a
+sentence takes **one single Earley parse**, however ambiguous it is morphologically.
+That ambiguity is carried by the features, not by splitting the input.
+
+`Parser` is thus reduced to tokenizing the sentence and checking that every token is a
+realized form (`Lexicon.knows`); an unknown word is reported at once rather than
+yielding no analysis.
+
+NOTE: The NLTK grammar reader has no escape inside literals. A form holding an
+apostrophe is written with double quotes; a form holding both kinds of quotes is
+rejected at export time.
+
 [source,mermaid]
 ----
 sequenceDiagram
@@ -59,8 +76,9 @@ uv run python -m pfmg.parsing.main parsing examples/data "des garçons" -k all
 
 * `Genre,Nombre` — features propagated from the lexicon
 * `Nombre=du` — fixed value
-* `;` — alternatives in one specification (`FeatureReader` in
-  `pfmg/parsing/features/utils.py`)
+* `;` — constituent separator: one segment per element of `phrases`, an empty
+  segment constraining nothing (`FeatureReader` in
+  `pfmg/utils/features/feature_reader.py`)
 
 == Quoted literals
 

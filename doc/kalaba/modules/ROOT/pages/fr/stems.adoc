@@ -12,6 +12,15 @@ include::partial$stems/d-stems-block.adoc[]
 * Clés de second niveau (`z`, `r`, `t`) — sous-paradigmes ou thèmes
 * Valeurs — listes séparées par des virgules (`un,une,des`)
 
+== Adjectifs (`ADJ`)
+
+include::partial$stems/adj-stems-block.adoc[]
+
+* Pas de niveau de traits inhérents : le genre et le nombre de l'adjectif viennent de
+  l'accord, pas du lexique
+* `gentil,gentille` — second radical consommé par la condition `X2?X2:X+e` de
+  `Blocks.yaml`
+
 == Noms (`NOM`)
 
 include::partial$stems/nom-stems-block.adoc[]
@@ -30,3 +39,18 @@ Formats de traduction :
 * `forme1,forme2` — plusieurs traductions pour une même entrée
 
 Les traits après le point sont fusionnés avec le sigma de réalisation.
+
+== Verbes (`V`, `examples/data3/`)
+
+include::partial$stems/v-stems-block.adoc[]
+
+* `Val` — la **valence** du verbe, un trait comme un autre : elle est déclarée dans
+  `Gloses.yaml` côté source, portée par le lexème, et consommée par les accords de la
+  règle `S` (voir xref:fr/morphosyntax.adoc[])
+* `dort,dorment` — second radical pour le pluriel irrégulier, consommé par la
+  condition `X2?X2:X+nt` de `Blocks.yaml`
+
+NOTE: Un trait inhérent placé *après le point* contraint la source ; un niveau de clé
+supplémentaire (`Nombre=du:` au-dessus de `duz: deux`) contraint la destination. Le
+numéral `deux` de `examples/data3/` utilise le second : il est lexicalement duel en
+kalaba.

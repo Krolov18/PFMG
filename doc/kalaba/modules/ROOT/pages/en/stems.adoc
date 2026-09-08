@@ -11,6 +11,15 @@ include::partial$stems/d-stems-block.adoc[]
 * Second-level keys (`z`, `r`, `t`) — sub-paradigms or themes
 * Values — comma-separated lists (`un,une,des`)
 
+== Adjectives (`ADJ`)
+
+include::partial$stems/adj-stems-block.adoc[]
+
+* No inherent-feature level: the adjective's gender and number come from agreement,
+  not from the lexicon
+* `gentil,gentille` — second stem consumed by the `X2?X2:X+e` condition in
+  `Blocks.yaml`
+
 == Nouns (`NOM`)
 
 include::partial$stems/nom-stems-block.adoc[]
@@ -29,3 +38,17 @@ Translation formats:
 * `form1,form2` — multiple translations for one entry
 
 Traits after the dot are merged with the realization sigma.
+
+== Verbs (`V`, `examples/data3/`)
+
+include::partial$stems/v-stems-block.adoc[]
+
+* `Val` — the verb's **valence**, an ordinary feature: declared in `Gloses.yaml` on
+  the source side, carried by the lexeme, and consumed by the agreements of the `S`
+  rule (see xref:en/morphosyntax.adoc[])
+* `dort,dorment` — second stem for the irregular plural, consumed by the `X2?X2:X+nt`
+  condition in `Blocks.yaml`
+
+NOTE: An inherent feature written *after the dot* constrains the source; an extra key
+level (`Nombre=du:` above `duz: deux`) constrains the destination. The `deux` numeral
+of `examples/data3/` uses the latter: it is lexically dual in Kalaba.

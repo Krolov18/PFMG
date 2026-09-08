@@ -1,0 +1,54 @@
+# 50 phrases reconnues par la grammaire examples/data3/, pour mesurer
+# la vitesse d'analyse (voir scripts/bench_parsing.py).
+# Les valences tournent : intransitif, transitif direct, transitif
+# indirect, ditransitif. Lignes vides et lignes '#' ignorées.
+ces tables dorment
+une princesse verte voit une famille gentille
+ce petit garçon pense de la fraise
+trois crèches bleues offrent une famille jaune à ces familles
+cette couche chante
+la table mange la grande céréale
+trois doudous bleus parlent de trois parents noires
+quatre animaux donnent les femmes bleues à une maison gentille
+ces papas dorment
+ce couple voit une petite banane
+les grandes nuits parlent de quatre grandes forêts
+deux enfants offrent ces familles à ces mamans bleues
+des couches vertes chantent
+deux nuits noires voient le jardin
+ce papa parle de une petite crèche
+le grand bruit offre un matin à trois bananes
+les céréales bleues dorment
+un petit papa voit trois salons jaunes
+les salons jaunes pensent de des après-midis
+ce gentil matin donne quatre après-midis à quatre familles gentilles
+ce couple jaune chante
+le copain voit trois jolies familles
+le matin parle de deux bananes
+une fille verte offre des étoiles à une forêt jaune
+cette fille noire dort
+la maison mange la petite banane
+des crèches pensent de un garçon noir
+trois enfants jaunes donnent quatre garçons à deux grandes étoiles
+trois animaux jaunes chantent
+quatre garçons verts mangent une parent jaune
+une cuisine noire pense de des crèches bleues
+ce bol donne un joli couple à trois grands copains
+quatre parents chantent
+les gentils laits voient les bananes gentilles
+cette crèche parle de des garçons
+un salon donne une nuit bleue à trois grands jouets
+la grande cuisine chante
+deux grandes nuits mangent le gentil doudou
+deux fraises pensent de ce couple vert
+les petits couples offrent la crèche à la fille
+ces étoiles dorment
+un lait vert voit trois grands hommes
+ce copain pense à trois copains
+le bol vert donne les petites autruches à ces mamans
+la famille chante
+deux papas noirs mangent quatre grands hommes
+ces histoires pensent à trois copains verts
+trois jolies céréales offrent des forêts bleues à ce gentil couple
+des salons jaunes chantent
+des bananes voient les après-midis

@@ -1,0 +1,82 @@
+# Langue à gabarits : le nom est une racine consonantique moulée dans un
+# schéma vocalique qui porte le nombre et le cas. Le genre est inhérent et
+# gouverne l'allomorphie du circonfixe déterminant.
+ADP:
+  source:
+    Type: [ arg, circ ]
+    Rel: [ gen, dat, pro, anti, sup, sub, com, tmp ]
+  destination:
+    Inv: [ oui ]
+  alignments:
+    Rel=gen: [ Inv=oui ]
+    Rel=dat: [ Inv=oui ]
+    Rel=pro: [ Inv=oui ]
+    Rel=anti: [ Inv=oui ]
+    Rel=sup: [ Inv=oui ]
+    Rel=sub: [ Inv=oui ]
+    Rel=com: [ Inv=oui ]
+    Rel=tmp: [ Inv=oui ]
+D:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+    Det: [ def, indef, dem ]
+  destination:
+    Det: [ def, indef, dem ]
+  alignments:
+    Det=def: [ Det=def ]
+    Det=indef: [ Det=indef ]
+    Det=dem: [ Det=dem ]
+NOM:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+    Det: [ def, indef, dem ]
+    # Compte : ce que le numéral français précise et que son pluriel tait.
+    # Il n'a aucune réalisation — ni en français, ni en langue inventée : les
+    # alignements le convertissent en nombre grammatical.
+    Compte: [ un, deux, trois, quatre, plusieurs ]
+  destination:
+    Genre: [ g1, g2, g3, g4 ]
+    Nombre: [ sg, du, pl, tri, quad ]
+    Cas: [ nom, acc, dat, erg, abs, gen ]
+    Det: [ def, indef, dem ]
+  alignments:
+    Nombre=sg,Compte=un,Det=def: [ "Nombre=sg,Det=def" ]
+    Nombre=sg,Compte=un,Det=indef: [ "Nombre=sg,Det=indef" ]
+    Nombre=sg,Compte=un,Det=dem: [ "Nombre=sg,Det=dem" ]
+    Nombre=pl,Compte=deux,Det=def: [ "Nombre=du,Det=def" ]
+    Nombre=pl,Compte=deux,Det=indef: [ "Nombre=du,Det=indef" ]
+    Nombre=pl,Compte=deux,Det=dem: [ "Nombre=du,Det=dem" ]
+    Nombre=pl,Compte=trois,Det=def: [ "Nombre=tri,Det=def" ]
+    Nombre=pl,Compte=trois,Det=indef: [ "Nombre=tri,Det=indef" ]
+    Nombre=pl,Compte=trois,Det=dem: [ "Nombre=tri,Det=dem" ]
+    Nombre=pl,Compte=quatre,Det=def: [ "Nombre=quad,Det=def" ]
+    Nombre=pl,Compte=quatre,Det=indef: [ "Nombre=quad,Det=indef" ]
+    Nombre=pl,Compte=quatre,Det=dem: [ "Nombre=quad,Det=dem" ]
+    Nombre=pl,Compte=plusieurs,Det=def: [ "Nombre=pl,Det=def" ]
+    Nombre=pl,Compte=plusieurs,Det=indef: [ "Nombre=pl,Det=indef" ]
+    Nombre=pl,Compte=plusieurs,Det=dem: [ "Nombre=pl,Det=dem" ]
+# Le numéral n'existe pas comme mot dans la langue inventée : il n'apparaît
+# dans aucune face Destination. Son seul rôle est de fixer le trait Compte du
+# syntagme, donc le schéma vocalique du nom.
+NUM:
+  source:
+    Nombre: [ pl ]
+    Compte: [ deux, trois, quatre ]
+  destination:
+    Inv: [ oui ]
+  alignments:
+    Compte=deux: [ Inv=oui ]
+    Compte=trois: [ Inv=oui ]
+    Compte=quatre: [ Inv=oui ]
+V:
+  source:
+    Nombre: [ sg, pl ]
+    Val: [ intr, tdir, ditr ]
+  destination:
+    Nombre: [ sg, du, pl, tri, quad ]
+    Cas: [ nom, erg, abs ]
+  alignments:
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl, Nombre=tri, Nombre=quad ]

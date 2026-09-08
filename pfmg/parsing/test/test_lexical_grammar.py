@@ -10,7 +10,7 @@ from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.lexicon import Lexicon
 from pfmg.lexique.morpheme.Morphemes import Morphemes
 from pfmg.lexique.morpheme.Radical import Radical
-from pfmg.parsing.lexical_grammar import LexicalGrammarExporter
+from pfmg.parsing.lexical_grammar import LexicalGrammarExporter, quote
 from pfmg.utils.paths import get_project_path
 from pfmg.utils.stem_space import StemSpace
 
@@ -27,90 +27,106 @@ def fx_lexicon() -> Lexicon:
     return Lexicon.from_yaml(get_project_path() / "examples" / "data")
 
 
+def _make_entry(pos: str, stems: tuple[str, ...], sigma: dict) -> FormeEntry:
+    """Build a FormeEntry whose surface form is the first stem."""
+    return FormeEntry(
+        pos=pos,
+        morphemes=Morphemes(
+            radical=Radical(stems=StemSpace(stems=stems), sigma=frozendict(sigma)),
+            others=[],
+        ),
+        sigma=frozendict(sigma),
+    )
+
+
 def _terminals(grammar: str) -> list[str]:
     """Return the terminal of every lexical production of *grammar*."""
-    return re.findall(r"-> '([^']*)'$", grammar, flags=re.MULTILINE)
+    return re.findall(r"-> ['\"](.*)['\"]$", grammar, flags=re.MULTILINE)
 
 
 def test_export_translation_is_stable(fx_exporter, fx_lexicon) -> None:
-    """Exporting twice yields the same grammar: indexes must not drift."""
+    """Exporting twice yields the same grammar."""
     first = fx_exporter.export_lexicon(fx_lexicon, "translation")
     second = fx_exporter.export_lexicon(fx_lexicon, "translation")
     assert first == second
 
 
 def test_export_validation_is_stable(fx_exporter, fx_lexicon) -> None:
-    """Exporting twice yields the same grammar: indexes must not drift."""
+    """Exporting twice yields the same grammar."""
     first = fx_exporter.export_lexicon(fx_lexicon, "validation")
     second = fx_exporter.export_lexicon(fx_lexicon, "validation")
     assert first == second
 
 
-def test_translation_terminals_match_source_indexes(fx_exporter, fx_lexicon) -> None:
-    """Indexes handed out by the lexicon are terminals of the translation grammar."""
+def test_translation_terminals_are_source_forms(fx_exporter, fx_lexicon) -> None:
+    """The translation grammar is keyed on the French side."""
     terminals = set(_terminals(fx_exporter.export_lexicon(fx_lexicon, "translation")))
-    indexes = {str(index) for index in fx_lexicon.get_indexes("des")}
 
-    assert indexes
-    assert indexes <= terminals
+    assert "des" in terminals
+    assert "tulol" not in terminals
 
 
-def test_validation_terminals_match_destination_indexes(
-    fx_exporter, fx_lexicon
-) -> None:
-    """The validation grammar is indexed on the destination side."""
+def test_validation_terminals_are_destination_forms(fx_exporter, fx_lexicon) -> None:
+    """The validation grammar is keyed on the Kalaba side."""
     terminals = set(_terminals(fx_exporter.export_lexicon(fx_lexicon, "validation")))
-    indexes = {str(index) for index in fx_lexicon.get_indexes("tulol", "validation")}
 
-    assert indexes
-    assert indexes <= terminals
+    assert "tulol" in terminals
+    assert "des" not in terminals
+
+
+def test_export_deduplicates_productions(fx_exporter, fx_lexicon) -> None:
+    """Several source cells realize the same destination form with the same features.
+
+    Those used to be distinct productions only because the terminal was a
+    per-Forme index; keyed on the form they are the very same rule.
+    """
+    exported = fx_exporter.export_lexicon(fx_lexicon, "validation").splitlines()
+    per_forme = [fx_exporter.export_forme_validation(f) for f in fx_lexicon]
+
+    assert len(exported) == len(set(exported))
+    assert len(exported) < len(per_forme)
 
 
 def test_export_entry(fx_exporter) -> None:
     """Validation export builds an NLTK lexical production from a FormeEntry."""
-    entry = FormeEntry(
-        index=3,
-        pos="N",
-        morphemes=Morphemes(
-            radical=Radical(
-                stems=StemSpace(stems=("a", "b", "c")),
-                sigma=frozendict({"Genre": "m", "Nombre": "s"}),
-            ),
-            others=[],
-        ),
-        sigma=frozendict({"Genre": "m", "Nombre": "s"}),
-    )
-    assert fx_exporter.export_entry(entry) == "N[Genre='m',Nombre='s'] -> '3'"
+    entry = _make_entry("N", ("a", "b", "c"), {"Genre": "m", "Nombre": "s"})
+
+    assert fx_exporter.export_entry(entry) == "N[Genre='m',Nombre='s'] -> 'a'"
 
 
 def test_export_forme_translation(fx_exporter) -> None:
     """Translation export merges source and destination feature bundles."""
-    source = FormeEntry(
-        index=4,
-        pos="N",
-        morphemes=Morphemes(
-            radical=Radical(
-                stems=StemSpace(stems=("source",)),
-                sigma=frozendict({"Genre": "m"}),
-            ),
-            others=[],
-        ),
-        sigma=frozendict({"Genre": "m"}),
+    forme = Forme(
+        source=_make_entry("N", ("source",), {"Genre": "m"}),
+        destination=_make_entry("N", ("dest",), {"Genre": "f"}),
     )
-    destination = FormeEntry(
-        index=4,
-        pos="N",
-        morphemes=Morphemes(
-            radical=Radical(
-                stems=StemSpace(stems=("dest",)),
-                sigma=frozendict({"Genre": "f"}),
-            ),
-            others=[],
-        ),
-        sigma=frozendict({"Genre": "f"}),
-    )
-    forme = Forme(source=source, destination=destination)
+
     assert (
         fx_exporter.export_forme_translation(forme)
-        == "N[SGenre='m',DGenre='f',translation='dest'] -> '4'"
+        == "N[SGenre='m',DGenre='f',translation='dest'] -> 'source'"
     )
+
+
+def test_export_entry_quotes_around_an_apostrophe(fx_exporter) -> None:
+    """A form holding an apostrophe is written with double quotes."""
+    entry = _make_entry("N", ("aujourd'hui",), {"Genre": "m"})
+
+    assert fx_exporter.export_entry(entry) == 'N[Genre=\'m\'] -> "aujourd\'hui"'
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        ("mot", "'mot'"),
+        ("aujourd'hui", '"aujourd\'hui"'),
+    ],
+)
+def test_quote(value, expected) -> None:
+    """A value is quoted with whichever quote it does not contain."""
+    assert quote(value) == expected
+
+
+def test_quote_rejects_both_quotes() -> None:
+    """The NLTK grammar reader has no escape, so such a form cannot be exported."""
+    with pytest.raises(ValueError, match="guillemets"):
+        quote("l'\"autre\"")

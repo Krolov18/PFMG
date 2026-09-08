@@ -1,0 +1,124 @@
+Start: "S"
+
+# Une phrase = un sujet, un verbe, et les compléments que sa valence impose.
+# La valence est portée par le lexique (trait `Val` de la catégorie V) : c'est
+# l'accord de chaque règle qui sélectionne les verbes admissibles.
+#
+# Les accords sont donnés constituant par constituant, séparés par `;` :
+# `"Nombre;Nombre,Val=tdir;"` fait accorder le sujet et le verbe en nombre,
+# impose un verbe transitif direct, et laisse l'objet libre.
+#
+# Le français est SVO, le kalaba est SOV : le verbe part en fin de proposition.
+S:
+  Source:
+    phrases:
+      - [ "NP", "V" ]
+      - [ "NP", "V", "NP" ]
+      - [ "NP", "V", "PP" ]
+      - [ "NP", "V", "NP", "PP" ]
+    agreements:
+      - "Nombre;Nombre,Val=intr"
+      - "Nombre;Nombre,Val=tdir;"
+      - "Nombre;Nombre,Val=tind;"
+      - "Nombre;Nombre,Val=ditr;;"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+    translations:
+      - [ 0, 1 ]
+      - [ 0, 2, 1 ]
+      - [ 0, 2, 1 ]
+      - [ 0, 2, 3, 1 ]
+  Destination:
+    phrases:
+      - [ "NP", "V" ]
+      - [ "NP", "NP", "V" ]
+      - [ "NP", "PP", "V" ]
+      - [ "NP", "NP", "PP", "V" ]
+    agreements:
+      - "Nombre"
+      - "Nombre;;Nombre"
+      - "Nombre;;Nombre"
+      - "Nombre;;;Nombre"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+
+# Le syntagme nominal est introduit par un déterminant ou par un numéral, et
+# l'adjectif y est antéposé ou postposé. En kalaba l'ordre est toujours
+# NOM ADJ (D|NUM).
+NP:
+  Source:
+    phrases:
+      - [ "D", "NOM" ]
+      - [ "D", "ADJ", "NOM" ]
+      - [ "D", "NOM", "ADJ" ]
+      - [ "NUM", "NOM" ]
+      - [ "NUM", "ADJ", "NOM" ]
+      - [ "NUM", "NOM", "ADJ" ]
+    agreements:
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+    percolations:
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+    translations:
+      - [ 1, 0 ]
+      - [ 2, 1, 0 ]
+      - [ 1, 2, 0 ]
+      - [ 1, 0 ]
+      - [ 2, 1, 0 ]
+      - [ 1, 2, 0 ]
+  Destination:
+    phrases:
+      - [ "NOM", "D" ]
+      - [ "NOM", "ADJ", "D" ]
+      - [ "NOM", "ADJ", "D" ]
+      - [ "NOM", "NUM" ]
+      - [ "NOM", "ADJ", "NUM" ]
+      - [ "NOM", "ADJ", "NUM" ]
+    agreements:
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+
+# La préposition française devient une postposition kalaba.
+PP:
+  Source:
+    phrases:
+      - [ "P", "NP" ]
+    agreements:
+      - "Nombre"
+    percolations:
+      - "Nombre"
+    translations:
+      - [ 1, 0 ]
+  Destination:
+    phrases:
+      - [ "NP", "P" ]
+    agreements:
+      - "Nombre"
+    percolations:
+      - "Nombre"

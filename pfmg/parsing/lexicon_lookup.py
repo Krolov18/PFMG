@@ -7,15 +7,15 @@ from pfmg.lexique.forme.Forme import Forme
 
 
 @runtime_checkable
-class LexiconIndex(Protocol):
-    """Lookup realized forms by surface string and grammar side."""
+class LexiconLookup(Protocol):
+    """Tell whether a surface form belongs to one side of the lexicon."""
 
-    def get_indexes(self, item: str, how: str = "translation") -> list[int]:
-        """Return form indexes for *item* on the side used by *how*."""
+    def knows(self, item: str, how: str = "translation") -> bool:
+        """Return True when *item* is a realized form on the side used by *how*."""
 
 
 @runtime_checkable
-class RealizedLexicon(LexiconIndex, Protocol):
+class RealizedLexicon(LexiconLookup, Protocol):
     """A lexicon that has been realized into :class:`Forme` instances."""
 
     def __iter__(self) -> Iterator[Forme]:

@@ -1,6 +1,7 @@
 ADJ:
   duv: bleu
   fel: joli
+  gel: jaune,jaune
   kiz: petit
   muz: grand
   reg: vert
@@ -10,6 +11,24 @@ D:
   z: un,une,des
   r: le,la,les
   t: ce,cette,ces
+NUM:
+  Nombre=du:
+    duz: deux
+  Nombre=pl:
+    kef: quatre
+    tir: trois
+P:
+  ka: à.Cas=dat
+  nu: de.Cas=gen
+V:
+  fila: chante.Val=intr
+  garo: offre.Val=ditr
+  lubi: parle.Val=tind
+  mizu: donne.Val=ditr
+  nage: mange.Val=tdir
+  sepi: voit,voient.Val=tdir
+  tefo: pense.Val=tind
+  zom: dort,dorment.Val=intr
 NOM:
   Cf=n1:
     Genre=f:

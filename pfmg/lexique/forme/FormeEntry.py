@@ -1,4 +1,4 @@
-"""Single entry of a Forme: POS, morphemes, sigma, and index."""
+"""Single entry of a Forme: POS, morphemes and sigma."""
 
 from dataclasses import dataclass
 
@@ -13,12 +13,11 @@ from pfmg.utils.stem_space import StemSpace
 
 @dataclass
 class FormeEntry(MixinDisplay, ABCGloser, ABCDecoupeur):
-    """One side of a Forme: POS, morphemes, sigma (features), and lexical index."""
+    """One side of a Forme: POS, morphemes and sigma (features)."""
 
     pos: str
     morphemes: Morphemes
     sigma: frozendict[str, str]
-    index: int
 
     def to_string(self, term: StemSpace | str | None = None) -> str:
         """Return string representation via morphemes."""

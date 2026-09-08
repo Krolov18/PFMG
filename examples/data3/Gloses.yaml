@@ -29,3 +29,27 @@ NOM:
   alignments:
     Nombre=sg: [ Nombre=sg ]
     Nombre=pl: [ Nombre=du, Nombre=pl ]
+NUM:
+  source:
+    Nombre: [ pl ]
+  destination:
+    Nombre: [ du, pl ]
+  alignments:
+    Nombre=pl: [ Nombre=du, Nombre=pl ]
+P:
+  source:
+    Cas: [ dat, gen ]
+  destination:
+    Cas: [ dat, gen ]
+  alignments:
+    Cas=dat: [ Cas=dat ]
+    Cas=gen: [ Cas=gen ]
+V:
+  source:
+    Nombre: [ sg, pl ]
+    Val: [ intr, tdir, tind, ditr ]
+  destination:
+    Nombre: [ sg, du, pl ]
+  alignments:
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl ]

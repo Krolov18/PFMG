@@ -15,3 +15,19 @@ NOM:
       tulo: garçon.Genre=m
       za: Hugo.Genre=m
 # end::nom-stems[]
+
+# tag::adj-stems[]
+ADJ:
+  kiz: petit
+  reg: vert
+  zont: gentil,gentille
+# end::adj-stems[]
+
+# tag::v-stems[]
+V:
+  fila: chante.Val=intr
+  nage: mange.Val=tdir
+  lubi: parle.Val=tind
+  mizu: donne.Val=ditr
+  zom: dort,dorment.Val=intr
+# end::v-stems[]

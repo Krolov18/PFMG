@@ -18,7 +18,7 @@ Chaque clé de premier niveau (ex. `NP`) définit une règle avec deux faces :
 * `Source` — analyse et traduction depuis le français
 * `Destination` — validation de la sortie en langue inventée
 
-=== Exemple simple (`examples/data/`)
+=== Exemple (`examples/data/`)
 
 include::partial$morphosyntax/np-rule-block.adoc[]
 
@@ -27,12 +27,22 @@ include::partial$morphosyntax/np-rule-block.adoc[]
 * `percolations` — traits propagés sur le nœud parent
 * `translations` — ordre des indices de constituants pour la traduction (0-based)
 
+Les trois variantes couvrent `D NOM`, `D ADJ NOM` (adjectif antéposé) et `D NOM ADJ`
+(adjectif postposé). Les deux positions françaises de l'adjectif se réordonnent vers
+un unique patron `NOM ADJ D` : c'est `translations` qui porte la différence
+(`[ 2, 1, 0 ]` contre `[ 1, 2, 0 ]`).
+
+Les accords de la face `Destination` ne sont pas décoratifs : ils sont fusionnés dans
+la règle source (voir `Production.update`) et contraignent donc la traduction. Ici
+`Genre,Nombre` force le déterminant et l'adjectif à reprendre le genre *inhérent* du
+nom kalaba, qui n'est pas celui du nom français.
+
 WARNING: Chaque liste (`phrases`, `agreements`, `percolations`, `translations`) doit avoir le même nombre d'entrées pour une règle donnée.
 
-=== Règles multiples et littéraux (`examples/data2/`)
+=== Littéraux et valeurs fixes (`examples/data2/`)
 
-La grammaire `examples/data2/` montre plusieurs variantes de phrase et des littéraux
-entre quotes (ex. `"'deux'"`).
+La grammaire `examples/data2/` montre des littéraux entre quotes (ex. `"'deux'"`) et
+des traits figés (`Nombre=du`).
 
 include::partial$morphosyntax/np-rule-multi-block.adoc[]
 
@@ -40,12 +50,50 @@ include::partial$morphosyntax/np-rule-multi-block.adoc[]
 * Les indices de `translations` référencent les positions dans `phrases` (ici `2, 0`
   pour la variante à trois constituants)
 
+=== Phrases complètes (`examples/data3/`)
+
+`examples/data3/` monte d'un cran : la règle de départ est `S`, et elle appelle les
+règles `NP` et `PP`. Une règle peut donc référencer une autre règle, pas seulement des
+catégories lexicales.
+
+include::partial$morphosyntax/s-rule-block.adoc[]
+
+Trois mécanismes s'y ajoutent.
+
+**La valence est dans le lexique.** Chaque verbe porte un trait `Val`
+(`intr`, `tdir`, `tind`, `ditr`, voir xref:fr/stems.adoc[]). La règle ne décrit pas
+« un verbe » mais « un verbe de telle valence » : `"les enfants mangent"` n'a aucune
+analyse, faute d'objet.
+
+**Les accords se donnent constituant par constituant.** Une chaîne d'accords découpée
+par `;` porte un segment par constituant, et un segment vide ne contraint rien :
+
+[cols="1,3"]
+|===
+| Chaîne | Effet sur `[ NP, V, NP ]`
+
+| `"Genre,Nombre"` | diffusé : les trois constituants s'accordent (c'est ce que fait `NP`)
+| `"Nombre;Nombre,Val=tdir;"` | le sujet et le verbe s'accordent en nombre, le verbe est transitif direct, l'objet est libre
+|===
+
+WARNING: Une chaîne découpée par `;` doit avoir exactement un segment par constituant. Sinon elle est refusée (`FeatureMixin.broadcast`).
+
+**Les traductions s'emboîtent.** Le trait `translation` d'une règle rassemble ceux de
+ses constituants ; quand un constituant est lui-même un non-terminal, on obtient un
+tuple de tuples, que le parseur aplatit avant de joindre les mots.
+
+La face `Destination` place le verbe en fin de proposition (le kalaba est SOV, le
+français SVO), et la préposition devient une postposition :
+
+include::partial$morphosyntax/pp-rule-block.adoc[]
+
 [TIP]
 Syntaxe des traits
 ====
 * `Genre,Nombre` — propagation des traits du lexique
 * `Nombre=du` — valeur fixe
-* `;` — alternatives dans une même chaîne de traits (voir le chapitre pipeline de parsing)
+* `;` — séparateur de constituants : un segment par élément de `phrases`
+* un segment vide — aucune contrainte sur ce constituant
 ====
 
 == Destination

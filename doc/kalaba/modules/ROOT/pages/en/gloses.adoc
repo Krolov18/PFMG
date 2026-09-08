@@ -21,6 +21,13 @@ include::partial$gloses/d-glose-block.adoc[]
 * `destination` — may add values (e.g. neuter `n`)
 * `alignments` — maps `Nombre=pl` to `Nombre=du` or `Nombre=pl` on the destination side
 
+=== Adjectives (`ADJ`)
+
+include::partial$gloses/adj-glose-block.adoc[]
+
+* Like the determiner, the adjective has no inherent destination gender: it takes the
+  noun's through the agreement declared in `MorphoSyntax.yaml`
+
 === Nouns (`NOM`)
 
 include::partial$gloses/nom-glose-block.adoc[]
@@ -30,3 +37,13 @@ include::partial$gloses/nom-glose-block.adoc[]
 
 NOTE: Alignments let you realize richer destination paradigms than the source without
 duplicating every form by hand.
+
+=== Non-inflectional features
+
+A feature declared in `source` but never used in `Blocks.yaml` realizes no form: it
+only serves syntactic agreement. `Val` (verbal valence) in `examples/data3/` is one,
+declared on the source side only.
+
+CAUTION: Every category must provide `source`, `destination` and `alignments`. A
+single category without `alignments` makes the whole file fall back to unconstrained
+gloses (`StraightPos2Sigmas`).

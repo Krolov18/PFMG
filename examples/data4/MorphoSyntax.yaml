@@ -1,0 +1,139 @@
+Start: "S"
+
+# L'énoncé : les compléments circonstanciels restent toujours à la périphérie,
+# jamais à l'intérieur du noyau. Avec deux compléments, ils l'encadrent.
+S:
+  Source:
+    phrases:
+      - [ "NOY" ]
+      - [ "NOY", "SP" ]
+      - [ "SP", "NOY", "SP" ]
+    agreements:
+      - "Nombre"
+      - "Nombre;"
+      - ";Nombre;"
+    percolations:
+      - "Nombre"
+      - "Nombre;"
+      - ";Nombre;"
+    translations:
+      - [ 0 ]
+      - [ 1, 0 ]
+      - [ 0, 1, 2 ]
+  Destination:
+    phrases:
+      - [ "NOY" ]
+      - [ "SP", "NOY" ]
+      - [ "SP", "NOY", "SP" ]
+    agreements:
+      - "Nombre"
+      - ";Nombre"
+      - ";Nombre;"
+    percolations:
+      - "Nombre"
+      - ";Nombre"
+      - ";Nombre;"
+
+# Le noyau. La valence du verbe fixe le cas de chacun de ses arguments, et le
+# verbe s'accorde sur le cas de son sujet :
+#   intransitif  sujet absolutif
+#   transitif    sujet ergatif, objet accusatif
+#   ditransitif  sujet nominatif, objet absolutif, second objet datif
+# Le « à » du second objet disparaît : le datif le remplace.
+NOY:
+  Source:
+    phrases:
+      - [ "NP", "V" ]
+      - [ "NP", "V", "NP" ]
+      - [ "NP", "V", "NP", "ADP", "NP" ]
+    agreements:
+      - "Nombre;Nombre,Val=intr"
+      - "Nombre;Nombre,Val=tdir;"
+      - "Nombre;Nombre,Val=ditr;;Rel=dat;"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+    translations:
+      - [ 0, 1 ]
+      - [ 0, 2, 1 ]
+      - [ 0, 2, 4, 1 ]
+  Destination:
+    phrases:
+      - [ "NP", "V" ]
+      - [ "NP", "NP", "V" ]
+      - [ "NP", "NP", "NP", "V" ]
+    agreements:
+      - "Nombre,Cas=abs;Nombre,Cas=abs"
+      - "Nombre,Cas=erg;Cas=acc;Nombre,Cas=erg"
+      - "Nombre,Cas=nom;Cas=abs;Cas=dat;Nombre,Cas=nom"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+
+# Le syntagme nominal. Le déterminant français n'a pas de mot correspondant :
+# il ne survit que dans le circonfixe du nom (trait Det, accordé ici).
+# Le numéral français n'en a pas non plus : il fixe le trait Compte du
+# syntagme, que les alignements du nom convertissent en nombre
+# (deux -> duel, trois -> triel, quatre -> quadriel). Il disparaît donc de
+# la face Destination, exactement comme le déterminant.
+# Les variantes 3 et 4 portent un complément du nom, au génitif.
+NP:
+  Source:
+    phrases:
+      - [ "D", "NOM" ]
+      - [ "D", "NUM", "NOM" ]
+      - [ "D", "NOM", "ADP", "NP" ]
+      - [ "D", "NUM", "NOM", "ADP", "NP" ]
+    agreements:
+      - "Genre,Nombre,Det,Compte"
+      - "Genre,Nombre,Det,Compte"
+      - "Genre,Nombre,Det,Compte;Genre,Nombre,Det,Compte;Rel=gen;"
+      - "Genre,Nombre,Det,Compte;Genre,Nombre,Det,Compte;Genre,Nombre,Det,Compte;Rel=gen;"
+    percolations:
+      - "Genre,Nombre,Det"
+      - "Genre,Nombre,Det"
+      - "Genre,Nombre,Det"
+      - "Genre,Nombre,Det"
+    translations:
+      - [ 1 ]
+      - [ 2 ]
+      - [ 1, 3 ]
+      - [ 2, 4 ]
+  Destination:
+    phrases:
+      - [ "NOM" ]
+      - [ "NOM" ]
+      - [ "NOM", "NP" ]
+      - [ "NOM", "NP" ]
+    agreements:
+      - "Genre,Nombre,Cas,Det"
+      - "Genre,Nombre,Cas,Det"
+      - "Genre,Nombre,Cas,Det;Cas=gen"
+      - "Genre,Nombre,Cas,Det;Cas=gen"
+    percolations:
+      - "Genre,Nombre,Cas,Det"
+      - "Genre,Nombre,Cas,Det"
+      - "Genre,Nombre,Cas,Det"
+      - "Genre,Nombre,Cas,Det"
+
+# Le syntagme prépositionnel : la préposition française passe à droite du
+# syntagme nominal, qu'elle régit à l'absolutif. Elle est invariable.
+SP:
+  Source:
+    phrases:
+      - [ "ADP", "NP" ]
+    agreements:
+      - "Type=circ;Nombre"
+    percolations:
+      - "Nombre"
+    translations:
+      - [ 1, 0 ]
+  Destination:
+    phrases:
+      - [ "NP", "ADP" ]
+    agreements:
+      - "Cas=abs;"
+    percolations:
+      - "Nombre"

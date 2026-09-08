@@ -1,0 +1,50 @@
+# Clé = forme de la langue inventée, valeur = traduction française.
+# Les racines nominales font exactement quatre segments (C C V C) : le gabarit
+# les lit comme 1-2-V-3 et n'en garde que les consonnes.
+# Les prépositions sont invariables : aucun trait inhérent côté langue
+# inventée, tout est porté par le sigma source.
+ADP:
+  zu: de.Type=arg,Rel=gen
+  ka: à.Type=arg,Rel=dat
+  # Prépositions qui s'opposent deux à deux : leur forme est un palindrome.
+  talat: pour.Type=circ,Rel=pro
+  nusun: contre.Type=circ,Rel=anti
+  mirim: sur.Type=circ,Rel=sup
+  dolod: sous.Type=circ,Rel=sub
+  # Prépositions sans contraire : forme libre.
+  vezga: avec.Type=circ,Rel=com
+  sonli: pendant.Type=circ,Rel=tmp
+D:
+  Det=def:
+    ta: le,la,les.Det=def
+  Det=indef:
+    mu: un,une,des.Det=indef
+  Det=dem:
+    si: ce,cette,ces.Det=dem
+NOM:
+  Genre=g1:
+    ktub: livre.Genre=m
+    mrid: enfant.Genre=m
+  Genre=g2:
+    slaf: maison.Genre=f
+    pnok: arbre.Genre=m
+  Genre=g3:
+    gzem: femme.Genre=f
+    drit: rivière.Genre=f
+  Genre=g4:
+    tsuk: chien.Genre=m
+    bzal: fleur.Genre=f
+# Le numéral français n'a pas de mot correspondant : la clé est la voyelle de
+# nombre que le gabarit du nom ira chercher, et elle n'est jamais réalisée
+# telle quelle.
+NUM:
+  o: deux.Nombre=pl,Compte=deux
+  u: trois.Nombre=pl,Compte=trois
+  e: quatre.Nombre=pl,Compte=quatre
+V:
+  fanz: dort,dorment.Val=intr
+  vulg: chante.Val=intr
+  nagr: lit,lisent.Val=tdir
+  sepk: voit,voient.Val=tdir
+  mizd: donne.Val=ditr
+  garv: offre.Val=ditr

@@ -16,6 +16,27 @@ if TYPE_CHECKING:
     from pfmg.parsing.grammar_bundle import GrammarBundle
 
 
+def flatten_translation(value: str | tuple) -> Iterator[str]:
+    """Yield the words of a ``translation`` feature, however deeply nested.
+
+    A rule builds its ``translation`` by collecting the ones of its
+    constituents, so a rule whose constituent is itself a nonterminal ends up
+    with a tuple of tuples. Only the leaves are words.
+
+    Args:
+        value: A word, or a (possibly nested) tuple of translations.
+
+    Yields:
+        str: Each word, left to right.
+
+    """
+    if isinstance(value, str):
+        yield value
+    else:
+        for item in value:
+            yield from flatten_translation(item)
+
+
 @dataclass
 class KParser(ABCReader, MixinParseParsable):
     """Two-phase parser: parses once to translate, then again to validate the translation.
@@ -105,9 +126,14 @@ class KParser(ABCReader, MixinParseParsable):
             tree = self.translator.parse(data, keep)
             match tree:
                 case _ if is_parse_tree(tree):
-                    translation = " ".join(tree.label()["translation"])
+                    translation = " ".join(
+                        flatten_translation(tree.label()["translation"])
+                    )
                 case Iterator() | list():
-                    translation = [" ".join(x.label()["translation"]) for x in tree]
+                    translation = [
+                        " ".join(flatten_translation(x.label()["translation"]))
+                        for x in tree
+                    ]
                 case _:
                     raise TypeError
         except Exception:  # noqa BLE001

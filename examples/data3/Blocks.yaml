@@ -7,6 +7,7 @@ ADJ:
       Genre=f: X+i
       Genre=n: X+e
     - Nombre=sg: X+r
+      Nombre=du: X+rak
       Nombre=pl: X+n
 D:
   source:
@@ -18,12 +19,35 @@ D:
       Genre=f: X+i
       Genre=n: X+e
     - Nombre=sg: X+s
+      Nombre=du: X+k
       Nombre=pl: X+j
 NOM:
   source:
     - Nombre=pl: X2?X2:X+s
   destination:
     - Cf=n1,Nombre=sg: X+v
+      Cf=n1,Nombre=du: X+aze
       Cf=n1,Nombre=pl: X+l
       Cf=n2,Nombre=sg: X+j
+      Cf=n2,Nombre=du: X+azi
       Cf=n2,Nombre=pl: X+g
+NUM:
+  source:
+    - Nombre=pl: X1
+  destination:
+    - Nombre=du: X1
+      Nombre=pl: X1
+P:
+  source:
+    - Cas=dat: X1
+      Cas=gen: X1
+  destination:
+    - Cas=dat: X1
+      Cas=gen: X1
+V:
+  source:
+    - Nombre=pl: X2?X2:X+nt
+  destination:
+    - Nombre=sg: X+ta
+      Nombre=du: X+tak
+      Nombre=pl: X+tan

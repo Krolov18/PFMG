@@ -21,6 +21,13 @@ include::partial$gloses/d-glose-block.adoc[]
 * `destination` — peut définir des valeurs supplémentaires (ex. `n` pour neutre)
 * `alignments` — mappe `Nombre=pl` vers `Nombre=du` ou `Nombre=pl` en destination
 
+=== Adjectifs (`ADJ`)
+
+include::partial$gloses/adj-glose-block.adoc[]
+
+* Comme le déterminant, l'adjectif n'a pas de genre inhérent en destination : il
+  reçoit celui du nom via l'accord déclaré dans `MorphoSyntax.yaml`
+
 === Noms (`NOM`)
 
 include::partial$gloses/nom-glose-block.adoc[]
@@ -30,3 +37,13 @@ include::partial$gloses/nom-glose-block.adoc[]
 
 NOTE: Les alignements permettent de réaliser des paradigmes destination plus riches que
 la source sans dupliquer manuellement chaque forme.
+
+=== Traits non flexionnels
+
+Un trait déclaré dans `source` sans apparaître dans `Blocks.yaml` ne produit aucune
+forme : il sert uniquement aux accords syntaxiques. C'est le cas de `Val` (la valence
+verbale) dans `examples/data3/`, déclarée côté source seulement.
+
+CAUTION: Chaque catégorie doit fournir `source`, `destination` et `alignments`. Une
+seule catégorie sans `alignments` fait retomber tout le fichier sur les gloses non
+contraintes (`StraightPos2Sigmas`).

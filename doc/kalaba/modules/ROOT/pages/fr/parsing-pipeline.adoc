@@ -28,6 +28,23 @@ français.
 La grammaire **validator** utilise les règles `Destination` (sans `translations`) pour
 filtrer les analyses valides.
 
+== Terminaux et ambiguïté lexicale
+
+Les terminaux des grammaires générées sont les **formes de surface** : la grammaire
+translator est indexée sur le français, la validator sur la langue inventée
+(`LexicalGrammarExporter`). Une orthographe portée par plusieurs cellules de paradigme
+produit donc plusieurs productions lexicales, et le chart parser les explore ensemble :
+une phrase donne **une seule analyse Earley**, quelle que soit son ambiguïté
+morphologique. Celle-ci est portée par les traits, pas par le découpage de l'entrée.
+
+Le `Parser` se limite donc à découper la phrase et à vérifier que chaque token est bien
+une forme réalisée (`Lexicon.knows`) ; un mot inconnu est signalé immédiatement plutôt
+que de produire une absence d'analyse.
+
+NOTE: Le lecteur de grammaire NLTK n'a pas d'échappement dans les littéraux. Une forme
+contenant une apostrophe est écrite entre guillemets doubles ; une forme contenant les
+deux types de guillemets est refusée à l'export.
+
 [source,mermaid]
 ----
 sequenceDiagram
@@ -60,8 +77,9 @@ Les champs `agreements` et `percolations` utilisent des chaînes de traits :
 
 * `Genre,Nombre` — traits propagés depuis le lexique
 * `Nombre=du` — valeur fixe
-* `;` — alternatives dans une même spécification (`FeatureReader` dans
-  `pfmg/parsing/features/utils.py`)
+* `;` — séparateur de constituants : un segment par élément de `phrases`, un
+  segment vide ne contraignant rien (`FeatureReader` dans
+  `pfmg/utils/features/feature_reader.py`)
 
 == Littéraux entre quotes
 

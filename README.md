@@ -55,12 +55,15 @@ uv run python -m pfmg.lexique.main.main lexicon examples/data
 
 ```bash
 uv run python -m pfmg.parsing.main parsing examples/data "des garçons"
+
+# examples/data3 handles full sentences
+uv run python -m pfmg.parsing.main parsing examples/data3 "la maman donne une banane à la fille"
 ```
 
 Use `-k all` to keep all parse results instead of only the first:
 
 ```bash
-uv run python -m pfmg.parsing.main parsing examples/data "des garçons" -k all
+uv run python -m pfmg.parsing.main parsing examples/data "des petites autruches" -k all
 ```
 
 ## Examples

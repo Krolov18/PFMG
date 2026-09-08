@@ -1,0 +1,4 @@
+[,yaml]
+----
+include::example$gloses-snippets.yaml[tag=adj-glose]
+----

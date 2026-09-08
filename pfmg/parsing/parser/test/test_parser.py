@@ -8,7 +8,6 @@ import pytest
 from pfmg.parsing.features.Features import Features
 from pfmg.parsing.features.Percolation import Percolation
 from pfmg.parsing.grammar.Grammar import Grammar
-from pfmg.parsing.indexer import new_indexer
 from pfmg.parsing.parser.Parser import Parser
 from pfmg.parsing.production.Production import Production
 from pfmg.parsing.tokenizer import new_tokenizer
@@ -50,7 +49,6 @@ def parser_single() -> Parser:
         lexique=_make_mock_lexicon(),
         grammar=_minimal_grammar_single_terminal(),
         how="translation",
-        indexer=new_indexer(id_indexer="Identity"),
     )
 
 
@@ -61,7 +59,6 @@ def parser_two_tokens() -> Parser:
         lexique=_make_mock_lexicon(),
         grammar=_minimal_grammar_two_terminals(),
         how="translation",
-        indexer=new_indexer(id_indexer="Identity"),
     )
 
 
@@ -136,7 +133,6 @@ def test_parser_accepts_injected_tokenizer() -> None:
         grammar=_minimal_grammar_single_terminal(),
         how="translation",
         tokenizer=tokenizer,
-        indexer=new_indexer(id_indexer="Identity"),
     )
 
     assert parser.tokenizer is tokenizer

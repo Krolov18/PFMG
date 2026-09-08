@@ -1,6 +1,5 @@
-"""Lexicon: paradigm plus lexemes with realized-form index maps."""
+"""Lexicon: paradigm plus lexemes, realized once into surface forms."""
 
-from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Self
@@ -14,7 +13,7 @@ from pfmg.lexique.stems import Stems
 
 @dataclass
 class Lexicon(ABCReader):
-    """Lexicon built from a paradigm and a list of lexemes; indexes forms by string.
+    """Lexicon built from a paradigm and a list of lexemes.
 
     Attributes:
         paradigm: Paradigm used to realize lexemes into Forme.
@@ -26,23 +25,20 @@ class Lexicon(ABCReader):
     lexemes: list[Lexeme]
 
     def __post_init__(self) -> None:
-        """Realize every lexeme once and index the resulting Forme by string.
+        """Realize every lexeme once and collect the surface forms of both sides.
 
-        Realization happens exactly once: ``Paradigm.realize`` draws a fresh
-        index for each Forme it yields, so realizing twice would produce two
-        incompatible index spaces — one for the string -> index maps, another
-        for the grammars exported by the parsing layer.
+        The realized forms are kept, not recomputed on demand: they are the
+        terminals of the grammars exported by the parsing layer, and the two
+        string sets are what tells a known word from an unknown one.
         """
-        self.lexicon: defaultdict[str, list[int]] = defaultdict(list)
-        self.lexicon_destination: defaultdict[str, list[int]] = defaultdict(list)
-        self.lexicon2: list[Forme] = []
+        self.source_forms: set[str] = set()
+        self.destination_forms: set[str] = set()
+        self.formes: list[Forme] = []
         for lexeme in self.lexemes:
             for forme in self.paradigm.realize(lexeme):
-                self.lexicon[forme.source.to_string()].append(forme.source.index)
-                self.lexicon_destination[forme.destination.to_string()].append(
-                    forme.destination.index
-                )
-                self.lexicon2.append(forme)
+                self.source_forms.add(forme.source.to_string())
+                self.destination_forms.add(forme.destination.to_string())
+                self.formes.append(forme)
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> Self:
@@ -68,24 +64,12 @@ class Lexicon(ABCReader):
             Forme: Each realized form.
 
         """
-        yield from self.lexicon2
+        yield from self.formes
 
-    def __getitem__(self, item: str) -> list[int]:
-        """Return the list of source form indices for the given string key.
+    def knows(self, item: str, how: str = "translation") -> bool:
+        """Return True when *item* is a realized form on the side used by *how*.
 
-        Args:
-            item: String key (e.g. word form string).
-
-        Returns:
-            list[int]: List of form indices for that key.
-
-        """
-        return self.get_indexes(item)
-
-    def get_indexes(self, item: str, how: str = "translation") -> list[int]:
-        """Return the form indexes of *item* on the side used by *how*.
-
-        The translation grammar has source indexes as terminals while the
+        The translation grammar has source forms as terminals while the
         validation grammar has destination ones, so a token must be looked up
         on the matching side.
 
@@ -94,14 +78,14 @@ class Lexicon(ABCReader):
             how: "translation" (source side) or "validation" (destination side).
 
         Returns:
-            list[int]: Indexes of that form, empty when unknown.
+            bool: True when that side realizes *item*.
 
         """
         match how:
             case "translation":
-                return self.lexicon[item]
+                return item in self.source_forms
             case "validation":
-                return self.lexicon_destination[item]
+                return item in self.destination_forms
             case _:
                 message = f"'{how}' n'est ni 'translation' ni 'validation'."
                 raise ValueError(message)

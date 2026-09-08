@@ -17,6 +17,16 @@ Chaque entrée de liste associe un sigma (traits) à une règle :
 * `X1`, `X2`, `X3` — sélection de variantes (Selection)
 * Plusieurs lignes dans `destination` — règles successives (genre puis nombre)
 
+== Adjectifs (`ADJ`)
+
+include::partial$blocks/adj-blocks-block.adoc[]
+
+* Un bloc qui ne trouve aucune règle applicable ne produit rien : au masculin
+  singulier, aucun des deux blocs `source` ne s'applique et la forme réalisée est le
+  radical nu (`petit`)
+* `X2?X2:X+e` — féminin régulier par suffixation, sauf si un second radical est
+  fourni dans `Stems.yaml` (`gentil,gentille`)
+
 == Noms (`NOM`)
 
 include::partial$blocks/nom-blocks-block.adoc[]
@@ -24,6 +34,24 @@ include::partial$blocks/nom-blocks-block.adoc[]
 * `X2?X2:X+s` — condition : si la forme sélectionnée est identique, la garder, sinon
   suffixer `s` (Condition)
 * `Cf=n1,Nombre=sg: X+v` — sigma complet + règle de suffixation
+
+== Gabarits (`examples/data4/`)
+
+Un gabarit est le seul type de règle qui remodèle le radical au lieu de l'affixer.
+Il ne peut donc être que le **premier bloc** : c'est lui qui reçoit le radical.
+
+include::partial$blocks/gabarit-blocks-block.adoc[]
+
+* Le radical fait exactement **quatre segments**, lus comme `1`, `2`, `V`, `3`
+  (`ktub` → 1=k, 2=t, V=u, 3=b)
+* `1`, `2`, `3` — consonnes du radical ; `V` — sa voyelle
+* `a`, `i`, `u`, `e`, `o` — voyelles littérales : ce sont elles qui portent la
+  flexion, ici le nombre puis le cas (`ktub` + `1a2i3` → `katib`)
+* `A`, `U` — une ou deux applications de l'apophonie de `Phonology.yaml` à la
+  voyelle du radical ; `4`-`6` et `7`-`9` — une ou deux mutations des consonnes
+  `1`-`3`
+* Le bloc suivant peut alors affixer le résultat : ici un circonfixe
+  (`ta+X+an`), qui est la seule trace du déterminant dans la langue
 
 [cols="1,2"]
 |===

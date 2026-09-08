@@ -1,8 +1,7 @@
 """Realizes Lexemes as Forme (paradigm: gloses + blocks)."""
 
-import itertools
-from collections.abc import Generator, Iterator
-from dataclasses import dataclass, field
+from collections.abc import Generator
+from dataclasses import dataclass
 from pathlib import Path
 
 from pfmg.external.reader.ABCReader import ABCReader
@@ -24,23 +23,11 @@ class Paradigm(ABCRealizable, ABCReader):
     Attributes:
         gloses: POS -> Sigmas mapping.
         blocks: Desinence blocks.
-        counter: Per-instance source of Forme indexes. It is deliberately *not*
-            shared between Paradigm instances: the indexes it produces are the
-            terminals of the generated NLTK grammars, so a counter shared
-            process-wide would make those terminals depend on how many
-            realizations happened earlier in the process.
 
     """
 
     gloses: StraightPos2Sigmas
     blocks: BlockEntry
-    counter: Iterator[int] = field(
-        default_factory=itertools.count, repr=False, compare=False
-    )
-
-    def _next_index(self) -> int:
-        """Return the next Forme index of this Paradigm."""
-        return next(self.counter)
 
     def realize(self, lexeme: Lexeme) -> Generator[Forme]:
         """Yield all Forme realizations of the given lexeme (matching sigma and desinence)."""
@@ -51,7 +38,6 @@ class Paradigm(ABCRealizable, ABCReader):
                 desinence = self.blocks(lexeme_pos, i_sigma)
                 yield Forme(
                     source=FormeEntry(
-                        index=self._next_index(),
                         pos=lexeme_pos,
                         sigma=i_sigma.source,
                         morphemes=Morphemes(
@@ -60,7 +46,6 @@ class Paradigm(ABCRealizable, ABCReader):
                         ),
                     ),
                     destination=FormeEntry(
-                        index=self._next_index(),
                         pos=lexeme_pos,
                         sigma=i_sigma.destination,
                         morphemes=Morphemes(

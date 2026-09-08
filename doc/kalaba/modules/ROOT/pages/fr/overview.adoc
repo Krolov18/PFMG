@@ -47,7 +47,12 @@ flowchart LR
 
 == Exemples fournis
 
-* `examples/data/` — grammaire minimale (notebook, CLI)
-* `examples/data2/` — variante avec règles multiples et littéral `'deux'`
+* `examples/data/` — grammaire du notebook et de la CLI : syntagmes nominaux
+  `D NOM`, `D ADJ NOM` et `D NOM ADJ`
+* `examples/data2/` — variante avec littéral `'deux'` et nombre duel explicite
+* `examples/data3/` — phrases complètes : verbes à valence (`intransitif`, `transitif
+  direct`, `transitif indirect`, `ditransitif`), prépositions et numéraux
+* `examples/data4/` — langue à gabarits : noms moulés dans un schéma vocalique,
+  déterminants circonfixes, 4 genres, 5 nombres, 6 cas assignés par la valence
 
 Voir xref:fr/parsing-pipeline.adoc[] pour le détail du parseur à deux phases.

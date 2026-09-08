@@ -14,13 +14,13 @@ Primary language: **Python 3.14** (strict: `>=3.14,<3.15`).
 |------|---------|
 | `pfmg/` | Main Python package |
 | `pfmg/lexique/` | Lexicon, morphology, stems, paradigms |
-| `pfmg/parsing/` | Grammar, parser, tokenizer, indexer |
+| `pfmg/parsing/` | Grammar, parser, tokenizer |
 | `pfmg/external/` | Integrations (gloser, reader, display, etc.) |
 | `schemas/` | CUE schema definitions |
 | `examples/` | Usage examples |
 | `doc/` | Antora AsciiDoc book (Kalaba, FR + EN) |
 | `docker-compose.yml` | Docker services (documentation build) |
-| `scripts/` | Utility scripts |
+| `scripts/` | Utility scripts (e.g. `bench_parsing.py`) |
 | `package.json` | Commitlint and Antora (documentation build) |
 
 ## Setup

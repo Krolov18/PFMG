@@ -24,3 +24,16 @@ NOM:
     Nombre=sg: [ Nombre=sg ]
     Nombre=pl: [ Nombre=du, Nombre=pl ]
 # end::nom-glose[]
+
+# tag::adj-glose[]
+ADJ:
+  source:
+    Genre: [ m, f ]
+    Nombre: [ sg, pl ]
+  destination:
+    Genre: [ m, f, n ]
+    Nombre: [ sg, du, pl ]
+  alignments:
+    Nombre=sg: [ Nombre=sg ]
+    Nombre=pl: [ Nombre=du, Nombre=pl ]
+# end::adj-glose[]

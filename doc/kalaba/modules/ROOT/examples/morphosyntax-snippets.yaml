@@ -6,19 +6,33 @@ Start: "NP"
 NP:
   Source:
     phrases:
+      - [ "D", "ADJ", "NOM" ]
+      - [ "D", "NOM", "ADJ" ]
       - [ "D", "NOM" ]
     agreements:
       - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
     percolations:
       - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
     translations:
+      - [ 2, 1, 0 ]
+      - [ 1, 2, 0 ]
       - [ 1, 0 ]
   Destination:
     phrases:
+      - [ "NOM", "ADJ", "D" ]
+      - [ "NOM", "ADJ", "D" ]
       - [ "NOM", "D" ]
     agreements:
-      - "Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
+      - "Genre,Nombre"
     percolations:
+      - "Nombre"
+      - "Nombre"
       - "Nombre"
 # end::np-rule[]
 
@@ -48,3 +62,65 @@ NP:
       - "Nombre=du"
       - "Nombre"
 # end::np-rule-multi[]
+
+# tag::s-rule[]
+Start: "S"
+S:
+  Source:
+    phrases:
+      - [ "NP", "V" ]
+      - [ "NP", "V", "NP" ]
+      - [ "NP", "V", "PP" ]
+      - [ "NP", "V", "NP", "PP" ]
+    agreements:
+      - "Nombre;Nombre,Val=intr"
+      - "Nombre;Nombre,Val=tdir;"
+      - "Nombre;Nombre,Val=tind;"
+      - "Nombre;Nombre,Val=ditr;;"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+    translations:
+      - [ 0, 1 ]
+      - [ 0, 2, 1 ]
+      - [ 0, 2, 1 ]
+      - [ 0, 2, 3, 1 ]
+  Destination:
+    phrases:
+      - [ "NP", "V" ]
+      - [ "NP", "NP", "V" ]
+      - [ "NP", "PP", "V" ]
+      - [ "NP", "NP", "PP", "V" ]
+    agreements:
+      - "Nombre"
+      - "Nombre;;Nombre"
+      - "Nombre;;Nombre"
+      - "Nombre;;;Nombre"
+    percolations:
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+      - "Nombre"
+# end::s-rule[]
+
+# tag::pp-rule[]
+PP:
+  Source:
+    phrases:
+      - [ "P", "NP" ]
+    agreements:
+      - "Nombre"
+    percolations:
+      - "Nombre"
+    translations:
+      - [ 1, 0 ]
+  Destination:
+    phrases:
+      - [ "NP", "P" ]
+    agreements:
+      - "Nombre"
+    percolations:
+      - "Nombre"
+# end::pp-rule[]

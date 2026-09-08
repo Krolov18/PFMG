@@ -30,7 +30,6 @@ from pfmg.utils.stem_space import StemSpace
                          ]
                      ),
                      sigma=frozendict(Genre="m", Nombre="pl"),
-                     index=1
                  ),
                  destination=FormeEntry(
                      pos="D",
@@ -42,7 +41,6 @@ from pfmg.utils.stem_space import StemSpace
                          others=[]
                      ),
                      sigma=frozendict(),
-                     index=1
                  )
              ),
              Forme(
@@ -62,7 +60,6 @@ from pfmg.utils.stem_space import StemSpace
                          ]
                      ),
                      sigma=frozendict(),
-                     index=2
                  ),
                  destination=FormeEntry(
                      pos="N",
@@ -74,7 +71,6 @@ from pfmg.utils.stem_space import StemSpace
                          others=[]
                      ),
                      sigma=frozendict(),
-                     index=2
                  )
              )],
          "les chats")
@@ -106,7 +102,6 @@ def test_to_string(fx_df_phonology, formes, expected) -> None:
                          ]
                      ),
                      sigma=frozendict(Genre="m", Nombre="pl"),
-                     index=1
                  ),
                  destination=FormeEntry(
                      pos="D",
@@ -118,7 +113,6 @@ def test_to_string(fx_df_phonology, formes, expected) -> None:
                          others=[]
                      ),
                      sigma=frozendict(),
-                     index=1
                  )
              ),
              Forme(
@@ -138,7 +132,6 @@ def test_to_string(fx_df_phonology, formes, expected) -> None:
                          ]
                      ),
                      sigma=frozendict(),
-                     index=2
                  ),
                  destination=FormeEntry(
                      pos="N",
@@ -150,7 +143,6 @@ def test_to_string(fx_df_phonology, formes, expected) -> None:
                          others=[]
                      ),
                      sigma=frozendict(),
-                     index=2
                  )
              )],
          "les chat-s")
@@ -182,7 +174,6 @@ def test_to_decoupe(fx_df_phonology, formes, expected) -> None:
                          ]
                      ),
                      sigma=frozendict(Genre="m", Nombre="pl"),
-                     index=1
                  ),
                  destination=FormeEntry(
                      pos="D",
@@ -194,7 +185,6 @@ def test_to_decoupe(fx_df_phonology, formes, expected) -> None:
                          others=[]
                      ),
                      sigma=frozendict(),
-                     index=1
                  )
              ),
              Forme(
@@ -214,7 +204,6 @@ def test_to_decoupe(fx_df_phonology, formes, expected) -> None:
                          ]
                      ),
                      sigma=frozendict(),
-                     index=2
                  ),
                  destination=FormeEntry(
                      pos="N",
@@ -226,7 +215,6 @@ def test_to_decoupe(fx_df_phonology, formes, expected) -> None:
                          others=[]
                      ),
                      sigma=frozendict(),
-                     index=2
                  )
              )],
          "DEF.m.pl chat.m-pl")
@@ -250,26 +238,25 @@ class SigmaForme(Forme):
         return self.source.get_sigma()
 
 
-def make_sigma_forme(pos: str, sigma: frozendict, index: int) -> SigmaForme:
+def make_sigma_forme(pos: str, sigma: frozendict) -> SigmaForme:
     morphemes = Morphemes(
         radical=Radical(stems=StemSpace(("toto",)), sigma=frozendict()),
         others=[]
     )
     return SigmaForme(
-        source=FormeEntry(pos=pos, morphemes=morphemes, sigma=sigma, index=index),
+        source=FormeEntry(pos=pos, morphemes=morphemes, sigma=sigma),
         destination=FormeEntry(
             pos=pos,
             morphemes=morphemes,
             sigma=frozendict(),
-            index=index
         )
     )
 
 
 def test_get_sigma_merges_every_word() -> None:
     sentence = Sentence([
-        make_sigma_forme("D", frozendict(Genre="m"), 1),
-        make_sigma_forme("N", frozendict(Nombre="pl"), 2),
+        make_sigma_forme("D", frozendict(Genre="m")),
+        make_sigma_forme("N", frozendict(Nombre="pl")),
     ])
     actual = sentence.get_sigma()
     assert actual == frozendict(Genre="m", Nombre="pl")
@@ -278,8 +265,8 @@ def test_get_sigma_merges_every_word() -> None:
 
 def test_get_sigma_last_word_wins_on_conflict() -> None:
     sentence = Sentence([
-        make_sigma_forme("D", frozendict(Genre="m", Nombre="sg"), 1),
-        make_sigma_forme("N", frozendict(Genre="f"), 2),
+        make_sigma_forme("D", frozendict(Genre="m", Nombre="sg")),
+        make_sigma_forme("N", frozendict(Genre="f")),
     ])
     assert sentence.get_sigma() == frozendict(Genre="f", Nombre="sg")
 
@@ -301,7 +288,6 @@ def test_get_sigma_is_not_implemented_on_plain_forme() -> None:
                     others=[]
                 ),
                 sigma=frozendict(Genre="m"),
-                index=1
             ),
             destination=FormeEntry(
                 pos="N",
@@ -313,7 +299,6 @@ def test_get_sigma_is_not_implemented_on_plain_forme() -> None:
                     others=[]
                 ),
                 sigma=frozendict(),
-                index=1
             )
         )
     ])

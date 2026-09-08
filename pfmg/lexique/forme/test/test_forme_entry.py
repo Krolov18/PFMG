@@ -10,7 +10,6 @@ from pfmg.utils.stem_space import StemSpace
 
 def test_to_string(fx_df_phonology) -> None:
     forme = FormeEntry(
-        index=2,
         pos="N",
         morphemes=Morphemes(
             radical=Radical(
@@ -26,7 +25,6 @@ def test_to_string(fx_df_phonology) -> None:
     assert actual == expected
 
     forme = FormeEntry(
-        index=2,
         pos="N",
         morphemes=Morphemes(
             radical=Radical(
@@ -57,7 +55,6 @@ def test_to_string(fx_df_phonology) -> None:
 
 def test_get_sigma() -> None:
     forme = FormeEntry(
-        index=2,
         pos="N",
         morphemes=Morphemes(
             radical=Radical(
@@ -109,7 +106,6 @@ def test_decoupe(fx_df_phonology, radical, sigma, morphemes, expected):
     forme_entry = FormeEntry(
         pos="N",
         sigma=frozendict(sigma),
-        index=4,
         morphemes=Morphemes(
             radical=Radical(
                 stems=StemSpace.from_string(radical[0]),
@@ -165,7 +161,6 @@ def test_glose(fx_df_phonology, radical, sigma, morphemes, expected):
     forme_entry = FormeEntry(
         pos="N",
         sigma=frozendict(sigma),
-        index=4,
         morphemes=Morphemes(
             radical=Radical(
                 stems=StemSpace.from_string(radical[0]),
