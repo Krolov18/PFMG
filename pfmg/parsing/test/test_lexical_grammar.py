@@ -4,8 +4,8 @@ import re
 
 import pytest
 
-from pfmg.lexique.forme.Forme import Forme
 from pfmg.lexique.forme.builders import make_forme_entry
+from pfmg.lexique.forme.Forme import Forme
 from pfmg.lexique.lexicon import Lexicon
 from pfmg.parsing.lexical_grammar import LexicalGrammarExporter, quote
 from pfmg.utils.paths import get_project_path
