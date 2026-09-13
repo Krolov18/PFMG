@@ -1,5 +1,6 @@
 """Tests for parsing.main.actions."""
 
+import argparse
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
@@ -11,17 +12,21 @@ from pfmg.parsing.main.actions import action, lexical_grammar_action, parsing_ac
 from pfmg.utils.paths import get_project_path
 
 
-def test_action_pops_name_and_calls_factory() -> None:
+def test_action_calls_factory_with_namespace_name() -> None:
     with patch("pfmg.parsing.main.actions.factory_function") as mock_factory:
-        namespace = {"name": "parsing", "path": "/fake", "data": ["x"], "keep": "first"}
-        # parsing_action will be invoked by factory_function; we only check action() flow
+        namespace = argparse.Namespace(
+            name="parsing",
+            path=Path("/fake"),
+            data=["x"],
+            keep="first",
+        )
         mock_factory.return_value = None
         action(namespace=namespace)
-        assert "name" not in namespace
         mock_factory.assert_called_once()
         call_kw = mock_factory.call_args[1]
         assert call_kw["concrete_product"] == "parsing_action"
         assert call_kw["package"] == "pfmg.parsing.main.actions"
+        assert call_kw["namespace"] is namespace
 
 
 def test_parsing_action_stdout(tmp_path: pytest.TempPathFactory) -> None:
@@ -30,7 +35,11 @@ def test_parsing_action_stdout(tmp_path: pytest.TempPathFactory) -> None:
 
     with patch("pfmg.parsing.main.actions.KParser") as mock_kparser:
         mock_kparser.from_yaml.return_value = mock_parser
-        namespace = {"path": tmp_path, "data": ["sentence"], "keep": "first"}
+        namespace = argparse.Namespace(
+            path=tmp_path,
+            data=["sentence"],
+            keep="first",
+        )
 
         buf = StringIO()
         with redirect_stdout(buf):
@@ -47,7 +56,7 @@ def test_parsing_action_stdout_list_result(tmp_path: pytest.TempPathFactory) -> 
 
     with patch("pfmg.parsing.main.actions.KParser") as mock_kparser:
         mock_kparser.from_yaml.return_value = mock_parser
-        namespace = {"path": tmp_path, "data": ["x"], "keep": "all"}
+        namespace = argparse.Namespace(path=tmp_path, data=["x"], keep="all")
 
         buf = StringIO()
         with redirect_stdout(buf):
@@ -61,7 +70,9 @@ def test_lexical_grammar_action_stdout() -> None:
     path = get_project_path() / "examples" / "data"
     buf = StringIO()
     with redirect_stdout(buf):
-        lexical_grammar_action(namespace={"datapath": path})
+        lexical_grammar_action(
+            namespace=argparse.Namespace(datapath=path),
+        )
 
     lines = buf.getvalue().splitlines()
     assert lines
@@ -71,7 +82,7 @@ def test_lexical_grammar_action_stdout() -> None:
 
 def test_action_dispatches_lexical_grammar() -> None:
     with patch("pfmg.parsing.main.actions.factory_function") as mock_factory:
-        namespace = {"name": "lexical_grammar", "datapath": Path("/fake")}
+        namespace = argparse.Namespace(name="lexical_grammar", datapath=Path("/fake"))
         action(namespace=namespace)
         call_kw = mock_factory.call_args[1]
         assert call_kw["concrete_product"] == "lexical_grammar_action"

@@ -1,5 +1,6 @@
 """CLI actions for the parsing package main."""
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -10,34 +11,31 @@ from pfmg.utils.abstract_factory import factory_function
 
 
 def action(
-    namespace: dict,
+    namespace: argparse.Namespace,
 ) -> None:
-    """Dispatch to the requested action (name and args taken from namespace).
+    """Dispatch to the requested action (namespace.name and args).
 
     Args:
-        namespace: Dict from ArgumentParser.parse_args() (must contain "name").
+        namespace: Result of ArgumentParser.parse_args() (must have "name").
 
     """
-    name = namespace.pop("name")
-    assert name is not None
-
     factory_function(
-        concrete_product=f"{name}_action",
+        concrete_product=f"{namespace.name}_action",
         package=__name__,
         namespace=namespace,
     )
 
 
-def parsing_action(namespace: dict) -> None:
+def parsing_action(namespace: argparse.Namespace) -> None:
     """Build a KParser from path in namespace and parse; write results to stdout.
 
     Args:
         namespace: Must contain "path" and parse options (e.g. data, keep).
 
     """
-    parser = KParser.from_yaml(namespace.pop("path"))
+    parser = KParser.from_yaml(namespace.path)
 
-    result = parser.parse(**namespace)
+    result = parser.parse(data=namespace.data, keep=namespace.keep)
 
     if isinstance(result, str):
         result = [result]
@@ -45,14 +43,14 @@ def parsing_action(namespace: dict) -> None:
     sys.stdout.write("\n".join(result) + "\n")
 
 
-def lexical_grammar_action(namespace: dict) -> None:
+def lexical_grammar_action(namespace: argparse.Namespace) -> None:
     """Export translation and validation lexical productions to stdout.
 
     Args:
         namespace: Must contain ``datapath`` (path to lexicon config directory).
 
     """
-    path = Path(namespace["datapath"])
+    path = Path(namespace.datapath)
     lexicon = Lexicon.from_yaml(path)
     exporter = LexicalGrammarExporter()
     for forme in lexicon:

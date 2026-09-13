@@ -34,7 +34,7 @@ def main(argv: list[str] | None = None) -> None:
         argv: Command-line arguments; defaults to sys.argv[1:].
 
     """
-    action(namespace=vars(build_parser().parse_args(argv)))
+    action(namespace=build_parser().parse_args(argv))
 
 
 __all__ = ["build_parser", "main"]

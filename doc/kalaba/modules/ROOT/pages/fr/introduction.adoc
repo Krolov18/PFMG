@@ -37,4 +37,6 @@ parsing].
 . Lancer le lexique : `uv run python -m pfmg.lexique.main.main lexicon <dir>`
 . Lancer le parsing : `uv run python -m pfmg.parsing.main parsing <dir> "<phrase>"`
 
-La validation CUE à l'exécution n'est pas encore activée dans le code.
+La commande `lexicon` valide les YAML avec CUE à l'exécution lorsque le binaire
+`cue` est disponible sur le `PATH` (voir `schemas/README.md`). Sans `cue`, la
+validation est ignorée.

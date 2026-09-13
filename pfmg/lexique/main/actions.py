@@ -1,8 +1,11 @@
 """CLI actions for the lexique package main."""
 
 import argparse
-import os.path
+import os
+import shutil
 from pathlib import Path
+
+import cue
 
 from pfmg.utils.abstract_factory import factory_function
 from pfmg.utils.paths import get_validation_file_path
@@ -72,37 +75,45 @@ def check_if_datapath_contains_all_files(
 
 
 def check_yaml_files_with_cue(namespace: argparse.Namespace) -> None:
-    """Validate YAML files with CUE (cwd is temporarily changed during validation).
+    """Validate the grammar YAML files against their CUE schemas.
+
+    Each YAML file in the config directory is vetted against the matching
+    schema under ``schemas/schemas`` with the ``cue`` CLI (through ``pycue``).
+    Validation is skipped when the ``cue`` binary is not installed so the
+    library stays usable without it.
 
     Args:
-        namespace: Must have "datapath" (unused in current implementation).
+        namespace: Must have "datapath" (path to the config directory).
+
+    Raises:
+        argparse.ArgumentTypeError: When a YAML file does not satisfy its schema.
 
     """
-    path = os.getcwd()
+    if shutil.which(cue.cue_exe) is None:
+        return
+
+    datapath = Path(namespace.datapath).resolve()
+    schema_by_file = {
+        "Gloses.yaml": "gloses.cue",
+        "Blocks.yaml": "blocks.cue",
+        "Stems.yaml": "stems.cue",
+        "MorphoSyntax.yaml": "morphosyntax.cue",
+        "Phonology.yaml": "phonology.cue",
+    }
+
+    previous = Path.cwd()
     os.chdir(get_validation_file_path())
-    # print(os.getcwd())
-    # vet.files(
-    #     os.path.join("../../../projects/schemas", "gloses.cue"),
-    #     namespace.datapath / "Gloses.yaml",
-    # )
-    # vet.files(
-    #     os.path.join("../../../projects/schemas", "blocks.cue"),
-    #     namespace.datapath / "Blocks.yaml",
-    # )
-    # vet.files(
-    #     os.path.join("../../../projects/schemas", "stems.cue"),
-    #     namespace.datapath / "Stems.yaml",
-    # )
-    # print("toto")
-    # vet.files(
-    #     os.path.join("../../../projects/schemas", "morphosyntax.cue"),
-    #     namespace.datapath / "MorphoSyntax.yaml",
-    # )
-    # vet.files(
-    #     os.path.join("schemas", "phonology.cue"),
-    #     namespace.datapath / "Phonology.yaml"
-    # )
-    os.chdir(path)
+    try:
+        for yaml_name, schema_name in schema_by_file.items():
+            schema = Path("schemas") / schema_name
+            data = datapath / yaml_name
+            try:
+                cue.vet.files(str(schema), str(data))
+            except cue.Error as error:
+                message = f"{data} does not satisfy {schema_name}:\n{error}"
+                raise argparse.ArgumentTypeError(message) from error
+    finally:
+        os.chdir(previous)
 
 
 def lexicon_action(

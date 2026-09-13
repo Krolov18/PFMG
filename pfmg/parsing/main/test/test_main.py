@@ -39,18 +39,16 @@ def test_build_parser_lexical_grammar_subcommand() -> None:
     assert namespace.datapath == pathlib.Path("examples/data")
 
 
-def test_main_dispatches_the_namespace_as_a_dict() -> None:
+def test_main_dispatches_the_parsed_namespace() -> None:
     with patch("pfmg.parsing.main.action") as mock_action:
         main(["parsing", "some/path", "des garçons", "-k", "all"])
 
-    mock_action.assert_called_once_with(
-        namespace={
-            "name": "parsing",
-            "path": pathlib.Path("some/path"),
-            "data": ["des garçons"],
-            "keep": "all",
-        }
-    )
+    mock_action.assert_called_once()
+    namespace = mock_action.call_args[1]["namespace"]
+    assert namespace.name == "parsing"
+    assert namespace.path == pathlib.Path("some/path")
+    assert namespace.data == ["des garçons"]
+    assert namespace.keep == "all"
 
 
 def test_package_is_executable_with_dash_m() -> None:
