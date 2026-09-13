@@ -1,19 +1,19 @@
-start: "S"
+Start: "NP"
 
 NP:
   Source:
-    Syntagmes:
+    phrases:
       - [ "D", "N" ]
-    Accords:
+    agreements:
       - "Genre,Nombre"
-    Percolation:
+    percolations:
       - "Genre,Nombre"
-    Traduction:
+    translations:
       - [ 1, 0 ]
   Destination:
-    Syntagmes:
+    phrases:
       - [ "N", "D" ]
-    Accords:
+    agreements:
       - "Genre,Nombre"
-    Percolation:
+    percolations:
       - "Genre,Nombre"

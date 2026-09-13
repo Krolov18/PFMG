@@ -60,8 +60,6 @@ def test_parsing_imports_only_public_lexique_entry_points() -> None:
     violations: list[str] = []
     prefix = "pfmg.lexique"
     for module_path in _python_modules("parsing"):
-        if "/test/" in module_path.as_posix():
-            continue
         module_name = _relative_module(module_path)
         for imported in _imported_modules(module_path):
             if imported == prefix or imported.startswith(f"{prefix}."):

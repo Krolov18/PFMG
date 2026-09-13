@@ -1,51 +1,46 @@
 package morphosyntax
 
-//import (
-//	"list"
-//	"struct"
-//)
+import (
+	l "pfmg.com/pkg/schemas:literals"
+	"list"
+)
 
-#category: =~"^[A-Z]+$"
+// Syntactic category / rule name, e.g. S, NP, PP.
+#category: =~"^[\(l.#upperCase)]+$"
 
-#File: {
-	start?: string
-	#Rules
+// A non-empty list of phrase templates, each a non-empty list of symbols.
+#Phrases: [...([...string] & list.MinItems(1))] & list.MinItems(1)
+
+// One feature specification per phrase template (agreements, percolations).
+// Kept as free strings: the runtime format packs constituents with ";" and
+// features with ",".
+#Features: [...string] & list.MinItems(1)
+
+// One reordering per phrase template, each a list of source indices.
+#Translations: [...[...int]]
+
+// The two faces share phrases, agreements and percolations.
+#Face: {
+	phrases:      #Phrases
+	agreements:   #Features
+	percolations: #Features
+}
+
+// The source face additionally carries the translation reorderings.
+#Source: {
+	#Face
+	translations?: #Translations
 }
 
 #Rule: {
-	Source: #SAPT
-	Destination: #SAP
+	Source!:      #Source
+	Destination!: #Face
 }
 
-#Rules: [#identifier]: #Rule
-
-#SAP: {
-	Syntagmes:    #Syntagmes
-	Accords:      #Accords
-	Percolations: #Percolations
+// The file declares a Start symbol and one rule per category.
+#MorphoSyntax: {
+	Start!: string
+	[#category]: #Rule
 }
 
-#SAPT: {
-	#SAP
-	Traduction: #Traductions
-}
-
-#identifier: =~"[A-Z]+P?"
-
-#Syntagmes: [#identifier]: [...[...string] & [_, ...string]]
-
-#Accords: [#identifier]: [...string] & [_, ...string]
-
-#Percolations: [#identifier]: [...string] & [_, ...string]
-
-#Traductions: [#identifier]: [...[...int]]
-
-#Longueur: #SAPT & {
-	syntagmes:    _
-	accords:      _
-	percolations: _
-	_sameLength:  and([ for key, value in syntagmes {len(value), len(accords[key]), len(percolations[key])}])
-	_sameKeys:    and([...])
-}
-
-#File
+#MorphoSyntax

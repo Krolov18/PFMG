@@ -3,16 +3,12 @@
 import re
 
 import pytest
-from frozendict import frozendict
 
+from pfmg.lexique.forme.builders import make_forme_entry
 from pfmg.lexique.forme.Forme import Forme
-from pfmg.lexique.forme.FormeEntry import FormeEntry
 from pfmg.lexique.lexicon import Lexicon
-from pfmg.lexique.morpheme.Morphemes import Morphemes
-from pfmg.lexique.morpheme.Radical import Radical
 from pfmg.parsing.lexical_grammar import LexicalGrammarExporter, quote
 from pfmg.utils.paths import get_project_path
-from pfmg.utils.stem_space import StemSpace
 
 
 @pytest.fixture
@@ -25,18 +21,6 @@ def fx_exporter() -> LexicalGrammarExporter:
 def fx_lexicon() -> Lexicon:
     """Lexicon built from the example grammar."""
     return Lexicon.from_yaml(get_project_path() / "examples" / "data")
-
-
-def _make_entry(pos: str, stems: tuple[str, ...], sigma: dict) -> FormeEntry:
-    """Build a FormeEntry whose surface form is the first stem."""
-    return FormeEntry(
-        pos=pos,
-        morphemes=Morphemes(
-            radical=Radical(stems=StemSpace(stems=stems), sigma=frozendict(sigma)),
-            others=[],
-        ),
-        sigma=frozendict(sigma),
-    )
 
 
 def _terminals(grammar: str) -> list[str]:
@@ -89,7 +73,7 @@ def test_export_deduplicates_productions(fx_exporter, fx_lexicon) -> None:
 
 def test_export_entry(fx_exporter) -> None:
     """Validation export builds an NLTK lexical production from a FormeEntry."""
-    entry = _make_entry("N", ("a", "b", "c"), {"Genre": "m", "Nombre": "s"})
+    entry = make_forme_entry("N", ("a", "b", "c"), {"Genre": "m", "Nombre": "s"})
 
     assert fx_exporter.export_entry(entry) == "N[Genre='m',Nombre='s'] -> 'a'"
 
@@ -97,8 +81,8 @@ def test_export_entry(fx_exporter) -> None:
 def test_export_forme_translation(fx_exporter) -> None:
     """Translation export merges source and destination feature bundles."""
     forme = Forme(
-        source=_make_entry("N", ("source",), {"Genre": "m"}),
-        destination=_make_entry("N", ("dest",), {"Genre": "f"}),
+        source=make_forme_entry("N", ("source",), {"Genre": "m"}),
+        destination=make_forme_entry("N", ("dest",), {"Genre": "f"}),
     )
 
     assert (
@@ -109,7 +93,7 @@ def test_export_forme_translation(fx_exporter) -> None:
 
 def test_export_entry_quotes_around_an_apostrophe(fx_exporter) -> None:
     """A form holding an apostrophe is written with double quotes."""
-    entry = _make_entry("N", ("aujourd'hui",), {"Genre": "m"})
+    entry = make_forme_entry("N", ("aujourd'hui",), {"Genre": "m"})
 
     assert fx_exporter.export_entry(entry) == 'N[Genre=\'m\'] -> "aujourd\'hui"'
 

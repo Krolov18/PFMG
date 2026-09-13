@@ -4,10 +4,10 @@
 processing. It provides lexicon management (paradigm-based realization), FCFG parsing
 with NLTK, and French-to-invented-language translation (Kalaba and similar grammars).
 
-Grammars are defined as YAML configuration files. Their intended shape is described by
-CUE schemas in [`schemas/`](schemas/) (manual validation with `cue vet` only — the
-library does not validate YAML at runtime). See the
-[`doc/`](doc/) Antora book for the runtime format used by `examples/data/`.
+Grammars are defined as YAML configuration files described by CUE schemas in
+[`schemas/`](schemas/). The `lexicon` CLI validates them at runtime when the CUE
+CLI is available (see [CUE schemas](#cue-schemas)). See the [`doc/`](doc/) Antora
+book for the runtime format used by `examples/data/`.
 
 ## Requirements
 
@@ -73,14 +73,23 @@ Start with [`examples/README.md`](examples/README.md).
 
 ## CUE schemas
 
-Grammar YAML files can be checked manually with the [CUE](https://cuelang.org/) CLI.
-See [`schemas/README.md`](schemas/README.md) for the schema layout and `cue vet` usage.
+Grammar YAML files are described by CUE schemas in [`schemas/`](schemas/).
+See [`schemas/README.md`](schemas/README.md) for the schema layout.
 
-The `pfmg` library does **not** validate grammar files at import time
-(`check_yaml_files_with_cue` in `pfmg/lexique/main/actions.py` is commented out).
+**Manual check** with the [CUE](https://cuelang.org/) CLI:
 
-To install the CUE CLI manually, download a release binary from
-<https://github.com/cue-lang/cue/releases> and place it on your `PATH`.
+```bash
+cd schemas
+cue vet schemas/morphosyntax.cue ../examples/data/MorphoSyntax.yaml
+```
+
+**Runtime validation**: the `lexicon` command runs `check_yaml_files_with_cue` in
+[`pfmg/lexique/main/actions.py`](pfmg/lexique/main/actions.py) when the `cue` binary
+is on `PATH` (via `pycue`). Without `cue`, validation is skipped and the command
+still runs. Set `CUE_EXE` to point at a specific `cue` binary.
+
+Install the CUE CLI from <https://github.com/cue-lang/cue/releases> or
+`nix run nixpkgs#cue`.
 
 ## Roadmap / planned features
 
@@ -89,16 +98,15 @@ Features described in older design notes but **not implemented** in the current 
 - `contractions` token splitting in `MorphoSyntax.yaml` (pre-parse French tokenization)
 - `defaut` field (automatic determiner injection)
 - Kalaba → French reverse translation pipeline
-- Runtime CUE validation on grammar load
-- CUE schema for `Phonology.yaml`
 - Loading extended `Phonology.yaml` fields (`translations`, `gabarits`, `nom_classe`, …)
-- Aligning `morphosyntax.cue` with the runtime YAML format (`phrases`, `agreements`, …)
 
 ## Development
 
 ```bash
-make install   # uv sync --all-groups
-make check     # lint + format-check + type + test
+make install       # uv sync --all-groups
+make check         # lint + format-check + type + test
+make docker-test   # pytest inside the Python Docker image
+make docker-check  # lint + format-check + type + test inside Docker
 ```
 
 See [`AGENTS.md`](AGENTS.md) for contributor and AI-agent guidelines.

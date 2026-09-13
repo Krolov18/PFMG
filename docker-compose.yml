@@ -1,4 +1,13 @@
 services:
+  lib:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - lib_venv:/app/.venv
+    command: sh -c "uv sync --all-groups --frozen && uv run pytest"
+
   docs:
     build:
       context: .
@@ -23,3 +32,4 @@ services:
 
 volumes:
   docs_node_modules:
+  lib_venv:

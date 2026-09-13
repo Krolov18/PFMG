@@ -19,7 +19,8 @@ Primary language: **Python 3.14** (strict: `>=3.14,<3.15`).
 | `schemas/` | CUE schema definitions |
 | `examples/` | Usage examples |
 | `doc/` | Antora AsciiDoc book (Kalaba, FR + EN) |
-| `docker-compose.yml` | Docker services (documentation build) |
+| `docker-compose.yml` | Docker services: `lib` (Python dev/test) and `docs` (Antora build) |
+| `Dockerfile` / `Dockerfile.docs` | Images for the `lib` and `docs` services |
 | `scripts/` | Utility scripts (e.g. `bench_parsing.py`) |
 | `package.json` | Commitlint and Antora (documentation build) |
 
@@ -59,6 +60,8 @@ make type          # ty check
 make test          # pytest with coverage
 make check         # lint + format-check + type + test
 make docs          # Antora site via Docker (docker compose build first)
+make docker-test   # run the test suite inside the Python Docker image
+make docker-check  # lint + format-check + type + test inside Docker
 ```
 
 Equivalent direct commands:
@@ -69,6 +72,31 @@ uv run ruff format
 uv run ty check
 uv run pytest
 ```
+
+## Docker
+
+Docker gives an isolated, reproducible environment; prefer it when you cannot or
+do not want to install the toolchain on the host. Two service families are defined
+in `docker-compose.yml`:
+
+- **`lib`** (`Dockerfile`) — the Python library environment (uv, Python 3.14). Use
+  it to install, test, lint and type-check the library:
+
+  ```bash
+  make docker-test    # docker compose run --rm lib  ->  uv run pytest
+  make docker-check   # lint + format-check + type + test inside Docker
+  docker compose run --rm lib uv run ruff check   # ad-hoc command
+  ```
+
+  The working tree is bind-mounted at `/app` and the virtualenv lives in the
+  `lib_venv` volume, so host edits are picked up without rebuilding. Rebuild after
+  dependency changes with `docker compose build lib`.
+
+- **`docs`** / **`docs-preview`** (`Dockerfile.docs`) — the Antora documentation
+  build (`make docs`, `make docs-preview`).
+
+The `cue` CLI is not installed in the `lib` image, so CUE grammar validation is
+skipped there (see `pfmg/lexique/main/actions.py`).
 
 Pre-commit hooks run ruff, ty, pytest, pylint, and commitlint. Install with:
 
