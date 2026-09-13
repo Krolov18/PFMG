@@ -33,6 +33,10 @@ jobs:
           git fetch origin dev main
           git checkout -B "${RELEASE_BRANCH}" origin/dev
           git push origin "${RELEASE_BRANCH}" --force
+          if git diff --quiet origin/main "${RELEASE_BRANCH}"; then
+            echo "No changes between main and dev; skipping PR creation."
+            exit 0
+          fi
           EXISTING=$(gh pr list --base main --head "${RELEASE_BRANCH}" --state open --json number,url -q '.[0].url' 2>/dev/null || true)
           if [ -n "$EXISTING" ]; then
             echo "Release PR already exists: $EXISTING"
